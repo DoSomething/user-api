@@ -236,10 +236,10 @@ class DrupalAPI
         $payload = [
             'drupal_id' => $drupal_id,
             'term_ids' => $request->term_id,
-            'reportback_item_id' => $request->reportback_item_id
+            'reportbackitem_ids' => $request->reportback_item_id,
         ];
 
-        $response = $this->client->post('/kudos', [
+        $response = $this->client->post('kudos', [
             'body' => json_encode($payload)
             ]);
 

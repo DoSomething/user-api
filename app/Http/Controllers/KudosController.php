@@ -15,11 +15,13 @@ class KudosController extends Controller
 
     public function store(Request $request)
     {
-        // $user = User::current();
+        $user = User::current();
 
         $drupal_id = $user->drupal_id;
 
-        // $kudos = $this->drupal->storeKudos($drupal_id, $request);
+        dd($request->reportback_item_id);
+
+        $kudos = $this->drupal->storeKudos($drupal_id, $request);
 
         return $this->respond('Kudos Saved!');
     }
