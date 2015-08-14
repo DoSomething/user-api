@@ -53,6 +53,8 @@ class UserController extends Controller
 
         if ($found_user && password_verify($input['password'], $found_user->password)) {
             $user = $found_user;
+        } else {
+            throw new HttpException(412, 'Incorrect password.');
         }
 
         // If there is no user found, create a new one.
