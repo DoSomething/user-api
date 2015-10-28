@@ -146,6 +146,65 @@ class CampaignController extends Controller
     }
 
     /**
+     * Forward user's campaign signup from phoenix to sync campaign activity.
+     * POST /forwardSignup
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\Response
+     * @throws HttpException
+     */
+    public function forwardSignup(Request $request)
+    {
+        // Validate request body
+        $this->validate($request, [
+            'source' => ['required'],
+            'drupal_id' =>['required'],
+            'campaign_id' => ['required'],
+            'signup_id' => ['required']
+        ]);
+
+        // Get the currently authenticated Northstar user.
+        $user = User::where('drupal_id', $request->input('uid'))->first();
+        $campaign_id = $request->input('campaign_id');
+
+        // Return an error if the user doesn't exist.
+        if (!$user) {
+            throw new HttpException(401, 'The user must have a Drupal ID to sign up for a campaign.');
+        }
+
+        // Check if campaign signup already exists.
+        $campaign = $user->campaigns()->where('drupal_id', $campaign_id)->first();
+
+        $statusCode = 200;
+        if (!$campaign) {
+            $statusCode = 201;
+
+        $key = ApiKey::current();
+
+        // Check that we're allowed to save reference to the signup on the user object.
+        if ($key->checkScope('admin')) {
+            $signup_id = $request->get('signup_id');
+
+            $campaign = new Campaign;
+            $campaign->drupal_id = $campaign_id;
+            $campaign->signup_id = $signup_id;
+            $campaign->signup_source = $request->input('source');
+            // If group is specified, use that. Otherwise, use the signup_id.
+            $campaign->signup_group = $request->input('group') ?: $signup_id;
+            $campaign = $user->campaigns()->save($campaign);
+
+            // Fire sign up event.
+            event(new UserSignedUp($user, $campaign));
+            }
+        } else {
+            throw new HttpException(403, 'The `signup_id` parameter needs an API Key with `admin` scope.');
+        }
+
+        return $this->respond($campaign, $statusCode);
+    }
+
+    /**
      * Store a newly created campaign report back in storage.
      * POST /campaigns/:campaign_id/reportback
      * PUT  /campaigns/:campaign_id/reportback

@@ -79,4 +79,21 @@ class ApiKey extends Model
 
         return is_string($scope) ? json_decode($scope) : $scope;
     }
+
+    /**
+     * @return ApiKey|null
+     */
+    public static function current() {
+        $app_id = Request::header('X-DS-Application-Id');
+        $api_key = Request::header('X-DS-REST-API-Key');
+        return ApiKey::where("app_id", '=', $app_id)->where("api_key", '=', $api_key);
+    }
+
+    /**
+     *
+     */
+    public static function exists($app_id, $api_key) {
+        return ApiKey::where("app_id", '=', $app_id)->where("api_key", '=', $api_key)->exists();
+    }
+
 }
