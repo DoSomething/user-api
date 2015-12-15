@@ -5,6 +5,7 @@ namespace Northstar\Http\Controllers;
 use Illuminate\Http\Request;
 use Northstar\Events\UserSignedUp;
 use Northstar\Events\UserReportedBack;
+use Northstar\Models\ApiKey;
 use Northstar\Models\Campaign;
 use Northstar\Models\User;
 use Northstar\Services\Phoenix;
@@ -183,7 +184,7 @@ class CampaignController extends Controller
         $key = ApiKey::current();
 
         // Check that we're allowed to save reference to the signup on the user object.
-        if ($key->checkScope('admin')) {
+        if ($key->hasScope('admin')) {
             $signup_id = $request->get('signup_id');
 
             $campaign = new Campaign;
