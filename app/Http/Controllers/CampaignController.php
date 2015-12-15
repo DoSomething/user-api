@@ -25,6 +25,7 @@ class CampaignController extends Controller
         $this->phoenix = $drupal;
 
         $this->middleware('key:user');
+        $this->middleware('key:admin', ['only' => 'forwardSignup']);
         $this->middleware('auth');
 
         $this->middleware('campaign');

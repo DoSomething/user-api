@@ -10,6 +10,7 @@ class CampaignTest extends TestCase
     protected $server;
     protected $signedUpServer;
     protected $reportedBackServer;
+    protected $userScopeKeyServer;
 
     /**
      * Migrate database and set up HTTP headers
@@ -47,6 +48,14 @@ class CampaignTest extends TestCase
             'HTTP_X-DS-Application-Id' => '456',
             'HTTP_X-DS-REST-API-Key' => 'abc4324',
             'HTTP_Session' => User::find('bf1039b0271bcc636aa5477a')->login()->key,
+        ];
+
+        $this->userScopeKeyServer = [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_Accept' => 'application/json',
+            'HTTP_X-DS-Application-Id' => '123',
+            'HTTP_X-DS-REST-API-Key' => '5464utyrs',
+            'HTTP_Session' => User::find('5430e850dt8hbc541c37tt3d')->login()->key,
         ];
 
         // Mock Phoenix Drupal API class
@@ -140,13 +149,11 @@ class CampaignTest extends TestCase
             'signup_id' => '100',
         ];
 
-        // use that key that has `normal` scope
-        $key->checkScope('normal');
+        // Test request using an API key without admin scope
+        $response = $this->call('POST', 'v1/forwardSignup', [], [], [], $this->userScopeKeyServer, json_encode($payload));
 
         // asset response throws a 403 error
-        $this->assertEquals(201, $response->getStatusCode());
-
-        $this->assertTrue(false);
+        $this->assertEquals(403, $response->getStatusCode());
     }
 
     /**
