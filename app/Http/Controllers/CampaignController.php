@@ -198,7 +198,6 @@ class CampaignController extends Controller
 
             // Fire sign up event.
             event(new UserSignedUp($user, $campaign));
-            }
         } else {
             throw new HttpException(403, 'The `signup_id` parameter needs an API Key with `admin` scope.');
         }
