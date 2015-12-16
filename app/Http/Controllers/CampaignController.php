@@ -159,7 +159,7 @@ class CampaignController extends Controller
     {
         // Validate request body
         $this->validate($request, [
-            'user_drupal_id' =>['required'],
+            'user_drupal_id' => ['required'],
             'campaign_drupal_id' => ['required'],
             'signup_drupal_id' => ['required'],
             'source' => ['required'],
@@ -169,7 +169,7 @@ class CampaignController extends Controller
         $user = User::where('drupal_id', $request->input('user_drupal_id'))->first();
 
         // Return an error if the user doesn't exist.
-        if (!$user) {
+        if (! $user) {
             throw new HttpException(401, 'The user must have a Drupal ID to sign up for a campaign.');
         }
 
@@ -177,7 +177,7 @@ class CampaignController extends Controller
         $campaign = $user->campaigns()->where('drupal_id', $request->input('campaign_drupal_id'))->first();
 
         $statusCode = 200;
-        if(! $campaign) {
+        if (! $campaign) {
             $statusCode = 201;
             $campaign = new Campaign;
         }
@@ -192,7 +192,7 @@ class CampaignController extends Controller
 
         // Fire sign up event only if `event` is set in payload.
         // e.g., if "backfilling" old signups, we don't want to spam push notifications.
-        if($request->input('event')) {
+        if ($request->input('event')) {
             event(new UserSignedUp($user, $campaign));
         }
 

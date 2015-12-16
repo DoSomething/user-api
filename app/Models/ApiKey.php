@@ -96,9 +96,11 @@ class ApiKey extends Model
      *
      * @return ApiKey|null
      */
-    public static function current() {
+    public static function current()
+    {
         $app_id = request()->header('X-DS-Application-Id');
         $api_key = request()->header('X-DS-REST-API-Key');
+
         return static::get($app_id, $api_key);
     }
 
@@ -115,7 +117,8 @@ class ApiKey extends Model
     /**
      * Check if the given App ID & key are valid.
      */
-    public static function verify($app_id, $api_key) {
+    public static function verify($app_id, $api_key)
+    {
         return static::where('app_id', $app_id)->where('api_key', $api_key)->exists();
     }
 }
