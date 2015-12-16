@@ -159,10 +159,10 @@ class CampaignController extends Controller
     {
         // Validate request body
         $this->validate($request, [
-            'source' => ['required'],
             'user_drupal_id' =>['required'],
             'campaign_drupal_id' => ['required'],
-            'signup_drupal_id' => ['required']
+            'signup_drupal_id' => ['required'],
+            'source' => ['required'],
         ]);
 
         // Get the provided Northstar user by Drupal ID.
@@ -179,23 +179,21 @@ class CampaignController extends Controller
         $statusCode = 200;
         if(! $campaign) {
             $statusCode = 201;
-
             $campaign = new Campaign;
-            $campaign->drupal_id = $request->input('campaign_drupal_id');
-            $campaign->signup_id = $request->input('signup_drupal_id');
-            $campaign->signup_source = $request->input('source');
+        }
 
-            // If group is specified, use that. Otherwise, use the signup_id.
-            $campaign->signup_group = $request->input('group') ?: $request->input('signup_drupal_id');
+        $campaign->drupal_id = $request->input('campaign_drupal_id');
+        $campaign->signup_id = $request->input('signup_drupal_id');
+        $campaign->signup_group = $request->input('signup_drupal_id');
+        $campaign->signup_source = $request->input('source');
 
-            // Save to user.
-            $campaign = $user->campaigns()->save($campaign);
+        // Save to user.
+        $campaign = $user->campaigns()->save($campaign);
 
-            // Fire sign up event only if `event` is set in payload.
-            // e.g., if "backfilling" old signups, we don't want to spam push notifications.
-            if($request->input('event')) {
-                event(new UserSignedUp($user, $campaign));
-            }
+        // Fire sign up event only if `event` is set in payload.
+        // e.g., if "backfilling" old signups, we don't want to spam push notifications.
+        if($request->input('event')) {
+            event(new UserSignedUp($user, $campaign));
         }
 
         return $this->respond($campaign, $statusCode);
