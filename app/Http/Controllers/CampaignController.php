@@ -163,6 +163,7 @@ class CampaignController extends Controller
             'campaign_drupal_id' => ['required'],
             'signup_drupal_id' => ['required'],
             'source' => ['required'],
+            'trigger_event' => ['boolean'],
         ]);
 
         // Get the provided Northstar user by Drupal ID.
@@ -192,7 +193,7 @@ class CampaignController extends Controller
 
         // Fire sign up event only if `event` is set in payload.
         // e.g., if "backfilling" old signups, we don't want to spam push notifications.
-        if ($request->input('event')) {
+        if ($request->input('trigger_event')) {
             event(new UserSignedUp($user, $campaign));
         }
 
