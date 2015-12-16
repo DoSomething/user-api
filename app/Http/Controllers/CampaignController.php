@@ -5,7 +5,6 @@ namespace Northstar\Http\Controllers;
 use Illuminate\Http\Request;
 use Northstar\Events\UserSignedUp;
 use Northstar\Events\UserReportedBack;
-use Northstar\Models\ApiKey;
 use Northstar\Models\Campaign;
 use Northstar\Models\User;
 use Northstar\Services\Phoenix;
