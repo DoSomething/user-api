@@ -26,7 +26,7 @@ class CampaignController extends Controller
 
         $this->middleware('key:user');
         $this->middleware('key:admin', ['only' => 'forwardSignup']);
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => 'forwardSignup']);
 
         $this->middleware('campaign');
     }
@@ -148,7 +148,7 @@ class CampaignController extends Controller
     }
 
     /**
-     * Forward user's campaign signup from phoenix to sync campaign activity.
+     * Forward user's campaign signup from Phoenix to sync campaign activity.
      * POST /forwardSignup
      *
      * @param Request $request
@@ -161,14 +161,13 @@ class CampaignController extends Controller
         // Validate request body
         $this->validate($request, [
             'source' => ['required'],
-            'drupal_id' =>['required'],
-            'campaign_id' => ['required'],
-            'signup_id' => ['required']
+            'user_drupal_id' =>['required'],
+            'campaign_drupal_id' => ['required'],
+            'signup_drupal_id' => ['required']
         ]);
 
-        // Get the currently authenticated Northstar user.
-        $user = User::where('drupal_id', $request->input('uid'))->first();
-        $campaign_id = $request->input('campaign_id');
+        // Get the provided Northstar user by Drupal ID.
+        $user = User::where('drupal_id', $request->input('user_drupal_id'))->first();
 
         // Return an error if the user doesn't exist.
         if (!$user) {
@@ -176,30 +175,28 @@ class CampaignController extends Controller
         }
 
         // Check if campaign signup already exists.
-        $campaign = $user->campaigns()->where('drupal_id', $campaign_id)->first();
+        $campaign = $user->campaigns()->where('drupal_id', $request->input('campaign_drupal_id'))->first();
 
         $statusCode = 200;
-        if (!$campaign) {
+        if(! $campaign) {
             $statusCode = 201;
 
-        $key = ApiKey::current();
-
-        // Check that we're allowed to save reference to the signup on the user object.
-        if ($key->hasScope('admin')) {
-            $signup_id = $request->get('signup_id');
-
             $campaign = new Campaign;
-            $campaign->drupal_id = $campaign_id;
-            $campaign->signup_id = $signup_id;
+            $campaign->drupal_id = $request->input('campaign_drupal_id');
+            $campaign->signup_id = $request->input('signup_drupal_id');
             $campaign->signup_source = $request->input('source');
+
             // If group is specified, use that. Otherwise, use the signup_id.
-            $campaign->signup_group = $request->input('group') ?: $signup_id;
+            $campaign->signup_group = $request->input('group') ?: $request->input('signup_drupal_id');
+
+            // Save to user.
             $campaign = $user->campaigns()->save($campaign);
 
-            // Fire sign up event.
-            event(new UserSignedUp($user, $campaign));
-        } else {
-            throw new HttpException(403, 'The `signup_id` parameter needs an API Key with `admin` scope.');
+            // Fire sign up event only if `event` is set in payload.
+            // e.g., if "backfilling" old signups, we don't want to spam push notifications.
+            if($request->input('event')) {
+                event(new UserSignedUp($user, $campaign));
+            }
         }
 
         return $this->respond($campaign, $statusCode);

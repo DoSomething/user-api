@@ -118,21 +118,22 @@ class CampaignTest extends TestCase
      */
     public function testForwardedCampaignSignup()
     {
-        // payload with source & signup_id
         $payload = [
             'source' => 'test',
-            'signup_id' => '100',
+            'user_drupal_id' => '100001', // seed user 5430e850dt8hbc541c37tt3d
+            'campaign_drupal_id' => '100',
+            'signup_drupal_id' => '100',
         ];
 
-        // use key that has `admin` scope
-        $key->checkScope('admin')
+        $response = $this->call('POST', 'v1/forwardSignup', [], [], [], $this->server, json_encode($payload));
+        $content = json_decode($response->getContent(), true);
+        $data = $content['data'];
 
-        // assert response is 201 and has `signup_id` field
+        // Assert response is 201 and has expected data
         $this->assertEquals(201, $response->getStatusCode());
-        $this->assertArrayHasKey('signup_id', $data['data']);
-
-        $this->assertTrue(false);
-
+        $this->assertEquals($payload['signup_drupal_id'], $data['signup_id']);
+        $this->assertEquals($payload['campaign_drupal_id'], $data['drupal_id']);
+        $this->assertEquals($payload['source'], $data['signup_source']);
     }
 
     /**
@@ -143,16 +144,17 @@ class CampaignTest extends TestCase
      */
     public function testForwardedCampaignSignupRequiresAdminScope()
     {
-        // payload with source & signup_id
         $payload = [
             'source' => 'test',
-            'signup_id' => '100',
+            'user_drupal_id' => '100001',
+            'campaign_drupal_id' => '100',
+            'signup_drupal_id' => '100',
         ];
 
         // Test request using an API key without admin scope
         $response = $this->call('POST', 'v1/forwardSignup', [], [], [], $this->userScopeKeyServer, json_encode($payload));
 
-        // asset response throws a 403 error
+        // Assert response throws a permission error
         $this->assertEquals(403, $response->getStatusCode());
     }
 
