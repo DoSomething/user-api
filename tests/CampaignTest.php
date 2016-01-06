@@ -10,6 +10,7 @@ class CampaignTest extends TestCase
     protected $server;
     protected $signedUpServer;
     protected $reportedBackServer;
+    protected $userScopeKeyServer;
 
     /**
      * Migrate database and set up HTTP headers
@@ -47,6 +48,14 @@ class CampaignTest extends TestCase
             'HTTP_X-DS-Application-Id' => '456',
             'HTTP_X-DS-REST-API-Key' => 'abc4324',
             'HTTP_Session' => User::find('bf1039b0271bcc636aa5477a')->login()->key,
+        ];
+
+        $this->userScopeKeyServer = [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_Accept' => 'application/json',
+            'HTTP_X-DS-Application-Id' => '123',
+            'HTTP_X-DS-REST-API-Key' => '5464utyrs',
+            'HTTP_Session' => User::find('5430e850dt8hbc541c37tt3d')->login()->key,
         ];
 
         // Mock Phoenix Drupal API class
@@ -117,6 +126,54 @@ class CampaignTest extends TestCase
         // Response should return created at and sid columns
         $this->assertArrayHasKey('created_at', $data['data']);
         $this->assertArrayHasKey('signup_id', $data['data']);
+    }
+
+    /**
+     * Test for forwarding a campaign signup from phoenix -> northstar
+     * POST /forwardSignup
+     *
+     * @return void
+     */
+    public function testForwardedCampaignSignup()
+    {
+        $payload = [
+            'source' => 'test',
+            'user_drupal_id' => '100001', // seed user 5430e850dt8hbc541c37tt3d
+            'campaign_drupal_id' => '100',
+            'signup_drupal_id' => '100',
+        ];
+
+        $response = $this->call('POST', 'v1/forwardSignup', [], [], [], $this->server, json_encode($payload));
+        $content = json_decode($response->getContent(), true);
+        $data = $content['data'];
+
+        // Assert response is 201 and has expected data
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals($payload['signup_drupal_id'], $data['signup_id']);
+        $this->assertEquals($payload['campaign_drupal_id'], $data['drupal_id']);
+        $this->assertEquals($payload['source'], $data['signup_source']);
+    }
+
+    /**
+     * Test that admin scope is required to complete forwarded signup
+     * POST /forwardSignup
+     *
+     * @return void
+     */
+    public function testForwardedCampaignSignupRequiresAdminScope()
+    {
+        $payload = [
+            'source' => 'test',
+            'user_drupal_id' => '100001',
+            'campaign_drupal_id' => '100',
+            'signup_drupal_id' => '100',
+        ];
+
+        // Test request using an API key without admin scope
+        $response = $this->call('POST', 'v1/forwardSignup', [], [], [], $this->userScopeKeyServer, json_encode($payload));
+
+        // Assert response throws a permission error
+        $this->assertEquals(403, $response->getStatusCode());
     }
 
     /**

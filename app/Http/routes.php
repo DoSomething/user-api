@@ -32,6 +32,7 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
     $router->post('user/campaigns/{campaign_id}/signup', 'CampaignController@signup');
     $router->post('user/campaigns/{campaign_id}/reportback', 'CampaignController@reportback');
     $router->put('user/campaigns/{campaign_id}/reportback', 'CampaignController@reportback');
+    $router->post('forwardSignup', 'CampaignController@forwardSignup');
 
     // Kudos
     $router->post('kudos', 'KudosController@store');

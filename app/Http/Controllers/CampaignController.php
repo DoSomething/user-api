@@ -24,7 +24,8 @@ class CampaignController extends Controller
         $this->phoenix = $drupal;
 
         $this->middleware('key:user');
-        $this->middleware('auth');
+        $this->middleware('key:admin', ['only' => 'forwardSignup']);
+        $this->middleware('auth', ['except' => 'forwardSignup']);
 
         $this->middleware('campaign');
     }
@@ -139,6 +140,60 @@ class CampaignController extends Controller
             $campaign = $user->campaigns()->save($campaign);
 
             // Fire sign up event.
+            event(new UserSignedUp($user, $campaign));
+        }
+
+        return $this->respond($campaign, $statusCode);
+    }
+
+    /**
+     * Forward user's campaign signup from Phoenix to sync campaign activity.
+     * POST /forwardSignup
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\Response
+     * @throws HttpException
+     */
+    public function forwardSignup(Request $request)
+    {
+        // Validate request body
+        $this->validate($request, [
+            'user_drupal_id' => ['required'],
+            'campaign_drupal_id' => ['required'],
+            'signup_drupal_id' => ['required'],
+            'source' => ['required'],
+            'trigger_event' => ['boolean'],
+        ]);
+
+        // Get the provided Northstar user by Drupal ID.
+        $user = User::where('drupal_id', $request->input('user_drupal_id'))->first();
+
+        // Return an error if the user doesn't exist.
+        if (! $user) {
+            throw new HttpException(401, 'The user must have a Drupal ID to sign up for a campaign.');
+        }
+
+        // Check if campaign signup already exists.
+        $campaign = $user->campaigns()->where('drupal_id', $request->input('campaign_drupal_id'))->first();
+
+        $statusCode = 200;
+        if (! $campaign) {
+            $statusCode = 201;
+            $campaign = new Campaign;
+        }
+
+        $campaign->drupal_id = $request->input('campaign_drupal_id');
+        $campaign->signup_id = $request->input('signup_drupal_id');
+        $campaign->signup_group = $request->input('signup_drupal_id');
+        $campaign->signup_source = $request->input('source');
+
+        // Save to user.
+        $campaign = $user->campaigns()->save($campaign);
+
+        // Fire sign up event only if `event` is set in payload.
+        // e.g., if "backfilling" old signups, we don't want to spam push notifications.
+        if ($request->input('trigger_event')) {
             event(new UserSignedUp($user, $campaign));
         }
 
