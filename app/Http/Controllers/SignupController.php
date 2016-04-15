@@ -50,7 +50,12 @@ class SignupController extends Controller
 
         // If a user is specified, turn Northstar ID into Drupal ID
         if (! empty($options['users'])) {
-            $usersQuery = explode(',', $options['users']);
+            if (is_array($options['users'])) {
+                $usersQuery = $options['users'];
+            } else {
+                $usersQuery = explode(',', $options['users']);
+            }
+
             $options['users'] = User::drupalIDForNorthstarId($usersQuery);
         }
 
