@@ -4,7 +4,7 @@ namespace Northstar\Models;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\Authorizable;
-use Jenssegers\Mongodb\Model;
+use Jenssegers\Mongodb\Eloquent\Model;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;

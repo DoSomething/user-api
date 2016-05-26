@@ -2,7 +2,7 @@
 
 namespace Northstar\Models;
 
-use Jenssegers\Mongodb\Model;
+use Jenssegers\Mongodb\Eloquent\Model;
 
 /**
  * The OAuth refresh token model.
