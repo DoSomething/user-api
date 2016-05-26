@@ -6,7 +6,7 @@
   "require": {
     "laravel/framework": "5.2.11",
     "guzzlehttp/guzzle": "~5.2",
-    "jenssegers/mongodb": "^2.2",
+    "jenssegers/mongodb": "^3.0",
     "league/flysystem-aws-s3-v3": "~1.0",
     "parse/php-sdk" : "1.1.*",
     "league/fractal": "0.13.*",
