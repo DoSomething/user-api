@@ -16,8 +16,8 @@ build:
         code: sudo composer self-update
     - leipert/composer-install@0.0.1
     - script:
-        name: install php mongo extension
-        code: sudo apt-get install php5-mongo
+        name: PHP modules
+        code: php -m && php -v
     - script:
         name: create test RSA keys
         code: |-
