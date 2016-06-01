@@ -3,7 +3,7 @@
 namespace Northstar\Models;
 
 use Illuminate\Support\Str;
-use Jenssegers\Mongodb\Model;
+use Jenssegers\Mongodb\Eloquent\Model;
 
 /**
  * The Authentication Token model. These are used to make
