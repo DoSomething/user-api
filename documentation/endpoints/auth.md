@@ -6,7 +6,7 @@ send a user's credentials to Northstar in exchange for a signed access token whi
 Access tokens are digitally signed [JSON Web Tokens](http://jwt.io), which can then be passed between other services
 and verified _without_ requiring each service to continually ping Northstar for each request. Because access tokens have
 a short lifetime, a user can be "logged out" of all services by revoking their refresh token.
- 
+
 Each access token includes the authorized user's ID, expiration timestamp, and scopes. Tokens are signed to prevent
 tampering, and can be verified using a shared public key.
 
@@ -24,13 +24,13 @@ POST /v2/auth/token
 
 ```js
 // Content-Type: application/json
- 
+
 {
   grant_type: 'password',
-  
+
   // The client application's Client ID (required)
   client_id: String,
-  
+
   // The client application's Client Secret (required for "trusted" applications)
   client_secret: String,
 
@@ -39,7 +39,7 @@ POST /v2/auth/token
 
   /* Required */
   password: String,
-  
+
   /* Scopes to request, space-delimited. */
   scope: String,
 }
@@ -83,16 +83,16 @@ POST /v2/auth/token
 
 ```js
 // Content-Type: application/json
- 
+
 {
   grant_type: 'client_credentials',
-  
+
   // The client application's Client ID (required)
   client_id: String,
-  
+
   // The client application's Client Secret (required for "trusted" applications)
   client_secret: String,
-  
+
   /* Scopes to request, space-delimited. */
   scope: String,
 }
@@ -133,19 +133,19 @@ POST /v2/auth/token
 
 ```js
 // Content-Type: application/json
- 
+
 {
   grant_type: 'refresh_token',
-  
+
   // The client application's Client ID (required)
   client_id: String,
-  
+
   // The client application's Client Secret (required for "trusted" applications)
   client_secret: String,
 
   /* An unused refresh token, returned from the Password Grant */
   refresh_token: String,
-  
+
   /* Optional: Adjust the scopes for the new access token. */
   scope: String,
 }
@@ -186,7 +186,7 @@ DELETE /v2/auth/token
 
 ```js
 // Content-Type: application/json
- 
+
 {
   token: String // The refresh token to be revoked.
 }
@@ -211,6 +211,51 @@ curl -X DELETE \
   "success": {
     "code": 200,
     "message": "That refresh token has been successfully revoked."
+  }
+}
+```
+
+## Facebook Token Auth
+
+This will check if the given Facebook token is valid & corresponds to the Facebook ID.
+
+```
+POST /v2/auth/facebook/validate
+```
+
+**Parameters:**
+
+```js
+// Content-Type: application/json
+
+{
+  // The ID check against.
+  facebook_id: String,
+
+  // The access token to verify
+  input_token: String,
+}
+```
+
+**Example Request:**
+
+```
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{"facebook_id": "${FACEBOOK_ID}", "input_token": ${INPUT_TOKEN}}'
+  https://northstar.dosomething.org/v2/auth/facebook/validate
+```
+
+**Example Response:**
+
+```js
+// 200 OK
+
+{
+  "success": {
+    "code": 200,
+    "message": "Verified"
   }
 }
 ```

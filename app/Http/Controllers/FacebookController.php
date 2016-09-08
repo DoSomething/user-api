@@ -21,6 +21,13 @@ class FacebookController extends Controller
         ]);
     }
 
+    /**
+     * Verifies if a given Facebook token is valid & corresponds to the Facebook ID
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return \Illuminate\Http\Response
+     */
     public function validateToken(Request $request)
     {
         $this->validate($request, [
