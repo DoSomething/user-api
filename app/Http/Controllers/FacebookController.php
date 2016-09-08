@@ -30,12 +30,11 @@ class FacebookController extends Controller
 
     public function __construct()
     {
-        $base_url = config('services.facebook.url');
         $this->client_secret = config('services.facebook.client_secret');
         $this->client_id = config('services.facebook.client_id');
 
         $this->client = new Client([
-            'base_uri' => $base_url,
+            'base_uri' => config('services.facebook.url'),
         ]);
     }
 
