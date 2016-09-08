@@ -26,7 +26,6 @@ $router->group(['prefix' => 'v2', 'middleware' => ['api']], function () use ($ro
     // Authentication
     $router->post('auth/token', 'OAuthController@createToken');
     $router->delete('auth/token', 'OAuthController@invalidateToken');
-    $router->post('auth/facebook/validate', 'FacebookController@validateToken');
 
     // Users
     // ...
@@ -54,6 +53,7 @@ $router->group(['prefix' => 'v1', 'middleware' => ['api']], function () use ($ro
     $router->post('auth/verify', 'Legacy\AuthController@verify');
     $router->post('auth/register', 'Legacy\AuthController@register');
     $router->post('auth/phoenix', 'Legacy\AuthController@phoenix');
+    $router->post('auth/facebook/validate', 'FacebookController@validateToken');
 
     // Users
     $router->resource('users', 'UserController', ['except' => ['show', 'update']]);

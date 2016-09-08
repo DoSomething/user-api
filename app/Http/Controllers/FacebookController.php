@@ -56,9 +56,9 @@ class FacebookController extends Controller
             'query' => ['access_token' => $this->client_id.'|'.$this->client_secret, 'input_token' => $request->input('input_token')],
         ]);
 
-        $verification = json_decode($response->getBody()->getContents())->data;
+        $verification = json_decode($response->getBody()->getContents(), true)['data'];
 
-        if ($verification->is_valid && $verification->user_id == $request->input('facebook_id')) {
+        if ($verification['is_valid'] && $verification['user_id'] == $request->input('facebook_id')) {
             return $this->respond('Verified', 200);
         }
 
