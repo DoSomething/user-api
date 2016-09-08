@@ -26,6 +26,7 @@ $router->group(['prefix' => 'v2', 'middleware' => ['api']], function () use ($ro
     // Authentication
     $router->post('auth/token', 'OAuthController@createToken');
     $router->delete('auth/token', 'OAuthController@invalidateToken');
+    $router->post('auth/facebook/validate', 'FacebookController@validateToken');
 
     // Users
     // ...

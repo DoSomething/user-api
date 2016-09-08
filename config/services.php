@@ -33,4 +33,10 @@ return [
         'debug' => env('APP_DEBUG'),
     ],
 
+    'facebook' => [
+        'url' => env('FACEBOOK_API_URL'),
+        'client_secret' => env('FACEBOOK_APP_SECRET'),
+        'client_id' => env('FACEBOOK_APP_ID'),
+    ],
+
 ];
