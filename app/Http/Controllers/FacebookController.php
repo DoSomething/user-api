@@ -36,6 +36,8 @@ class FacebookController extends Controller
         $this->client = new Client([
             'base_uri' => config('services.facebook.url'),
         ]);
+
+        $this->middleware('scope:admin');
     }
 
     /**
