@@ -7,7 +7,26 @@ use GuzzleHttp\Client;
 
 class FacebookController extends Controller
 {
+    /**
+     * HTTP client.
+     *
+     * @var \GuzzleHttp\Client
+     */
     protected $client;
+
+    /**
+     * Client ID for the DoSomething Facebook App.
+     *
+     * @var string
+     */
+    protected $client_id;
+
+    /**
+     * Client secret for the DoSomething Facebook App.
+     *
+     * @var string
+     */
+    protected $client_secret;
 
     public function __construct()
     {
