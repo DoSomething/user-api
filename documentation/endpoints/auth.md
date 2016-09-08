@@ -220,7 +220,7 @@ curl -X DELETE \
 This will check if the given Facebook token is valid & corresponds to the Facebook ID.
 
 ```
-POST /v2/auth/facebook/validate
+POST /v1/auth/facebook/validate
 ```
 
 **Parameters:**
@@ -244,7 +244,7 @@ curl -X POST \
   -H "Content-Type: application/json" \
   -H "Accept: application/json" \
   -d '{"facebook_id": "${FACEBOOK_ID}", "input_token": ${INPUT_TOKEN}}'
-  https://northstar.dosomething.org/v2/auth/facebook/validate
+  https://northstar.dosomething.org/v1/auth/facebook/validate
 ```
 
 **Example Response:**
