@@ -4,7 +4,8 @@ namespace Northstar\Services;
 
 use GuzzleHttp\Client;
 
-class Facebook {
+class Facebook
+{
     /**
      * HTTP client.
      *
@@ -43,6 +44,6 @@ class Facebook {
 
         $verification = json_decode($response->getBody()->getContents(), true)['data'];
 
-        return ($verification['is_valid'] && $verification['user_id'] == $facebook_id);
+        return $verification['is_valid'] && $verification['user_id'] == $facebook_id;
     }
 }

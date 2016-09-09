@@ -38,8 +38,7 @@ class FacebookController extends Controller
 
         if ($verified) {
             return $this->respond('Verified', 200);
-        }
-        else {
+        } else {
             return $this->respond('Invalid', 401);
         }
     }
