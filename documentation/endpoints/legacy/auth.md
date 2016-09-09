@@ -16,7 +16,7 @@ POST /v1/auth/token
 In addition to the password, either mobile number or email is required.
 ```js
 // Content-Type: application/json
- 
+
 {
   /* Shortcut for either 'email' or 'mobile', inferred by format */
   username: String,
@@ -77,7 +77,7 @@ POST /v1/auth/verify
 In addition to the password, either mobile number or email is required.
 ```js
 // Content-Type: application/json
- 
+
 {
   /* Shortcut for either 'email' or 'mobile', inferred by format */
   username: String,
@@ -139,7 +139,7 @@ curl -X POST \
 ```
 **Additional Query Parameters:**
 
-- `parse_installation_ids`: will remove whichever provided parse installation IDs match up with those IDs stored on the user profile. 
+- `parse_installation_ids`: will remove whichever provided parse installation IDs match up with those IDs stored on the user profile.
 
 **Example Response:**
 ```js
@@ -168,7 +168,7 @@ POST /v1/auth/register
 In addition to the password, either mobile number or email is required.
 ```js
 // Content-Type: application/json
- 
+
 {
   /* Required if 'mobile' is not provided */
   email: String,
@@ -237,5 +237,50 @@ curl -X POST \
 {
   "url": "https://www.dosomething.org/user/magic/12345/1465404849/jPA1_ohenxutorZQ6b8OoAi4VsbJapRs-M2FJwJrhPY",
   "expires": "2016-06-08T16:54:09+00:00"
+}
+```
+
+## Facebook Token Auth
+
+This will check if the given Facebook token is valid & corresponds to the Facebook ID.
+
+```
+POST /v1/auth/facebook/validate
+```
+
+**Parameters:**
+
+```js
+// Content-Type: application/json
+
+{
+  // The ID check against.
+  facebook_id: String,
+
+  // The access token to verify
+  input_token: String,
+}
+```
+
+**Example Request:**
+
+```
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{"facebook_id": "${FACEBOOK_ID}", "input_token": ${INPUT_TOKEN}}'
+  https://northstar.dosomething.org/v1/auth/facebook/validate
+```
+
+**Example Response:**
+
+```js
+// 200 OK
+
+{
+  "success": {
+    "code": 200,
+    "message": "Verified"
+  }
 }
 ```

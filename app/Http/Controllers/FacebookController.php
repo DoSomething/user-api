@@ -36,10 +36,10 @@ class FacebookController extends Controller
 
         $verified = $this->facebook->verifyToken($request->input('input_token'), $request->input('facebook_id'));
 
-        if ($verified) {
-            return $this->respond('Verified', 200);
-        } else {
+        if (! $verified) {
             return $this->respond('Invalid', 401);
         }
+
+        return $this->respond('Verified', 200);
     }
 }
