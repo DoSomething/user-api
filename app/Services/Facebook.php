@@ -37,7 +37,8 @@ class Facebook
         ]);
     }
 
-    public function verifyToken($input_token, $facebook_id) {
+    public function verifyToken($input_token, $facebook_id)
+    {
         $response = $this->client->request('GET', 'debug_token', [
             'query' => ['access_token' => $this->client_id.'|'.$this->client_secret, 'input_token' => $input_token],
         ]);
