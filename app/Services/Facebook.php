@@ -37,6 +37,12 @@ class Facebook
         ]);
     }
 
+    /**
+     * Checks if the given Facebook token is valid & works for the given FB user
+     * @param  string $input_token Token to check
+     * @param  string $facebook_id Facebook ID to compare against
+     * @return bool
+     */
     public function verifyToken($input_token, $facebook_id)
     {
         $response = $this->client->request('GET', 'debug_token', [
