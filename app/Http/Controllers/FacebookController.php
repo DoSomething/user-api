@@ -3,39 +3,19 @@
 namespace Northstar\Http\Controllers;
 
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
+use Northstar\Services\Facebook;
 
 class FacebookController extends Controller
 {
     /**
-     * HTTP client.
-     *
-     * @var \GuzzleHttp\Client
+     * Facebook API wrapper.
+     * @var Facebook
      */
-    protected $client;
+    protected $facebook;
 
-    /**
-     * Client ID for the DoSomething Facebook App.
-     *
-     * @var string
-     */
-    protected $client_id;
-
-    /**
-     * Client secret for the DoSomething Facebook App.
-     *
-     * @var string
-     */
-    protected $client_secret;
-
-    public function __construct()
+    public function __construct(Facebook $facebook)
     {
-        $this->client_secret = config('services.facebook.client_secret');
-        $this->client_id = config('services.facebook.client_id');
-
-        $this->client = new Client([
-            'base_uri' => config('services.facebook.url'),
-        ]);
+        $this->facebook = $facebook;
 
         $this->middleware('scope:admin');
     }
@@ -54,16 +34,13 @@ class FacebookController extends Controller
             'facebook_id' => 'required',
         ]);
 
-        $response = $this->client->request('GET', 'debug_token', [
-            'query' => ['access_token' => $this->client_id.'|'.$this->client_secret, 'input_token' => $request->input('input_token')],
-        ]);
+        $verified = $this->facebook->verifyToken($request->input('input_token'), $request->input('facebook_id'));
 
-        $verification = json_decode($response->getBody()->getContents(), true)['data'];
-
-        if ($verification['is_valid'] && $verification['user_id'] == $request->input('facebook_id')) {
+        if ($verified) {
             return $this->respond('Verified', 200);
         }
-
-        return $this->respond('Invalid', 401);
+        else {
+            return $this->respond('Invalid', 401);
+        }
     }
 }
