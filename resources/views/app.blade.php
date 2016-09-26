@@ -12,9 +12,11 @@
 <body class="modernizr-no-js">
 <div class="chrome">
     <div class="wrapper">
-        <nav class="navigation">
-            <a class="navigation__logo" href="http://www.dosomething.org"><span>DoSomething.org</span></a>
-        </nav>
+        @if (!empty($withChrome))
+            <nav class="navigation">
+                <a class="navigation__logo" href="http://www.dosomething.org"><span>DoSomething.org</span></a>
+            </nav>
+        @endif
         @yield('content')
     </div>
 </div>

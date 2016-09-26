@@ -59,7 +59,7 @@
             </div>
             <div class="container__block -centered">
                 <ul>
-                    <li><a href="{{ url('login') }}">Log in to an existing account</a></li>
+                    <li><a href="{{ url('login?chrome=' . request()->query('chrome', 'true')) }}">Log in to an existing account</a></li>
                 </ul>
             </div>
         </div>

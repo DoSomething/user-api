@@ -32,12 +32,12 @@ body, html {
     @include media($tablet) {
       @include span(9 of 12);
       @include push(2);
-
-      text-align: center;
-
-      // @TODO: Hacky!
-      .field-label { text-align: left; }
     }
+
+    text-align: center;
+
+    // @TODO: Hacky!
+    .field-label { text-align: left; }
   }
 }
 

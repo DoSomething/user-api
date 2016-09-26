@@ -57,11 +57,14 @@ class WebController extends BaseController
     /**
      * Show the login form.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function getLogin()
+    public function getLogin(Request $request)
     {
-        return view('login');
+        $withChrome = filter_var($request->query('chrome', 'true'), FILTER_VALIDATE_BOOLEAN);
+
+        return view('login', ['withChrome' => $withChrome]);
     }
 
     /**
@@ -107,11 +110,14 @@ class WebController extends BaseController
     /**
      * Display the registration form.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function getRegister()
+    public function getRegister(Request $request)
     {
-        return view('register');
+        $withChrome = filter_var($request->query('chrome', 'true'), FILTER_VALIDATE_BOOLEAN);
+
+        return view('register', ['withChrome' => $withChrome]);
     }
 
     /**

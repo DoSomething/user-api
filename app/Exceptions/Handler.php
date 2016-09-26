@@ -112,7 +112,10 @@ class Handler extends ExceptionHandler
             return $this->buildJsonResponse(new HttpException(401, 'Unauthorized.'));
         }
 
-        return redirect()->guest('login');
+        $withChrome = $request->query('chrome', 'true');
+        $loginUrl = 'login?chrome='.$withChrome;
+
+        return redirect()->guest($loginUrl);
     }
 
     /**

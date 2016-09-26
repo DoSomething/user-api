@@ -3,7 +3,7 @@
 @section('title', 'Log In | DoSomething.org')
 
 @section('content')
-    <div class="container -padded">
+    <div class="container">
         <div class="wrapper">
             <div class="container__block -centered">
                 <h1>Log in to get started!</h1>
@@ -39,7 +39,7 @@
             </div>
             <div class="container__block -centered">
                 <ul>
-                    <li><a href="{{ url('register') }}">Create a DoSomething.org account</a></li>
+                    <li><a href="{{ url('register?chrome=' . request()->query('chrome', 'true')) }}">Create a DoSomething.org account</a></li>
                     <li><a href="{{ url(config('services.drupal.url').'/user/password') }}">Forgot your password?</a></li>
                 </ul>
             </div>
