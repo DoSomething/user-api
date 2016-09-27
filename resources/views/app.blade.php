@@ -5,8 +5,14 @@
     <title>@yield('title', 'DoSomething.org')</title>
 
     <link rel="stylesheet" href="{{ asset('dist/app.css') }}">
-    <script src="{{ asset('dist/modernizr.js') }}"></script>
+{{--    <script src="{{ asset('dist/modernizr.js') }}"></script>--}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script type="text/javascript">
+        window.addEventListener('message', function(e) {
+            if (e.data !== 'sizing?') return;
+            e.source.postMessage('sizing:' + document.getElementsByClassName('chrome')[0].offsetHeight, e.origin);
+        }, false);
+    </script>
 </head>
 
 <body class="modernizr-no-js">
