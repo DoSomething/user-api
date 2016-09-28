@@ -21,10 +21,6 @@ class ClientTableSeeder extends Seeder
             'description' => 'This is an example OAuth client seeded with your local Northstar installation. It was automatically given all scopes that were defined when it was created.',
             'client_id' => 'trusted-test-client',
             'client_secret' => 'secret1',
-            'redirect_uri' => [
-                'http://northstar.dev:8000',
-                'http://dev.dosomething.org:8888/openid-connect/northstar',
-            ],
             'allowed_grants' => ['authorization_code', 'password', 'client_credentials'],
             'scope' => collect(Scope::all())->keys()->toArray(),
         ]);
