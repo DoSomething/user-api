@@ -65,3 +65,25 @@ function has_middleware($middleware = null)
 
     return $currentRoute->middleware() ? true : false;
 }
+
+/**
+ * Return the Forge presenter.
+ */
+function forge()
+{
+    return new \Northstar\Http\Presenters\ForgePresenter();
+}
+
+/**
+ * Make a Forge text field.
+ *
+ * @param $name
+ * @param $label
+ * @param null $value
+ * @param null $placeholder
+ * @return mixed
+ */
+function field($type, $name, $label, $value = null, $placeholder = null)
+{
+    return call_user_func_array([forge(), 'field'], func_get_args());
+}

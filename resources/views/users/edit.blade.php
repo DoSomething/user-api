@@ -27,20 +27,9 @@
         <div class="container__block">
             <h3 class="heading">Info</h3>
 
-            <div class="form-item">
-                <label for="first-name" class="field-label">First Name</label>
-                <input type="text" id="first-name" class="text-field" name="first_name" value="{{ old('first_name') ?: $user->first_name }}" autofocus />
-            </div>
-
-            <div class="form-item">
-                <label for="last-name" class="field-label">Last Name</label>
-                <input type="text" id="last-name" class="text-field" name="last_name" value="{{ old('last_name') ?: $user->last_name }}" />
-            </div>
-
-            <div class="form-item">
-                <label for="email" class="field-label">Email</label>
-                <input type="email" id="email" class="text-field" name="email" value="{{ old('email') ?: $user->email }}" />
-            </div>
+            {{ field('text', 'first_name', 'First Name', $user->first_name) }}
+            {{ field('text', 'last_name', 'Last Name', $user->last_name) }}
+            {{ field('email', 'email', 'Email', $user->email) }}
 
             <div class="form-item">
                 <label for="mobile" class="field-label">Cell #</label>
