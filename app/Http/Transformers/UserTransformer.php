@@ -30,6 +30,7 @@ class UserTransformer extends TransformerAbstract
         $response['photo'] = $user->photo;
 
         if (Scope::allows('admin') || Gate::allows('view-full-profile', $user)) {
+            // dd($user);
             $response['email'] = $user->email;
             $response['mobile'] = $user->mobile;
             $response['facebook_id'] = $user->facebook_id;
@@ -47,6 +48,7 @@ class UserTransformer extends TransformerAbstract
             $response['source'] = $user->source;
 
             // Internal & third-party service IDs:
+            $response['slack_id'] = $user->slack_id;
             $response['mobilecommons_id'] = $user->mobilecommons_id;
             $response['parse_installation_ids'] = $user->parse_installation_ids;
             $response['mobilecommons_status'] = $user->mobilecommons_status;

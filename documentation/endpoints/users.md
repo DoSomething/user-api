@@ -145,9 +145,10 @@ Either a mobile number or email is required.
   agg_id: Number
   cgg_id: Number
   drupal_id: String
+  slack_id: String
   parse_installation_ids: String // CSV values or array will be appended to existing interests
   interests: String, Array // CSV values or array will be appended to existing interests
-  source: String // Will only be set on new records, or if being provided an earlier `created_at`. 
+  source: String // Will only be set on new records, or if being provided an earlier `created_at`.
   created_at: Number // timestamp
 
   // Hidden fields (optional):
@@ -295,6 +296,7 @@ PUT /v1/users/drupal_id/<drupal_id>
   agg_id: Number
   cgg_id: Number
   drupal_id: String
+  slack_id: String
   parse_installation_ids: String // CSV values or array will be appended to existing interests
   interests: String, Array // CSV values or array will be appended to existing interests
   role: String // Can only be modified by admins. Either 'user' (default), 'staff', or 'admin'.

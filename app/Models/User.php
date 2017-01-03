@@ -58,6 +58,7 @@ use Northstar\Auth\Role;
  * @property string $agg_id
  * @property array  $parse_installation_ids
  * @property string $facebook_id
+ * @property string $slack_id
  *
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -83,7 +84,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'addr_street1', 'addr_street2', 'addr_city', 'addr_state', 'addr_zip',
         'country', 'language',
 
-        'mobilecommons_id', 'mobilecommons_status', 'cgg_id', 'drupal_id', 'agg_id', 'facebook_id',
+        'mobilecommons_id', 'mobilecommons_status', 'cgg_id', 'drupal_id', 'agg_id',
+        'facebook_id', 'slack_id',
 
         'parse_installation_ids',
     ];
@@ -95,7 +97,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     public static $internal = [
-        'mobilecommons_id', 'mobilecommons_status', 'cgg_id', 'drupal_id', 'agg_id', 'drupal_password', 'role', 'facebook_id',
+        'mobilecommons_id', 'mobilecommons_status', 'cgg_id', 'drupal_id', 'agg_id', 'drupal_password', 'role', 'facebook_id', 'slack_id',
     ];
 
     /**
