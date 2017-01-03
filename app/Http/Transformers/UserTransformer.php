@@ -30,7 +30,6 @@ class UserTransformer extends TransformerAbstract
         $response['photo'] = $user->photo;
 
         if (Scope::allows('admin') || Gate::allows('view-full-profile', $user)) {
-            // dd($user);
             $response['email'] = $user->email;
             $response['mobile'] = $user->mobile;
             $response['facebook_id'] = $user->facebook_id;
