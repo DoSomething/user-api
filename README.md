@@ -23,8 +23,11 @@ $ cp .env.example .env
 $ openssl genrsa -out storage/keys/private.key 1024
 $ openssl rsa -in storage/keys/private.key -pubout -out storage/keys/public.key
 
-# And finally, run database migrations:
+# Run database migrations:
 $ php artisan migrate
+
+# And finally, build the frontend assets:
+$ npm run build
 ```
 
 You can seed the database with test data:
