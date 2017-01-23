@@ -360,7 +360,6 @@ class OAuthTest extends TestCase
                 'family_name',
                 'email',
                 'phone_number',
-                'birthdate',
 
                 'address' => [
                     'street_address',
