@@ -4,6 +4,7 @@
   "license": "MIT",
   "type": "project",
   "require": {
+    "dosomething/gateway": "v1.0.0-rc16",
     "laravel/framework": "5.2.*",
     "guzzlehttp/guzzle": "~6.2.1",
     "jenssegers/mongodb": "^3.0",
@@ -12,7 +13,7 @@
     "league/fractal": "0.13.*",
     "league/oauth2-server": "^5.1.2",
     "dosomething/stathat": "^2.0.0",
-    "symfony/psr-http-message-bridge": "^0.2.0",
+    "symfony/psr-http-message-bridge": "^1.0.0",
     "zendframework/zend-diactoros": "^1.3",
     "laracasts/utilities": "^2.1"
   },

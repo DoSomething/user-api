@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
     {
         User::creating(function ($user) {
             // Set source automatically if not provided.
-            $user->source = $user->source ?: client_id();
+//            $user->source = $user->source ?: client_id();
         });
     }
 

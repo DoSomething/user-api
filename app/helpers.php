@@ -78,16 +78,10 @@ function has_middleware($middleware = null)
  */
 function client_id()
 {
-    $oauthClientId = request()->attributes->get('oauth_client_id');
-    if (! empty($oauthClientId)) {
-        return $oauthClientId;
-    }
+    $clientId = auth()->guard('api')->client();
 
-    // Otherwise, try to get the client from the legacy X-DS-REST-API-Key header.
-    $client_secret = request()->header('X-DS-REST-API-Key');
-    $client = Client::where('client_secret', $client_secret)->first();
-    if ($client) {
-        return $client->client_id;
+    if (! empty($clientId)) {
+        return $clientId;
     }
 
     // If not an API request, use Client ID from `/authorize` call or just 'northstar'.

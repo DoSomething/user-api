@@ -13,6 +13,7 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+        \Northstar\Http\Middleware\SetRequestForGuard::class,
     ];
 
     /**
@@ -29,7 +30,7 @@ class Kernel extends HttpKernel
             \Northstar\Http\Middleware\VerifyCsrfToken::class,
         ],
         'api' => [
-            \Northstar\Http\Middleware\ParseOAuthHeader::class,
+            // ...
         ],
     ];
 

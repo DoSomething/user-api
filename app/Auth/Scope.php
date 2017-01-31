@@ -3,7 +3,6 @@
 namespace Northstar\Auth;
 
 use League\OAuth2\Server\Exception\OAuthServerException;
-use Northstar\Models\Client;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class Scope
@@ -70,26 +69,17 @@ class Scope
      */
     public static function allows($scope)
     {
+        if (has_middleware('web')) {
+            return true;
+        }
+
         // If trying to check `role:user`, check `user` scope instead.
         // @TODO: Change this scope so it's consistent.
         if ($scope === 'role:user') {
             $scope = 'user';
         }
 
-        $oauthScopes = request()->attributes->get('oauth_scopes');
-
-        // If scopes have been parsed from a provided JWT access token, check against
-        // those. Otherwise, check the Client specified by the `X-DS-REST-API-Key` header.
-        if (! is_null($oauthScopes)) {
-            return in_array($scope, $oauthScopes);
-        }
-
-        // Otherwise, try to get the client from the legacy X-DS-REST-API-Key header,
-        // and compare against its whitelisted scopes.
-        $client_secret = request()->header('X-DS-REST-API-Key');
-        $client = Client::where('client_secret', $client_secret)->first();
-
-        return $client && in_array($scope, $client->scope);
+        return auth()->guard('api')->scopes($scope);
     }
 
     /**
@@ -98,19 +88,16 @@ class Scope
      *
      * @param $scope - Required scope
      * @throws OAuthServerException
+     * @return bool
      */
     public static function gate($scope)
     {
-        if (has_middleware('web')) {
-            return true;
-        }
-
         if (! static::allows($scope)) {
             app('stathat')->ezCount('invalid client scope error');
 
             // If scopes have been parsed from a provided JWT access token or we are looking at a v2 endpoint,
             // use OAuth access denied exception to return a 401 error.
-            if (request()->attributes->has('oauth_scopes') || request()->route()->getPrefix() === '/v2') {
+            if (auth()->guard('api')->token() || request()->route()->getPrefix() === '/v2') {
                 throw OAuthServerException::accessDenied('Requires the `'.$scope.'` scope.');
             }
 
