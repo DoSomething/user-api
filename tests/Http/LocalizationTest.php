@@ -12,7 +12,8 @@ class LocalizationTest extends TestCase
         $this->assertEquals(App::getLocale(), 'es-mx');
     }
 
-    public function testUnsupportedCountry() {
+    public function testUnsupportedCountry()
+    {
         $this->get('/', ['X-FASTLY-COUNTRY-CODE' => 'FR']);
         $this->assertEquals(App::getLocale(), 'en');
     }
