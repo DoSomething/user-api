@@ -6,7 +6,7 @@ use Closure;
 use App;
 use Illuminate\Support\Facades\Request;
 
-class Localization
+class SetLanguageFromHeader
 {
     /**
      * Handle an incoming request.
