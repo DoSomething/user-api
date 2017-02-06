@@ -4,6 +4,7 @@ namespace Northstar\Http\Middleware;
 
 use Closure;
 use App;
+use Session;
 use Illuminate\Support\Facades\Request;
 
 class SetLanguageFromHeader
@@ -35,9 +36,12 @@ class SetLanguageFromHeader
         }
 
         App::setLocale($language);
+
         app('JavaScript')->put([
             'language' => $language,
         ]);
+
+        Session::flash('language', $language);
 
         return $next($request);
     }
