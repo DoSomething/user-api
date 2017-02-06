@@ -17,7 +17,7 @@ class Localization
      */
     public function handle($request, Closure $next)
     {
-        $countryCode = Request::server('HTTP_X_FASTLY_COUNTRY_CODE');
+        $countryCode = $request->header('X-Fastly-Country-Code');
         if ($countryCode) {
             switch ($countryCode) {
                 case 'us':

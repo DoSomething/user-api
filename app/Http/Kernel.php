@@ -27,7 +27,7 @@ class Kernel extends HttpKernel
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \Northstar\Http\Middleware\VerifyCsrfToken::class,
-            \Northstar\Http\Middleware\Localization::class,
+            \Northstar\Http\Middleware\SetLanguageFromHeader::class,
         ],
         'api' => [
             \Northstar\Http\Middleware\ParseOAuthHeader::class,
