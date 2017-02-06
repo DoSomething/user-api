@@ -1,8 +1,5 @@
 <?php
 
-use App as App;
-use Northstar\Models\User;
-
 class LocalizationTest extends TestCase
 {
 
@@ -11,7 +8,7 @@ class LocalizationTest extends TestCase
      */
     public function testAppLocale()
     {
-        $this->call('GET', '/', [], [], [], ['HTTP_X_FASTLY_COUNTRY_CODE' => 'MX']);
+        $this->get('/', ['X-FASTLY-COUNTRY-CODE' => 'MX']);
         $this->assertEquals(App::getLocale(), 'es-mx');
     }
 }
