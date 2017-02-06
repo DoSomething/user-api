@@ -3,7 +3,7 @@
 class LocalizationTest extends TestCase
 {
     /**
-     * Test that the correct Fastly header is applied for the given header.
+     * Test that the correct language is applied for the supported header.
      */
     public function testSupportedCountry()
     {
@@ -11,6 +11,9 @@ class LocalizationTest extends TestCase
         $this->assertEquals(App::getLocale(), 'es-mx');
     }
 
+    /**
+     * Test that the default language is applied for an unsupported header.
+     */
     public function testUnsupportedCountry()
     {
         $this->get('/', ['X-FASTLY-COUNTRY-CODE' => 'FR']);
