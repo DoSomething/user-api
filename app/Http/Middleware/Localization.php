@@ -8,20 +8,6 @@ use Illuminate\Support\Facades\Request;
 
 class Localization
 {
-
-    /**
-     * Map the given two letter ISO country code to
-     * one of our supported languages or the fallback language.
-     *
-     * @param  String $countryCode
-     * @return String
-     */
-    public function mapCountryToLanguage($countryCode) {
-        $countryCode = strtolower($countryCode);
-
-
-    }
-
     /**
      * Handle an incoming request.
      *
