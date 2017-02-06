@@ -2,7 +2,6 @@
 
 class LocalizationTest extends TestCase
 {
-
     /**
      * Test that the correct Fastly header is applied for the given header.
      */
