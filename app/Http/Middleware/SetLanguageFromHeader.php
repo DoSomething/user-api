@@ -17,7 +17,7 @@ class SetLanguageFromHeader
      */
     public function handle($request, Closure $next)
     {
-        $countryCode = $request->header('X-Fastly-Country-Code');
+        $countryCode = strtolower($request->header('X-Fastly-Country-Code'));
         if ($countryCode) {
             switch ($countryCode) {
                 case 'us':
