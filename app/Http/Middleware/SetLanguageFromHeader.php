@@ -4,7 +4,6 @@ namespace Northstar\Http\Middleware;
 
 use Closure;
 use App;
-use Illuminate\Support\Facades\Request;
 
 class SetLanguageFromHeader
 {
