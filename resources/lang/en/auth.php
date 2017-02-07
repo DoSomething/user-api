@@ -8,6 +8,7 @@ return [
         'default' => 'Log In',
         'existing' => 'Log in to an existing account',
         'create' => 'Create a DoSomething.org account',
+        'submit' => 'Create New Account',
     ],
     'get_started' => [
         'log_in' => 'Log in to get started!',
@@ -24,7 +25,13 @@ return [
             'first_name' => 'We need your name',
             'email' => 'We need a valid email',
             'password_length' => 'Must be 6+ characters',
-        ]
+        ],
+        'placeholder' => [
+            'call_you' => 'What do we call you?',
+            'birthday' => 'MM/DD/YYYY',
+            'password' => '6+ characters... make it tricky!',
+            'double_checking' => 'Just double checking!',
+        ],
     ],
     'fields' => [
         'email' => 'Email address',

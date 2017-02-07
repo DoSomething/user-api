@@ -4,13 +4,13 @@
 
 @section('content')
     <div class="container__block -centered">
-        <h1>Create a DoSomething.org account to get started!</h1>
+        <h1>{{ trans('auth.get_started.create_account') }}</h1>
     </div>
 
     <div class="container__block -centered">
         @if (count($errors) > 0)
             <div class="validation-error fade-in-up">
-                <h4>Hmm, there were some issues with that submission:</h4>
+                <h4>{{ trans('auth.validation.issues') }}</h4>
                 <ul class="list -compacted">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -25,27 +25,27 @@
             <div class="form-item">
                 <label for="first_name" class="field-label">
                     <div class="validation">
-                        <div class="validation__label">First Name <span class="form-required" title="This field is required.">*</span></div>
+                        <div class="validation__label">{{ trans('auth.fields.first_name') }} <span class="form-required" title="This field is required.">*</span></div>
                         <div class="validation__message"></div>
                     </div>
                 </label>
-                <input name="first_name" type="text" id="first_name" class="text-field required js-validate" placeholder="What do we call you?" value="{{ old('first_name') }}" autofocus data-validate="first_name" data-validate-required />
+                <input name="first_name" type="text" id="first_name" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.call_you') }}" value="{{ old('first_name') }}" autofocus data-validate="first_name" data-validate-required />
             </div>
 
             <div class="form-item">
                 <label for="birthdate" class="field-label">
                     <div class="validation">
-                        <div class="validation__label">Birthday <span class="form-required" title="This field is required.">*</span></div>
+                        <div class="validation__label">{{ trans('auth.fields.birthday') }} <span class="form-required" title="This field is required.">*</span></div>
                         <div class="validation__message"></div>
                     </div>
                 </label>
-                <input name="birthdate" type="text" id="birthdate" class="text-field required js-validate" placeholder="MM/DD/YYYY" value="{{ old('birthdate') }}" data-validate="birthday" data-validate-required />
+                <input name="birthdate" type="text" id="birthdate" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.birthday') }}" value="{{ old('birthdate') }}" data-validate="birthday" data-validate-required />
             </div>
 
             <div class="form-item">
                 <label for="email" class="field-label">
                     <div class="validation">
-                        <div class="validation__label">Email address <span class="form-required" title="This field is required.">*</span></div>
+                        <div class="validation__label">{{ trans('auth.fields.email') }} <span class="form-required" title="This field is required.">*</span></div>
                         <div class="validation__message"></div>
                     </div>
                 </label>
@@ -53,46 +53,45 @@
             </div>
 
             <div class="form-item">
-                <label for="mobile" class="field-label">Cell Number <em>(optional)</em></label>
+                <label for="mobile" class="field-label">{{ trans('auth.fields.mobile') }} <em>{{ trans('auth.validation.optional') }}</em></label>
                 <input name="mobile" type="text" id="mobile" class="text-field js-validate" placeholder="(555) 555-5555" value="{{ old('mobile') }}" data-validate="phone" />
             </div>
 
             <div class="form-item">
                 <label for="password" class="field-label">
                     <div class="validation">
-                        <div class="validation__label">Password <span class="form-required" title="This field is required.">*</span></div>
+                        <div class="validation__label">{{ trans('auth.fields.password') }} <span class="form-required" title="This field is required.">*</span></div>
                         <div class="validation__message"></div>
                     </div>
                 </label>
-                <input name="password" type="password" id="password" class="text-field required js-validate" placeholder="6+ characters... make it tricky!" data-validate="password" data-validate-required data-validate-trigger="#password_confirmation" />
+                <input name="password" type="password" id="password" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.password') }}" data-validate="password" data-validate-required data-validate-trigger="#password_confirmation" />
             </div>
 
             <div class="form-item">
                 <label for="password_confirmation" class="field-label">
                     <div class="validation">
-                        <div class="validation__label">Confirm Password <span class="form-required" title="This field is required.">*</span></div>
+                        <div class="validation__label">{{ trans('auth.fields.confirm_password') }} <span class="form-required" title="This field is required.">*</span></div>
                         <div class="validation__message"></div>
                     </div>
                 </label>
-                <input name="password_confirmation" type="password" id="password_confirmation" class="text-field required js-validate" placeholder="Just double checking!" data-validate="match" data-validate-required data-validate-match="#password" />
+                <input name="password_confirmation" type="password" id="password_confirmation" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.double_checking') }}" data-validate="match" data-validate-required data-validate-match="#password" />
             </div>
 
             <div class="form-actions -padded">
-                <input type="submit" class="button" value="Create New Account">
+                <input type="submit" class="button" value="{{ trans('auth.log_in.submit') }}">
             </div>
         </form>
     </div>
 
     <div class="container__block -centered">
         <ul>
-            <li><a href="{{ url('login') }}">Log in to an existing account</a></li>
+            <li><a href="{{ url('login') }}">{{ trans('auth.log_in.existing') }}</a></li>
         </ul>
     </div>
 
     <div class="container__block -centered">
-        <p class="footnote">Creating an account means you agree to our <a href="https://www.dosomething.org/us/about/terms-service">Terms of Service</a>
-            &amp; <a href="https://www.dosomething.org/us/about/privacy-policy">Privacy Policy</a> and to receive our weekly update.
-            Message &amp; data rates may apply. Text STOP to opt-out, HELP for help.</p>
+        <p class="footnote">{{ trans('auth.footnote.create') }} <a href="https://www.dosomething.org/us/about/terms-service">{{ trans('auth.footnote.terms_of_service') }}</a>
+            &amp; <a href="https://www.dosomething.org/us/about/privacy-policy">{{ trans('auth.footnote.privacy_policy') }}</a> {{ trans('auth.footnote.messaging') }}</p>
     </div>
 
 @stop
