@@ -54,5 +54,5 @@ return [
         'terms_of_service' => 'Terms of Service',
         'privacy_policy' => 'Privacy Policy',
         'messaging' => 'and to receive our weekly update. Message &amp; data rates may apply. Text STOP to opt-out, HELP for help.',
-    ]
+    ],
 ];
