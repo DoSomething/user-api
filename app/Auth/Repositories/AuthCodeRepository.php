@@ -26,6 +26,12 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
      */
     public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity)
     {
+        logger('created new auth code', [
+            'code' => $authCodeEntity->getIdentifier(),
+            'user_id' => $authCodeEntity->getUserIdentifier(),
+            'client_id' => $authCodeEntity->getClient()->getIdentifier(),
+        ]);
+
         AuthCode::create([
             'code' => $authCodeEntity->getIdentifier(),
             'scopes' => $authCodeEntity->getScopes(),
@@ -43,6 +49,8 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
      */
     public function revokeAuthCode($codeId)
     {
+        logger('revoked auth code', ['code' => $codeId]);
+
         AuthCode::where('code', $codeId)->delete();
     }
 
@@ -54,6 +62,10 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
      */
     public function isAuthCodeRevoked($codeId)
     {
-        return ! AuthCode::where('code', $codeId)->exists();
+        $exists = ! AuthCode::where('code', $codeId)->exists();
+
+        logger('checked auth code', ['code' => $codeId, 'exists' => $exists]);
+
+        return $exists;
     }
 }
