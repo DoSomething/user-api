@@ -8,14 +8,14 @@
     @endif
 
     <div class="container__block -centered">
-        <h2 class="heading -alpha">Let's do this!</h2>
+        <h2 class="heading -alpha">{{ trans('auth.greeting.lets_do_this') }}</h2>
         <h3>Log in to continue to {{ session('destination', 'DoSomething.org') }}.</h3>
     </div>
 
     <div class="container__block">
         @if (count($errors) > 0)
             <div class="validation-error fade-in-up">
-                <h4>Hmm, there were some issues with that submission:</h4>
+                <h4>{{ trans('auth.validation.issues') }}</h4>
                 <ul class="list -compacted">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -30,7 +30,7 @@
             <div class="form-item">
                 <label for="username" class="field-label">
                     <div class="validation">
-                        <div class="validation__label">Email address or cell number <span class="form-required" title="This field is required.">*</span></div>
+                        <div class="validation__label">{{ trans('auth.fields.email_or_mobile') }} <span class="form-required" title="This field is required.">*</span></div>
                         <div class="validation__message"></div>
                     </div>
                 </label>
@@ -40,7 +40,7 @@
             <div class="form-item">
                 <label for="password" class="field-label">
                     <div class="validation">
-                        <div class="validation__label">Password <span class="form-required" title="This field is required.">*</span></div>
+                        <div class="validation__label">{{ trans('auth.fields.password') }} <span class="form-required" title="This field is required.">*</span></div>
                         <div class="validation__message"></div>
                     </div>
                 </label>
@@ -48,15 +48,15 @@
             </div>
 
             <div class="form-actions -padded">
-                <input type="submit" class="button" value="Log In">
+                <input type="submit" class="button" value="{{ trans('auth.log_in.default') }}">
             </div>
         </form>
     </div>
 
     <div class="container__block -centered">
         <ul>
-            <li><a href="{{ url('register') }}">Create a DoSomething.org account</a></li>
-            <li><a href="{{ url('password/reset') }}">Forgot your password?</a></li>
+            <li><a href="{{ url('register') }}">{{ trans('auth.log_in.create') }}</a></li>
+            <li><a href="{{ url('password/reset') }}">{{ trans('auth.forgot_password.header') }}</a></li>
         </ul>
     </div>
 @stop
