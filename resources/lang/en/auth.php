@@ -46,7 +46,8 @@ return [
     ],
     'forgot_password' => [
         'header' => 'Forgot your password?',
-        'instructions' => 'We\'ve all been there. Reset by entering your email',
+        'instructions' => 'We\'ve all been there. Reset by entering your email.',
+        'request' => 'Request New Password',
     ],
     'footnote' => [
         'create' => 'Creating an account means you agree to our',
