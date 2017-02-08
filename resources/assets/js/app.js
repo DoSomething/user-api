@@ -20,8 +20,9 @@ window.Drupal = {
 import Analytics from './utilities/Analytics';
 import DeLorean from './utilities/DeLorean';
 
-// Register validation rules.
-import './validators/auth';
+// Register validation rules for en lang only.
+if (document.documentElement.lang === 'en') require('./validators/auth');
+
 
 // Initialize analytics.
 Analytics.init();
