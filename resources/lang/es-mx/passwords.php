@@ -14,7 +14,7 @@ return [
     */
 
     'password' => 'Las contraseñas deben tener por lo menos 6 caracteres y coincidir en la casilla de confirmación.',
-    'user' => "No pudimos encontrar ningún usuario con esa dirección de correo electrónico.",
+    'user' => 'No pudimos encontrar ningún usuario con esa dirección de correo electrónico.',
     'token' => 'Este código para restablecer contraseña es inválido.',
     'sent' => '¡Te hemos enviado un correo con el vínculo para restablecer tu contraseña!',
     'reset' => '¡Has restablecido tu contraseña!',
