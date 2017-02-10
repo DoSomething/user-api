@@ -3,6 +3,7 @@
 return [
     'greeting' => [
         'lets_do_this' => 'Let\'s do this!',
+        'continue' => 'Log in to continue to',
     ],
     'log_in' => [
         'default' => 'Log In',

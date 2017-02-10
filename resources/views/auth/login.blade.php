@@ -9,7 +9,7 @@
 
     <div class="container__block -centered">
         <h2 class="heading -alpha">{{ trans('auth.greeting.lets_do_this') }}</h2>
-        <h3>Log in to continue to {{ session('destination', 'DoSomething.org') }}.</h3>
+        <h3>{{ trans('auth.greeting.continue') }} {{ session('destination', 'DoSomething.org') }}.</h3>
     </div>
 
     <div class="container__block">

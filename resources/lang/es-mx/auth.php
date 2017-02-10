@@ -3,6 +3,7 @@
 return [
     'greeting' => [
         'lets_do_this' => '¡Hagámoslo!',
+        'continue' => 'Accede con tu cuenta para ingresar al sitio de',
     ],
     'log_in' => [
         'default' => 'Iniciar Sesión',
