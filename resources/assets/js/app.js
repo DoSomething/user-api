@@ -21,7 +21,12 @@ import Analytics from './utilities/Analytics';
 import DeLorean from './utilities/DeLorean';
 
 // Register validation rules for en lang only.
-if (document.documentElement.lang === 'en') require('./validators/auth');
+if (document.documentElement.lang !== 'en') {
+  const $ = require('jquery');
+  $('[data-validate]').each(input => $(input).removeAttr('data-validate'));
+}
+
+import Validation from './validators/auth';
 
 
 // Initialize analytics.
