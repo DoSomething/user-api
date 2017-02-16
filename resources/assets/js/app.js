@@ -24,7 +24,7 @@ import Validation from './validators/auth';
 // Register validation rules for en lang only.
 if (document.documentElement.lang !== 'en') {
   const $ = require('jquery');
-  $('[data-validate]').each(input => $(input).removeAttr('data-validate'));
+  $('input').attr('data-validate', null);
 }
 
 // Initialize analytics.
