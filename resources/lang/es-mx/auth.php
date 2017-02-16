@@ -29,7 +29,7 @@ return [
         ],
         'placeholder' => [
             'call_you' => '¿Cóo quieres que te llamemos?',
-            'birthday' => 'DD/MM/AAAA',
+            'birthday' => 'MM/DD/AAAA',
             'password' => '6 o más caracteres... ¡haz que sea difícil!',
             'double_checking' => '¡Solo nos estábamos asegurando!',
         ],
