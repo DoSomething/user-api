@@ -28,7 +28,7 @@ return [
             'password_length' => 'Debe tener al menos 6 caracteres.',
         ],
         'placeholder' => [
-            'call_you' => '¿Qué te llamamos?',
+            'call_you' => '¿Cóo quieres que te llamemos?',
             'birthday' => 'DD/MM/AAAA',
             'password' => '6 o más caracteres... ¡haz que sea difícil!',
             'double_checking' => '¡Solo nos estábamos asegurando!',
