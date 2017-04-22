@@ -28,6 +28,7 @@ use Northstar\Auth\Repositories\ScopeRepository;
 use Northstar\Auth\Repositories\UserRepository;
 use Northstar\Models\User;
 use Northstar\Policies\UserPolicy;
+use Psr\Http\Message\ServerRequestInterface;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -61,7 +62,7 @@ class AuthServiceProvider extends ServiceProvider
 
         // Register our custom token Guard implementation
         $auth->extend('northstar-token', function ($app, $name, array $config) use ($auth) {
-            return new NorthstarTokenGuard($auth->createUserProvider($config['provider']), request());
+            return new NorthstarTokenGuard($auth->createUserProvider($config['provider']), $app[ResourceServer::class]);
         });
 
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);

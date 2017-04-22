@@ -57,15 +57,12 @@ class Role
             return true;
         }
 
-        /** @var \Northstar\Models\User $user */
-        $user = auth()->user();
+        $role = auth()->role();
 
         // If there isn't a logged-in user, they can't have a role!
-        if (! $user) {
+        if (! $role) {
             return false;
         }
-
-        $role = $user->role;
 
         // Check that the client is allowed to act as this role.
         Scope::gate('role:'.$role);
@@ -87,7 +84,7 @@ class Role
 
             // If request is authenticated by a JWT access token or we are looking at a v2 endpoint,
             // use OAuth access denied exception to return a 401 error.
-            if (request()->attributes->has('oauth_user_id') || request()->route()->getPrefix() === '/v2') {
+            if (auth()->guard('api')->token() || request()->route()->getPrefix() === '/v2') {
                 throw OAuthServerException::accessDenied('Requires one of the following roles: `'.implode(', ', $allowedRoles).'.');
             }
 
