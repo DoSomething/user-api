@@ -289,7 +289,6 @@ curl -X GET \
     "family_name": null,
     "email": "test@dosomething.org",
     "phone_number": "3294927429",
-    "birthdate": "1990-10-25",
     "address": {
       "street_address": "518 Lorenza Creek Suite 862\n",
       "locality": null,

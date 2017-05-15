@@ -21,7 +21,6 @@ class UserInfoTransformer extends TransformerAbstract
             'family_name' => $user->last_name,
             'email' => $user->email,
             'phone_number' => $user->mobile,
-            'birthdate' => format_date($user->birthdate, 'Y-m-d'),
 
             'address' => [
                 'street_address' => implode(PHP_EOL, [$user->addr_street1, $user->addr_street2]),
