@@ -1,7 +1,7 @@
 # Profile Endpoints
 
 ## Get Authenticated User's Profile
-Get profile data for the [currently authenticated user](../authentication.md). This must be done using an API key with `user` scope.
+Get profile data for the [currently authenticated user](../authentication.md).
 
 ```
 GET /v1/profile
@@ -48,7 +48,7 @@ curl -X GET \
 </details>
 
 ## Update Authenticated User's Profile
-Update the profile data for the [currently authenticated user](../authentication.md). This must be done using an API key with `user` scope.
+Update the profile data for the [currently authenticated user](../authentication.md).
 
 ```
 POST /v1/profile
@@ -76,7 +76,7 @@ POST /v1/profile
   parse_installation_ids: String // CSV values or array will be appended to existing interests
   interests: String, Array // CSV values or array will be appended to existing interests
   source: String // Immutable (can only be set if existing value is `null`)
-  
+
   // Hidden fields (optional):
   race: String
   religion: String
