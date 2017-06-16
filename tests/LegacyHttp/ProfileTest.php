@@ -19,7 +19,7 @@ class ProfileTest extends TestCase
         ]);
 
         // Try to register an account that already exists, but with different capitalization
-        $this->asUserUsingLegacyAuth($user)->withLegacyApiKeyScopes(['user'])->get('v1/profile');
+        $this->asUserUsingLegacyAuth($user)->get('v1/profile');
         $this->assertResponseStatus(200);
         $this->seeJsonSubset([
             'data' => [
@@ -47,7 +47,7 @@ class ProfileTest extends TestCase
             'role' => 'user',
         ]);
 
-        $this->asUserUsingLegacyAuth($user)->withLegacyApiKeyScopes(['user'])->json('POST', 'v1/profile', [
+        $this->asUserUsingLegacyAuth($user)->json('POST', 'v1/profile', [
             'mobile' => '(555) 123-4567',
             'language' => 'en',
             'drupal_id' => 666666,

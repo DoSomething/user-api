@@ -34,7 +34,6 @@ class ProfileController extends Controller
 
         $this->transformer = new UserTransformer();
 
-        $this->middleware('scope:user');
         $this->middleware('auth');
     }
 
