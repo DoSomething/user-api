@@ -23,6 +23,10 @@ $router->group(['namespace' => 'Web', 'guard' => 'web', 'middleware' => ['web']]
     $router->post('login', 'AuthController@postLogin');
     $router->get('logout', 'AuthController@getLogout');
 
+    // Facebook Continue
+    $router->get('facebook/continue', 'FacebookController@redirectToProvider');
+    $router->get('facebook/verify', 'FacebookController@handleProviderCallback');
+
     // Unsubscribes
     $router->get('unsubscribe', 'UnsubscribeController@getSubscriptions');
     $router->post('unsubscribe', 'UnsubscribeController@postSubscriptions');
@@ -72,7 +76,6 @@ $router->group(['prefix' => 'v1', 'as' => 'v1.', 'middleware' => ['api']], funct
     $router->post('auth/verify', 'Legacy\AuthController@verify');
     $router->post('auth/register', 'Legacy\AuthController@register');
     $router->post('auth/phoenix', 'Legacy\AuthController@phoenix');
-    $router->post('auth/facebook/validate', 'FacebookController@validateToken');
 
     // Users
     $router->resource('users', 'UserController', ['except' => ['show', 'update']]);

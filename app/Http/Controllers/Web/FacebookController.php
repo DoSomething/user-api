@@ -1,8 +1,8 @@
 <?php
 
-namespace Northstar\Http\Controllers;
+namespace Northstar\Http\Controllers\Web;
 
-use Illuminate\Http\Request;
+use Socialite;
 
 class FacebookController extends Controller
 {
@@ -24,7 +24,6 @@ class FacebookController extends Controller
     public function handleProviderCallback()
     {
         $user = Socialite::driver('facebook')->user();
-
-        // $user->token;
+        dd($user);
     }
 }
