@@ -85,7 +85,7 @@ class AuthServiceProvider extends ServiceProvider
                 app(AccessTokenRepositoryInterface::class),
                 app(ScopeRepositoryInterface::class),
                 base_path('storage/keys/private.key'),
-                base_path('storage/keys/public.key')
+                config('app.key')
             );
 
             // Define which OAuth grants we'll accept.

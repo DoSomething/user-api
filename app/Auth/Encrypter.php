@@ -2,7 +2,6 @@
 
 namespace Northstar\Auth;
 
-use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\CryptTrait;
 
 class Encrypter
@@ -11,8 +10,7 @@ class Encrypter
 
     public function __construct()
     {
-        $publicKey = base_path('storage/keys/public.key');
-        $this->setPublicKey(new CryptKey($publicKey));
+        $this->setEncryptionKey(config('app.key'));
     }
 
     public function decryptData($encryptedData)
