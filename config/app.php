@@ -161,17 +161,13 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
         /*
-         * Laravel Service Providers
-         */
-        Laravel\Socialite\SocialiteServiceProvider::class,
-
-        /*
          * Third Party Service Providers...
          */
         Fideloper\Proxy\TrustedProxyServiceProvider::class,
         Jenssegers\Mongodb\MongodbServiceProvider::class,
         Jenssegers\Mongodb\Auth\PasswordResetServiceProvider::class,
         DoSomething\StatHat\StatHatServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
         /*
          * Application Service Providers...
