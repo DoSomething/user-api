@@ -1,7 +1,7 @@
 # Northstar [![Wercker](https://img.shields.io/wercker/ci/548f17b907fa3ea41500a0ec.svg?style=flat-square)](https://app.wercker.com/#applications/548f17b907fa3ea41500a0ec) [![StyleCI](https://styleci.io/repos/26884886/shield)](https://styleci.io/repos/26884886)
 
 This is __Northstar__, the DoSomething.org user & identity service. It's our single "source of truth" for member information.
-Northstar is built using [Laravel 5.2](http://laravel.com/docs/5.2) and [MongoDB](https://www.mongodb.com).
+Northstar is built using [Laravel 5.3](https://laravel.com/docs/5.3) and [MongoDB](https://www.mongodb.com).
 
 ### Getting Started
 
