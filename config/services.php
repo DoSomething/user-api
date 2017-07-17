@@ -47,7 +47,7 @@ return [
     ],
 
     'facebook' => [
-        'url' => env('FACEBOOK_API_URL'),
+        'redirect' => env('FACEBOOK_REDIRECT_URL'),
         'client_secret' => env('FACEBOOK_APP_SECRET'),
         'client_id' => env('FACEBOOK_APP_ID'),
     ],
