@@ -3,43 +3,28 @@
 namespace Northstar\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Northstar\Services\Facebook;
 
 class FacebookController extends Controller
 {
     /**
-     * Facebook API wrapper.
-     * @var Facebook
+     * Redirect the user to the GitHub authentication page.
+     *
+     * @return Response
      */
-    protected $facebook;
-
-    public function __construct(Facebook $facebook)
+    public function redirectToProvider()
     {
-        $this->facebook = $facebook;
-
-        $this->middleware('scope:admin');
+        return Socialite::driver('facebook')->redirect();
     }
 
     /**
-     * Verifies if a given Facebook token is valid & corresponds to the Facebook ID
+     * Obtain the user information from GitHub.
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function validateToken(Request $request)
+    public function handleProviderCallback()
     {
-        $this->validate($request, [
-            'input_token' => 'required',
-            'facebook_id' => 'required',
-        ]);
+        $user = Socialite::driver('facebook')->user();
 
-        $verified = $this->facebook->verifyToken($request->input('input_token'), $request->input('facebook_id'));
-
-        if (! $verified) {
-            return $this->respond('Invalid', 401);
-        }
-
-        return $this->respond('Verified', 200);
+        // $user->token;
     }
 }
