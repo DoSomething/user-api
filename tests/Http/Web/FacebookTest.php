@@ -57,5 +57,6 @@ class FacebookTest extends TestCase
 
         $user = auth()->user();
         $this->assertEquals($user->first_name, 'Puppet');
+        $this->assertEquals($user->last_name, 'Sloth');
     }
 }

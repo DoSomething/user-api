@@ -66,10 +66,12 @@ class FacebookController extends Controller
         $northstarUser = User::where('email', '=', $facebookUser->email)->first();
 
         if (! $northstarUser) {
+            $name = get_first_and_last($facebookUser->name);
             $fields = [
                 'email' => $facebookUser->email,
                 'facebook_id' => $facebookUser->id,
-                'first_name' => explode(' ', $facebookUser->name)[0],
+                'first_name' => $name['first_name'],
+                'last_name' => $name['last_name'],
                 'country' => country_code(),
                 'language' => app()->getLocale(),
             ];
