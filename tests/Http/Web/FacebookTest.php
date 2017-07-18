@@ -2,7 +2,6 @@
 
 class FacebookTest extends TestCase
 {
-
     /**
      * Mock a Socialite user.
      *
