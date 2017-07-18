@@ -1,7 +1,6 @@
 <?php
 
 use Carbon\Carbon;
-use Socialite;
 use DoSomething\Gateway\Blink;
 use League\OAuth2\Server\CryptKey;
 use Northstar\Auth\Entities\AccessTokenEntity;
