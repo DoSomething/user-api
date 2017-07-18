@@ -69,7 +69,7 @@ class FacebookController extends Controller
             $fields = [
                 'email' => $facebookUser->email,
                 'facebook_id' => $facebookUser->id,
-                'first_name' => explode(" ", $facebookUser->name)[0],
+                'first_name' => explode(' ', $facebookUser->name)[0],
                 'country' => country_code(),
                 'language' => app()->getLocale(),
             ];

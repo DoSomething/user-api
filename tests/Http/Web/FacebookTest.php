@@ -45,7 +45,6 @@ class FacebookTest extends TestCase
         $this->assertEquals($user->email, 'test@dosomething.org');
     }
 
-
     /**
      * Test that a full name is split into just a first name.
      */
