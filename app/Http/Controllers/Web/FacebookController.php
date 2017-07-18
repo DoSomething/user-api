@@ -65,7 +65,7 @@ class FacebookController extends Controller
         $facebookUser = Socialite::driver('facebook')->user();
         $northstarUser = User::where('email', '=', $facebookUser->email)->first();
 
-        if (! isset($northstarUser)) {
+        if (! $northstarUser) {
             $fields = [
                 'email' => $facebookUser->email,
                 'facebook_id' => $facebookUser->id,
@@ -79,9 +79,11 @@ class FacebookController extends Controller
             // TODO: Sync the existing user with Facebook fields.
         }
 
+
         $this->auth->guard('web')->login($northstarUser, true);
 
-        $this->registrar->sendWelcomeEmail($northstarUser);
+        // TODO: Implement a feature flag for Phoenix requests, then uncomment this email request.
+        // $this->registrar->sendWelcomeEmail($northstarUser);
 
         return redirect()->intended('/');
     }
