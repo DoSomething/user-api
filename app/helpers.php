@@ -145,5 +145,9 @@ function array_replace_keys($array, $keys, $value)
  */
 function get_first_and_last($full_name) {
     $parts = explode(' ', $full_name);
-    return ['first_name' => $parts[0], 'last_name' => $parts[1]];
+
+    return [
+        'first_name' => $parts[0],
+        'last_name' => sizeof($parts) >= 2 ? $parts[1] : '',
+    ];
 }
