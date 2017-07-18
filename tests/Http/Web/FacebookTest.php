@@ -44,4 +44,19 @@ class FacebookTest extends TestCase
         $user = auth()->user();
         $this->assertEquals($user->email, 'test@dosomething.org');
     }
+
+
+    /**
+     * Test that a full name is split into just a first name.
+     */
+    public function testFacebookNameSplit()
+    {
+        $this->mockSocialiteFacade('test@dosomething.org', 'Puppet Sloth', 12345);
+
+        $this->visit('/facebook/verify')->seePageIs('/');
+        $this->seeIsAuthenticated('web');
+
+        $user = auth()->user();
+        $this->assertEquals($user->first_name, 'Puppet');
+    }
 }

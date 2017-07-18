@@ -69,7 +69,7 @@ class FacebookController extends Controller
             $fields = [
                 'email' => $facebookUser->email,
                 'facebook_id' => $facebookUser->id,
-                'first_name' => $facebookUser->name, // QUESTION: Should we attempt to split the string here or leave it?
+                'first_name' => explode(" ", $facebookUser->name)[0],
                 'country' => country_code(),
                 'language' => app()->getLocale(),
             ];
