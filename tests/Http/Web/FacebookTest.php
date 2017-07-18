@@ -8,7 +8,7 @@ class FacebookTest extends TestCase
      *
      * @param  string  $email email
      * @param  string  $token token
-     * @param  integer $id    id
+     * @param  int     $id    id
      */
     private function mockSocialiteFacade($email, $name, $id)
     {

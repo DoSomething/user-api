@@ -79,7 +79,6 @@ class FacebookController extends Controller
             // TODO: Sync the existing user with Facebook fields.
         }
 
-
         $this->auth->guard('web')->login($northstarUser, true);
 
         // TODO: Implement a feature flag for Phoenix requests, then uncomment this email request.
