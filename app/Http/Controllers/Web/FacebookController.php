@@ -54,6 +54,14 @@ class FacebookController extends Controller
      */
     public function handleProviderCallback()
     {
+        // TODO: I think we should verify the Facebook token here to make sure
+        // someone can't send a fake FB response & take over an account.
+        // This will require re-introducing the Facebook service I just removed
+        // in a prior commit. :facepalm:
+        //
+        // https://stackoverflow.com/a/16822904/2129670
+        // https://github.com/DoSomething/northstar/pull/605/files#diff-84b65dc95c66e295b3b94d21c873ea18L46
+
         $facebookUser = Socialite::driver('facebook')->user();
         $northstarUser = User::where('email', '=', $facebookUser->email)->first();
 
@@ -70,7 +78,6 @@ class FacebookController extends Controller
         } else {
             // TODO: Sync the existing user with Facebook fields.
         }
-
 
         $this->auth->guard('web')->login($northstarUser, true);
 

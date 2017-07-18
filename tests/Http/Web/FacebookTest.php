@@ -8,7 +8,8 @@ class FacebookTest extends TestCase
      * @expectedException \Illuminate\Foundation\Testing\HttpException
      * @expectedExceptionMessageRegExp /www\.facebook\.com/
      */
-    public function testFacebookRedirect() {
+    public function testFacebookRedirect()
+    {
         $this->visit('/facebook/continue');
         $this->assertRedirectedTo('https://www.facebook.com/');
     }
