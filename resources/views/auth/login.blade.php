@@ -12,6 +12,12 @@
         <h3>{{ trans('auth.greeting.continue') }} {{ session('destination', 'DoSomething.org') }}.</h3>
     </div>
 
+    @if (app('request')->input('fb') === 'true')
+        <div class="container__block">
+            <p>works</p>
+        </div>
+    @endif
+
     <div class="container__block">
         @if (count($errors) > 0)
             <div class="validation-error fade-in-up">
