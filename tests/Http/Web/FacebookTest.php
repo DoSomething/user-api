@@ -13,8 +13,6 @@ class FacebookTest extends TestCase
      */
     private function mockSocialiteFacade($fields, $method)
     {
-        $abstractUser = Mockery::mock('Laravel\Socialite\Two\User');
-
         $user = new Laravel\Socialite\Two\User();
         $user->map($fields);
 
@@ -116,7 +114,7 @@ class FacebookTest extends TestCase
     {
         $factoryUser = factory(User::class)->create([
             'email' => 'test@dosomething.org',
-            'first_name' => 'Joe'
+            'first_name' => 'Joe',
         ]);
 
         $this->mockSocialiteFromUser('test@dosomething.org', 'Puppet Sloth', '12345', 'token');
