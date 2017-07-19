@@ -3,6 +3,22 @@
 class FacebookTest extends TestCase
 {
     /**
+     * Mock a Socialite user for the given
+     * method and user fields.
+     *
+     * @param  array  $fields
+     * @param  string $method
+     */
+    private function mockSocialiteFacade($fields, $method) {
+        $abstractUser = Mockery::mock('Laravel\Socialite\Two\User');
+
+        $user = new Laravel\Socialite\Two\User();
+        $user->map($fields);
+
+        Socialite::shouldReceive($method)->andReturn($user);
+    }
+
+    /**
      * Mock a Socialite user.
      *
      * @param  string  $email email
@@ -12,12 +28,7 @@ class FacebookTest extends TestCase
      */
     private function mockSocialiteFromUser($email, $name, $id, $token)
     {
-        $abstractUser = Mockery::mock('Laravel\Socialite\Two\User');
-
-        $user = new Laravel\Socialite\Two\User();
-        $user->map(compact('id', 'name', 'email', 'token'));
-
-        Socialite::shouldReceive('driver->user')->andReturn($user);
+        $this->mockSocialiteFacade(compact('id', 'name', 'email', 'token'), 'driver->user');
     }
 
     /**
@@ -30,12 +41,7 @@ class FacebookTest extends TestCase
      */
     private function mockSocialiteFromUserToken($email, $name, $id, $token)
     {
-        $abstractUser = Mockery::mock('Laravel\Socialite\Two\User');
-
-        $user = new Laravel\Socialite\Two\User();
-        $user->map(compact('id', 'name', 'email', 'token'));
-
-        Socialite::shouldReceive('driver->userFromToken')->andReturn($user);
+        $this->mockSocialiteFacade(compact('id', 'name', 'email', 'token'), 'driver->userFromToken');
     }
 
     /**
