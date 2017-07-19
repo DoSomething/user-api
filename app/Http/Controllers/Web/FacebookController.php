@@ -80,11 +80,11 @@ class FacebookController extends Controller
 
             $northstarUser = $this->registrar->register($fields, null);
         } else {
-            // Fill in any blank fields with Facebook values.
-            $northstarUser->facebook_id ? null : $northstarUser->facebook_id = $facebookUser->id;
-            $northstarUser->first_name ? null : $northstarUser->fist_name = $name['first_name'];
-            $northstarUser->last_name ? null : $northstarUser->last_name = $name['last_name'];
-            $northstarUser->save();
+            $northstarUser->fillUnlessNull([
+               'facebook_id' => $facebookUser->id,
+               'first_name' => $name['first_name'],
+               'last_name' => $name['last_name'],
+            ]);
         }
 
         $this->auth->guard('web')->login($northstarUser, true);

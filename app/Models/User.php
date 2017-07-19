@@ -375,4 +375,17 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $query->where('campaigns', 'elemMatch', ['signup_id' => $id])
             ->orWhere('campaigns', 'elemMatch', ['signup_group' => $id])->get();
     }
+
+    /**
+     * Fill & save the user with the given array
+     * of fields. Filter out any fields that
+     * have a null value.
+     *
+     * @param  array $fields
+     */
+    public function fillUnlessNull($fields)
+    {
+        $this->fill(array_filter($fields));
+        $this->save();
+    }
 }

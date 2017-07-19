@@ -123,7 +123,7 @@ class FacebookTest extends TestCase
         $this->visit('/facebook/verify');
 
         $user = auth()->user();
-        $this->assertEquals($user->first_name, 'Joe');
+        $this->assertEquals($user->first_name, 'Puppet');
         $this->assertEquals($user->last_name, 'Sloth');
     }
 }
