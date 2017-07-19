@@ -59,7 +59,7 @@ class FacebookController extends Controller
 
         try {
             // Confirm the details are real by asking for them again with the given Facebook token.
-            // This token only works if the user is asking for their own profile information.
+            // This token only works if the user is asking for their profile information.
             $facebookUser = Socialite::driver('facebook')->userFromToken($requestUser->token);
         } catch (RequestException $e) {
             return redirect('/login')->with('status', 'Unable to verify Facebook account.');
