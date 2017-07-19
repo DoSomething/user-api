@@ -88,7 +88,7 @@ class FacebookTest extends TestCase
     public function testFacebookTokenValidation()
     {
         $this->mockSocialiteFromUser('test@dosomething.org', 'Puppet Sloth', '12345', 'token');
-        Socialite::shouldReceive('driver->userFromToken')->andReturnUsing(function() {
+        Socialite::shouldReceive('driver->userFromToken')->andReturnUsing(function () {
             $request = new GuzzleHttp\Psr7\Request('GET', 'http://graph.facebook.com');
             throw new GuzzleHttp\Exception\RequestException('Token validation failed', $request);
         });
