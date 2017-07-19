@@ -32,14 +32,7 @@
   "devDependencies": {
     "@dosomething/babel-config": "^1.0",
     "@dosomething/webpack-config": "^2.0.2",
-    "babel-loader": "^7.1.1",
-    "css-loader": "^0.28.4",
-    "file-loader": "^0.11.2",
     "modernizr": "^3.3.1",
-    "node-sass": "^4.5.3",
-    "postcss-loader": "^2.0.6",
-    "sass-loader": "^6.0.6",
-    "url-loader": "^0.5.9",
     "webpack": "^2.4.1",
     "webpack-dev-server": "^2.4.2"
   }
