@@ -377,9 +377,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * Fill & save the user with the given array
-     * of fields. Filter out any fields that
-     * have a null value.
+     * Fill & save the user with the given array of fields.
+     * Filter out any fields that have a null value.
      *
      * @param  array $fields
      */
