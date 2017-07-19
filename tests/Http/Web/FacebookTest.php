@@ -9,7 +9,8 @@ class FacebookTest extends TestCase
      * @param  array  $fields
      * @param  string $method
      */
-    private function mockSocialiteFacade($fields, $method) {
+    private function mockSocialiteFacade($fields, $method)
+    {
         $abstractUser = Mockery::mock('Laravel\Socialite\Two\User');
 
         $user = new Laravel\Socialite\Two\User();
