@@ -10,6 +10,7 @@ return [
         'existing' => 'Iniciar sesión en una cuenta existente',
         'create' => 'Crea una cuenta DoSomething.org',
         'submit' => 'Crear Nueva Cuenta',
+        'facebook' => 'Continuar con Facebook',
     ],
     'get_started' => [
         'log_in' => '¡Inicia sesión para comenzar!',

@@ -10,6 +10,7 @@ return [
         'existing' => 'Log in to an existing account',
         'create' => 'Create a DoSomething.org account',
         'submit' => 'Create New Account',
+        'facebook' => 'Continue with Facebook',
     ],
     'get_started' => [
         'log_in' => 'Log in to get started!',
