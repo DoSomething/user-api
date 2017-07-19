@@ -90,9 +90,6 @@ class FacebookController extends Controller
 
         $this->auth->guard('web')->login($northstarUser, true);
 
-        // TODO: Implement a feature flag for Phoenix requests, then uncomment this email request.
-        // $this->registrar->sendWelcomeEmail($northstarUser);
-
         return redirect()->intended('/');
     }
 }
