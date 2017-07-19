@@ -4,6 +4,7 @@ namespace Northstar\Http\Controllers\Web;
 
 use Socialite;
 use Illuminate\Contracts\Auth\Factory as Auth;
+use GuzzleHttp\Exception\RequestException;
 use Northstar\Auth\Registrar;
 use Northstar\Models\User;
 
@@ -54,15 +55,16 @@ class FacebookController extends Controller
      */
     public function handleProviderCallback()
     {
-        // TODO: I think we should verify the Facebook token here to make sure
-        // someone can't send a fake FB response & take over an account.
-        // This will require re-introducing the Facebook service I just removed
-        // in a prior commit. :facepalm:
-        //
-        // https://stackoverflow.com/a/16822904/2129670
-        // https://github.com/DoSomething/northstar/pull/605/files#diff-84b65dc95c66e295b3b94d21c873ea18L46
+        $requestUser = Socialite::driver('facebook')->user();
 
-        $facebookUser = Socialite::driver('facebook')->user();
+        try {
+            // Confirm the details are real by asking for them again with the given Facebook token.
+            // This token only works if the user is asking for their own profile information.
+            $facebookUser = Socialite::driver('facebook')->userFromToken($requestUser->token);
+        } catch (RequestException $e) {
+            return redirect('/login')->with('status', 'Unable to verify Facebook account.');
+        }
+
         $northstarUser = User::where('email', '=', $facebookUser->email)->first();
 
         if (! $northstarUser) {

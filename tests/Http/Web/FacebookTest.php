@@ -7,16 +7,35 @@ class FacebookTest extends TestCase
      *
      * @param  string  $email email
      * @param  string  $token token
-     * @param  int     $id    id
+     * @param  string  $id    id
+     * @param  string  $token token
      */
-    private function mockSocialiteFacade($email, $name, $id)
+    private function mockSocialiteFromUser($email, $name, $id, $token)
     {
         $abstractUser = Mockery::mock('Laravel\Socialite\Two\User');
 
         $user = new Laravel\Socialite\Two\User();
-        $user->map(compact('id', 'name', 'email'));
+        $user->map(compact('id', 'name', 'email', 'token'));
 
         Socialite::shouldReceive('driver->user')->andReturn($user);
+    }
+
+    /**
+     * Mock a Socialite user being requested from a Token.
+     *
+     * @param  string  $email email
+     * @param  string  $token token
+     * @param  string  $id    id
+     * @param  string  $token token
+     */
+    private function mockSocialiteFromUserToken($email, $name, $id, $token)
+    {
+        $abstractUser = Mockery::mock('Laravel\Socialite\Two\User');
+
+        $user = new Laravel\Socialite\Two\User();
+        $user->map(compact('id', 'name', 'email', 'token'));
+
+        Socialite::shouldReceive('driver->userFromToken')->andReturn($user);
     }
 
     /**
@@ -36,7 +55,8 @@ class FacebookTest extends TestCase
      */
     public function testFacebookVerify()
     {
-        $this->mockSocialiteFacade('test@dosomething.org', 'Joe', 12345);
+        $this->mockSocialiteFromUser('test@dosomething.org', 'Joe', '12345', 'token');
+        $this->mockSocialiteFromUserToken('test@dosomething.org', 'Joe', '12345', 'token');
 
         $this->visit('/facebook/verify')->seePageIs('/');
         $this->seeIsAuthenticated('web');
@@ -50,7 +70,8 @@ class FacebookTest extends TestCase
      */
     public function testFacebookNameSplit()
     {
-        $this->mockSocialiteFacade('test@dosomething.org', 'Puppet Sloth', 12345);
+        $this->mockSocialiteFromUser('test@dosomething.org', 'Puppet Sloth', '12345', 'token');
+        $this->mockSocialiteFromUserToken('test@dosomething.org', 'Puppet Sloth', '12345', 'token');
 
         $this->visit('/facebook/verify')->seePageIs('/');
         $this->seeIsAuthenticated('web');
@@ -58,5 +79,23 @@ class FacebookTest extends TestCase
         $user = auth()->user();
         $this->assertEquals($user->first_name, 'Puppet');
         $this->assertEquals($user->last_name, 'Sloth');
+    }
+
+    /**
+     * Test that an invalid token will return a bad response
+     * and the user will not be logged in.
+     */
+    public function testFacebookTokenValidation()
+    {
+        $this->mockSocialiteFromUser('test@dosomething.org', 'Puppet Sloth', '12345', 'token');
+        Socialite::shouldReceive('driver->userFromToken')->andReturnUsing(function() {
+            $request = new GuzzleHttp\Psr7\Request('GET', 'http://graph.facebook.com');
+            throw new GuzzleHttp\Exception\RequestException('Token validation failed', $request);
+        });
+
+        $this->visit('/facebook/verify')
+            ->seePageIs('/login')
+            ->see('Unable to verify Facebook account.');
+        $this->dontSeeIsAuthenticated('web');
     }
 }
