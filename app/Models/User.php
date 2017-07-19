@@ -385,6 +385,5 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function fillUnlessNull($fields)
     {
         $this->fill(array_filter($fields));
-        $this->save();
     }
 }

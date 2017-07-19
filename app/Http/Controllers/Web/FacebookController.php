@@ -85,6 +85,7 @@ class FacebookController extends Controller
                'first_name' => $name['first_name'],
                'last_name' => $name['last_name'],
             ]);
+            $northstarUser->save();
         }
 
         $this->auth->guard('web')->login($northstarUser, true);
