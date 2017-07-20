@@ -45,7 +45,9 @@ class FacebookController extends Controller
      */
     public function redirectToProvider()
     {
-        return Socialite::driver('facebook')->redirect();
+        return Socialite::driver('facebook')
+            ->scopes(['user_birthday'])
+            ->redirect();
     }
 
     /**
@@ -57,35 +59,38 @@ class FacebookController extends Controller
     {
         $requestUser = Socialite::driver('facebook')->user();
 
+        // Grab the user profile using there oauth token.
         try {
-            // Confirm the details are real by asking for them again with the given Facebook token.
-            // This token only works if the user is asking for their profile information.
-            $facebookUser = Socialite::driver('facebook')->userFromToken($requestUser->token);
+            $facebookUser = Socialite::driver('facebook')
+                ->fields(['email', 'first_name', 'last_name', 'birthday'])
+                ->userFromToken($requestUser->token);
         } catch (RequestException $e) {
             return redirect('/login')->with('status', 'Unable to verify Facebook account.');
         }
 
-        $northstarUser = User::where('email', '=', $facebookUser->email)->first();
-        $name = get_first_and_last($facebookUser->name);
+        // Aggregate public profile fields
+        $fields = [
+            'facebook_id' => $facebookUser->id,
+            'first_name' => $facebookUser->user['first_name'],
+            'last_name' => $facebookUser->user['last_name'],
+        ];
 
-        if (! $northstarUser) {
-            $fields = [
-                'email' => $facebookUser->email,
-                'facebook_id' => $facebookUser->id,
-                'first_name' => $name['first_name'],
-                'last_name' => $name['last_name'],
-                'country' => country_code(),
-                'language' => app()->getLocale(),
-            ];
+        // Aggregate scoped fields
+        if (isset($facebookUser->user['birthday'])) {
+            $fields['birthdate'] = format_birthdate($facebookUser->user['birthday']);
+        }
+
+        $northstarUser = User::where('email', '=', $facebookUser->email)->first();
+
+        if ($northstarUser) {
+            $northstarUser->fillUnlessNull($fields);
+            $northstarUser->save();
+        } else {
+            $fields['email'] = $facebookUser->email;
+            $fields['country'] = country_code();
+            $fields['language'] = app()->getLocale();
 
             $northstarUser = $this->registrar->register($fields, null);
-        } else {
-            $northstarUser->fillUnlessNull([
-               'facebook_id' => $facebookUser->id,
-               'first_name' => $name['first_name'],
-               'last_name' => $name['last_name'],
-            ]);
-            $northstarUser->save();
         }
 
         $this->auth->guard('web')->login($northstarUser, true);

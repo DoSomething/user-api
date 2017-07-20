@@ -138,17 +138,22 @@ function array_replace_keys($array, $keys, $value)
 }
 
 /**
- * Get the first & last name for the given full name.
+ * Format the given Birthday string, and check if its
+ * null or partial birthday first. Returns a date
+ * suitable for a Northstar profile or null.
  *
- * @param  string $full_name
- * @return array
+ * @param  string $birthday
+ * @return date|null
  */
-function get_first_and_last($full_name)
+function format_birthdate($birthdate)
 {
-    $parts = explode(' ', $full_name);
+    if (is_null($birthdate) || empty($birthdate)) {
+        return null;
+    }
 
-    return [
-        'first_name' => $parts[0],
-        'last_name' => count($parts) >= 2 ? $parts[1] : '',
-    ];
+    if (sizeof(explode('/', $birthdate)) <= 2) {
+        return null;
+    }
+
+    return format_date($birthdate, 'Y-m-d');
 }
