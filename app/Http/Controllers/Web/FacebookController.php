@@ -59,7 +59,7 @@ class FacebookController extends Controller
     {
         $requestUser = Socialite::driver('facebook')->user();
 
-        // Grab the user profile using there oauth token.
+        // Grab the user profile using their oauth token.
         try {
             $facebookUser = Socialite::driver('facebook')
                 ->fields(['email', 'first_name', 'last_name', 'birthday'])

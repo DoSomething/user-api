@@ -151,7 +151,7 @@ function format_birthdate($birthdate)
         return null;
     }
 
-    if (sizeof(explode('/', $birthdate)) <= 2) {
+    if (count(explode('/', $birthdate)) <= 2) {
         return null;
     }
 

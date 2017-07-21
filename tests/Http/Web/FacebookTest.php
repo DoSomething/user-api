@@ -17,7 +17,7 @@ class FacebookTest extends TestCase
     }
 
     /**
-     * Mock a Socialite user.
+     * Mock Socialite driver->user method with the given user.
      *
      * @param  AbstractUser  $user
      */
@@ -27,7 +27,8 @@ class FacebookTest extends TestCase
     }
 
     /**
-     * Mock a Socialite user being requested from a Token.
+     * Mock Socialite driver->fields->userFromToken method with
+     * the given user.
      *
      * @param  AbstractUser  $user
      */
@@ -68,7 +69,8 @@ class FacebookTest extends TestCase
      * Default set of operations that need to happen for most
      * of the tests.
      */
-    private function defaultMock() {
+    private function defaultMock()
+    {
         $abstractUser = $this->mockSocialiteAbstractUser('test@dosomething.org', 'Puppet', 'Sloth', '12345', 'token');
         $this->mockSocialiteFromUser($abstractUser);
         $this->mockSocialiteFromUserToken($abstractUser);
@@ -174,7 +176,7 @@ class FacebookTest extends TestCase
     }
 
     /**
-     * If the user lets us see there entire birthday, check we format it correctly.
+     * If the user lets us see a full birthday, check we format it correctly.
      */
     public function testFullBirthday()
     {
