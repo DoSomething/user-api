@@ -33,6 +33,12 @@
     }
   }
 
+  &.-extended {
+    @include media($tablet) {
+      max-width: $extended-max-width;
+    }
+  }
+
   .container__block {
     // Add a new `.-centered` variation to the Container Block.
     &.-centered {

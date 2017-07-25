@@ -7,6 +7,10 @@
   @include media($tablet) {
     max-width: $container-max-width;
     padding: $section-spacing ($base-spacing / 2) ($base-spacing / 2);
+
+    &.-extended {
+      max-width: $extended-max-width;
+    }
   }
 
   .logo {

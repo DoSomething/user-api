@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-extended')
 
 @section('title', 'Create Account | DoSomething.org')
 
