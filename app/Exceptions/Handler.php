@@ -125,7 +125,7 @@ class Handler extends ExceptionHandler
             return $this->buildJsonResponse(new HttpException(401, 'Unauthorized.'));
         }
 
-        return redirect()->guest('login');
+        return redirect()->guest('register');
     }
 
     /**
