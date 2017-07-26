@@ -34,10 +34,6 @@
   }
 
   &.-extended {
-    > .wrapper.-half {
-      width: 100%;
-    }
-
     @include media($tablet) {
       padding: 0;
       max-width: $extended-max-width;
