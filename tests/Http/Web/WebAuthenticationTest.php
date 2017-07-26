@@ -20,7 +20,7 @@ class WebAuthenticationTest extends TestCase
     {
         $this->get('/')->followRedirects();
 
-        $this->seePageIs('login');
+        $this->seePageIs('register');
     }
 
     /**
