@@ -86,9 +86,7 @@
     </div>
 
     <div class="container__block -centered">
-        @if (request()->query('fb') === 'true')
-            <a href="{{ url('facebook/continue') }}" class="button facebook-login">{{ trans('auth.log_in.facebook') }}</a>
-        @endif
+        @include('auth.facebook')
 
         <ul>
             <li><a href="{{ url('login') }}">{{ trans('auth.log_in.existing') }}</a></li>
