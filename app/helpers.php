@@ -157,16 +157,3 @@ function format_birthdate($birthdate)
 
     return format_date($birthdate, 'Y-m-d');
 }
-
-/**
- * Set the session variables from the auth request.
- */
-function set_auth_experience_session()
-{
-    session([
-        'destination' => request()->query('destination'),
-        'title' => request()->query('title'),
-        'callToAction' => request()->query('callToAction'),
-        'coverPhoto' => request()->query('coverPhoto'),
-    ]);
-}
