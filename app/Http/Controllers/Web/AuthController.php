@@ -78,8 +78,7 @@ class AuthController extends BaseController
 
         if (! $this->auth->guard('web')->check()) {
             $authorizationRoute = request()->query('mode') === 'register' ? 'register' : 'login';
-            $destination = request()->query('destination', $client->getName());
-            session(['destination' => $destination]);
+            set_auth_experience_session();
 
             return redirect()->guest($authorizationRoute);
         }

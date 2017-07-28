@@ -7,7 +7,7 @@ return [
     ],
     'log_in' => [
         'default' => 'Log In',
-        'existing' => 'Log in to an existing account',
+        'existing' => 'Already have an account? Sign in.',
         'create' => 'Create a DoSomething.org account',
         'submit' => 'Create New Account',
         'facebook' => 'Continue with Facebook',
@@ -15,6 +15,7 @@ return [
     'get_started' => [
         'log_in' => 'Log in to get started!',
         'create_account' => 'Create a DoSomething.org account to get started!',
+        'call_to_action' => 'Join 5.5 million young people taking action.',
     ],
     'validation' => [
         'issues' => 'Hmm, there were some issues with that submission:',

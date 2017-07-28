@@ -2,3 +2,18 @@
 .form-required {
   display: none;
 }
+
+.form-item.-reduced {
+  @include media($tablet) {
+    display: table-cell;
+    padding-bottom: $base-spacing / 2;
+
+    &:not(:last-child) {
+      padding-right: $base-spacing / 2;
+    }
+  }
+}
+
+.form-actions.-left {
+  float: left;
+}
