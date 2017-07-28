@@ -186,7 +186,7 @@ class AuthController extends BaseController
             'birthdate' => 'required|date',
             'email' => 'required|email|unique:users',
             'mobile' => 'mobile|unique:users',
-            'password' => 'required|confirmed|min:6|max:512',
+            'password' => 'required|min:6|max:512',
         ]);
 
         // Register and login the user.
