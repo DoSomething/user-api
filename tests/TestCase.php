@@ -352,7 +352,6 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
             'email' => $this->faker->unique->email,
             'birthdate' => $this->faker->date('m/d/Y', '5 years ago'),
             'password' => 'secret',
-            'password_confirmation' => 'secret',
         ]);
     }
 }

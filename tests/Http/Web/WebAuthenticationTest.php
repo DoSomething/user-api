@@ -1,6 +1,7 @@
 <?php
 
 use Northstar\Models\User;
+use Northstar\Models\Client;
 
 class WebAuthenticationTest extends TestCase
 {
@@ -205,5 +206,24 @@ class WebAuthenticationTest extends TestCase
 
         $this->dontSeeIsAuthenticated('web');
         $this->see('Too many attempts.');
+    }
+
+    public function testAuthorizeSessionVariablesExist()
+    {
+        $client = Client::create(['client_id' => 'phpunit', 'scope' => ['user'], 'redirect_uri' => 'http://example.com/']);
+
+        $this->get('authorize?'.http_build_query([
+            'response_type' => 'code',
+            'client_id' => $client->client_id,
+            'client_secret' => $client->client_secret,
+            'scope' => 'user',
+            'state' => csrf_token(),
+            'title' => 'test title',
+            'callToAction' => 'test call to action',
+        ]))->followRedirects();
+
+        $this->seePageIs('register')
+            ->see('test title')
+            ->see('test call to action');
     }
 }

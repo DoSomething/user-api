@@ -77,7 +77,8 @@ class AuthController extends BaseController
         session(['referrer_uri' => request()->query('referrer_uri')]);
 
         if (! $this->auth->guard('web')->check()) {
-            $authorizationRoute = request()->query('mode') === 'register' ? 'register' : 'login';
+            // TODO: Wat is this
+            $authorizationRoute = request()->query('mode') === 'login' ? 'login' : 'register';
 
             session([
                 'destination' => request()->query('destination', $client->getName()),
