@@ -201,7 +201,7 @@ class FacebookTest extends TestCase
 
         $this->visit('/facebook/verify')
             ->seePageIs('/register')
-            ->see('Unable to verify Facebook account.');
+            ->see('We need your email');
         $this->dontSeeIsAuthenticated('web');
     }
 }

@@ -83,7 +83,7 @@ class FacebookController extends Controller
         if (empty($facebookUser->email)) {
             $this->stathat->ezCount('facebook email hidden');
 
-            return redirect('/register')->with('status', 'Unable to verify Facebook account.');
+            return redirect('/register')->with('status', 'We need your email to contact you if you win a scholarship.');
         }
 
         // Aggregate public profile fields
