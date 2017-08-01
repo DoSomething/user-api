@@ -11,7 +11,7 @@ tampering, and can be verified using a shared public key.
 
 __Here's the tl;dr:__ If a user is logging in to an application and making requests, use the [Authorization Code grant](#create-token-authorization-code-grant)
  to request an access & refresh token for them. If you're performing requests as a "machine" (not as a direct result of a
- user's action), use the [Client Credentials Grant](#create-token-client-credentials-grant). 
+ user's action), use the [Client Credentials Grant](#create-token-client-credentials-grant).
 
 ## Create Token (Authorization Code Grant)
 The authorization code grant allows you to authorize a user without needing to manually handle their username or password.
@@ -25,6 +25,9 @@ Redirect the user to Northstar's "authorize" page with the following query strin
 * `response_type` with the value `code`
 * `client_id` with your Client ID
 * `destination` with a destination to display on the login page (optional)
+* `title` with a title to display on the registration page (optional)
+* `callToAction` with a call to action to display on the registration page (optional)
+* `coverPhoto` with a link to a cover photo to display on the registration page (optional)
 * `scope` with a space-delimited list of scopes to request
 * `state` with a CSRF token that can be validated below
 
@@ -51,13 +54,13 @@ POST /v2/auth/token
 
 ```js
 // Content-Type: application/json
- 
+
 {
   grant_type: 'authorization_code',
-  
+
   // The client application's Client ID (required)
   client_id: String,
-  
+
   // The client application's Client Secret (required)
   client_secret: String,
 
