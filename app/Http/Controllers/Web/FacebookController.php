@@ -75,12 +75,14 @@ class FacebookController extends Controller
                 ->userFromToken($requestUser->token);
         } catch (RequestException $e) {
             $this->stathat->ezCount('facebook token mismatch');
+
             return redirect('/register')->with('status', 'Unable to verify Facebook account.');
         }
 
         // If we were denied access to read email, do not log them in.
         if (empty($facebookUser->email)) {
             $this->stathat->ezCount('facebook email hidden');
+
             return redirect('/register')->with('status', 'Unable to verify Facebook account.');
         }
 
