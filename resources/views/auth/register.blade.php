@@ -25,33 +25,18 @@
 
             <div>
                 <div class="form-item -reduced">
-                    <label for="first_name" class="field-label">
-                        <div class="validation">
-                            <div class="validation__label">{{ trans('auth.fields.first_name') }} <span class="form-required" title="This field is required.">*</span></div>
-                            <div class="validation__message"></div>
-                        </div>
-                    </label>
+                    <label for="first_name" class="field-label">{{ trans('auth.fields.first_name') }}</label>
                     <input name="first_name" type="text" id="first_name" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.call_you') }}" value="{{ old('first_name') }}" autofocus data-validate="first_name" data-validate-required />
                 </div>
 
                 <div class="form-item -reduced">
-                    <label for="birthdate" class="field-label">
-                        <div class="validation">
-                            <div class="validation__label">{{ trans('auth.fields.birthday') }} <span class="form-required" title="This field is required.">*</span></div>
-                            <div class="validation__message"></div>
-                        </div>
-                    </label>
+                    <label for="birthdate" class="field-label">{{ trans('auth.fields.birthday') }}</label>
                     <input name="birthdate" type="text" id="birthdate" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.birthday') }}" value="{{ old('birthdate') }}" data-validate="birthday" data-validate-required />
                 </div>
             </div>
 
             <div class="form-item">
-                <label for="email" class="field-label">
-                    <div class="validation">
-                        <div class="validation__label">{{ trans('auth.fields.email') }} <span class="form-required" title="This field is required.">*</span></div>
-                        <div class="validation__message"></div>
-                    </div>
-                </label>
+                <label for="email" class="field-label">{{ trans('auth.fields.email') }}</label>
                 <input name="email" type="text" id="email" class="text-field required js-validate" placeholder="puppet-sloth@example.org" value="{{ old('email') }}" data-validate="email" data-validate-required />
             </div>
 
@@ -63,12 +48,7 @@
             @endif
 
             <div class="form-item">
-                <label for="password" class="field-label">
-                    <div class="validation">
-                        <div class="validation__label">{{ trans('auth.fields.password') }} <span class="form-required" title="This field is required.">*</span></div>
-                        <div class="validation__message"></div>
-                    </div>
-                </label>
+                <label for="password" class="field-label">{{ trans('auth.fields.password') }}</label>
                 <input name="password" type="password" id="password" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.password') }}" data-validate="password" data-validate-required data-validate-trigger="#password_confirmation" />
             </div>
 
