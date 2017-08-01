@@ -8,6 +8,11 @@
         <p>{{ session('callToAction', trans('auth.get_started.call_to_action')) }}
     </div>
 
+    <div class="container__block">
+        <a href="{{ url('facebook/continue') }}" class="button facebook-login">{{ trans('auth.log_in.facebook') }}</a>
+        <span class="divider"></span>
+    </div>
+
     <div class="container__block -centered">
         @if (count($errors) > 0)
             <div class="validation-error fade-in-up">
@@ -59,8 +64,6 @@
     </div>
 
     <div class="container__block -centered">
-        @include('auth.facebook')
-
         <ul>
             <li><a href="{{ url('login') }}">{{ trans('auth.log_in.existing') }}</a></li>
         </ul>

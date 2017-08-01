@@ -1,0 +1,21 @@
+$divider-height: 2px;
+$content-width: 40px;
+
+.divider {
+  display: block;
+  width: 100%;
+  height: $divider-height;
+  background: $black;
+  position: relative;
+  text-align: center;
+  margin: $base-spacing 0;
+
+  &:before {
+    content: 'or';
+    position: absolute;
+    top: -(($base-spacing / 2) + $divider-height);
+    background: white;
+    width: $content-width;
+    margin-left: -($content-width / 2);
+  }
+}
