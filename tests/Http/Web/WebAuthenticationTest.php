@@ -208,6 +208,10 @@ class WebAuthenticationTest extends TestCase
         $this->see('Too many attempts.');
     }
 
+    /**
+     * Test that the various optional variables for customizing the experience
+     * display on the page.
+     */
     public function testAuthorizeSessionVariablesExist()
     {
         $client = Client::create(['client_id' => 'phpunit', 'scope' => ['user'], 'redirect_uri' => 'http://example.com/']);
