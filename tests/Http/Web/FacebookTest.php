@@ -134,7 +134,7 @@ class FacebookTest extends TestCase
         });
 
         $this->visit('/facebook/verify')
-            ->seePageIs('/login')
+            ->seePageIs('/register')
             ->see('Unable to verify Facebook account.');
         $this->dontSeeIsAuthenticated('web');
     }
@@ -188,5 +188,20 @@ class FacebookTest extends TestCase
 
         $user = auth()->user();
         $this->assertEquals($user->birthdate, new Carbon\Carbon('2000-01-01'));
+    }
+
+    /**
+     * If the user does not share email, it should not authenticate them.
+     */
+    public function testMissingEmail()
+    {
+        $abstractUser = $this->mockSocialiteAbstractUser('', 'Puppet', 'Sloth', '12345', 'token', '01/01/2000');
+        $this->mockSocialiteFromUser($abstractUser);
+        $this->mockSocialiteFromUserToken($abstractUser);
+
+        $this->visit('/facebook/verify')
+            ->seePageIs('/register')
+            ->see('Unable to verify Facebook account.');
+        $this->dontSeeIsAuthenticated('web');
     }
 }

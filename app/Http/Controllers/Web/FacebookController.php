@@ -79,7 +79,7 @@ class FacebookController extends Controller
         }
 
         // If we were denied access to read email, do not log them in.
-        if (! isset($facebookUser->email) || empty($facebookUser->email)) {
+        if (empty($facebookUser->email)) {
             $this->stathat->ezCount('facebook email hidden');
             return redirect('/register')->with('status', 'Unable to verify Facebook account.');
         }
