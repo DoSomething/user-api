@@ -23,6 +23,7 @@ class UserModelTest extends TestCase
             'email' => $user->email,
             'mobile' => $user->mobile,
             'mobile_status' => $user->mobilecommons_status,
+            'facebook_id' => $user->facebook_id,
             'addr_city' => $user->addr_city,
             'addr_state' => $user->addr_state,
             'addr_zip' => $user->addr_zip,

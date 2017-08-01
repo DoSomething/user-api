@@ -348,6 +348,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'email' => $this->email,
             'mobile' => $this->mobile,
             'mobile_status' => $this->mobilecommons_status,
+            'facebook_id' => $this->facebook_id,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'birthdate' => format_date($this->birthdate, 'Y-m-d'),
