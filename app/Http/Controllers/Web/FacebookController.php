@@ -5,6 +5,7 @@ namespace Northstar\Http\Controllers\Web;
 use Socialite;
 use Illuminate\Contracts\Auth\Factory as Auth;
 use GuzzleHttp\Exception\RequestException;
+use DoSomething\StatHat\Client as StatHat;
 use Northstar\Auth\Registrar;
 use Northstar\Models\User;
 
@@ -25,17 +26,25 @@ class FacebookController extends Controller
     protected $registrar;
 
     /**
+     * The StatHat client.
+     *
+     * @var StatHat
+     */
+    protected $stathat;
+
+    /**
      * Make a new FacebookController, inject dependencies,
      * and set middleware for this controller's methods.
      *
      * @param Auth $auth
      * @param Registrar $registrar
-     * @param AuthorizationServer $oauth
+     * @param StatHat $stathat
      */
-    public function __construct(Auth $auth, Registrar $registrar)
+    public function __construct(Auth $auth, Registrar $registrar, StatHat $stathat)
     {
         $this->auth = $auth;
         $this->registrar = $registrar;
+        $this->stathat = $stathat;
     }
 
     /**
@@ -65,7 +74,14 @@ class FacebookController extends Controller
                 ->fields(['email', 'first_name', 'last_name', 'birthday'])
                 ->userFromToken($requestUser->token);
         } catch (RequestException $e) {
-            return redirect('/login')->with('status', 'Unable to verify Facebook account.');
+            $this->stathat->ezCount('facebook token mismatch');
+            return redirect('/register')->with('status', 'Unable to verify Facebook account.');
+        }
+
+        // If we were denied access to read email, do not log them in.
+        if (! isset($facebookUser->email) || empty($facebookUser->email)) {
+            $this->stathat->ezCount('facebook email hidden');
+            return redirect('/register')->with('status', 'Unable to verify Facebook account.');
         }
 
         // Aggregate public profile fields
@@ -94,6 +110,7 @@ class FacebookController extends Controller
         }
 
         $this->auth->guard('web')->login($northstarUser, true);
+        $this->stathat->ezCount('facebook authentication');
 
         return redirect()->intended('/');
     }
