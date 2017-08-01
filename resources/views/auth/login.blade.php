@@ -54,7 +54,7 @@
     </div>
 
     <div class="container__block -centered">
-        <a href="{{ url('facebook/continue') }}" class="button facebook-login">{{ trans('auth.log_in.facebook') }}</a>
+        @include('auth.facebook')
 
         <ul>
             <li><a href="{{ url('register') }}">{{ trans('auth.log_in.create') }}</a></li>
