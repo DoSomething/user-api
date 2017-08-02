@@ -27,7 +27,7 @@ Redirect the user to Northstar's "authorize" page with the following query strin
 * `destination` with a destination to display on the login page (optional)
 * `title` with a title to display on the registration page (optional)
 * `callToAction` with a call to action to display on the registration page (optional)
-* `coverPhoto` with a link to a cover photo to display on the registration page (optional)
+* `coverImage` with a link to a cover image to display on the registration page (optional)
 * `scope` with a space-delimited list of scopes to request
 * `state` with a CSRF token that can be validated below
 

@@ -83,7 +83,7 @@ class AuthController extends BaseController
                 'destination' => request()->query('destination', $client->getName()),
                 'title' => request()->query('title', trans('auth.get_started.create_account')),
                 'callToAction' => request()->query('callToAction', trans('auth.get_started.call_to_action')),
-                'coverPhoto' => request()->query('coverPhoto', asset('members.jpg')),
+                'coverImage' => request()->query('coverImage', asset('members.jpg')),
             ]);
 
             return redirect()->guest($authorizationRoute);

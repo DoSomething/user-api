@@ -26,7 +26,7 @@
             @if (isset($extended) && $extended)
                 @include('layouts.navigation', ['extended' => true])
                 <section class="container -framed -extended">
-                    <div class="cover-photo" style="background-image: url({{ session('coverPhoto', asset('members.jpg')) }})"></div>
+                    <div class="cover-photo" style="background-image: url({{ session('coverImage', asset('members.jpg')) }})"></div>
 
                     <div class="wrapper -half">
                         @yield('content')
