@@ -157,3 +157,8 @@ function format_birthdate($birthdate)
 
     return format_date($birthdate, 'Y-m-d');
 }
+
+function is_container_extended($extended)
+{
+    return isset($extended) && $extended;
+}

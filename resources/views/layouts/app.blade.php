@@ -24,22 +24,12 @@
         @endif
         <div class="wrapper">
             @include('layouts.navigation')
-            @if (isset($extended) && $extended)
-                <section class="container -framed -extended">
-                    <div class="cover-photo" style="background-image: url({{ session('coverImage', asset('members.jpg')) }})"></div>
-
-                    <div class="wrapper -half">
-                        @yield('content')
-                    </div>
-                </section>
-            @else
-                @include('layouts.navigation', ['extended' => false])
-                <section class="container -framed">
-                    <div class="wrapper">
-                        @yield('content')
-                    </div>
-                </section>
-            @endif
+            <section class="container -framed {{ is_container_extended($extended) ? '-extended' : '' }}">
+                @include('layouts.cover_image')
+                <div class="wrapper -half">
+                    @yield('content')
+                </div>
+            </section>
         </div>
     </div>
 
