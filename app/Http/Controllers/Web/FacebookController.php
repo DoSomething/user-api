@@ -109,7 +109,7 @@ class FacebookController extends Controller
             $fields['language'] = app()->getLocale();
 
             $northstarUser = $this->registrar->register($fields, null, function ($user) {
-                $user->source_detail = 'facebook';
+                $user->setSource(client_id(), 'facebook');
             });
         }
 
