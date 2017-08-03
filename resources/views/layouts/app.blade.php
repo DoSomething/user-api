@@ -23,8 +23,8 @@
             <div class="messages">{{ session('status') }}</div>
         @endif
         <div class="wrapper">
+            @include('layouts.navigation')
             @if (isset($extended) && $extended)
-                @include('layouts.navigation', ['extended' => true])
                 <section class="container -framed -extended">
                     <div class="cover-photo" style="background-image: url({{ session('coverImage', asset('members.jpg')) }})"></div>
 
