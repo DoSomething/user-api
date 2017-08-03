@@ -27,10 +27,6 @@
     .navigation + & {
       margin-top: 0;
     }
-
-    &:after {
-      @extend %kaleidoscope-bar;
-    }
   }
 
   &.-extended {
