@@ -7,7 +7,7 @@ return [
     ],
     'log_in' => [
         'default' => 'Log In',
-        'existing' => 'Already have an account? Sign in.',
+        'existing' => 'Already have an account? Log in.',
         'create' => 'Create a DoSomething.org account',
         'submit' => 'Create New Account',
         'facebook' => 'Continue with Facebook',
