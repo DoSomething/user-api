@@ -100,6 +100,7 @@ class FacebookTest extends TestCase
 
         $user = auth()->user();
         $this->assertEquals($user->email, 'test@dosomething.org');
+        $this->assertEquals($user->source_detail, 'facebook');
     }
 
     /**

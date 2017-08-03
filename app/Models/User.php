@@ -93,6 +93,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
         // External profiles:
         'mobilecommons_id', 'mobilecommons_status', 'facebook_id', 'slack_id',
+
+        // Metadata
+        'source_detail',
     ];
 
     /**
