@@ -392,12 +392,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * Set the source & source_detail on this user
      * if they don't already exist.
      *
-     * @param String $source
-     * @param String $detail
+     * @param string $source
+     * @param string $detail
      */
     public function setSource($source, $detail = null)
     {
-        if ($this->source || $this->source_detail) return;
+        if ($this->source || $this->source_detail) {
+            return;
+        }
 
         $this->source = $source;
         $this->source_detail = $detail;
