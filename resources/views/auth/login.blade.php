@@ -37,7 +37,7 @@
                 <input name="username" type="text" class="text-field required" placeholder="puppet-sloth@example.org" value="{{ old('username') }}" autofocus />
             </div>
 
-            <div class="form-item password-visibility">
+            <div class="form-item">
                 <label for="password" class="field-label">
                     <div class="validation">
                         <div class="validation__label">{{ trans('auth.fields.password') }} <span class="form-required" title="This field is required.">*</span></div>
@@ -45,7 +45,6 @@
                     </div>
                 </label>
                 <input name="password" type="password" class="text-field required" placeholder="••••••••" />
-                <span class="password-visibility__toggle -hide">&#128065;</span>
             </div>
 
             <div class="form-actions -padded">
