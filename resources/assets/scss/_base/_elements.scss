@@ -1,33 +1,3 @@
 body, html {
   background: $white;
 }
-
-.password-visibility {
-  position: relative;
-
-  .password-visibility__toggle {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    margin-bottom: .4em;
-    margin-right: $base-spacing / 2;
-    user-select: none;
-
-    &:hover {
-      cursor: pointer;
-    }
-
-    &.-hide:after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      margin-left: 8px;
-      margin-top: 2px;
-      width: 1px;
-      height: 1em;
-      background: $black;
-      transform: rotate(45deg);
-    }
-  }
-}
