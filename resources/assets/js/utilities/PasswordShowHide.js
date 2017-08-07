@@ -9,6 +9,15 @@ function clickHandler(event) {
 
   const { target } = event;
   target.classList.toggle('-hide');
+
+  const siblings = target.parentNode.childNodes;
+  const inputKey = Object.keys(siblings).filter(key => siblings[key].tagName === 'INPUT');
+  const input = siblings[inputKey];
+
+  const shouldHide = target.classList.contains('-hide');
+  if (input) {
+    shouldHide ? input.type = 'password' : input.type = 'text';
+  }
 }
 
 function init() {
