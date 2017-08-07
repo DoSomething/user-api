@@ -45,7 +45,7 @@
                     </div>
                 </label>
                 <input name="password" type="password" class="text-field required" placeholder="••••••••" />
-                <span class="password-visibility__toggle">&#128065;</span>
+                <span class="password-visibility__toggle -hide">&#128065;</span>
             </div>
 
             <div class="form-actions -padded">
