@@ -1,13 +1,24 @@
 const $ = require('jquery');
 
 /**
- * Utility script to enable routing back to the last page,
- * as long as it's within the same top-level domain.
+ * Utility script to enable password visibility toggle.
  */
+
+function clickHandler(event) {
+  event.preventDefault();
+
+  const { target } = event;
+  target.classList.toggle('-hide');
+}
 
 function init() {
   $(document).ready(() => {
-    console.log('ready');
+    const passwords = document.getElementsByClassName('password-visibility__toggle');
+    if (! passwords) return;
+
+    for (const input of passwords) {
+      if (input) input.addEventListener('click', clickHandler);
+    }
   });
 }
 

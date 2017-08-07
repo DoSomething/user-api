@@ -8,6 +8,8 @@ const $ = require('jquery');
 function init(element = 'back') {
   $(document).ready(() => {
     const backLink = document.getElementById(element);
+    if (! backLink) return;
+
     backLink.addEventListener('click', (event) => {
       event.preventDefault();
 
