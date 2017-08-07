@@ -31,10 +31,9 @@
                         <input name="email" type="text" class="text-field" placeholder="puppet-sloth@example.org" value="{{ $email or old('email') }}">
                     </div>
 
-                    <div class="form-item password-visibility">
+                    <div class="form-item">
                         <label for="password" class="field-label">{{ trans('auth.fields.new_password') }}</label>
                         <input name="password" type="password" class="text-field" placeholder="••••••">
-                        <span class="password-visibility__toggle -hide">&#128065;</span>
                     </div>
 
                     <div class="form-item">
