@@ -26,7 +26,7 @@ function init() {
     if (! passwordToggles) return;
 
     for (const toggle of passwordToggles) {
-      if (toggle) toggle.addEventListener('click', clickHandler);
+      toggle.addEventListener('click', clickHandler);
     }
   });
 }
