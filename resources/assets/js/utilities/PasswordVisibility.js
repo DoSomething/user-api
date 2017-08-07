@@ -22,11 +22,11 @@ function clickHandler(event) {
 
 function init() {
   $(document).ready(() => {
-    const passwords = document.getElementsByClassName('password-visibility__toggle');
-    if (! passwords) return;
+    const passwordToggles = document.getElementsByClassName('password-visibility__toggle');
+    if (! passwordToggles) return;
 
-    for (const input of passwords) {
-      if (input) input.addEventListener('click', clickHandler);
+    for (const toggle of passwordToggles) {
+      if (toggle) toggle.addEventListener('click', clickHandler);
     }
   });
 }
