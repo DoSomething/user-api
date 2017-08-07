@@ -31,14 +31,16 @@
                         <input name="email" type="text" class="text-field" placeholder="puppet-sloth@example.org" value="{{ $email or old('email') }}">
                     </div>
 
-                    <div class="form-item">
+                    <div class="form-item password-visibility">
                         <label for="password" class="field-label">{{ trans('auth.fields.new_password') }}</label>
                         <input name="password" type="password" class="text-field" placeholder="••••••">
+                        <span class="password-visibility__toggle">&#128065;</span>
                     </div>
 
-                    <div class="form-item">
+                    <div class="form-item password-visibility">
                         <label for="password_confirmation" class="field-label">{{ trans('auth.fields.confirm_new_password') }}</label>
                         <input name="password_confirmation" type="password" class="text-field" placeholder="••••••">
+                        <span class="password-visibility__toggle">&#128065;</span>
                     </div>
 
                     <div class="form-actions -padded">
