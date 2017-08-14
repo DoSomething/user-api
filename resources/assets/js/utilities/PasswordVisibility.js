@@ -22,12 +22,9 @@ function clickHandler(event) {
 
 function init() {
   $(document).ready(() => {
-    const passwordToggles = document.getElementsByClassName('password-visibility__toggle');
-    if (! passwordToggles) return;
-
-    for (const toggle of passwordToggles) {
+    document.querySelectorAll('.password-visibility__toggle').forEach(toggle => {
       toggle.addEventListener('click', clickHandler);
-    }
+    });
   });
 }
 
