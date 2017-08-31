@@ -13,6 +13,7 @@ build:
           openssl genrsa -out storage/keys/private.key 1024
           openssl rsa -in storage/keys/private.key -pubout -out storage/keys/public.key
           chmod 600 storage/keys/private.key
+          chmod 600 storage/keys/public.key
     - leipert/composer-install@0.9.1
     - npm-install
     - script:
