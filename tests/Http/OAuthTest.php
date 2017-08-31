@@ -366,7 +366,7 @@ class OAuthTest extends TestCase
             'refresh_token' => $refreshToken,
         ]);
 
-        $this->assertResponseStatus(400);
+        $this->assertResponseStatus(401);
     }
 
     /**
@@ -468,7 +468,7 @@ class OAuthTest extends TestCase
             'scope' => 'admin user',
             'refresh_token' => $jwt['refresh_token'],
         ]);
-        $this->assertResponseStatus(400);
+        $this->assertResponseStatus(401);
     }
 
     /**
