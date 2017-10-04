@@ -48,7 +48,7 @@ class FixSourcesCommand extends Command
             }
 
             // Otherwise, reset their source to expected 'niche'.
-            $user->source = 'niche';
+            $user->source = $row['field_user_registration_source_value'];
             $user->source_detail = null;
             $user->save();
 
