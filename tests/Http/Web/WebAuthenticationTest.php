@@ -169,7 +169,7 @@ class WebAuthenticationTest extends TestCase
         $this->assertResponseStatus(302);
 
         $location = $this->response->headers->get('Location');
-        $this->assertNotEquals('http://puppet.sloth.com', $location);
+        $this->assertNotEquals('http://dosomething.org.sloth.com', $location);
     }
 
     /**
