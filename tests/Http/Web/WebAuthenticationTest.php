@@ -163,7 +163,7 @@ class WebAuthenticationTest extends TestCase
 
         $this->be($user, 'web');
 
-        $this->get('logout?redirect=http://puppet.sloth.com');
+        $this->get('logout?redirect=http://dosomething.org.sloth.com');
 
         $this->dontSeeIsAuthenticated('web');
         $this->assertResponseStatus(302);
