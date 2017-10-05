@@ -154,6 +154,25 @@ class WebAuthenticationTest extends TestCase
     }
 
     /**
+     * Test that we can't be redirected to a third party domain
+     * in the custom post-logout redirect.
+     */
+    public function testLogoutRedirectThirdPartyDomain()
+    {
+        $user = factory(User::class)->create();
+
+        $this->be($user, 'web');
+
+        $this->get('logout?redirect=http://puppet.sloth.com');
+
+        $this->dontSeeIsAuthenticated('web');
+        $this->assertResponseStatus(302);
+
+        $location = $this->response->headers->get('Location');
+        $this->assertNotEquals('http://puppet.sloth.com', $location);
+    }
+
+    /**
      * Test that users can register via the web.
      */
     public function testRegister()
