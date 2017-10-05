@@ -196,7 +196,7 @@ function format_legacy_mobile($mobile)
  * Check if the given url is a *.dosomething.org domain.
  *
  * @param  string  $url
- * @return boolean
+ * @return bool
  */
 function is_dosomething_domain($url)
 {
@@ -206,5 +206,5 @@ function is_dosomething_domain($url)
         return false;
     }
 
-    return strpos($parsed['host'], 'dosomething.org') !== FALSE;
+    return strpos($parsed['host'], 'dosomething.org') !== false;
 }
