@@ -173,6 +173,12 @@ function format_birthdate($birthdate)
     return format_date($birthdate, 'Y-m-d');
 }
 
+/**
+ * Format a legacy phone number to a proper number format.
+ *
+ * @param  string $mobile
+ * @return string
+ */
 function format_legacy_mobile($mobile)
 {
     try {
@@ -184,4 +190,21 @@ function format_legacy_mobile($mobile)
     } catch (\libphonenumber\NumberParseException $e) {
         return null;
     }
+}
+
+/**
+ * Check if the given url is a *.dosomething.org domain.
+ *
+ * @param  string  $url
+ * @return boolean
+ */
+function is_dosomething_domain($url)
+{
+    $parsed = parse_url($url);
+
+    if (! array_key_exists('host', $parsed)) {
+        return false;
+    }
+
+    return strpos($parsed['host'], 'dosomething.org') !== FALSE;
 }

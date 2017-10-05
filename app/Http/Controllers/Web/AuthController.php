@@ -155,7 +155,11 @@ class AuthController extends BaseController
     public function getLogout(Request $request)
     {
         // A custom post-logout redirect can be specified with `/logout?redirect=`
-        $redirect = $request->query('redirect', 'login');
+        $redirect = $request->query('redirect');
+
+        if (! $redirect || ! is_dosomething_domain($redirect)) {
+            $redirect = 'login';
+        }
 
         $this->auth->guard('web')->logout();
 
