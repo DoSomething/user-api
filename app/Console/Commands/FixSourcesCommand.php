@@ -34,7 +34,14 @@ class FixSourcesCommand extends Command
 
         $reader = Reader::createFromPath($path);
         foreach ($reader->fetchAssoc(0) as $index => $row) {
-            $user = User::findOrFail($row['field_northstar_id_value']);
+            $user = User::find($row['field_northstar_id_value']);
+
+            if (! $user) {
+                $this->warn('Could not find user for '.$row['field_northstar_id_value'].'.');
+
+                continue;
+            }
+
             $originalCreatedAt = Carbon::createFromTimestamp($row['created']);
 
             $threshold = $originalCreatedAt->subMonth(1);
