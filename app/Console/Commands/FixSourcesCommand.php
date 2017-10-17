@@ -14,7 +14,9 @@ class FixSourcesCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'northstar:sources {path}';
+    protected $signature = 'northstar:sources
+                            {path : the path of the csv with the correct sources.}
+                            {--throughput= : The maximum number of records to process per minute.}';
 
     /**
      * The console command description.
@@ -31,6 +33,7 @@ class FixSourcesCommand extends Command
     public function handle()
     {
         $path = base_path($this->argument('path'));
+        $throughput = $this->option('throughput');
 
         $reader = Reader::createFromPath($path);
         foreach ($reader->fetchAssoc(0) as $index => $row) {
@@ -60,6 +63,12 @@ class FixSourcesCommand extends Command
             $user->save();
 
             $this->line('Updated source for '.$user->id.'.');
+
+            // If the `--throughput #` parameter is set, make sure we can't
+            // process more than # users per minute by taking a little nap.
+            if ($throughput) {
+                sleep(60 / $throughput);
+            }
         }
 
         $this->info('Done!');
