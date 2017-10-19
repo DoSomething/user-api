@@ -2,6 +2,7 @@
 
 namespace Northstar\Providers;
 
+use Illuminate\Auth\NorthstarJwtGuard;
 use Northstar\Models\User;
 use DoSomething\Gateway\Blink;
 use Illuminate\Support\ServiceProvider;

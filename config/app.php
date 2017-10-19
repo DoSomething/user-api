@@ -177,6 +177,7 @@ return [
         Northstar\Providers\AuthServiceProvider::class,
         Northstar\Providers\BroadcastServiceProvider::class,
         Northstar\Providers\EventServiceProvider::class,
+        Northstar\Providers\GatekeeperServiceProvider::class,
         Northstar\Providers\RouteServiceProvider::class,
         Northstar\Providers\ValidationServiceProvider::class,
 

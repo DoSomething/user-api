@@ -37,8 +37,9 @@ return [
 
     'guards' => [
         'web' => [
-            'driver' => 'session',
+            'driver' => 'jwt',
             'provider' => 'users',
+            'key' => base_path('storage/keys/public.key'),
         ],
 
         'api' => [
