@@ -398,7 +398,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
         // If this user was just created and has an email, mark them as subscribed.
         // Otherwise set unsubscribed to null so it's removed in the filter later.
-        $isNewUser = $this->updated_at === $this->created_at;
+        $isNewUser = $this->updated_at->timestamp === $this->created_at->timestamp;
         $unsubscribed = ($this->email && $isNewUser) ? false : null;
 
         $data = collect([
@@ -434,7 +434,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
         return [
             'id' => $this->id,
-            'data' => $data,
+            'data' => $data->toArray(),
         ];
     }
 
