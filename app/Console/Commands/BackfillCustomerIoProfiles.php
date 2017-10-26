@@ -9,6 +9,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Jenssegers\Mongodb\Eloquent\Builder;
 use Northstar\Models\User;
+use Northstar\Services\CustomerIo;
 
 class BackfillCustomerIoProfiles extends Command
 {
@@ -21,7 +22,8 @@ class BackfillCustomerIoProfiles extends Command
                             {start : The date to begin back-filling records from.}
                             {end=now : The date to back-fill records until.}
                             {--created_at : Process records based on their created_at timestamp.}
-                            {--throughput= : The maximum number of records to process per minute.}';
+                            {--throughput= : The maximum number of records to process per minute.}
+                            {--bypassBlink : Bypass Blink and go straight to Customer.io}';
 
     /**
      * The console command description.
@@ -29,6 +31,58 @@ class BackfillCustomerIoProfiles extends Command
      * @var string
      */
     protected $description = 'Send profiles updated after the given date to Customer.io';
+
+    protected $customerIo;
+
+    public function __construct(CustomerIo $customerIO)
+    {
+        $this->customerIo = $customerIO;
+    }
+
+    /**
+     * Mark the given user as either updated or
+     * log the failed id to the console.
+     *
+     * @param  User  $user
+     * @param  boolean $isUpdated
+     */
+    private function markUserAsUpdated($user, $isUpdated)
+    {
+        if ($isUpdated) {
+            $user->cio_backfilled = true;
+            $user->save(['touch' => false]);
+
+            $this->line('Successfully backfilled user '.$user->id);
+        } else {
+            $this->error('Failed to backfill user '.$user->id);
+        }
+    }
+
+    /**
+     * Backfill the given user using Blink.
+     *
+     * @param  User $user
+     */
+    private function backfillWithBlink($user) {
+        try {
+            gateway('blink')->userCreate($user->toBlinkPayload());
+
+            $this->markUserAsUpdated($user, true);
+        } catch (Exception $e) {
+            $this->markUserAsUpdated($user, false);
+        }
+    }
+
+    /**
+     * Backfill the given user directly to Customer.Io
+     *
+     * @param  User $user
+     */
+    private function backfillWithCustomerIo($user) {
+        $response = $this->customerIo->updateProfile($user);
+
+        $this->markUserAsUpdated($user, $response);
+    }
 
     /**
      * Execute the console command.
@@ -42,6 +96,7 @@ class BackfillCustomerIoProfiles extends Command
 
         $byCreatedAt = $this->option('created_at');
         $throughput = $this->option('throughput');
+        $bypassBlink = $this->option('bypassBlink');
 
         if ($byCreatedAt) {
             // If we pass `--created_at` flag, iterate over all users created in that time frame.
@@ -57,18 +112,13 @@ class BackfillCustomerIoProfiles extends Command
         }
 
         $query->chunkById(200, function (Collection $users) use ($throughput) {
-            // Send each of the loaded users to Blink's user queue.
+            // Send each of the loaded users to be processed.
+
             $users->each(function (User $user) use ($throughput) {
-                try {
-                    gateway('blink')->userCreate($user->toBlinkPayload());
-
-                    // Mark this user as processed.
-                    $user->cio_backfilled = true;
-                    $user->save(['touch' => false]);
-
-                    $this->line('Successfully backfilled user '.$user->id);
-                } catch (Exception $e) {
-                    $this->error('Failed to backfill user '.$user->id);
+                if ($bypassBlink) {
+                    $this->backfillWithCustomerIo($user);
+                } else {
+                    $this->backfillWithBlink($user);
                 }
 
                 // If the `--throughput #` parameter is set, make sure we can't
