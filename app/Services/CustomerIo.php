@@ -3,7 +3,8 @@
 namespace Northstar\Services;
 
 use GuzzleHttp\Client;
-use App\Models\User;
+use GuzzleHttp\Exception\ClientException;
+use Northstar\Models\User;
 
 class CustomerIo
 {
@@ -12,8 +13,6 @@ class CustomerIo
     public function __construct()
     {
         $url = config('services.customerio.url');
-        $username = config('services.customerio.username');
-        $password = config('services.customerio.password');
 
         $this->client = new Client([
             'base_uri' => $url,
@@ -22,12 +21,22 @@ class CustomerIo
                     'Content-Type' => 'application/json',
                     'Accept' => 'application/json',
                 ],
-                'auth' => [
-                    'username' => $username,
-                    'password' => $password,
-                ],
             ],
         ]);
+    }
+
+    /**
+     * Get the auth parameters required to make the request.
+     * @return array
+     */
+    private function getAuthParams() {
+        $username = config('services.customerio.username');
+        $password = config('services.customerio.password');
+
+        return [
+            $username,
+            $password,
+        ];
     }
 
     /**
@@ -38,8 +47,9 @@ class CustomerIo
      */
     public function updateProfile(User $user)
     {
-        $response = $this->client->post('customers/'.$user->id, [
+        $response = $this->client->put('customers/'.$user->id, [
             'json' => $user->toBlinkPayload(),
+            'auth' => $this->getAuthParams(),
         ]);
 
         return $response->getStatusCode() === 200;
