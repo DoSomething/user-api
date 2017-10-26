@@ -54,7 +54,7 @@ class BackfillCustomerIoProfiles extends Command
      * log the failed id to the console.
      *
      * @param  User  $user
-     * @param  boolean $isUpdated
+     * @param  bool $isUpdated
      */
     private function markUserAsUpdated($user, $isUpdated)
     {
@@ -73,7 +73,8 @@ class BackfillCustomerIoProfiles extends Command
      *
      * @param  User $user
      */
-    private function backfillWithBlink($user) {
+    private function backfillWithBlink($user)
+    {
         try {
             gateway('blink')->userCreate($user->toBlinkPayload());
 
@@ -88,7 +89,8 @@ class BackfillCustomerIoProfiles extends Command
      *
      * @param  User $user
      */
-    private function backfillWithCustomerIo($user) {
+    private function backfillWithCustomerIo($user)
+    {
         $response = $this->customerIo->updateProfile($user);
 
         $this->markUserAsUpdated($user, $response);
