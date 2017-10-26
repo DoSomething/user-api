@@ -23,7 +23,7 @@ class BackfillCustomerIoProfiles extends Command
                             {end=now : The date to back-fill records until.}
                             {--created_at : Process records based on their created_at timestamp.}
                             {--throughput= : The maximum number of records to process per minute.}
-                            {--bypassBlink : Bypass Blink and go straight to Customer.io}';
+                            {--bypass_blink : Bypass Blink and go straight to Customer.io}';
 
     /**
      * The console command description.
@@ -32,11 +32,21 @@ class BackfillCustomerIoProfiles extends Command
      */
     protected $description = 'Send profiles updated after the given date to Customer.io';
 
+    /**
+     * The customer io service.
+     *
+     * @var CustomerIo
+     */
     protected $customerIo;
 
-    public function __construct(CustomerIo $customerIO)
+    /**
+     * Construct the command
+     */
+    public function __construct()
     {
-        $this->customerIo = $customerIO;
+        parent::__construct();
+
+        $this->customerIo = new CustomerIo();
     }
 
     /**
@@ -96,7 +106,7 @@ class BackfillCustomerIoProfiles extends Command
 
         $byCreatedAt = $this->option('created_at');
         $throughput = $this->option('throughput');
-        $bypassBlink = $this->option('bypassBlink');
+        $bypassBlink = $this->option('bypass_blink');
 
         if ($byCreatedAt) {
             // If we pass `--created_at` flag, iterate over all users created in that time frame.
@@ -111,10 +121,10 @@ class BackfillCustomerIoProfiles extends Command
             })->where('updated_at', '<', $end)->where('cio_backfilled', '!=', true);
         }
 
-        $query->chunkById(200, function (Collection $users) use ($throughput) {
+        $query->chunkById(200, function (Collection $users) use ($throughput, $bypassBlink) {
             // Send each of the loaded users to be processed.
 
-            $users->each(function (User $user) use ($throughput) {
+            $users->each(function (User $user) use ($throughput, $bypassBlink) {
                 if ($bypassBlink) {
                     $this->backfillWithCustomerIo($user);
                 } else {
