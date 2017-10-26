@@ -423,6 +423,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'created_at' => iso8601($this->created_at),
             'unsubscribed' => $unsubscribed,
         ])->filter(function ($value, $key) use ($requiredCustomerIoFields) {
+            // If it's an address field that isn't a string, get rid of it.
+            if (starts_with($key, 'addr') && gettype($value) !== 'string') {
+                return false;
+            }
+
             // If the field isn't required and has a null value, remove it.
             if (! $requiredCustomerIoFields->has($key)) {
                 return $value !== null;
