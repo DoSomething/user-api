@@ -38,7 +38,7 @@ class CustomerIo
     public function updateProfile(User $user)
     {
         $response = $this->client->post('customers/' . $user->id, [
-            'json': $user->toBlinkPayload(),
+            'json' => $user->toBlinkPayload(),
         ]);
 
         return $response->getStatusCode() === 200;
