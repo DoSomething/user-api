@@ -388,6 +388,57 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
+     * Transform the user model for Customer.io
+     *
+     * @return array
+     */
+    public function toCustomerIoPayload()
+    {
+        $requiredCustomerIoFields = collect(['id', 'updated_at', 'created_at']);
+
+        // If this user was just created and has an email, mark them as subscribed.
+        $isNewUser = $this->updated_at === $this->created_at;
+        $unsubscribed = ! ($isNewUser && $this->email);
+
+        $data = collect([
+            'id' => $this->id,
+            'email' => $this->email,
+            'phone' => $this->mobile,
+            'mobile_status' => $this->sms_status, // @TODO: Remove!
+            'sms_status' => $this->sms_status,
+            'facebook_id' => $this->facebook_id,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'birthdate' => format_date($this->birthdate, 'Y-m-d'),
+            'role' => $this->role,
+            'addr_city' => $this->addr_city,
+            'addr_state' => $this->addr_state,
+            'addr_zip' => $this->addr_zip,
+            'language' => $this->language,
+            'country' => $this->country,
+            'source' => $this->source,
+            'source_detail' => $this->source_detail,
+            'last_messaged_at' => iso8601($this->last_messaged_at),
+            'last_authenticated_at' => iso8601($this->last_authenticated_at),
+            'updated_at' => iso8601($this->updated_at),
+            'created_at' => iso8601($this->created_at),
+            'unsubscribed' => $unsubscribed,
+        ])->filter(function($value, $key) {
+            // If the field isn't required and has a null value, remove it.
+            if (! $requiredCustomerIoFields->has($key)) {
+                return $value !== null;
+            }
+
+            return true;
+        });
+
+        return [
+            'id' => $this->id,
+            'data' => $data,
+        ];
+    }
+
+    /**
      * Scope a query to get all of the users in a group.
      *
      * @return \Illuminate\Database\Eloquent\Builder

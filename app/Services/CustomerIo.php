@@ -47,8 +47,13 @@ class CustomerIo
      */
     public function updateProfile(User $user)
     {
+        // If the user doesn't have an email or phone number, don't send them.
+        if (! $user->email || ! $user->phone) {
+            return false;
+        }
+
         $response = $this->client->put('customers/'.$user->id, [
-            'json' => $user->toBlinkPayload(),
+            'json' => $user->toCustomerIoPayload(),
             'auth' => $this->getAuthParams(),
         ]);
 
