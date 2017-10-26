@@ -397,11 +397,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $requiredCustomerIoFields = collect(['id', 'updated_at', 'created_at']);
 
         // If this user was just created and has an email, mark them as subscribed.
+        // Otherwise set unsubscribed to null so it's removed in the filter later.
         $isNewUser = $this->updated_at === $this->created_at;
-        $unsubscribed = ! ($isNewUser && $this->email);
+        $unsubscribed = ($this->email && $isNewUser) ? false : null;
 
         $data = collect([
-            'id' => $this->id,
             'email' => $this->email,
             'phone' => $this->mobile,
             'mobile_status' => $this->sms_status, // @TODO: Remove!
@@ -423,7 +423,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'updated_at' => iso8601($this->updated_at),
             'created_at' => iso8601($this->created_at),
             'unsubscribed' => $unsubscribed,
-        ])->filter(function($value, $key) {
+        ])->filter(function($value, $key) use ($requiredCustomerIoFields) {
             // If the field isn't required and has a null value, remove it.
             if (! $requiredCustomerIoFields->has($key)) {
                 return $value !== null;
