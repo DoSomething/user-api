@@ -423,7 +423,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'updated_at' => iso8601($this->updated_at),
             'created_at' => iso8601($this->created_at),
             'unsubscribed' => $unsubscribed,
-        ])->filter(function($value, $key) use ($requiredCustomerIoFields) {
+        ])->filter(function ($value, $key) use ($requiredCustomerIoFields) {
             // If the field isn't required and has a null value, remove it.
             if (! $requiredCustomerIoFields->has($key)) {
                 return $value !== null;
