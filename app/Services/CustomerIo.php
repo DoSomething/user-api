@@ -3,7 +3,6 @@
 namespace Northstar\Services;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
 use Northstar\Models\User;
 
 class CustomerIo
@@ -29,7 +28,8 @@ class CustomerIo
      * Get the auth parameters required to make the request.
      * @return array
      */
-    private function getAuthParams() {
+    private function getAuthParams()
+    {
         $username = config('services.customerio.username');
         $password = config('services.customerio.password');
 
