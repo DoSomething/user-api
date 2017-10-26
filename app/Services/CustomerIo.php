@@ -1,6 +1,7 @@
 <?php
 
 namespace Northstar\Services;
+
 use GuzzleHttp\Client;
 use App\Models\User;
 
@@ -37,7 +38,7 @@ class CustomerIo
      */
     public function updateProfile(User $user)
     {
-        $response = $this->client->post('customers/' . $user->id, [
+        $response = $this->client->post('customers/'.$user->id, [
             'json' => $user->toBlinkPayload(),
         ]);
 
