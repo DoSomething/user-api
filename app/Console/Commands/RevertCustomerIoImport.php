@@ -5,7 +5,7 @@ namespace Northstar\Console\Commands;
 use Illuminate\Console\Command;
 use Northstar\Models\User;
 
-class CleanCustomerIoImport extends Command
+class RevertCustomerIoImport extends Command
 {
     /**
      * The name and signature of the console command.
