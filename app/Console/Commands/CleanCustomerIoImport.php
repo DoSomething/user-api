@@ -19,7 +19,7 @@ class CleanCustomerIoImport extends Command
      *
      * @var string
      */
-    protected $description = 'Send profiles updated after the given date to Customer.io';
+    protected $description = 'Revert all users marked as backfilled.';
 
     /**
      * Execute the console command.
