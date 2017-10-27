@@ -2,6 +2,7 @@
 
 namespace Northstar\Console\Commands;
 
+use Illuminate\Support\Collection;
 use Illuminate\Console\Command;
 use Northstar\Models\User;
 
