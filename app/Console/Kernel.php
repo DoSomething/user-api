@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \Northstar\Console\Commands\BackfillCustomerIoProfiles::class,
         \Northstar\Console\Commands\BackfillPhoenixAccounts::class,
+        \Northstar\Console\Commands\CleanCustomerIoImport::class,
         \Northstar\Console\Commands\CleanDrupalIdsCommand::class,
         \Northstar\Console\Commands\ConvertMobilesCommand::class,
         \Northstar\Console\Commands\FixE164DuplicatesCommand::class,
