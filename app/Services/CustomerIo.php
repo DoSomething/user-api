@@ -47,8 +47,8 @@ class CustomerIo
      */
     public function updateProfile(User $user)
     {
-        // If the user doesn't have an email or phone number, don't send them.
-        if (! $user->email || ! $user->phone) {
+        // If the user doesn't have an email and phone number, don't send them.
+        if (! $user->email && ! $user->mobile) {
             return false;
         }
 
