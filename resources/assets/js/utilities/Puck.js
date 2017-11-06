@@ -8,9 +8,11 @@ function init() {
     getUser: () => window.NORTHSTAR_ID,
   });
 
-  $('.facebook-login').on('click', () => (
-    puck.trackEvent('clicked facebook auth')
-  ));
+  $(document).ready(() => {
+    $('.facebook-login').on('click', () => (
+      puck.trackEvent('clicked facebook auth')
+    ));
+  });
 
   const $validationErrors = $('.validation-error');
   if ($validationErrors && $validationErrors.length) {
