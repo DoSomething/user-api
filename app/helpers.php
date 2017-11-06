@@ -243,3 +243,15 @@ function scriptify($json = [], $store = 'STATE')
 {
     return new HtmlString('<script type="text/javascript">window.'.$store.' = '.json_encode($json).'</script>');
 }
+
+/**
+ * Get the env vars which are safe for client usage.
+ *
+ * @return array
+ */
+function get_client_environment_vars()
+{
+    return [
+        'PUCK_URL' => config('services.puck.url'),
+    ];
+}

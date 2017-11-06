@@ -10,9 +10,4 @@ module.exports = configure({
     // Override output path for Laravel's "public" directory.
     path: path.join(__dirname, '/public/dist'),
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      PUCK_URL: JSON.stringify(process.env.PUCK_URL) || null,
-    }),
-  ],
 });

@@ -68,4 +68,8 @@ return [
         'username' => env('CUSTOMER_IO_USERNAME'),
         'password' => env('CUSTOMER_IO_PASSWORD'),
     ],
+
+    'puck' => [
+        'url' => env('PUCK_URL'),
+    ],
 ];

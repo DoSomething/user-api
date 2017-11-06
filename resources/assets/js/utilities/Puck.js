@@ -4,7 +4,7 @@ import $ from 'jquery';
 function init() {
   const puck = new Engine({
     source: 'northstar',
-    puckUrl: PUCK_URL,
+    puckUrl: window.ENV.PUCK_URL,
     getUser: () => window.NORTHSTAR_ID,
   });
 
