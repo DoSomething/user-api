@@ -34,6 +34,7 @@
     </div>
 
     @include('layouts.variables')
+    {{ scriptify(auth()->user() ? auth()->user()->id : null, 'NORTHSTAR_ID') }}
     <script src="{{ elixir('app.js', 'dist') }}"></script>
     @include('layouts.google_analytics')
 </body>

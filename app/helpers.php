@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Illuminate\Support\HtmlString;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberUtil;
 use Northstar\Auth\Normalizer;
@@ -229,4 +230,16 @@ function throttle($throughput)
 
     $seconds = 60 / $throughput;
     usleep($seconds * 1000000);
+}
+
+/**
+ * Create a script tag to set a global variable.
+ *
+ * @param $json
+ * @param string $store
+ * @return HtmlString
+ */
+function scriptify($json = [], $store = 'STATE')
+{
+    return new HtmlString('<script type="text/javascript">window.'.$store.' = '.json_encode($json).'</script>');
 }
