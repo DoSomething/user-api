@@ -12,12 +12,12 @@ function init() {
     $('.facebook-login').on('click', () => (
       puck.trackEvent('clicked facebook auth')
     ));
-  });
 
-  const $validationErrors = $('.validation-error');
-  if ($validationErrors && $validationErrors.length) {
-    puck.trackEvent('has validation errors');
-  }
+    const $validationErrors = $('.validation-error');
+    if ($validationErrors && $validationErrors.length) {
+      puck.trackEvent('has validation errors');
+    }
+  });
 }
 
 export default { init };
