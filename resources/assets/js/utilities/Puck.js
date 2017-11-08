@@ -15,7 +15,14 @@ function init() {
 
     const $validationErrors = $('.validation-error');
     if ($validationErrors && $validationErrors.length) {
-      puck.trackEvent('has validation errors');
+      const errors = window.ERRORS || {};
+      const invalidFields = Object.keys(errors);
+      const validationMessages = Object.values(errors);
+
+      puck.trackEvent('has validation errors', {
+        invalidFields,
+        validationMessages,
+      });
     }
   });
 }
