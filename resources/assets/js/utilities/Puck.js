@@ -1,4 +1,5 @@
 import { Engine } from '@dosomething/puck-client';
+import { flattenDeep } from 'lodash';
 import $ from 'jquery';
 
 function init() {
@@ -18,9 +19,7 @@ function init() {
       const errors = window.ERRORS || {};
       const invalidFields = Object.keys(errors);
 
-      const validationMessages = invalidFields.reduce((list, key) => (
-        list.concat(errors[key] || [])
-      ), []);
+      const validationMessages = flattenDeep(Object.values(errors));
 
       puck.trackEvent('has validation errors', {
         invalidFields,
