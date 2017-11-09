@@ -17,7 +17,10 @@ function init() {
     if ($validationErrors && $validationErrors.length) {
       const errors = window.ERRORS || {};
       const invalidFields = Object.keys(errors);
-      const validationMessages = Object.values(errors);
+
+      const validationMessages = invalidFields.reduce((list, key) => (
+        list.concat(errors[key] || [])
+      ), []);
 
       puck.trackEvent('has validation errors', {
         invalidFields,
