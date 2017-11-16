@@ -54,6 +54,9 @@ class FacebookController extends Controller
      */
     public function redirectToProvider()
     {
+        // Store the referrer URI so we can redirect back to it if necessary.
+        session()->put('referrer_uri', request()->headers->get('referer'));
+
         return Socialite::driver('facebook')
             ->scopes(['user_birthday'])
             ->redirect();
@@ -116,6 +119,6 @@ class FacebookController extends Controller
         $this->auth->guard('web')->login($northstarUser, true);
         $this->stathat->ezCount('facebook authentication');
 
-        return redirect()->intended('/');
+        return redirect(session('referrer_uri', '/'));
     }
 }
