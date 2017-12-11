@@ -69,7 +69,7 @@ class Handler extends ExceptionHandler
         }
 
         // Re-cast specific exceptions or uniquely render them:
-        if ($e instanceof HttpException && $e->getStatusCode() == 429) {
+        if ($e instanceof HttpException && $e->getStatusCode() === 429) {
             return $this->rateLimited($e);
         } elseif ($e instanceof AuthenticationException) {
             return $this->unauthenticated($request, $e);
