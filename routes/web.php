@@ -36,7 +36,7 @@ $router->get('register', 'AuthController@getRegister');
 $router->post('register', 'AuthController@postRegister');
 
 // Password Reset
-$this->get('password/reset', 'ForgotPasswordController@showLinkRequestForm');
-$this->post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
-$this->get('password/reset/{token}', ['as' => 'password.reset', 'uses' => 'ResetPasswordController@showResetForm']);
-$this->post('password/reset', 'ResetPasswordController@reset');
+$router->get('password/reset', 'ForgotPasswordController@showLinkRequestForm');
+$router->post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
+$router->get('password/reset/{token}', ['as' => 'password.reset', 'uses' => 'ResetPasswordController@showResetForm']);
+$router->post('password/reset', 'ResetPasswordController@reset');

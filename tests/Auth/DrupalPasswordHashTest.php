@@ -25,9 +25,9 @@ class DrupalPasswordHashTest extends BrowserKitTestCase
         $this->assertTrue($success);
 
         // Assert user has been updated in the database with a newly hashed password.
-        $user = $user->fresh();
-        $this->assertArrayNotHasKey('drupal_password', $user['attributes']);
-        $this->assertArrayHasKey('password', $user['attributes']);
+        $attributes = $user->fresh()->getAttributes();
+        $this->assertArrayNotHasKey('drupal_password', $attributes);
+        $this->assertArrayHasKey('password', $attributes);
 
         // Finally, let's try logging in with the newly hashed password
         $success = app(Registrar::class)->validateCredentials($user, [
@@ -53,9 +53,9 @@ class DrupalPasswordHashTest extends BrowserKitTestCase
         ]);
 
         // Assert user has been updated in the database with a newly hashed password.
-        $user = $user->fresh();
-        $this->assertArrayNotHasKey('drupal_password', $user['attributes']);
-        $this->assertArrayHasKey('password', $user['attributes']);
+        $attributes = $user->fresh()->getAttributes();
+        $this->assertArrayNotHasKey('drupal_password', $attributes);
+        $this->assertArrayHasKey('password', $attributes);
 
         // Finally, let's try logging in with the newly hashed password
         $success = app(Registrar::class)->validateCredentials($user, [
