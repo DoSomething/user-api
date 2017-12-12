@@ -6,6 +6,7 @@ use Northstar\Models\User;
 use Illuminate\Console\Command;
 use Northstar\Services\CustomerIo;
 use Illuminate\Support\Collection;
+use Northstar\Jobs\SendUserToCustomerIo;
 
 class BackfillCustomerIo extends Command
 {
@@ -14,7 +15,7 @@ class BackfillCustomerIo extends Command
      *
      * @var string
      */
-    protected $signature = 'northstar:cio {--throughput= : Maximum number of records to process per minute.}';
+    protected $signature = 'northstar:cio';
 
     /**
      * The console command description.
@@ -30,26 +31,16 @@ class BackfillCustomerIo extends Command
      */
     public function handle(CustomerIo $customerIo)
     {
-        $throughput = $this->option('throughput');
-
         $query = User::where('cio_full_backfill', '!=', true);
-        $query->chunkById(200, function (Collection $users) use ($customerIo, $throughput) {
-            $users->each(function (User $user) use ($customerIo, $throughput) {
-                $success = $customerIo->updateProfile($user);
-                if ($success) {
-                    // @NOTE: See 'AppServiceProvider' for disabled model event.
-                    $user->cio_full_backfill = true;
-                    $user->save(['timestamps' => false]);
+        $progress = $this->output->createProgressBar($query->count());
 
-                    $this->line('Sent user '.$user->id.' to Customer.io');
-                } else {
-                    $this->error('Failed to backfill user '.$user->id);
-                }
-
-                // If the `--throughput #` parameter is set, make sure we can't
-                // process more than # users per minute by taking a little nap.
-                throttle($throughput);
+        $query->chunkById(200, function (Collection $users) use ($customerIo, $progress) {
+            $users->each(function (User $user) use ($customerIo, $progress) {
+                dispatch(new SendUserToCustomerIo($user));
+                $progress->advance();
             });
         });
+
+        $this->info(' Done!');
     }
 }
