@@ -11,6 +11,7 @@
   ],
   "require": {
     "php": ">=7.0.0",
+    "aws/aws-sdk-php": "^3.46",
     "dfurnes/environmentalist": "0.0.2",
     "dosomething/gateway": "^1.7.0",
     "dosomething/stathat": "^2.0.0",
