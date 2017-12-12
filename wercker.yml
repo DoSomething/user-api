@@ -1,5 +1,8 @@
 box: dosomething/ds-docker-php
 
+services:
+  - redis
+
 build:
   # The steps that will be executed on build
   steps:
@@ -16,6 +19,8 @@ build:
         name: phpunit
         code: |-
           php artisan northstar:setup
+          export REDIS_HOST=$REDIS_PORT_6379_TCP_ADDR
+          export REDIS_PORT=$REDIS_PORT_6379_TCP_PORT
           vendor/bin/phpunit
     - script:
         name: discover production packages
