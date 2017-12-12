@@ -10,9 +10,10 @@
     }
   ],
   "require": {
-    "laravel/framework": "5.4.*",
+    "php": ">=7.0.0",
+    "laravel/framework": "5.5.*",
     "guzzlehttp/guzzle": "~6.2.1",
-    "jenssegers/mongodb": "dev-chunkById-5.4",
+    "jenssegers/mongodb": "dev-3.3.1-patched-reset",
     "league/flysystem-aws-s3-v3": "~1.0",
     "league/fractal": "0.13.*",
     "league/oauth2-server": "~6.0.0",
@@ -31,6 +32,7 @@
     "laravel/browser-kit-testing": "1.*"
   },
   "require-dev": {
+    "filp/whoops": "~2.0",
     "phpunit/phpunit": "~5.7",
     "phpspec/phpspec": "~2.1",
     "fzaninotto/faker": "~1.4",
@@ -59,16 +61,14 @@
     }
   },
   "scripts": {
-    "post-install-cmd": [
-      "Illuminate\\Foundation\\ComposerScripts::postInstall",
-      "php artisan optimize"
-    ],
-    "post-update-cmd": [
-      "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-      "php artisan optimize"
+    "post-autoload-dump": [
+      "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+      "@php artisan package:discover"
     ]
   },
   "config": {
-    "preferred-install": "dist"
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "optimize-autoloader": true
   }
 }

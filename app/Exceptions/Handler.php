@@ -3,6 +3,7 @@
 namespace Northstar\Exceptions;
 
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -68,7 +69,9 @@ class Handler extends ExceptionHandler
         }
 
         // Re-cast specific exceptions or uniquely render them:
-        if ($e instanceof AuthenticationException) {
+        if ($e instanceof HttpException && $e->getStatusCode() === 429) {
+            return $this->rateLimited($e);
+        } elseif ($e instanceof AuthenticationException) {
             return $this->unauthenticated($request, $e);
         } elseif ($e instanceof ValidationException || $e instanceof NorthstarValidationException) {
             return $this->invalidated($request, $e);
@@ -88,6 +91,30 @@ class Handler extends ExceptionHandler
         }
 
         return parent::render($request, $e);
+    }
+
+    /**
+     * Create a 'too many attempts' response.
+     *
+     * @param  string  $key
+     * @param  int  $maxAttempts
+     * @return \Illuminate\Http\Response|JsonResponse
+     */
+    protected function rateLimited($exception)
+    {
+        // Report the rate-limited request to StatHat.
+        event(new \Northstar\Events\Throttled());
+
+        $retryAfter = $exception->getHeaders()['Retry-After'];
+        $minutes = ceil($retryAfter / 60);
+        $pluralizedNoun = $minutes === 1 ? 'minute' : 'minutes';
+        $message = 'Too many attempts. Please try again in '.$minutes.' '.$pluralizedNoun.'.';
+
+        if (request()->wantsJson() || request()->ajax()) {
+            return new JsonResponse($message, 429, $exception->getHeaders());
+        }
+
+        return redirect()->back()->with('status', $message);
     }
 
     /**
