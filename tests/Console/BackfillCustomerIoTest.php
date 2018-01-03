@@ -10,7 +10,7 @@ class BackfillCustomerIoTest extends BrowserKitTestCase
     {
         factory(User::class, 5)->create();
 
-        // Reset our Blink mock & set expectation that it'll be called 5 times.
+        // Mock Customer.io API & set expectation that it'll be called 5 times.
         $this->mock(CustomerIo::class)->shouldReceive('updateProfile')->times(5)->andReturn(true);
 
         // Run the Customer.io backfill command.
