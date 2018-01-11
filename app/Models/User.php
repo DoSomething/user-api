@@ -79,6 +79,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 {
     use Authenticatable, Authorizable, Notifiable, CanResetPassword;
 
+    public $audited = true;
     /**
      * The attributes that are mass assignable.
      *
