@@ -79,7 +79,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 {
     use Authenticatable, Authorizable, Notifiable, CanResetPassword;
 
+    // Set class as 'audited', so audit information will be added on set attributes.
     public $audited = true;
+
     /**
      * The attributes that are mass assignable.
      *
