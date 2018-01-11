@@ -2,6 +2,7 @@
 
 namespace Northstar\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\Model as BaseModel;
 
@@ -26,6 +27,13 @@ class Model extends BaseModel
         // Empty strings should be saved as `null`.
         if (empty($this->attributes[$key])) {
             $this->attributes[$key] = null;
+        }
+
+        if ($this->audited) {
+            $this->attributes['audit'][$key] = [
+                'source' => client_id(),
+                'updated_at' => Carbon::now(),
+            ];
         }
 
         return $this;
