@@ -22,8 +22,6 @@ class Model extends BaseModel
      */
     public function setAttribute($key, $value)
     {
-        $currentValue = $this->$key;
-
         parent::setAttribute($key, $value);
 
         // Empty strings should be saved as `null`.
@@ -31,10 +29,10 @@ class Model extends BaseModel
             $this->attributes[$key] = null;
         }
 
-        if ($this->audited &&
-            $currentValue != $this->$key &&
-            ! in_array($key, ['updated_at', 'created_at'])
-        ) {
+        $isDirty = ! array_key_exists($key, $this->original) || $this->original[$key] != $this->attributes[$key];
+        $shouldAudit = ! in_array($key, ['updated_at', 'created_at']);
+
+        if ($this->audited && $isDirty && $shouldAudit) {
             $this->attributes['audit'][$key] = [
                 'source' => client_id(),
                 'updated_at' => Carbon::now(),
