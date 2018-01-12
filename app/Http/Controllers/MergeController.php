@@ -49,7 +49,7 @@ class MergeController extends Controller
         $duplicate = User::findOrFail($request->input('id'));
 
         // Get all profile fields from the duplicate (except metadata like ID or source).
-        $metadata = ['_id', 'updated_at', 'created_at', 'drupal_id', 'source', 'source_detail', 'role'];
+        $metadata = ['_id', 'updated_at', 'created_at', 'drupal_id', 'source', 'source_detail', 'role', 'audit'];
         $duplicateFields = array_except($duplicate->toArray(), $metadata);
         $duplicateFieldNames = array_keys($duplicateFields);
 

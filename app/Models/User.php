@@ -80,6 +80,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     use Authenticatable, Authorizable, Notifiable, CanResetPassword;
 
     /**
+     * Should changes to this model's attributes be stored
+     * in an audit property on the database record?
+     *
+     * @var bool
+     */
+    protected $audited = true;
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array

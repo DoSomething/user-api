@@ -23,4 +23,23 @@ class ModelTest extends BrowserKitTestCase
         $this->assertArrayNotHasKey('mobile', $document);
         $this->assertArrayNotHasKey('last_name', $document);
     }
+
+    /** @test */
+    public function it_should_set_audits_field_for_audited_class()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create();
+
+        // Freeze time to be able to test it.
+        $time = $this->mockTime();
+
+        // Set an attribute.
+        $user->first_name = 'Jill';
+        $user->save();
+
+        // Make sure the audit prop with audit info is added for the set attribute.
+        $document = $this->getMongoDocument('users', $user->id);
+        $this->assertArrayHasKey('audit', $document);
+        $this->assertEquals(['source' => 'northstar', 'updated_at' => $time], $user->audit['first_name']);
+    }
 }
