@@ -29,7 +29,7 @@ class Model extends BaseModel
             $this->attributes[$key] = null;
         }
 
-        $isDirty = ! array_key_exists($key, $this->original) || $this->original[$key] != $this->attributes[$key];
+        $isDirty = $this->isDirty($key);
         $shouldAudit = ! in_array($key, ['updated_at', 'created_at']);
 
         if ($this->audited && $isDirty && $shouldAudit) {
