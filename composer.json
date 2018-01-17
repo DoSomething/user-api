@@ -54,6 +54,13 @@
       "Northstar\\": "app/"
     }
   },
+  "extra": {
+    "laravel": {
+        "dont-discover": [
+            "jenssegers/mongodb"
+        ]
+    }
+  },
   "autoload-dev": {
     "classmap": [
       "tests/BrowserKitTestCase.php",
