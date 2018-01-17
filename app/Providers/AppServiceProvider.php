@@ -3,8 +3,8 @@
 namespace Northstar\Providers;
 
 use Northstar\Models\User;
-use DoSomething\Gateway\Blink;
 use Illuminate\Support\ServiceProvider;
+use Northstar\Database\MongoFailedJobProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -65,6 +65,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // Configure Mongo 'failed_jobs' collection.
+        $this->app->extend('queue.failer', function ($instance, $app) {
+            return new MongoFailedJobProvider(
+                $app['db'],
+                config('queue.failed.database'),
+                config('queue.failed.table')
+            );
+        });
     }
 }
