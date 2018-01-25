@@ -1,7 +1,7 @@
 <?php
 
 use Northstar\Models\User;
-use Northstar\Services\CustomerIo;
+use DoSomething\Gateway\Blink;
 
 class BackfillCustomerIoTest extends BrowserKitTestCase
 {
@@ -10,8 +10,8 @@ class BackfillCustomerIoTest extends BrowserKitTestCase
     {
         factory(User::class, 5)->create();
 
-        // Mock Customer.io API & set expectation that it'll be called 5 times.
-        $this->mock(CustomerIo::class)->shouldReceive('updateProfile')->times(5)->andReturn(true);
+        // Mock Blink client & set expectation that it'll be called 5 times.
+        $this->mock(Blink::class)->shouldReceive('userCreate')->times(5);
 
         // Run the Customer.io backfill command.
         $this->artisan('northstar:cio');

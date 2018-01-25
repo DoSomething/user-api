@@ -4,7 +4,6 @@ namespace Northstar\Jobs;
 
 use Northstar\Models\User;
 use Illuminate\Bus\Queueable;
-use Northstar\Services\CustomerIo;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -37,19 +36,18 @@ class SendUserToCustomerIo implements ShouldQueue
      *
      * @return void
      */
-    public function handle(CustomerIo $customerIo)
+    public function handle()
     {
-        // Rate limit Customer.io API requests to 10/s.
+        // Rate limit Blink/Customer.io API requests to 10/s.
         $throttler = Redis::throttle('customerio')->allow(10)->every(1);
-        $throttler->then(function () use ($customerIo) {
-            $success = $customerIo->updateProfile($this->user);
-
-            if (! $success) {
-                throw new \Exception('Failed to backfill user '.$this->user->id);
+        $throttler->then(function () {
+            if (config('features.blink')) {
+                $blinkPayload = $this->user->toBlinkPayload();
+                gateway('blink')->userCreate($blinkPayload);
             }
 
-            // @NOTE: Queue runner does not register model events, so this will
-            // not hit Blink. See 'AppServiceProvider' for disabled model event.
+            // @NOTE: Queue runner does not fire model events, so this will
+            // not trigger another Blink/C.io call. See 'AppServiceProvider'.
             $this->user->cio_full_backfill = true;
             $this->user->save(['timestamps' => false]);
         }, function () {
