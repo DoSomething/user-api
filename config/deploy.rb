@@ -42,15 +42,19 @@ namespace :deploy do
     run "cd #{release_path} && php artisan cache:clear"
   end
 
+  task :artisan_queue_restart do
+    run "cd #{release_path} && php artisan queue:restart"
+  end
+
   task :restart_php do
     run "sudo /usr/sbin/service php7.0-fpm restart"
   end
-
 end
 
 after "deploy:update", "deploy:cleanup"
 after "deploy:symlink", "deploy:link_folders"
 after "deploy:link_folders", "deploy:artisan_migrate"
 after "deploy:artisan_migrate", "deploy:artisan_cache_clear"
-after "deploy:artisan_cache_clear", "deploy:restart_php"
+after "deploy:artisan_cache_clear", "deploy:artisan_queue_restart"
+after "deploy:artisan_queue_restart", "deploy:restart_php"
 
