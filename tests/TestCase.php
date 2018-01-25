@@ -76,6 +76,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 
         // Get a new Faker generator from Laravel.
         $this->faker = app(\Faker\Generator::class);
+        $this->faker->addProvider(new FakerPhoneNumber($faker));
 
         // Reset the testing database & run migrations.
         app()->make('db')->getMongoDB()->drop();

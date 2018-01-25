@@ -8,6 +8,8 @@
  * @var \Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(Northstar\Models\User::class, function (Faker\Generator $faker) {
+    $faker->addProvider(new FakerPhoneNumber($faker));
+
     return [
         'first_name' => $faker->firstName,
         'last_name' => $faker->optional(0.5)->lastName,
@@ -29,6 +31,8 @@ $factory->define(Northstar\Models\User::class, function (Faker\Generator $faker)
 });
 
 $factory->defineAs(Northstar\Models\User::class, 'staff', function (Faker\Generator $faker) {
+    $faker->addProvider(new FakerPhoneNumber($faker));
+
     return [
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
@@ -45,6 +49,8 @@ $factory->defineAs(Northstar\Models\User::class, 'staff', function (Faker\Genera
 });
 
 $factory->defineAs(Northstar\Models\User::class, 'admin', function (Faker\Generator $faker) {
+    $faker->addProvider(new FakerPhoneNumber($faker));
+
     return [
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
