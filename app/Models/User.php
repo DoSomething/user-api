@@ -429,10 +429,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'country' => $this->country,
             'source' => $this->source,
             'source_detail' => $this->source_detail,
-            'last_messaged_at' => iso8601($this->last_messaged_at),
             'last_authenticated_at' => iso8601($this->last_authenticated_at),
             'updated_at' => iso8601($this->updated_at),
             'created_at' => iso8601($this->created_at),
+            'last_messaged_at' => optional($this->last_messaged_at)->timestamp,
         ];
     }
 
