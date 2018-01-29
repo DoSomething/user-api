@@ -416,7 +416,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return [
             'id' => $this->id,
             'email' => $this->email,
-            'mobile' => $this->mobile,
+            'mobile' => $this->mobile, // TODO: Update Blink to just accept 'phone' field.
             'sms_status' => $this->sms_status,
             'facebook_id' => $this->facebook_id,
             'first_name' => $this->first_name,
@@ -429,10 +429,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'country' => $this->country,
             'source' => $this->source,
             'source_detail' => $this->source_detail,
-            'last_authenticated_at' => iso8601($this->last_authenticated_at),
-            'updated_at' => iso8601($this->updated_at),
-            'created_at' => iso8601($this->created_at),
             'last_messaged_at' => optional($this->last_messaged_at)->timestamp,
+            'last_authenticated_at' => iso8601($this->last_authenticated_at), // TODO: Update Blink to just accept timestamp.
+            'updated_at' => iso8601($this->updated_at), // TODO: Update Blink to just accept timestamp.
+            'created_at' => iso8601($this->created_at), // TODO: Update Blink to just accept timestamp.
         ];
     }
 
