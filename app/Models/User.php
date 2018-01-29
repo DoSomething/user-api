@@ -417,7 +417,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'id' => $this->id,
             'email' => $this->email,
             'mobile' => $this->mobile,
-            'mobile_status' => $this->sms_status, // @TODO: Remove!
             'sms_status' => $this->sms_status,
             'facebook_id' => $this->facebook_id,
             'first_name' => $this->first_name,
