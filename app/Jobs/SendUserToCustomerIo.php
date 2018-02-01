@@ -43,6 +43,7 @@ class SendUserToCustomerIo implements ShouldQueue
         $throttler->then(function () {
             if (config('features.blink')) {
                 $blinkPayload = $this->user->toBlinkPayload();
+                info('blink: user.backfill', $blinkPayload);
                 gateway('blink')->userCreate($blinkPayload);
             }
 
