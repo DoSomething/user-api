@@ -126,17 +126,24 @@ class Handler extends ExceptionHandler
      */
     protected function invalidated($request, $e)
     {
-        if ($request->ajax() || $request->wantsJson()) {
-            return $e->getResponse();
+        $wantsJson = $request->ajax() || $request->wantsJson();
+        if ($wantsJson && $e instanceof ValidationException) {
+            return response()->json([
+                'error' => [
+                    'code' => 422,
+                    'message' => 'Failed validation.',
+                    'fields' => $e->errors(),
+                ],
+            ]);
         }
 
-        if ($e instanceof ValidationException) {
+        if ($wantsJson && $e instanceof NorthstarValidationException) {
             return $e->getResponse();
         }
 
         return redirect()->back()
             ->withInput($request->except('password', 'password_confirmation'))
-            ->withErrors($e->getErrors());
+            ->withErrors($e->errors());
     }
 
     /**
