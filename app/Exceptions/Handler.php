@@ -134,7 +134,7 @@ class Handler extends ExceptionHandler
                     'message' => 'Failed validation.',
                     'fields' => $e->errors(),
                 ],
-            ]);
+            ], 422);
         }
 
         if ($wantsJson && $e instanceof NorthstarValidationException) {
