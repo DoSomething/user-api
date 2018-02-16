@@ -55,7 +55,7 @@ class NorthstarValidationException extends Exception
      *
      * @return array
      */
-    public function getErrors()
+    public function errors()
     {
         return $this->errors;
     }
