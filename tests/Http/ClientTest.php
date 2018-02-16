@@ -50,6 +50,21 @@ class ClientTest extends BrowserKitTestCase
     /**
      * Verify an admin is able to create a new client.
      */
+    public function testStoreWithValidationErrors()
+    {
+        $this->asAdminUser()->json('POST', 'v2/clients', [
+            // Oops I forgot the request body!
+        ]);
+
+        $this->assertResponseStatus(422);
+        $this->seeJsonStructure([
+            'error' => ['code', 'message', 'fields'],
+        ]);
+    }
+
+    /**
+     * Verify an admin is able to create a new client.
+     */
     public function testStoreAsAdminUser()
     {
         $this->asAdminUser()->json('POST', 'v2/clients', [
