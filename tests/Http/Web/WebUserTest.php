@@ -60,14 +60,14 @@ class WebUserTest extends BrowserKitTestCase
 
         $this->visit('users/'.$user->id.'/edit')
              ->type('Jean-Paul', 'first_name')
-             ->type('Beaubier', 'last_name')
+             ->type('Beaubier-Lee', 'last_name')
              ->press('Save')
              ->seePageIs('/');
 
         $updatedUser = User::find($user->id);
 
         $this->assertEquals('Jean-Paul', $updatedUser->first_name);
-        $this->assertEquals('Beaubier', $updatedUser->last_name);
+        $this->assertEquals('Beaubier-Lee', $updatedUser->last_name);
     }
 
     /**

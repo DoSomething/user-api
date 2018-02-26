@@ -87,7 +87,7 @@ class UserController extends BaseController
 
         $this->registrar->validate($request, $user, [
             'first_name' => 'required|max:50',
-            'last_name' => 'nullable|alpha',
+            'last_name' => 'nullable|max:50',
             'birthdate' => 'nullable|required|date',
             'password' => 'nullable|min:6|max:512|confirmed', // @TODO: Split into separate form.
         ]);
