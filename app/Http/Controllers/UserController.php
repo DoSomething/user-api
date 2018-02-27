@@ -67,6 +67,7 @@ class UserController extends Controller
 
         // Use `?search[column]=value` or `?search=key` tto find users matching one or more criteria.
         $searches = $request->query('search');
+
         $query = $this->search($query, normalize('credentials', $searches), User::$indexes);
 
         return $this->paginatedCollection($query, $request);
