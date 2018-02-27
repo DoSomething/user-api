@@ -315,4 +315,3 @@ function normalizeEmailOrMobile($value)
 
     return $value;
 }
-

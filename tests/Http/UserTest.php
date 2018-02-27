@@ -485,11 +485,11 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create(['email' => $this->faker->email]);
         $secondUser = factory(User::class)->create(['mobile' => $this->faker->phoneNumber]);
 
-        $this->withAccessToken(['admin'])->json('GET', 'v1/users?search[email]=' . $user->email);
+        $this->withAccessToken(['admin'])->json('GET', 'v1/users?search[email]='.$user->email);
         $this->assertCount(1, $this->decodeResponseJson()['data']);
         $this->assertEquals($this->decodeResponseJson()['data'][0]['email'], $user->email);
 
-        $this->withAccessToken(['admin'])->json('GET', 'v1/users?search[email]=' . $user->email . '&search[mobile]=' . $secondUser->mobile);
+        $this->withAccessToken(['admin'])->json('GET', 'v1/users?search[email]='.$user->email.'&search[mobile]='.$secondUser->mobile);
 
         $this->assertCount(2, $this->decodeResponseJson()['data']);
         $this->assertEquals($this->decodeResponseJson()['data'][0]['email'], $user->email);
@@ -507,11 +507,11 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create(['email' => $this->faker->email]);
         $secondUser = factory(User::class)->create(['mobile' => $this->faker->phoneNumber]);
 
-        $this->withAccessToken(['admin'])->json('GET', 'v1/users?search=' . $user->email);
+        $this->withAccessToken(['admin'])->json('GET', 'v1/users?search='.$user->email);
         $this->assertCount(1, $this->decodeResponseJson()['data']);
         $this->assertEquals($this->decodeResponseJson()['data'][0]['email'], $user->email);
 
-        $this->withAccessToken(['admin'])->json('GET', 'v1/users?search=' . $user->email . ',' . $secondUser->mobile);
+        $this->withAccessToken(['admin'])->json('GET', 'v1/users?search='.$user->email.','.$secondUser->mobile);
         dd($this->decodeResponseJson());
         $this->assertCount(2, $this->decodeResponseJson()['data']);
         $this->assertEquals($this->decodeResponseJson()['data'][0]['email'], $user->email);
