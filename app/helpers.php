@@ -255,3 +255,35 @@ function get_client_environment_vars()
         'PUCK_URL' => config('services.puck.url'),
     ];
 }
+
+/**
+ * Runs query where there are multiple values provided from a comma-separated list.
+ * e.g. `search=test@dosomething.org,testing@dosomething.org,1234567890`
+ * @param query $query
+ * @param string $queryString
+ * @param array $filters
+ * @return query result
+ */
+function multipleValueQuery($query, $queryString, $filters)
+{
+    $values = explode(',', $queryString);
+
+    if (count($values) > 1) {
+        // For the first `where` query, we want to limit results... from then on,
+        // we want to append (e.g. `SELECT * (WHERE _ OR WHERE _ OR WHERE _)` and (WHERE _ OR WHERE _))
+        $query->where(function ($query) use ($values, $filters) {
+            foreach ($values as $value) {
+                foreach ($filters as $filter) {
+                    $query->orWhere($filter, $value);
+                }
+            }
+        });
+    } else {
+        $query->where(function ($query) use ($values, $filters) {
+            foreach ($filters as $filter) {
+                $query->orWhere($filter, $values[0]);
+            }
+        });
+    }
+}
+

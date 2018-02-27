@@ -64,15 +64,18 @@ trait FiltersRequests
             return $query;
         }
 
-        // Searches may only be performed on indexed fields.
-        $searches = array_intersect_key($searches, array_flip($indexes));
-
-        // For the first `where` query, we want to limit results... from then on,
-        // we want to append (e.g. `SELECT * WHERE _ OR WHERE _ OR WHERE _`)
-        $firstWhere = true;
-        foreach ($searches as $term => $value) {
-            $query->where($term, '=', $value, ($firstWhere ? 'and' : 'or'));
-            $firstWhere = false;
+        if (is_string($searches)) {
+            multipleValueQuery($query, $searches, $indexes);
+        } else {
+            // Searches may only be performed on indexed fields.
+            $searches = array_intersect_key($searches, array_flip($indexes));
+            // For the first `where` query, we want to limit results... from then on,
+            // we want to append (e.g. `SELECT * WHERE _ OR WHERE _ OR WHERE _`)
+            $firstWhere = true;
+            foreach ($searches as $term => $value) {
+                $query->where($term, '=', $value, ($firstWhere ? 'and' : 'or'));
+                $firstWhere = false;
+            }
         }
 
         return $query;

@@ -65,7 +65,7 @@ class UserController extends Controller
         $afters = normalize('dates', $request->query('after'));
         $query = $this->filter($query, $afters, [User::CREATED_AT, User::UPDATED_AT], '>');
 
-        // Use `?search[column]=value` to find users matching one or more criteria.
+        // Use `?search[column]=value` or `?search=key` tto find users matching one or more criteria.
         $searches = $request->query('search');
         $query = $this->search($query, normalize('credentials', $searches), User::$indexes);
 
