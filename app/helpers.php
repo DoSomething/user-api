@@ -273,6 +273,8 @@ function multipleValueQuery($query, $queryString, $filters)
         // we want to append (e.g. `SELECT * (WHERE _ OR WHERE _ OR WHERE _)` and (WHERE _ OR WHERE _))
         $query->where(function ($query) use ($values, $filters) {
             foreach ($values as $value) {
+                $value = normalizeEmailOrMobile($value);
+
                 foreach ($filters as $filter) {
                     $query->orWhere($filter, $value);
                 }
@@ -281,9 +283,36 @@ function multipleValueQuery($query, $queryString, $filters)
     } else {
         $query->where(function ($query) use ($values, $filters) {
             foreach ($filters as $filter) {
-                $query->orWhere($filter, $values[0]);
+                $value = normalizeEmailOrMobile($values[0]);
+
+                $query->orWhere($filter, $value);
             }
         });
     }
+}
+
+/**
+ * Normalizes email and mobile values.
+ *
+ * @param string $value
+ * @return string normalized value
+ */
+function normalizeEmailOrMobile($value)
+{
+    if (is_numeric($value) && strlen($value) === 10) {
+        $keyValue = [
+            'mobile' => $value,
+        ];
+
+        $value = normalize('credentials', $keyValue)['mobile'];
+    } elseif (filter_var(trim($value), FILTER_VALIDATE_EMAIL) !== false) {
+        $keyValue = [
+            'email' => $value,
+        ];
+
+        $value = normalize('credentials', $keyValue)['email'];
+    }
+
+    return $value;
 }
 
