@@ -512,7 +512,7 @@ class UserTest extends BrowserKitTestCase
         $this->assertEquals($this->decodeResponseJson()['data'][0]['email'], $user->email);
 
         $this->withAccessToken(['admin'])->json('GET', 'v1/users?search='.$user->email.','.$secondUser->mobile);
-        dd($this->decodeResponseJson());
+
         $this->assertCount(2, $this->decodeResponseJson()['data']);
         $this->assertEquals($this->decodeResponseJson()['data'][0]['email'], $user->email);
         $this->assertEquals($this->decodeResponseJson()['data'][1]['mobile'], substr($secondUser->mobile, 2));
