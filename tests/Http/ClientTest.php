@@ -1,5 +1,6 @@
 <?php
 
+use Northstar\Models\User;
 use Northstar\Models\Client;
 
 class ClientTest extends BrowserKitTestCase
@@ -10,6 +11,20 @@ class ClientTest extends BrowserKitTestCase
     public function testIndexAsNormalUser()
     {
         $this->asNormalUser()->get('v2/clients');
+        $this->assertResponseStatus(401);
+    }
+
+    /**
+     * Verify a admin client without the 'client' scope can't read these.
+     */
+    public function testIndexWithoutProperScope()
+    {
+        $admin = factory(User::class, 'admin')->create();
+
+        // Look ma, no 'client' scope!!
+        $this->asUser($admin, ['user', 'role:admin']);
+
+        $this->get('v2/clients');
         $this->assertResponseStatus(401);
     }
 

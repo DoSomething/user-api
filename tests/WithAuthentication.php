@@ -93,7 +93,7 @@ trait WithAuthentication
     {
         $admin = factory(User::class, 'admin')->create();
 
-        return $this->asUser($admin, ['user', 'role:admin']);
+        return $this->asUser($admin, ['user', 'client', 'role:admin']);
     }
 
     /**
