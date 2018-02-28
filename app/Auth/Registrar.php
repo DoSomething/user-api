@@ -82,7 +82,7 @@ class Registrar
         }
 
         // If there is no country, default to Fastly headers
-        if ($fields['country'] === '---') {
+        if (isset($fields['country']) && $fields['country'] === '---') {
             $fields['country'] = country_code();
         }
 
