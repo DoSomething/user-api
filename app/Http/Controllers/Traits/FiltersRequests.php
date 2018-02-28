@@ -63,19 +63,28 @@ trait FiltersRequests
         if (! $searches) {
             return $query;
         }
-
         if (is_string($searches)) {
-            multipleValueQuery($query, $searches, $indexes);
+            // 'searchTerm' → ['email' => 'searchTerm', 'mobile' => 'searchTerm', ...]
+            $value = normalize('username', $searches);
+
+            // If this was not an email or mobile number and got incorrectly normalized, take original value.
+            if (empty($value)) {
+                $value = $searches;
+            }
+
+            $searches = array_fill_keys($indexes, $value);
         } else {
             // Searches may only be performed on indexed fields.
             $searches = array_intersect_key($searches, array_flip($indexes));
-            // For the first `where` query, we want to limit results... from then on,
-            // we want to append (e.g. `SELECT * WHERE _ OR WHERE _ OR WHERE _`)
-            $firstWhere = true;
-            foreach ($searches as $term => $value) {
-                $query->where($term, '=', $value, ($firstWhere ? 'and' : 'or'));
-                $firstWhere = false;
-            }
+        }
+
+        // For the first `where` query, we want to limit results... from then on,
+        // we want to append (e.g. `SELECT * WHERE _ OR WHERE _ OR WHERE _`)
+        $firstWhere = true;
+
+        foreach ($searches as $term => $value) {
+            $query->where($term, '=', $value, ($firstWhere ? 'and' : 'or'));
+            $firstWhere = false;
         }
 
         return $query;
