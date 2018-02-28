@@ -64,7 +64,6 @@ trait FiltersRequests
             return $query;
         }
         if (is_string($searches)) {
-            // 'searchTerm' → ['email' => 'searchTerm', 'mobile' => 'searchTerm', ...]
             $value = normalize('username', $searches);
 
             // If this was not an email or mobile number and got incorrectly normalized, take original value.
@@ -72,6 +71,7 @@ trait FiltersRequests
                 $value = $searches;
             }
 
+            // 'searchTerm' → ['email' => 'searchTerm', 'mobile' => 'searchTerm', ...]
             $searches = array_fill_keys($indexes, $value);
         } else {
             // Searches may only be performed on indexed fields.
