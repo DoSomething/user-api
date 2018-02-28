@@ -473,4 +473,24 @@ class UserTest extends BrowserKitTestCase
             ],
         ]);
     }
+
+    /**
+     * Test that we can filter records with both ?search[email]=test@dosomething.org
+     * and ?search=test@dosomething.org patterns
+     * GET /v1/users/
+     *
+     * @return void
+     */
+    public function testFilterBySearchFieldParam()
+    {
+        $user = factory(User::class)->create(['email' => $this->faker->email]);
+
+        $this->withAccessToken(['admin'])->json('GET', 'v1/users?search[email]='.$user->email);
+        $this->assertCount(1, $this->decodeResponseJson()['data']);
+        $this->assertEquals($this->decodeResponseJson()['data'][0]['email'], $user->email);
+
+        $this->withAccessToken(['admin'])->json('GET', 'v1/users?search='.$user->email);
+        $this->assertCount(1, $this->decodeResponseJson()['data']);
+        $this->assertEquals($this->decodeResponseJson()['data'][0]['email'], $user->email);
+    }
 }
