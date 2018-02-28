@@ -119,7 +119,7 @@ class Normalizer
      */
     public function username($value)
     {
-        $type = $this->isEmail($value) ? 'Email' : 'Mobile';
+        $type = $this->isEmail($value) ? 'email' : 'mobile';
 
         return $this->{$type}($value);
     }
