@@ -35,7 +35,7 @@ class Scope
         'openid' => [
             'description' => 'Allows users to be authorized by OpenID Connect.',
         ],
-        'clients' => [
+        'client' => [
             'description' => 'Allows access to the client resource.',
         ],
     ];

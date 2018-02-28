@@ -19,6 +19,7 @@ class ClientController extends Controller
         $this->transformer = $transformer;
 
         $this->middleware('role:admin');
+        $this->middleware('scope:client');
     }
 
     /**
