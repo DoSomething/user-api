@@ -41,7 +41,7 @@ class UserTransformer extends TransformerAbstract
             $response['addr_state'] = $user->addr_state;
             $response['addr_zip'] = $user->addr_zip;
 
-            // Signup source (e.g. drupal, cgg, mobile...)
+            // Signup source (e.g. cgg, mobile...)
             $response['source'] = $user->source;
             $response['source_detail'] = $user->source_detail;
 
