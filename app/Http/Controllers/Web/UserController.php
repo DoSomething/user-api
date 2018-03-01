@@ -87,11 +87,6 @@ class UserController extends BaseController
             throw new AccessDeniedHttpException;
         }
 
-        // If there is no country, default to Fastly headers
-        if ($request['country'] === '---') {
-            $request['country'] = country_code();
-        }
-
         $this->registrar->validate($request, $user, [
             'first_name' => 'required|max:50',
             'last_name' => 'nullable|max:50',
