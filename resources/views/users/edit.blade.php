@@ -81,8 +81,8 @@
                 <label for="country" class="field-label">Country</label>
                 <div class="select">
                     <select id="country" name="country">
-                        <option>---</option>
-                        @foreach (get_countries() as $code => $country)
+                        <option value="{{ $defaultCountry }}" {{ $user->country === $defaultCountry ? 'selected' : null }}>{{ get_countries()->get($defaultCountry) }}</option>
+                        @foreach (get_countries()->except($defaultCountry) as $code => $country)
                             <option value="{{ $code }}" {{ $user->country === $code ? 'selected' : null }}>{{ $country }}</option>
                         @endforeach
                     </select>
