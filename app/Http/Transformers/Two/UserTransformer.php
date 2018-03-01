@@ -17,8 +17,6 @@ class UserTransformer extends TransformerAbstract
     {
         $response = [
             'id' => $user->_id,
-            '_id' => $user->_id, // @DEPRECATED: Will be removed.
-
             'first_name' => $user->first_name,
         ];
 
@@ -43,18 +41,12 @@ class UserTransformer extends TransformerAbstract
             $response['addr_state'] = $user->addr_state;
             $response['addr_zip'] = $user->addr_zip;
 
-            // Source for the address fields (e.g. 'sms')
-            $response['addr_source'] = $user->addr_source;
-
             // Signup source (e.g. drupal, cgg, mobile...)
             $response['source'] = $user->source;
             $response['source_detail'] = $user->source_detail;
 
             // Internal & third-party service IDs:
             $response['slack_id'] = $user->slack_id;
-            $response['mobilecommons_id'] = $user->mobilecommons_id;
-            $response['mobilecommons_status'] = $user->sms_status; // @DEPRECATED: Will be removed.
-            $response['parse_installation_ids'] = $user->parse_installation_ids;
 
             // Subscription status
             $response['sms_status'] = $user->sms_status;
@@ -64,8 +56,6 @@ class UserTransformer extends TransformerAbstract
         $response['language'] = $user->language;
         $response['country'] = $user->country;
 
-        // Drupal ID for this user. Used in the mobile app.
-        $response['drupal_id'] = $user->drupal_id;
         $response['role'] = $user->role;
 
         if (Scope::allows('admin') || Gate::allows('view-full-profile', $user)) {
