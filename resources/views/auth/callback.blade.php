@@ -27,6 +27,9 @@
                 <div class="figure__body">
                     You are logged in as <strong>{{ $user->displayName() }}</strong>.
                 </div>
+                <div class="figure__body footnote">
+                    {{ $user->email or $user->mobile }}
+                </div>
             </figure>
         </div>
 
