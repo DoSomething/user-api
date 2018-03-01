@@ -244,13 +244,12 @@ class UserTest extends BrowserKitTestCase
         ]);
     }
 
-     /**
+    /**
      * Test that an admin can update a user's profile, including their role.
      * GET /v2/users/:term/:id
      *
      * @return void
      */
-
     public function testV2UpdateProfileAsAdmin()
     {
         $user = factory(User::class)->create();
