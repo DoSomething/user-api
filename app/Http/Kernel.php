@@ -33,10 +33,12 @@ class Kernel extends HttpKernel
             \Northstar\Http\Middleware\VerifyCsrfToken::class,
             \Northstar\Http\Middleware\SetLanguageFromHeader::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            'guard:web',
         ],
         'api' => [
             \Northstar\Http\Middleware\ParseOAuthHeader::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            'guard:api',
         ],
     ];
 
@@ -46,6 +48,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
+        'guard' => \DoSomething\Gateway\Server\Middleware\SetGuard::class,
         'auth' => \Northstar\Http\Middleware\Authenticate::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \Northstar\Http\Middleware\RedirectIfAuthenticated::class,
