@@ -101,7 +101,7 @@ curl -X GET \
 </details>
 
 ## Create a User
-Create a new user. If a user already exists, the existing user will be returned (and will not create a duplicate account). 
+Create a new user. If a user already exists, an exception error (`A record matching one of the given indexes already exists.` will be returned) and will not create a duplicate account. 
 
 An "[upsert](https://docs.mongodb.org/v2.6/reference/glossary/#term-upsert)" will only occur if using the `upsert=true` param. If this is present and a user with a matching identifier is found, new/changed properties will be merged into the existing document. This means
 making the same request multiple times will _not_ create duplicate accounts.

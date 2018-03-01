@@ -109,8 +109,12 @@ class UserController extends Controller
                 $user = $this->registrar->register($request->except('role'), $existingUser);
             }
         } else {
-            // If the user exists, return the user. Otherwise, create a new one.
-            $user = $existingUser ? $existingUser : $this->registrar->register($request->except('role'), null);
+            // If the user exists, throw an error. Otherwise, create a new one.
+            if ($existingUser) {
+                throw new NorthstarValidationException(['id' => ['A record matching one of the given indexes already exists.']], $existingUser);
+            }
+
+            $user = $this->registrar->register($request->except('role'), null);
         }
 
         $code = ! is_null($existingUser) ? 200 : 201;

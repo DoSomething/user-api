@@ -405,20 +405,16 @@ class UserTest extends BrowserKitTestCase
             'source_detail' => 'agents-of-shield',
         ]);
 
-        // Test that the user is returned without any changes.
+        // Test that an exception is thrown if the user exists.
         $this->asAdminUser()->json('POST', 'v2/users', [
             'email' => $user->email,
             'first_name' => 'Daizy',
         ]);
 
-        // It should return the unchanged user.
-        $this->assertResponseStatus(200);
-        $this->seeJsonSubset([
-            'data' => [
-                'email' => $user->email,
-                'first_name' => 'Daisy',
-            ],
-        ]);
+        // It should return a 422 error.
+        $this->assertResponseStatus(422);
+        $this->assertEquals($this->decodeResponseJson()['error']['fields']['id'][0], 'A record matching one of the given indexes already exists.');
+
 
         // Test that the user is returned with changes if ?upsert=true is present.
         $this->asAdminUser()->json('POST', 'v2/users?upsert=true', [
