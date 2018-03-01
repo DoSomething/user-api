@@ -9,6 +9,7 @@ use Northstar\Exceptions\NorthstarValidationException;
 use Northstar\Http\Transformers\Two\UserTransformer;
 use Northstar\Models\User;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Northstar\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
@@ -86,7 +87,7 @@ class UserController extends Controller
         $existingUser = $this->registrar->resolve($request->only('id', 'email', 'mobile', 'drupal_id', 'facebook_id'));
 
         // If `?upsert=true` and a record already exists, update a user with the $request fields.
-        if (filter_var($request->query('upsert', 'true'), FILTER_VALIDATE_BOOLEAN) {
+        if ($request->query('upsert') && $existingUser) {
             // Normalize input and validate the request
             $request = normalize('credentials', $request);
             $this->registrar->validate($request, $existingUser);
@@ -102,17 +103,15 @@ class UserController extends Controller
                         'existing' => $existingUser->{$index},
                     ]);
 
-                    throw new NorthstarValidationException([$index => ['Cannot upsert an existing index.']], $existingUser);
+                    throw new NorthstarValidationException([$index => ['Cannot upsert an existing index.']], $user);
                 }
-            }
-        }
 
-        $user = $this->registrar->register($request->except('role'), $existingUser, function (User $user) use ($request, $existingUser) {
-            // Only save a source if not upserting a user.
-            if ($request->has('source') && ! $existingUser) {
-                $user->setSource($request->input('source'), $request->input('source_detail'));
+                $user = $this->registrar->register($request->except('role'), $existingUser);
             }
-        });
+        } else {
+            // If the user exists, return the user. Otherwise, create a new one.
+            $user = $existingUser ? $existingUser : $this->registrar->register($request->except('role'), null);
+        }
 
         $code = ! is_null($existingUser) ? 200 : 201;
 
