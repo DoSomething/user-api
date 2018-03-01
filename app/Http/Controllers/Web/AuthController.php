@@ -209,6 +209,19 @@ class AuthController extends BaseController
     }
 
     /**
+     * Display some useful information (and a logout button!) for
+     * developers using Postman/Paw to test the Auth Code flow.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function callback()
+    {
+        $user = $this->auth->guard('web')->user();
+
+        return view('auth.callback', compact('user'));
+    }
+
+    /**
      * Get the login username to be used by the controller.
      *
      * @return string
