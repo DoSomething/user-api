@@ -67,7 +67,9 @@ class UserController extends BaseController
             throw new AccessDeniedHttpException;
         }
 
-        return view('users.edit', ['user' => $user]);
+        $defaultCountry = country_code() ?: 'US';
+
+        return view('users.edit', compact('user', 'defaultCountry'));
     }
 
     /**
