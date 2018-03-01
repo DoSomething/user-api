@@ -18,7 +18,11 @@ $router->group(['prefix' => 'v2', 'as' => 'v2.'], function () {
     $this->get('userinfo', 'UserInfoController@show');
 
     // Users
-    // ...
+    $this->resource('users', 'Two\UserController', ['except' => ['show', 'update']]);
+    $this->get('users/{term}/{id}', 'Two\UserController@show');
+    $this->put('users/{term}/{id}', 'Two\UserController@update');
+    $this->post('users/{id}/avatar', 'Two\AvatarController@store');
+    $this->post('users/{id}/merge', 'Two\MergeController@store');
 
     // Profile
     // ...
