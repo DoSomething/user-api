@@ -83,31 +83,27 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // This endpoint will upsert by default (so it will either create a new user, or
-        // update a user if one with a matching index field is found).
         $existingUser = $this->registrar->resolve($request->only('id', 'email', 'mobile', 'drupal_id', 'facebook_id'));
 
-        // If `?upsert=false` and a record already exists, return a custom validation error.
-        if (! filter_var($request->query('upsert', 'true'), FILTER_VALIDATE_BOOLEAN) && $existingUser) {
-            throw new NorthstarValidationException(['id' => ['A record matching one of the given indexes already exists.']], $existingUser);
-        }
+        // If `?upsert=true` and a record already exists, update a user with the $request fields.
+        if (filter_var($request->query('upsert', 'true'), FILTER_VALIDATE_BOOLEAN) {
+            // Normalize input and validate the request
+            $request = normalize('credentials', $request);
+            $this->registrar->validate($request, $existingUser);
 
-        // Normalize input and validate the request
-        $request = normalize('credentials', $request);
-        $this->registrar->validate($request, $existingUser);
+            // Makes sure we can't "upsert" a record to have a changed index if already set.
+            // @TODO: There must be a better way to do this...
+            foreach (User::$uniqueIndexes as $index) {
+                if ($request->has($index) && ! empty($existingUser->{$index}) && $request->input($index) !== $existingUser->{$index}) {
+                    app('stathat')->ezCount('upsert conflict');
+                    logger('attempted to upsert an existing index', [
+                        'index' => $index,
+                        'new' => $request->input($index),
+                        'existing' => $existingUser->{$index},
+                    ]);
 
-        // Makes sure we can't "upsert" a record to have a changed index if already set.
-        // @TODO: There must be a better way to do this...
-        foreach (User::$uniqueIndexes as $index) {
-            if ($request->has($index) && ! empty($existingUser->{$index}) && $request->input($index) !== $existingUser->{$index}) {
-                app('stathat')->ezCount('upsert conflict');
-                logger('attempted to upsert an existing index', [
-                    'index' => $index,
-                    'new' => $request->input($index),
-                    'existing' => $existingUser->{$index},
-                ]);
-
-                throw new NorthstarValidationException([$index => ['Cannot upsert an existing index.']], $existingUser);
+                    throw new NorthstarValidationException([$index => ['Cannot upsert an existing index.']], $existingUser);
+                }
             }
         }
 
