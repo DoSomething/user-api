@@ -310,7 +310,7 @@ class UserTest extends BrowserKitTestCase
         // We should not see a validation error.
         $this->assertResponseStatus(201);
 
-        // The user should not have their invalid country removed.
+        // The user should have their invalid country removed.
         $this->assertEquals($this->decodeResponseJson()['data']['country'], null);
 
         $this->asAdminUser()->json('POST', 'v2/users', [
