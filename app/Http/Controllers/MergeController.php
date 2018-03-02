@@ -6,6 +6,7 @@ use Northstar\Exceptions\NorthstarValidationException;
 use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Http\Transformers\UserTransformer;
+use Northstar\Merge\Merger;
 
 class MergeController extends Controller
 {
@@ -15,15 +16,22 @@ class MergeController extends Controller
     protected $transformer;
 
     /**
+     * @var UserTransformer
+     */
+    protected $merger;
+
+
+    /**
      * Make a new MergeController, inject dependencies,
      * and set middleware for this controller's methods.
      *
      * @param UserTransformer $transformer
      */
-    public function __construct(UserTransformer $transformer)
+    public function __construct(UserTransformer $transformer, Merger $merger)
     {
         $this->transformer = $transformer;
         $this->middleware('role:admin,staff');
+        $this->merger = $merger;
     }
 
     /**
@@ -53,9 +61,20 @@ class MergeController extends Controller
         $duplicateFields = array_except($duplicate->toArray(), $metadata);
         $duplicateFieldNames = array_keys($duplicateFields);
 
+        $intersectedFields = array_intersect_key($target->toArray(), array_flip($duplicateFieldNames));
+
         // Are there fields we can't automatically merge? Throw an error.
         if (count(array_intersect_key($target->toArray(), array_flip($duplicateFieldNames)))) {
-            $errors = collect($duplicateFieldNames)->map(function ($fieldName) {
+            // Call merge on intersecting fields
+            $unmergedFields = [];
+            foreach ($intersectedFields as $field => $value) {
+                $merged = $this->merger->merge($field, $target->$field, $duplicate->$field);
+                if (! $merged) {
+                    array_push($unmergedFields, $field);
+                }
+            }
+
+            $errors = collect($unmergedFields)->map(function ($fieldName) {
                 return 'Cannot merge "'.$fieldName.'" into non-null field on target.';
             });
 
