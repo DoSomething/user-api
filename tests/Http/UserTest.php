@@ -294,6 +294,29 @@ class UserTest extends BrowserKitTestCase
     }
 
     /**
+     * Test that the `country` field is validated.
+     * GET /users/:id
+     *
+     * @return void
+     */
+    public function testV2ValidatesCountryCode()
+    {
+        $this->asAdminUser()->json('POST', 'v2/users', [
+            'email' => 'american@example.com',
+            'country' => 'united states',
+        ]);
+
+        $this->assertResponseStatus(422);
+
+        $this->asAdminUser()->json('POST', 'v1/users', [
+            'email' => 'american@example.com',
+            'country' => 'us',
+        ]);
+
+        $this->assertResponseStatus(201);
+    }
+
+    /**
      * Test that an admin can update a user's profile, including their role.
      * POST /v2/users/
      *

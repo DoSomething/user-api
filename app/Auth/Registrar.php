@@ -99,6 +99,7 @@ class Registrar
     public function resolve($credentials)
     {
         $credentials = normalize('credentials', $credentials);
+
         $matches = (new User)->query();
 
         // For the first `where` query, we want to limit results... from then on,
