@@ -79,7 +79,7 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that retrieving a user as a non-admin returns limited profile.
-     * GET /v2/users/:term/:id
+     * GET /v2/users/:id
      *
      * @return void
      */
@@ -89,7 +89,7 @@ class UserTest extends BrowserKitTestCase
         $viewer = factory(User::class)->create();
 
         // Test that we can view public profile as another user.
-        $this->asUser($viewer, ['user', 'user:admin'])->get('v2/users/_id/'.$user->id);
+        $this->asUser($viewer, ['user', 'user:admin'])->get('v2/users/'.$user->id);
         $this->assertResponseStatus(200);
 
         // And test that private profile fields are hidden for the other user.
@@ -103,7 +103,7 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that retrieving a user as an admin returns full profile.
-     * GET /v2/users/:term/:id
+     * GET /v2/users/:id
      *
      * @return void
      */
@@ -112,7 +112,7 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $admin = factory(User::class, 'staff')->create();
 
-        $this->asUser($admin, ['user', 'user:admin'])->get('v2/users/id/'.$user->id);
+        $this->asUser($admin, ['user', 'user:admin'])->get('v2/users/'.$user->id);
         $this->assertResponseStatus(200);
 
         // Check that public & private profile fields are visible
@@ -125,7 +125,7 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that retrieving a user as an admin returns full profile.
-     * GET /v2/users/:term/:id
+     * GET /v2/users/:id
      *
      * @return void
      */
@@ -134,7 +134,7 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $admin = factory(User::class, 'admin')->create();
 
-        $this->asUser($admin, ['user', 'user:admin'])->get('v2/users/id/'.$user->id);
+        $this->asUser($admin, ['user', 'user:admin'])->get('v2/users/'.$user->id);
         $this->assertResponseStatus(200);
 
         // Check that public & private profile fields are visible
@@ -147,7 +147,7 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that a staffer can update a user's profile.
-     * GET /v2/users/:term/:id
+     * GET /v2/users/:id
      *
      * @return void
      */
@@ -156,7 +156,7 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff'])->json('PUT', 'v2/users/id/'.$user->id, [
+        $this->asUser($staff, ['user', 'role:staff'])->json('PUT', 'v2/users/'.$user->id, [
             'first_name' => 'Alexander',
             'last_name' => 'Hamilton',
         ]);
@@ -175,7 +175,7 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff'])->json('PUT', 'v2/users/id/'.$user->id, [
+        $this->asUser($staff, ['user', 'role:staff'])->json('PUT', 'v2/users/'.$user->id, [
             'mobile' => '',
         ]);
 
@@ -191,7 +191,7 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff'])->json('PUT', 'v2/users/id/'.$user->id, [
+        $this->asUser($staff, ['user', 'role:staff'])->json('PUT', 'v2/users/'.$user->id, [
             'mobile' => null,
         ]);
 
@@ -203,7 +203,7 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that a staffer cannot change a user's role.
-     * GET /v2/users/:term/:id
+     * GET /v2/users/:id
      *
      * @return void
      */
@@ -212,7 +212,7 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff'])->json('PUT', 'v2/users/id/'.$user->id, [
+        $this->asUser($staff, ['user', 'role:staff'])->json('PUT', 'v2/users/'.$user->id, [
             'role' => 'admin',
         ]);
 
@@ -221,7 +221,7 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that an admin can create a new user.
-     * GET /v2/users/:term/:id
+     * POST /v2/users
      *
      * @return void
      */
@@ -246,7 +246,7 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that an admin can update a user's profile, including their role.
-     * GET /v2/users/:term/:id
+     * PUT /v2/users/:id
      *
      * @return void
      */
@@ -255,7 +255,7 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $admin = factory(User::class, 'admin')->create();
 
-        $this->asUser($admin, ['user', 'role:admin'])->json('PUT', 'v2/users/id/'.$user->id, [
+        $this->asUser($admin, ['user', 'role:admin'])->json('PUT', 'v2/users/'.$user->id, [
             'first_name' => 'Hercules',
             'last_name' => 'Mulligan',
             'role' => 'admin',
@@ -306,6 +306,7 @@ class UserTest extends BrowserKitTestCase
             'email' => 'antonia.anderson@example.com',
             'country' => 'United States',
         ]);
+        dd($this->decodeResponseJson());
 
         // We should not see a validation error.
         $this->assertResponseStatus(201);
@@ -349,7 +350,7 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that ISO-8601 formatted date strings are accepted.
-     * PUT /v2/users/id/:id
+     * PUT /v2/users/:id
      *
      * @return void
      */
@@ -358,7 +359,7 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
 
         $newTimestamp = '2017-11-02T18:42:00.000Z';
-        $this->asAdminUser()->putJson('v2/users/id/'.$user->id, [
+        $this->asAdminUser()->putJson('v2/users/'.$user->id, [
             'last_messaged_at' => $newTimestamp,
         ]);
 

@@ -183,7 +183,7 @@ curl -X POST \
   -H "Content-Type: application/json" \
   -H "Accept: application/json" \
   -d '{"email": "test@example.com", "password": "test123", "birthdate": "10/29/1990", "first_name": "test_fname", "interests": "hockeys,kickballs"}' \
-  https://northstar.dosomething.org/v2/users?create_drupal_user=1
+  https://northstar.dosomething.org/v2/users
 ```
 
 </details>
@@ -214,15 +214,12 @@ curl -X POST \
 </details>
 
 ## Retrieve a User
-Get profile data for a specific user. This can be retrieved with either the user's Northstar ID (which is automatically
-generated when a new database record is created), a mobile phone number, or an email address.
+Get profile data for a specific user by the user's Northstar ID.
 
-Fetching a user via username, email, or mobile requires either the `admin` scope, or an "admin" or "staff" role with the appropriate scope.
+Fetching a user requires either the `admin` scope, or an "admin" or "staff" role with the appropriate scope.
 
 ```
-GET /v2/users/id/<user_id>
-GET /v2/users/mobile/<mobile>
-GET /v2/users/email/<email>
+GET /v2/users/:user_id
 ```
 
 <details>
@@ -231,7 +228,7 @@ GET /v2/users/email/<email>
 curl -X GET \
   -H "Authorization: Bearer ${ACCESS_TOKEN}" \
   -H "Accept: application/json"
-  https://northstar.dosomething.org/v2/users/mobile/5555555555
+  https://northstar.dosomething.org/v2/users/5430e850dt8hbc541c37tt3d
 ```
 </details>
 
@@ -266,11 +263,10 @@ curl -X GET \
 </details>
 
 ## Update a User
-Update a user resource. This can be retrieved with the user's Northstar ID or the source ID (`drupal_id`). This requires either the `admin` scope, or "admin" or "staff" role with the appropriate scope.
+Update a user resource, retrieved with the user's Northstar ID. This requires either the `admin` scope, or "admin" or "staff" role with the appropriate scope.
 
 ```
-PUT /v2/users/_id/<user_id>
-PUT /v2/users/drupal_id/<drupal_id>
+PUT /v2/users/:user_id
 ```
 
 **Request Parameters:**
@@ -322,7 +318,7 @@ PUT /v2/users/drupal_id/<drupal_id>
 curl -X PUT \
   -H "Authorization: Bearer ${ACCESS_TOKEN}" \
   -d '{"first_name": "New First name"}' \
-  https://northstar.dosomething.org/v2/_id/5430e850dt8hbc541c37tt3d
+  https://northstar.dosomething.org/v2/5430e850dt8hbc541c37tt3d
 ```
 
 </details>

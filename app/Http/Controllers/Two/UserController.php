@@ -124,39 +124,32 @@ class UserController extends Controller
 
     /**
      * Display the specified resource.
-     * GET /users/:term/:id
+     * GET /users/:id
      *
-     * @param string $term - term to search by (eg. mobile, drupal_id, id, email, etc)
      * @param string $id - the actual value to search for
      *
      * @return \Illuminate\Http\Response
      * @throws NotFoundHttpException
      */
-    public function show($term, $id)
+    public function show($id)
     {
-        // Restrict username/email/mobile/facebook_id profile lookup to admin or staff.
-        if (in_array($term, ['username', 'email', 'mobile', 'facebook_id'])) {
-            Role::gate(['admin', 'staff']);
-        }
-
-        $user = $this->registrar->resolveOrFail([$term => $id]);
+        $user = User::findOrFail($id);
 
         return $this->item($user);
     }
 
     /**
      * Update the specified resource in storage.
-     * PUT /users/:term/:id
+     * PUT /users/:id
      *
-     * @param string $term - term to search by (eg. mobile, drupal_id, id, email, etc)
      * @param string $id - the actual value to search for
      * @param Request $request
      *
      * @return \Illuminate\Http\Response
      */
-    public function update($term, $id, Request $request)
+    public function update($id, Request $request)
     {
-        $user = $this->registrar->resolveOrFail([$term => $id]);
+        $user = User::findOrFail($id);
 
         // Normalize input and validate the request
         $request = normalize('credentials', $request);
