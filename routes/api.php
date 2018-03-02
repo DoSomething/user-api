@@ -19,8 +19,6 @@ $router->group(['prefix' => 'v2', 'as' => 'v2.'], function () {
 
     // Users
     $this->resource('users', 'Two\UserController');
-    $this->post('users/{id}/avatar', 'Two\AvatarController@store');
-    $this->post('users/{id}/merge', 'Two\MergeController@store');
 
     // Profile
     // ...
