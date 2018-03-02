@@ -18,9 +18,7 @@ $router->group(['prefix' => 'v2', 'as' => 'v2.'], function () {
     $this->get('userinfo', 'UserInfoController@show');
 
     // Users
-    $this->resource('users', 'Two\UserController', ['except' => ['show', 'update']]);
-    $this->get('users/{id}', 'Two\UserController@show');
-    $this->put('users/{id}', 'Two\UserController@update');
+    $this->resource('users', 'Two\UserController');
     $this->post('users/{id}/avatar', 'Two\AvatarController@store');
     $this->post('users/{id}/merge', 'Two\MergeController@store');
 

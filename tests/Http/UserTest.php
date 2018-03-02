@@ -294,39 +294,6 @@ class UserTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that the `country` field is removed if it
-     * does not contain a valid ISO-3166 country code.
-     * POST /v2/users
-     *
-     * @return void
-     */
-    public function testV2SanitizesInvalidCountryCode()
-    {
-        $this->asAdminUser()->json('POST', 'v2/users', [
-            'email' => 'antonia.anderson@example.com',
-            'country' => 'United States',
-        ]);
-        dd($this->decodeResponseJson());
-
-        // We should not see a validation error.
-        $this->assertResponseStatus(201);
-
-        // The user should have their invalid country removed.
-        $this->assertEquals($this->decodeResponseJson()['data']['country'], null);
-
-        $this->asAdminUser()->json('POST', 'v2/users', [
-            'email' => 'antonia.anderso1n@example.com',
-            'country' => 'US',
-        ]);
-
-        // We should not see a validation error.
-        $this->assertResponseStatus(201);
-
-        // The user should have their valid country saved.
-        $this->assertEquals($this->decodeResponseJson()['data']['country'], 'US');
-    }
-
-    /**
      * Test that an admin can update a user's profile, including their role.
      * POST /v2/users/
      *
