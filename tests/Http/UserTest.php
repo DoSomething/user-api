@@ -296,29 +296,33 @@ class UserTest extends BrowserKitTestCase
     /**
      * Test that the `country` field is removed if it
      * does not contain a valid ISO-3166 country code.
-     * GET /v2/users/:term/:id
+     * POST /v2/users
      *
      * @return void
      */
     public function testV2SanitizesInvalidCountryCode()
     {
-        $user = factory(User::class)->create([
+        $this->asAdminUser()->json('POST', 'v2/users', [
             'email' => 'antonia.anderson@example.com',
             'country' => 'United States',
         ]);
 
+        // We should not see a validation error.
+        $this->assertResponseStatus(201);
+
+        // The user should not have their invalid country removed.
+        $this->assertEquals($this->decodeResponseJson()['data']['country'], null);
+
         $this->asAdminUser()->json('POST', 'v2/users', [
-            'email' => 'antonia.anderson@example.com',
-            'first_name' => 'Antonia',
+            'email' => 'antonia.anderso1n@example.com',
+            'country' => 'US',
         ]);
 
         // We should not see a validation error.
-        $this->assertResponseStatus(200);
+        $this->assertResponseStatus(201);
 
-        // The user should be updated & their invalid country removed.
-        $user = $user->fresh();
-        $this->assertEquals('antonia.anderson@example.com', $user->email);
-        $this->assertEquals(null, $user->country);
+        // The user should have their valid country saved.
+        $this->assertEquals($this->decodeResponseJson()['data']['country'], 'US');
     }
 
     /**
