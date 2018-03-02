@@ -131,37 +131,6 @@ class LegacyUserTest extends BrowserKitTestCase
     }
 
     /**
-     * Test for retrieving a user with a non-admin key.
-     * GET /users/:term/:id
-     *
-     * @return void
-     */
-    // public function testGetPublicDataFromUser()
-    // {
-    //     $user = User::create([
-    //         'email' => $this->faker->email,
-    //         'mobile' => $this->faker->phoneNumber,
-    //         'first_name' => $this->faker->firstName,
-    //         'last_name' => $this->faker->lastName,
-    //     ]);
-
-    //     // Test that we can view public profile of the user.
-    //     $this->withLegacyApiKeyScopes(['user'])->get('v1/users/_id/'.$user->id);
-    //     $this->assertResponseStatus(200);
-    //     $this->seeJsonStructure([
-    //         'data' => [
-    //             'id', 'first_name',
-    //         ],
-    //     ]);
-
-    //     // And test that private profile fields are hidden for 'user' scope.
-    //     $data = $this->decodeResponseJson()['data'];
-    //     $this->assertArrayNotHasKey('email', $data);
-    //     $this->assertArrayNotHasKey('mobile', $data);
-    //     $this->assertArrayNotHasKey('last_name', $data);
-    // }
-
-    /**
      * Test for retrieving a user with an admin key.
      * GET /users/:term/:id
      *
@@ -313,29 +282,6 @@ class LegacyUserTest extends BrowserKitTestCase
 
         // There should be one match (a user with the provided email)
         $this->assertCount(1, $this->decodeResponseJson()['data']);
-    }
-
-    /**
-     * Test for creating a new user.
-     * POST /users
-     *
-     * @return void
-     */
-    public function testCreateUser()
-    {
-        // Create a new user object
-        $payload = [
-            'email' => 'new@dosomething.org',
-            'source' => 'phpunit',
-        ];
-
-        $this->withLegacyApiKeyScopes(['admin'])->json('POST', 'v1/users', $payload);
-        $this->assertResponseStatus(201);
-        $this->seeJsonStructure([
-            'data' => [
-                'id', 'email', 'source', 'created_at',
-            ],
-        ]);
     }
 
     /**
@@ -1019,28 +965,28 @@ class LegacyUserTest extends BrowserKitTestCase
      *
      * @return void
      */
-    // public function testCreateUser()
-    // {
-    //     $this->asAdminUser()->json('POST', 'v1/users', [
-    //         'first_name' => 'Hercules',
-    //         'last_name' => 'Mulligan',
-    //         'email' => $this->faker->email,
-    //         'country' => 'us',
-    //         'source' => 'historical',
-    //         'source_detail' => 'american-revolution',
-    //     ]);
+    public function testCreateUser()
+    {
+        $this->asAdminUser()->json('POST', 'v1/users', [
+            'first_name' => 'Hercules',
+            'last_name' => 'Mulligan',
+            'email' => $this->faker->email,
+            'country' => 'us',
+            'source' => 'historical',
+            'source_detail' => 'american-revolution',
+        ]);
 
-    //     $this->assertResponseStatus(201);
-    //     $this->seeJsonSubset([
-    //         'data' => [
-    //             'first_name' => 'Hercules',
-    //             'last_name' => 'Mulligan',
-    //             'country' => 'US', // mutator should capitalize country codes!
-    //             'source' => 'historical',
-    //             'source_detail' => 'american-revolution',
-    //         ],
-    //     ]);
-    // }
+        $this->assertResponseStatus(201);
+        $this->seeJsonSubset([
+            'data' => [
+                'first_name' => 'Hercules',
+                'last_name' => 'Mulligan',
+                'country' => 'US', // mutator should capitalize country codes!
+                'source' => 'historical',
+                'source_detail' => 'american-revolution',
+            ],
+        ]);
+    }
 
     /**
      * Test that an admin can update a user's profile, including their role.
