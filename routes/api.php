@@ -18,7 +18,7 @@ $router->group(['prefix' => 'v2', 'as' => 'v2.'], function () {
     $this->get('userinfo', 'UserInfoController@show');
 
     // Users
-    // ...
+    $this->resource('users', 'Two\UserController');
 
     // Profile
     // ...
