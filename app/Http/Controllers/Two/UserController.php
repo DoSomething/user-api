@@ -110,12 +110,9 @@ class UserController extends Controller
 
                     throw new NorthstarValidationException([$index => ['Cannot upsert an existing index.']], $user);
                 }
-
-                $user = $this->registrar->register($request->except('role'), $existingUser);
             }
-        } else {
-            $user = $this->registrar->register($request->except('role'), null);
-        }
+
+        $user = $this->registrar->register($request->except('role'),
 
         $code = ! is_null($existingUser) ? 200 : 201;
 
