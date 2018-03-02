@@ -86,12 +86,17 @@ class UserController extends Controller
     {
         $existingUser = $this->registrar->resolve($request->only('id', 'email', 'mobile', 'drupal_id', 'facebook_id'));
 
+        // If there is an existing user, throw an error.
+        if ($existingUser && ! $request->query('upsert')) {
+            throw new NorthstarValidationException(['id' => ['A record matching one of the given indexes already exists.']], $existingUser);
+        }
+
+        // Normalize input and validate the request
+        $request = normalize('credentials', $request);
+        $this->registrar->validate($request, $existingUser);
+
         // If `?upsert=true` and a record already exists, update a user with the $request fields.
         if ($request->query('upsert') && $existingUser) {
-            // Normalize input and validate the request
-            $request = normalize('credentials', $request);
-            $this->registrar->validate($request, $existingUser);
-
             // Makes sure we can't "upsert" a record to have a changed index if already set.
             // @TODO: There must be a better way to do this...
             foreach (User::$uniqueIndexes as $index) {
@@ -109,11 +114,6 @@ class UserController extends Controller
                 $user = $this->registrar->register($request->except('role'), $existingUser);
             }
         } else {
-            // If the user exists, throw an error. Otherwise, create a new one.
-            if ($existingUser) {
-                throw new NorthstarValidationException(['id' => ['A record matching one of the given indexes already exists.']], $existingUser);
-            }
-
             $user = $this->registrar->register($request->except('role'), null);
         }
 
