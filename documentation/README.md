@@ -29,10 +29,9 @@ Endpoint                                     | Functionality                    
 `POST v1/users/:user_id/merge`               | [Merge User Accounts](endpoints/users.md#merge-user-accounts) | `role:admin,staff` or `admin`
 `GET v2/users`                               | [Retrieve All Users](endpoints/v2/users.md#retrieve-all-users) | `role:admin` or `admin`
 `POST v2/users`                              | [Create a User](endpoints/v2/users.md#create-a-user) | `role:admin` or `admin`
-`GET v2/users/:term/:identifier`             | [Retrieve a User](endpoints/v2/users.md#retrieve-a-user) 
-`PUT v2/users/:term/:id`                     | [Update a User](endpoints/v2/users.md#update-a-user) | `role:admin` or `admin`
+`GET v2/users/:identifier`                   | [Retrieve a User](endpoints/v2/users.md#retrieve-a-user) 
+`PUT v2/users/:id`                           | [Update a User](endpoints/v2/users.md#update-a-user) | `role:admin` or `admin`
 `DELETE v2/users/:user_id`                   | [Delete a User](endpoints/v2/users.md#delete-a-user) | `role:admin` or `admin`
-`POST v2/users/:user_id/merge`               | [Merge User Accounts](endpoints/v2/users.md#merge-user-accounts) | `role:admin,staff` or `admin`
 
 #### Profile
 Endpoint                                     | Functionality                                            | Required Scope
