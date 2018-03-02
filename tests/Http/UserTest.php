@@ -415,7 +415,6 @@ class UserTest extends BrowserKitTestCase
         $this->assertResponseStatus(422);
         $this->assertEquals($this->decodeResponseJson()['error']['fields']['id'][0], 'A record matching one of the given indexes already exists.');
 
-
         // Test that the user is returned with changes if ?upsert=true is present.
         $this->asAdminUser()->json('POST', 'v2/users?upsert=true', [
             'email' => $user->email,
