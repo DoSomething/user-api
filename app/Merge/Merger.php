@@ -6,7 +6,6 @@ class Merger
 {
     public function __construct()
     {
-
     }
 
     public function merge($field, $targetValue, $duplicateValue)
