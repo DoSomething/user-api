@@ -29,8 +29,9 @@ class MergeController extends Controller
     public function __construct(UserTransformer $transformer, Merger $merger)
     {
         $this->transformer = $transformer;
-        $this->middleware('role:admin,staff');
         $this->merger = $merger;
+
+        $this->middleware('role:admin,staff');
     }
 
     /**
@@ -66,7 +67,7 @@ class MergeController extends Controller
         // Fields that we can automatically merge
         $fieldsToMerge = array_except($duplicateFields, array_keys($intersectedFields));
         // Are there fields we can't automatically merge? Throw an error.
-        if (count(array_intersect_key($target->toArray(), array_flip($duplicateFieldNames)))) {
+        if ($intersectedFields) {
             $unmergedFields = [];
 
             // Call merge on intersecting fields
