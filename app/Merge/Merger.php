@@ -9,7 +9,7 @@ class Merger
 
     }
 
-    public function merge ($field, $targetValue, $duplicateValue)
+    public function merge($field, $targetValue, $duplicateValue)
     {
         switch ($field) {
             case 'last_authenticated_at':
@@ -30,6 +30,4 @@ class Merger
     {
         return $targetValue > $duplicateValue ? $targetValue : $duplicateValue;
     }
-
-
 }

@@ -20,7 +20,6 @@ class MergeController extends Controller
      */
     protected $merger;
 
-
     /**
      * Make a new MergeController, inject dependencies,
      * and set middleware for this controller's methods.
@@ -66,7 +65,6 @@ class MergeController extends Controller
 
         // Fields that we can automatically merge
         $fieldsToMerge = array_except($duplicateFields, array_keys($intersectedFields));
-
         // Are there fields we can't automatically merge? Throw an error.
         if (count(array_intersect_key($target->toArray(), array_flip($duplicateFieldNames)))) {
             $unmergedFields = [];
