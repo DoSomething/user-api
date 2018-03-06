@@ -23,12 +23,12 @@ class Merger
 
     public function mergeLastAuthenticatedAt($targetValue, $duplicateValue)
     {
-        return 'most recent timestamp';
+        return $targetValue > $duplicateValue ? $targetValue : $duplicateValue;
     }
 
     public function mergeLastMessagedAt($targetValue, $duplicateValue)
     {
-        return 'most recent timestamp';
+        return $targetValue > $duplicateValue ? $targetValue : $duplicateValue;
     }
 
 

@@ -61,16 +61,23 @@ class MergeController extends Controller
         $duplicateFields = array_except($duplicate->toArray(), $metadata);
         $duplicateFieldNames = array_keys($duplicateFields);
 
+        // Find out which fields we need to handle merging
         $intersectedFields = array_intersect_key($target->toArray(), array_flip($duplicateFieldNames));
+
+        // Fields that we can automatically merge
+        $fieldsToMerge = array_except($duplicateFields, array_keys($intersectedFields));
 
         // Are there fields we can't automatically merge? Throw an error.
         if (count(array_intersect_key($target->toArray(), array_flip($duplicateFieldNames)))) {
-            // Call merge on intersecting fields
             $unmergedFields = [];
+
+            // Call merge on intersecting fields
             foreach ($intersectedFields as $field => $value) {
                 $merged = $this->merger->merge($field, $target->$field, $duplicate->$field);
                 if (! $merged) {
                     array_push($unmergedFields, $field);
+                } else {
+                    $fieldsToMerge[$field] = $merged;
                 }
             }
 
@@ -80,9 +87,8 @@ class MergeController extends Controller
 
             throw new NorthstarValidationException($errors, ['target' => $target, 'duplicate' => $duplicate]);
         }
-
         // Copy the "duplicate" account's fields to the target & unset on the dupe account.
-        $target->fill($duplicateFields);
+        $target->fill($fieldsToMerge);
         foreach ($duplicateFieldNames as $field) {
             $duplicate->$field = null;
         }
