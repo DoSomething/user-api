@@ -8,25 +8,31 @@ class Merger
     {
     }
 
-    public function merge($field, $targetValue, $duplicateValue)
+    public function merge($field, $target, $duplicate)
     {
         switch ($field) {
             case 'last_authenticated_at':
-                return $this->mergeLastAuthenticatedAt($targetValue, $duplicateValue);
+                return $this->mergeLastAuthenticatedAt($target, $duplicate);
             case 'last_messaged_at':
-                return $this->mergeLastMessagedAt($targetValue, $duplicateValue);
+                return $this->mergeLastMessagedAt($target, $duplicate);
             default:
                 return false;
         }
     }
 
-    public function mergeLastAuthenticatedAt($targetValue, $duplicateValue)
+    public function mergeLastAuthenticatedAt($target, $duplicate)
     {
+        $targetValue = $target->last_authenticated_at;
+        $duplicateValue = $duplicate->last_authenticated_at;
+
         return $targetValue > $duplicateValue ? $targetValue : $duplicateValue;
     }
 
-    public function mergeLastMessagedAt($targetValue, $duplicateValue)
+    public function mergeLastMessagedAt($target, $duplicate)
     {
+        $targetValue = $target->last_messaged_at;
+        $duplicateValue = $duplicate->last_messaged_at;
+
         return $targetValue > $duplicateValue ? $targetValue : $duplicateValue;
     }
 }

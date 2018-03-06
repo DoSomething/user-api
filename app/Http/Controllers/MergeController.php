@@ -72,7 +72,7 @@ class MergeController extends Controller
 
             // Call merge on intersecting fields
             foreach ($intersectedFields as $field => $value) {
-                $merged = $this->merger->merge($field, $target->$field, $duplicate->$field);
+                $merged = $this->merger->merge($field, $target, $duplicate);
                 if (! $merged) {
                     array_push($unmergedFields, $field);
                 } else {
