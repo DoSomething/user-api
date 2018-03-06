@@ -74,4 +74,68 @@ class MergeTest extends BrowserKitTestCase
             'drupal_id' => '7175144',
         ]);
     }
+
+    /**
+     * Test last_authenticated_at merge logic.
+     * POST /resets
+     *
+     * @test
+     */
+    public function testMergingLastAuthenticatedAt()
+    {
+        $user = User::forceCreate([
+            'email' => 'target-account@example.com',
+            'last_authenticated_at' => '2018-02-28 00:00:00',
+        ]);
+
+        $duplicate = User::forceCreate([
+            'mobile' => '5551234567',
+            'last_authenticated_at' => '2018-02-28 01:00:00',
+        ]);
+
+        $this->asAdminUser()->json('POST', 'v1/users/'.$user->id.'/merge', [
+            'id' => $duplicate->id,
+        ]);
+
+        // The "target" user should have the dupe's profile fields.
+        $this->assertEquals($user->fresh()->last_authenticated_at->toTimeString(), '01:00:00');
+
+        // The "duplicate" user should have the duplicate fields removed.
+        $this->seeInDatabase('users', [
+            '_id' => $duplicate->id,
+            'last_authenticated_at' => null,
+        ]);
+    }
+
+    /**
+     * Test last_messaged_at merge logic.
+     * POST /resets
+     *
+     * @test
+     */
+    public function testMergingLastMessagedAt()
+    {
+        $user = User::forceCreate([
+            'email' => 'target-account@example.com',
+            'last_messaged_at' => '2018-02-28 00:00:00',
+        ]);
+
+        $duplicate = User::forceCreate([
+            'mobile' => '5551234567',
+            'last_messaged_at' => '2018-02-28 01:00:00',
+        ]);
+
+        $this->asAdminUser()->json('POST', 'v1/users/'.$user->id.'/merge', [
+            'id' => $duplicate->id,
+        ]);
+
+        // The "target" user should have the dupe's profile fields.
+        $this->assertEquals($user->fresh()->last_messaged_at->toTimeString(), '01:00:00');
+
+        // The "duplicate" user should have the duplicate fields removed.
+        $this->seeInDatabase('users', [
+            '_id' => $duplicate->id,
+            'last_authenticated_at' => null,
+        ]);
+    }
 }

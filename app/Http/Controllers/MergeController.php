@@ -81,14 +81,20 @@ class MergeController extends Controller
                 }
             }
 
-            $errors = collect($unmergedFields)->map(function ($fieldName) {
-                return 'Cannot merge "'.$fieldName.'" into non-null field on target.';
-            });
+            if ($unmergedFields) {
+                $errors = collect($unmergedFields)->map(function ($fieldName) {
+                    return 'Cannot merge "'.$fieldName.'" into non-null field on target.';
+                });
 
-            throw new NorthstarValidationException($errors, ['target' => $target, 'duplicate' => $duplicate]);
+                throw new NorthstarValidationException($errors, ['target' => $target, 'duplicate' => $duplicate]);
+            }
         }
+
         // Copy the "duplicate" account's fields to the target & unset on the dupe account.
-        $target->fill($fieldsToMerge);
+        foreach ($fieldsToMerge as $field => $value) {
+            $target->$field = $fieldsToMerge[$field];
+        }
+
         foreach ($duplicateFieldNames as $field) {
             $duplicate->$field = null;
         }
