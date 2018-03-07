@@ -68,24 +68,9 @@ class MergeController extends Controller
         $fieldsToMerge = array_except($duplicateFields, array_keys($intersectedFields));
         // Are there fields we can't automatically merge? Throw an error.
         if ($intersectedFields) {
-            $unmergedFields = [];
-
             // Call merge on intersecting fields
             foreach ($intersectedFields as $field => $value) {
-                $merged = $this->merger->merge($field, $target, $duplicate);
-                if (! $merged) {
-                    array_push($unmergedFields, $field);
-                } else {
-                    $fieldsToMerge[$field] = $merged;
-                }
-            }
-
-            if ($unmergedFields) {
-                $errors = collect($unmergedFields)->map(function ($fieldName) {
-                    return 'Cannot merge "'.$fieldName.'" into non-null field on target.';
-                });
-
-                throw new NorthstarValidationException($errors, ['target' => $target, 'duplicate' => $duplicate]);
+                $fieldsToMerge[$field] = $this->merger->merge($field, $target, $duplicate);
             }
         }
 

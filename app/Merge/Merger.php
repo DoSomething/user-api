@@ -2,6 +2,8 @@
 
 namespace Northstar\Merge;
 
+use InvalidArgumentException;
+
 class Merger
 {
     public function __construct()
@@ -13,8 +15,7 @@ class Merger
         $mergeMethod = 'merge' . studly_case($field);
 
         if (! method_exists($this, $mergeMethod)) {
-            // throw error here
-            return false;
+            throw new InvalidArgumentException('Unable to merge ' . $field . ' field. No merge instructions found.');
         }
 
         return $this->{$mergeMethod}($target, $duplicate);
