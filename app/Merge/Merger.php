@@ -10,14 +10,14 @@ class Merger
 
     public function merge($field, $target, $duplicate)
     {
-        switch ($field) {
-            case 'last_authenticated_at':
-                return $this->mergeLastAuthenticatedAt($target, $duplicate);
-            case 'last_messaged_at':
-                return $this->mergeLastMessagedAt($target, $duplicate);
-            default:
-                return false;
+        $mergeMethod = 'merge' . studly_case($field);
+
+        if (! method_exists($this, $mergeMethod)) {
+            // throw error here
+            return false;
         }
+
+        return $this->{$mergeMethod}($target, $duplicate);
     }
 
     public function mergeLastAuthenticatedAt($target, $duplicate)
