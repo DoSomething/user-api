@@ -2,7 +2,7 @@
 
 namespace Northstar\Merge;
 
-use InvalidArgumentException;
+use Northstar\Exceptions\NorthstarValidationException;
 
 class Merger
 {
@@ -15,7 +15,7 @@ class Merger
         $mergeMethod = 'merge'.studly_case($field);
 
         if (! method_exists($this, $mergeMethod)) {
-            throw new InvalidArgumentException('Unable to merge '.$field.' field. No merge instructions found.');
+            throw new NorthstarValidationException(['Unable to merge '.$field.' field. No merge instructions found.'], ['target' => $target, 'duplicate' => $duplicate]);
         }
 
         return $this->{$mergeMethod}($target, $duplicate);

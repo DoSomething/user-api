@@ -2,11 +2,10 @@
 
 namespace Northstar\Http\Controllers;
 
-use Northstar\Exceptions\NorthstarValidationException;
 use Northstar\Models\User;
+use Northstar\Merge\Merger;
 use Illuminate\Http\Request;
 use Northstar\Http\Transformers\UserTransformer;
-use Northstar\Merge\Merger;
 
 class MergeController extends Controller
 {
@@ -42,7 +41,6 @@ class MergeController extends Controller
      * @param Request $request
      *
      * @return \Illuminate\Http\Response
-     * @throws NorthstarValidationException
      */
     public function store($id, Request $request)
     {
@@ -66,6 +64,7 @@ class MergeController extends Controller
 
         // Fields that we can automatically merge
         $fieldsToMerge = array_except($duplicateFields, array_keys($intersectedFields));
+
         // Are there fields we can't automatically merge? Throw an error.
         if ($intersectedFields) {
             // Call merge on intersecting fields
