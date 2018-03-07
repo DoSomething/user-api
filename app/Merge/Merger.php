@@ -12,10 +12,10 @@ class Merger
 
     public function merge($field, $target, $duplicate)
     {
-        $mergeMethod = 'merge' . studly_case($field);
+        $mergeMethod = 'merge'.studly_case($field);
 
         if (! method_exists($this, $mergeMethod)) {
-            throw new InvalidArgumentException('Unable to merge ' . $field . ' field. No merge instructions found.');
+            throw new InvalidArgumentException('Unable to merge '.$field.' field. No merge instructions found.');
         }
 
         return $this->{$mergeMethod}($target, $duplicate);
