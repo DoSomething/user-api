@@ -15,7 +15,7 @@ class MergeController extends Controller
     protected $transformer;
 
     /**
-     * @var UserTransformer
+     * @var Merger
      */
     protected $merger;
 
@@ -66,20 +66,15 @@ class MergeController extends Controller
         $fieldsToMerge = array_except($duplicateFields, array_keys($intersectedFields));
 
         // Are there fields we can't automatically merge? Throw an error.
-        if ($intersectedFields) {
-            // Call merge on intersecting fields
-            foreach ($intersectedFields as $field => $value) {
-                $fieldsToMerge[$field] = $this->merger->merge($field, $target, $duplicate);
-            }
+        // Call merge on intersecting fields
+        foreach ($intersectedFields as $field => $value) {
+            $fieldsToMerge[$field] = $this->merger->merge($field, $target, $duplicate);
         }
 
         // Copy the "duplicate" account's fields to the target & unset on the dupe account.
         foreach ($fieldsToMerge as $field => $value) {
-            $target->$field = $fieldsToMerge[$field];
-        }
-
-        foreach ($duplicateFieldNames as $field) {
-            $duplicate->$field = null;
+            $target->{$field} = $fieldsToMerge[$field];
+            $duplicate->{$field} = null;
         }
 
         if (empty($duplicate->email) && empty($duplicate->mobile)) {

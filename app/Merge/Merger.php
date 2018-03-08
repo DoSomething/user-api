@@ -6,10 +6,6 @@ use Northstar\Exceptions\NorthstarValidationException;
 
 class Merger
 {
-    public function __construct()
-    {
-    }
-
     public function merge($field, $target, $duplicate)
     {
         $mergeMethod = 'merge'.studly_case($field);
