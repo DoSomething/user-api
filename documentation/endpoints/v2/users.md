@@ -260,6 +260,100 @@ curl -X GET \
 }
 ```
 
+## Retrieve a User By Mobile
+Get profile data for a specific user by the user's mobile number.
+
+Fetching a user requires either the `admin` scope, or an "admin" or "staff" role with the appropriate scope.
+
+```
+GET /v2/mobile/:mobile
+```
+
+<details>
+<summary><strong>Example Request</strong></summary>
+```sh
+curl -X GET \
+  -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+  -H "Accept: application/json"
+  https://northstar.dosomething.org/v2/mobile/5555555555
+```
+</details>
+
+<details>
+<summary><strong>Example Response</strong></summary>
+
+```js
+// 200 OK
+
+{
+    "data": {
+        "id": "5430e850dt8hbc541c37tt3d",
+        "email": "test@example.com",
+        "mobile": "5555555555",
+        "facebook_id": "10101010101010101",
+        "addr_street1": "123",
+        "addr_street2": "456",
+        "addr_city": "Paris",
+        "addr_state": "Florida",
+        "addr_zip": "555555",
+        "country": "US",
+        "birthdate": "12/17/91",
+        "first_name": "First",
+        "last_name": "Last",
+        "role": "user",
+        "updated_at": "2016-02-25T19:33:24+0000",
+        "created_at": "2016-02-25T19:33:24+0000"
+    }
+}
+```
+
+## Retrieve a User By Email
+Get profile data for a specific user by the user's email address.
+
+Fetching a user requires either the `admin` scope, or an "admin" or "staff" role with the appropriate scope.
+
+```
+GET /v2/email/:email
+```
+
+<details>
+<summary><strong>Example Request</strong></summary>
+```sh
+curl -X GET \
+  -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+  -H "Accept: application/json"
+  https://northstar.dosomething.org/v2/email/test@example.com
+```
+</details>
+
+<details>
+<summary><strong>Example Response</strong></summary>
+
+```js
+// 200 OK
+
+{
+    "data": {
+        "id": "5430e850dt8hbc541c37tt3d",
+        "email": "test@example.com",
+        "mobile": "5555555555",
+        "facebook_id": "10101010101010101",
+        "addr_street1": "123",
+        "addr_street2": "456",
+        "addr_city": "Paris",
+        "addr_state": "Florida",
+        "addr_zip": "555555",
+        "country": "US",
+        "birthdate": "12/17/91",
+        "first_name": "First",
+        "last_name": "Last",
+        "role": "user",
+        "updated_at": "2016-02-25T19:33:24+0000",
+        "created_at": "2016-02-25T19:33:24+0000"
+    }
+}
+```
+
 </details>
 
 ## Update a User
