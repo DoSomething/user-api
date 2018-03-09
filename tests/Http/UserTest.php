@@ -445,4 +445,140 @@ class UserTest extends BrowserKitTestCase
         $this->assertCount(1, $this->decodeResponseJson()['data']);
         $this->assertEquals($this->decodeResponseJson()['data'][0]['email'], $user->email);
     }
+
+    /**
+     * Test that retrieving a user by mobile as a non-admin returns limited profile.
+     * GET /v2/mobile/:mobile
+     *
+     * @return void
+     */
+    public function testV2GetPublicDataFromUserByMobile()
+    {
+        $user = factory(User::class)->create(['mobile' => $this->faker->phoneNumber]);
+        $viewer = factory(User::class)->create();
+
+        // Test that we can view public profile as another user.
+        $this->asUser($viewer, ['user', 'user:admin'])->get('v2/mobile/'.$user->mobile);
+        $this->assertResponseStatus(200);
+
+        // And test that private profile fields are hidden for the other user.
+        $data = $this->decodeResponseJson()['data'];
+        $this->assertArrayHasKey('first_name', $data);
+        $this->assertArrayNotHasKey('last_name', $data);
+        $this->assertArrayNotHasKey('email', $data);
+        $this->assertArrayNotHasKey('mobile', $data);
+        $this->assertArrayNotHasKey('facebook_id', $data);
+    }
+
+    /**
+     * Test that retrieving a user by mobile as an admin returns full profile.
+     * GET /v2/mobile/:mobile
+     *
+     * @return void
+     */
+    public function testV2GetAllDataFromUserByMobileAsStaff()
+    {
+        $user = factory(User::class)->create(['mobile' => $this->faker->phoneNumber]);
+        $admin = factory(User::class, 'staff')->create();
+
+        $this->asUser($admin, ['user', 'user:admin'])->get('v2/mobile/'.$user->mobile);
+        $this->assertResponseStatus(200);
+
+        // Check that public & private profile fields are visible
+        $this->seeJsonStructure([
+            'data' => [
+                'id', 'email', 'first_name', 'last_name', 'facebook_id',
+            ],
+        ]);
+    }
+
+    /**
+     * Test that retrieving a user by mobile as an admin returns full profile.
+     * GET /v2/mobile/:mobile
+     *
+     * @return void
+     */
+    public function testV2GetAllDataFromUserMobileAsAdmin()
+    {
+        $user = factory(User::class)->create(['mobile' => $this->faker->phoneNumber]);
+        $admin = factory(User::class, 'admin')->create();
+
+        $this->asUser($admin, ['user', 'user:admin'])->get('v2/mobile/'.$user->mobile);
+        $this->assertResponseStatus(200);
+
+        // Check that public & private profile fields are visible
+        $this->seeJsonStructure([
+            'data' => [
+                'id', 'email', 'first_name', 'last_name', 'facebook_id',
+            ],
+        ]);
+    }
+
+    /**
+     * Test that retrieving a user by email as a non-admin returns limited profile.
+     * GET /v2/email/:email
+     *
+     * @return void
+     */
+    public function testV2GetPublicDataFromUserByEmail()
+    {
+        $user = factory(User::class)->create(['email' => $this->faker->email]);
+        $viewer = factory(User::class)->create();
+
+        // Test that we can view public profile as another user.
+        $this->asUser($viewer, ['user', 'user:admin'])->get('v2/email/'.$user->email);
+        $this->assertResponseStatus(200);
+
+        // And test that private profile fields are hidden for the other user.
+        $data = $this->decodeResponseJson()['data'];
+        $this->assertArrayHasKey('first_name', $data);
+        $this->assertArrayNotHasKey('last_name', $data);
+        $this->assertArrayNotHasKey('email', $data);
+        $this->assertArrayNotHasKey('mobile', $data);
+        $this->assertArrayNotHasKey('facebook_id', $data);
+    }
+
+    /**
+     * Test that retrieving a user by email as an admin returns full profile.
+     * GET /v2/email/:email
+     *
+     * @return void
+     */
+    public function testV2GetAllDataFromUserByEmailAsStaff()
+    {
+        $user = factory(User::class)->create(['email' => $this->faker->email]);
+        $admin = factory(User::class, 'staff')->create();
+
+        $this->asUser($admin, ['user', 'user:admin'])->get('v2/email/'.$user->email);
+        $this->assertResponseStatus(200);
+
+        // Check that public & private profile fields are visible
+        $this->seeJsonStructure([
+            'data' => [
+                'id', 'email', 'first_name', 'last_name', 'facebook_id',
+            ],
+        ]);
+    }
+
+    /**
+     * Test that retrieving a user by email as an admin returns full profile.
+     * GET /v2/email/:email
+     *
+     * @return void
+     */
+    public function testV2GetAllDataFromUserEmailAsAdmin()
+    {
+        $user = factory(User::class)->create(['email' => $this->faker->email]);
+        $admin = factory(User::class, 'admin')->create();
+
+        $this->asUser($admin, ['user', 'user:admin'])->get('v2/email/'.$user->email);
+        $this->assertResponseStatus(200);
+
+        // Check that public & private profile fields are visible
+        $this->seeJsonStructure([
+            'data' => [
+                'id', 'email', 'first_name', 'last_name', 'facebook_id',
+            ],
+        ]);
+    }
 }

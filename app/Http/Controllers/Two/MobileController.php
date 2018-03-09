@@ -2,7 +2,6 @@
 
 namespace Northstar\Http\Controllers\Two;
 
-use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
 use Northstar\Http\Transformers\Two\UserTransformer;
 use Northstar\Http\Controllers\Controller;
@@ -33,9 +32,6 @@ class MobileController extends Controller
     {
         $this->registrar = $registrar;
         $this->transformer = $transformer;
-
-        $this->middleware('role:admin,staff');
-
     }
 
 
