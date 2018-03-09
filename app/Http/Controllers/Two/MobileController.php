@@ -34,8 +34,6 @@ class MobileController extends Controller
         $this->transformer = $transformer;
     }
 
-
-
     /**
      * Display the specified resource.
      * GET /mobile/:id
@@ -51,5 +49,4 @@ class MobileController extends Controller
 
         return $this->item($user);
     }
-
 }

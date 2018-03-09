@@ -34,8 +34,6 @@ class EmailController extends Controller
         $this->transformer = $transformer;
     }
 
-
-
     /**
      * Display the specified resource.
      * GET /email/:id
@@ -51,5 +49,4 @@ class EmailController extends Controller
 
         return $this->item($user);
     }
-
 }
