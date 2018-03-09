@@ -19,6 +19,8 @@ $router->group(['prefix' => 'v2', 'as' => 'v2.'], function () {
 
     // Users
     $this->resource('users', 'Two\UserController');
+    // Get User by Mobile #
+    $this->get('mobile/{id}', 'Two\MobileController@show');
 
     // Profile
     // ...
