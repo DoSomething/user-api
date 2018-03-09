@@ -43,7 +43,6 @@ class Merger
 
     public function mergeLanguage($target, $duplicate)
     {
-        // should this be last accessed at or last authenticated at?
         if ($target->last_accessed_at > $duplicate->last_accessed_at) {
             return $target->language;
         }
