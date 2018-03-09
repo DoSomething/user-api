@@ -32,4 +32,22 @@ class Merger
 
         return $targetValue > $duplicateValue ? $targetValue : $duplicateValue;
     }
+
+    public function mergeLastAccessedAt($target, $duplicate)
+    {
+        $targetValue = $target->last_accessed_at;
+        $duplicateValue = $duplicate->last_accessed_at;
+
+        return $targetValue > $duplicateValue ? $targetValue : $duplicateValue;
+    }
+
+    public function mergeLanguage($target, $duplicate)
+    {
+        // should this be last accessed at or last authenticated at?
+        if ($target->last_accessed_at > $duplicate->last_accessed_at) {
+            return $target->language;
+        }
+
+        return $duplicate->language;
+    }
 }
