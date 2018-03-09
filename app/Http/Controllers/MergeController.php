@@ -2,8 +2,8 @@
 
 namespace Northstar\Http\Controllers;
 
-use Northstar\Exceptions\NorthstarValidationException;
 use Northstar\Models\User;
+use Northstar\Merge\Merger;
 use Illuminate\Http\Request;
 use Northstar\Http\Transformers\UserTransformer;
 
@@ -15,14 +15,21 @@ class MergeController extends Controller
     protected $transformer;
 
     /**
+     * @var Merger
+     */
+    protected $merger;
+
+    /**
      * Make a new MergeController, inject dependencies,
      * and set middleware for this controller's methods.
      *
      * @param UserTransformer $transformer
      */
-    public function __construct(UserTransformer $transformer)
+    public function __construct(UserTransformer $transformer, Merger $merger)
     {
         $this->transformer = $transformer;
+        $this->merger = $merger;
+
         $this->middleware('role:admin,staff');
     }
 
@@ -34,7 +41,6 @@ class MergeController extends Controller
      * @param Request $request
      *
      * @return \Illuminate\Http\Response
-     * @throws NorthstarValidationException
      */
     public function store($id, Request $request)
     {
@@ -53,19 +59,22 @@ class MergeController extends Controller
         $duplicateFields = array_except($duplicate->toArray(), $metadata);
         $duplicateFieldNames = array_keys($duplicateFields);
 
-        // Are there fields we can't automatically merge? Throw an error.
-        if (count(array_intersect_key($target->toArray(), array_flip($duplicateFieldNames)))) {
-            $errors = collect($duplicateFieldNames)->map(function ($fieldName) {
-                return 'Cannot merge "'.$fieldName.'" into non-null field on target.';
-            });
+        // Find out which fields we need to handle merging
+        $intersectedFields = array_intersect_key($target->toArray(), array_flip($duplicateFieldNames));
 
-            throw new NorthstarValidationException($errors, ['target' => $target, 'duplicate' => $duplicate]);
+        // Fields that we can automatically merge
+        $fieldsToMerge = array_except($duplicateFields, array_keys($intersectedFields));
+
+        // Are there fields we can't automatically merge? Throw an error.
+        // Call merge on intersecting fields
+        foreach ($intersectedFields as $field => $value) {
+            $fieldsToMerge[$field] = $this->merger->merge($field, $target, $duplicate);
         }
 
         // Copy the "duplicate" account's fields to the target & unset on the dupe account.
-        $target->fill($duplicateFields);
-        foreach ($duplicateFieldNames as $field) {
-            $duplicate->$field = null;
+        foreach ($fieldsToMerge as $field => $value) {
+            $target->{$field} = $fieldsToMerge[$field];
+            $duplicate->{$field} = null;
         }
 
         if (empty($duplicate->email) && empty($duplicate->mobile)) {
