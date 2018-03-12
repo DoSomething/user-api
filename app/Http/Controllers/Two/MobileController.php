@@ -32,20 +32,22 @@ class MobileController extends Controller
     {
         $this->registrar = $registrar;
         $this->transformer = $transformer;
+
+        $this->middleware('role:admin,staff');
     }
 
     /**
      * Display the specified resource.
      * GET /mobile/:id
      *
-     * @param string $id - the actual value to search for
+     * @param string $mobile - the actual value to search for
      *
      * @return \Illuminate\Http\Response
      * @throws NotFoundHttpException
      */
-    public function show($id)
+    public function show($mobile)
     {
-        $user = $this->registrar->resolveOrFail(['mobile' => $id]);
+        $user = $this->registrar->resolveOrFail(['mobile' => $mobile]);
 
         return $this->item($user);
     }

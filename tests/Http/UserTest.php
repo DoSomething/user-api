@@ -447,31 +447,24 @@ class UserTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that retrieving a user by mobile as a non-admin returns limited profile.
+     * Test that retrieving a user by mobile as a non-admin returns a 401 error code.
      * GET /v2/mobile/:mobile
      *
      * @return void
      */
-    public function testV2GetPublicDataFromUserByMobile()
+    public function testV2GetDataFromUserByMobileAsAnonUser()
     {
         $user = factory(User::class)->create(['mobile' => $this->faker->phoneNumber]);
         $viewer = factory(User::class)->create();
 
-        // Test that we can view public profile as another user.
-        $this->asUser($viewer, ['user', 'user:admin'])->get('v2/mobile/'.$user->mobile);
-        $this->assertResponseStatus(200);
-
-        // And test that private profile fields are hidden for the other user.
-        $data = $this->decodeResponseJson()['data'];
-        $this->assertArrayHasKey('first_name', $data);
-        $this->assertArrayNotHasKey('last_name', $data);
-        $this->assertArrayNotHasKey('email', $data);
-        $this->assertArrayNotHasKey('mobile', $data);
-        $this->assertArrayNotHasKey('facebook_id', $data);
+        // Test that we can view user information if not staff or admin.
+        $this->asUser($viewer, ['user', 'role:staff'])->get('v2/mobile/'.$user->mobile);
+        $this->assertResponseStatus(401);
+        $this->assertEquals('The resource owner or authorization server denied the request.', $this->decodeResponseJson()['message']);
     }
 
     /**
-     * Test that retrieving a user by mobile as an admin returns full profile.
+     * Test that retrieving a user by mobile as staff returns full profile.
      * GET /v2/mobile/:mobile
      *
      * @return void
@@ -481,10 +474,10 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create(['mobile' => $this->faker->phoneNumber]);
         $admin = factory(User::class, 'staff')->create();
 
-        $this->asUser($admin, ['user', 'user:admin'])->get('v2/mobile/'.$user->mobile);
+        $this->asUser($admin, ['role:staff'])->get('v2/mobile/'.$user->mobile);
         $this->assertResponseStatus(200);
 
-        // Check that public & private profile fields are visible
+        // Check that fields are visible
         $this->seeJsonStructure([
             'data' => [
                 'id', 'email', 'first_name', 'last_name', 'facebook_id',
@@ -503,10 +496,10 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create(['mobile' => $this->faker->phoneNumber]);
         $admin = factory(User::class, 'admin')->create();
 
-        $this->asUser($admin, ['user', 'user:admin'])->get('v2/mobile/'.$user->mobile);
+        $this->asUser($admin, ['user', 'role:admin'])->get('v2/mobile/'.$user->mobile);
         $this->assertResponseStatus(200);
 
-        // Check that public & private profile fields are visible
+        // Check that fields are visible
         $this->seeJsonStructure([
             'data' => [
                 'id', 'email', 'first_name', 'last_name', 'facebook_id',
@@ -515,31 +508,24 @@ class UserTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that retrieving a user by email as a non-admin returns limited profile.
+     * Test that retrieving a user by email as a non-admin returns a 401 response.
      * GET /v2/email/:email
      *
      * @return void
      */
-    public function testV2GetPublicDataFromUserByEmail()
+    public function testV2GetDataFromUserByEmailAsAnonUser()
     {
         $user = factory(User::class)->create(['email' => $this->faker->email]);
         $viewer = factory(User::class)->create();
 
-        // Test that we can view public profile as another user.
+        // Test that we cannot view public profile as another user.
         $this->asUser($viewer, ['user', 'user:admin'])->get('v2/email/'.$user->email);
-        $this->assertResponseStatus(200);
-
-        // And test that private profile fields are hidden for the other user.
-        $data = $this->decodeResponseJson()['data'];
-        $this->assertArrayHasKey('first_name', $data);
-        $this->assertArrayNotHasKey('last_name', $data);
-        $this->assertArrayNotHasKey('email', $data);
-        $this->assertArrayNotHasKey('mobile', $data);
-        $this->assertArrayNotHasKey('facebook_id', $data);
+        $this->assertResponseStatus(401);
+        $this->assertEquals('The resource owner or authorization server denied the request.', $this->decodeResponseJson()['message']);
     }
 
     /**
-     * Test that retrieving a user by email as an admin returns full profile.
+     * Test that retrieving a user by email as staff returns full profile.
      * GET /v2/email/:email
      *
      * @return void
@@ -549,7 +535,7 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create(['email' => $this->faker->email]);
         $admin = factory(User::class, 'staff')->create();
 
-        $this->asUser($admin, ['user', 'user:admin'])->get('v2/email/'.$user->email);
+        $this->asUser($admin, ['role:staff'])->get('v2/email/'.$user->email);
         $this->assertResponseStatus(200);
 
         // Check that public & private profile fields are visible
@@ -571,7 +557,7 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create(['email' => $this->faker->email]);
         $admin = factory(User::class, 'admin')->create();
 
-        $this->asUser($admin, ['user', 'user:admin'])->get('v2/email/'.$user->email);
+        $this->asUser($admin, ['user', 'role:admin'])->get('v2/email/'.$user->email);
         $this->assertResponseStatus(200);
 
         // Check that public & private profile fields are visible

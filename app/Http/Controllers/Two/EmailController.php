@@ -32,20 +32,22 @@ class EmailController extends Controller
     {
         $this->registrar = $registrar;
         $this->transformer = $transformer;
+
+        $this->middleware('role:admin,staff');
     }
 
     /**
      * Display the specified resource.
      * GET /email/:id
      *
-     * @param string $id - the actual value to search for
+     * @param string $email - the actual value to search for
      *
      * @return \Illuminate\Http\Response
      * @throws NotFoundHttpException
      */
-    public function show($id)
+    public function show($email)
     {
-        $user = $this->registrar->resolveOrFail(['email' => $id]);
+        $user = $this->registrar->resolveOrFail(['email' => $email]);
 
         return $this->item($user);
     }
