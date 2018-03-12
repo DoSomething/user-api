@@ -138,4 +138,71 @@ class MergeTest extends BrowserKitTestCase
             'last_authenticated_at' => null,
         ]);
     }
+
+    /**
+     * Test last_accessed_at merge logic.
+     * POST /resets
+     *
+     * @test
+     */
+    public function testMergingLastaccessedAt()
+    {
+        $user = User::forceCreate([
+            'email' => 'target-account@example.com',
+            'last_accessed_at' => '2018-02-28 00:00:00',
+        ]);
+
+        $duplicate = User::forceCreate([
+            'mobile' => '5551234567',
+            'last_accessed_at' => '2018-02-28 01:00:00',
+        ]);
+
+        $this->asAdminUser()->json('POST', 'v1/users/'.$user->id.'/merge', [
+            'id' => $duplicate->id,
+        ]);
+
+        // The "target" user should have the dupe's profile fields.
+        $this->assertEquals($user->fresh()->last_accessed_at->toTimeString(), '01:00:00');
+
+        // The "duplicate" user should have the duplicate fields removed.
+        $this->seeInDatabase('users', [
+            '_id' => $duplicate->id,
+            'last_accessed_at' => null,
+        ]);
+    }
+
+    /**
+     * Test language merge logic.
+     * POST /resets
+     *
+     * @test
+     */
+    public function testMergingLanguage()
+    {
+        $user = User::forceCreate([
+            'email' => 'target-account@example.com',
+            'last_accessed_at' => '2018-02-28 00:00:00',
+            'language' => 'hi',
+        ]);
+
+        $duplicate = User::forceCreate([
+            'mobile' => '5551234567',
+            'last_accessed_at' => '2018-02-28 01:00:00',
+            'language' => 'yo',
+        ]);
+
+        $this->asAdminUser()->json('POST', 'v1/users/'.$user->id.'/merge', [
+            'id' => $duplicate->id,
+        ]);
+
+        // The "target" user should have the dupe's profile fields.
+        $this->assertEquals($user->fresh()->language, 'yo');
+
+        // The "duplicate" user should have the duplicate fields removed.
+        $this->seeInDatabase('users', [
+            '_id' => $duplicate->id,
+            'language' => null,
+            'last_accessed_at' => null,
+        ]);
+    }
 }
