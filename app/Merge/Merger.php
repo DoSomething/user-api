@@ -19,26 +19,17 @@ class Merger
 
     public function mergeLastAuthenticatedAt($target, $duplicate)
     {
-        $targetValue = $target->last_authenticated_at;
-        $duplicateValue = $duplicate->last_authenticated_at;
-
-        return $targetValue > $duplicateValue ? $targetValue : $duplicateValue;
+        return $this->chooseMostRecentDate('last_authenticated_at', $target, $duplicate);
     }
 
     public function mergeLastMessagedAt($target, $duplicate)
     {
-        $targetValue = $target->last_messaged_at;
-        $duplicateValue = $duplicate->last_messaged_at;
-
-        return $targetValue > $duplicateValue ? $targetValue : $duplicateValue;
+        return $this->chooseMostRecentDate('last_messaged_at', $target, $duplicate);
     }
 
     public function mergeLastAccessedAt($target, $duplicate)
     {
-        $targetValue = $target->last_accessed_at;
-        $duplicateValue = $duplicate->last_accessed_at;
-
-        return $targetValue > $duplicateValue ? $targetValue : $duplicateValue;
+        return $this->chooseMostRecentDate('last_accessed_at', $target, $duplicate);
     }
 
     public function mergeLanguage($target, $duplicate)
@@ -48,5 +39,13 @@ class Merger
         }
 
         return $duplicate->language;
+    }
+
+    public function chooseMostRecentDate($field, $target, $duplicate)
+    {
+        $targetValue = $target->{$field};
+        $duplicateValue = $duplicate->{$field};
+
+        return $targetValue > $duplicateValue ? $targetValue : $duplicateValue;
     }
 }
