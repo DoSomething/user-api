@@ -4,6 +4,7 @@ namespace Northstar\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Northstar\Auth\Registrar;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -17,15 +18,29 @@ class RouteServiceProvider extends ServiceProvider
     protected $namespace = 'Northstar\Http\Controllers';
 
     /**
+     * The registrar handles creating, updating, and
+     * validating user accounts.
+     *
+     * @var Registrar
+     */
+    protected $registrar;
+
+    /**
      * Define your route model bindings, pattern filters, etc.
      *
      * @return void
      */
     public function boot()
     {
-        //
-
         parent::boot();
+
+        Route::bind('email', function ($value) {
+            return app(Registrar::class)->resolveOrFail(['email' => $value]);
+        });
+
+        Route::bind('mobile', function ($value) {
+            return app(Registrar::class)->resolveOrFail(['mobile' => $value]);
+        });
     }
 
     /**

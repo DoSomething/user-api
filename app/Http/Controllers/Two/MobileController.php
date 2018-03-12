@@ -2,20 +2,12 @@
 
 namespace Northstar\Http\Controllers\Two;
 
-use Northstar\Auth\Registrar;
+use Northstar\Models\User;
 use Northstar\Http\Transformers\Two\UserTransformer;
 use Northstar\Http\Controllers\Controller;
 
 class MobileController extends Controller
 {
-    /**
-     * The registrar handles creating, updating, and
-     * validating user accounts.
-     *
-     * @var Registrar
-     */
-    protected $registrar;
-
     /**
      * @var UserTransformer
      */
@@ -25,12 +17,10 @@ class MobileController extends Controller
      * Make a new MobileController, inject dependencies,
      * and set middleware for this controller's methods.
      *
-     * @param Registrar $registrar
      * @param UserTransformer $transformer
      */
-    public function __construct(Registrar $registrar, UserTransformer $transformer)
+    public function __construct(UserTransformer $transformer)
     {
-        $this->registrar = $registrar;
         $this->transformer = $transformer;
 
         $this->middleware('role:admin,staff');
@@ -40,15 +30,13 @@ class MobileController extends Controller
      * Display the specified resource.
      * GET /mobile/:id
      *
-     * @param string $mobile - the actual value to search for
+     * @param object $user
      *
      * @return \Illuminate\Http\Response
      * @throws NotFoundHttpException
      */
-    public function show($mobile)
+    public function show(User $user)
     {
-        $user = $this->registrar->resolveOrFail(['mobile' => $mobile]);
-
         return $this->item($user);
     }
 }
