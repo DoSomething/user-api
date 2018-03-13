@@ -14,6 +14,14 @@ function init() {
       puck.trackEvent('clicked facebook auth')
     ));
 
+    $('#register-submit').on('click', () => (
+      puck.trackEvent('clicked register-submit')
+    ));
+
+    $('#login-submit').on('click', () => (
+      puck.trackEvent('clicked login-submit')
+    ));
+
     const $validationErrors = $('.validation-error');
     if ($validationErrors && $validationErrors.length) {
       const errors = window.ERRORS || {};
