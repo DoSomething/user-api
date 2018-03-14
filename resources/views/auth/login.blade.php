@@ -48,7 +48,7 @@
             </div>
 
             <div class="form-actions -padded">
-                <input type="submit" class="button" value="{{ trans('auth.log_in.default') }}">
+                <input type="submit" id="login-submit" class="button" value="{{ trans('auth.log_in.default') }}">
             </div>
         </form>
     </div>
