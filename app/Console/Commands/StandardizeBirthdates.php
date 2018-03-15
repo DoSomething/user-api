@@ -43,7 +43,7 @@ class StandardizeBirthdates extends Command
         $progressBar = $this->output->createProgressBar($query->count());
 
         $query->chunkById(200, function (Collection $users) use ($progressBar) {
-            forEach ($users as $user) {
+            foreach ($users as $user) {
                 $value = $user->getOriginal('birthdate');
 
                 // If possible, switch the birthday to a date type, otherwise, wipe it!
@@ -56,7 +56,7 @@ class StandardizeBirthdates extends Command
                 $user->setBirthdateAttribute($date);
                 $user->save();
 
-                info('northstar:bday - updated user ' . $user->id . ' birthdate from ' . $value . ' to ' . $date);
+                info('northstar:bday - updated user '.$user->id.' birthdate from '.$value.' to '.$date);
                 $progressBar->advance();
             }
         });
