@@ -38,6 +38,9 @@ class Scope
         'client' => [
             'description' => 'Allows access to the client resource.',
         ],
+        'activity' => [
+            'description' => 'Allows access to user activity.',
+        ],
     ];
 
     /**
