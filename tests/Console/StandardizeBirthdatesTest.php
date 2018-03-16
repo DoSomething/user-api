@@ -21,7 +21,7 @@ class StandardizeBirthdatesTest extends TestCase
                 ],
             ],
         ])->count();
-        $this->assertEquals($borkedUsers, 2);
+        $this->assertEquals($borkedUsersCount, 2);
 
         // Run the Birthdate Standardizer command.
         $this->artisan('northstar:bday');
@@ -35,6 +35,6 @@ class StandardizeBirthdatesTest extends TestCase
                 ],
             ],
         ])->count();
-        $this->assertEquals($borkedUsers, 0);
+        $this->assertEquals($borkedUsersCount, 0);
     }
 }
