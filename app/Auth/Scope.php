@@ -41,6 +41,9 @@ class Scope
         'activity' => [
             'description' => 'Allows access to user activity.',
         ],
+        'write' => [
+            'description' => 'Allows access to create/update/delete endpoints.'
+        ],
     ];
 
     /**
