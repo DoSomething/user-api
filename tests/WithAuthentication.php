@@ -85,7 +85,7 @@ trait WithAuthentication
     }
 
     /**
-     * Make the following request as an admin user with the `user` and `role:admin` scopes.
+     * Make the following request as an admin user with the `user`, `client`, and `role:admin` scopes.
      *
      * @return $this
      */
