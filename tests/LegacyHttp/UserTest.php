@@ -271,7 +271,7 @@ class LegacyUserTest extends BrowserKitTestCase
         factory(User::class, 2)->create(['mobile' => null]);
 
         // Search should be limited to `admin` scoped keys.
-         $this->withLegacyApiKeyScopes(['user'])->get('v1/users?search[email]=search-result@dosomething.org');
+        $this->withLegacyApiKeyScopes(['user'])->get('v1/users?search[email]=search-result@dosomething.org');
         $this->assertResponseStatus(403);
 
         // Query by a "known" search term.
