@@ -35,7 +35,7 @@ class UserTest extends BrowserKitTestCase
         $staff = factory(User::class, 'staff')->create();
         factory(User::class, 5)->create();
 
-        $this->asUser($staff, ['role:staff'])->get('v2/users');
+        $this->asUser($staff, ['role:staff', 'user'])->get('v2/users');
         $this->assertResponseStatus(200);
     }
 
@@ -51,7 +51,7 @@ class UserTest extends BrowserKitTestCase
         $admin = factory(User::class, 'admin')->create();
         factory(User::class, 5)->create();
 
-        $this->asUser($admin, ['role:admin'])->get('v2/users');
+        $this->asUser($admin, ['role:admin', 'user'])->get('v2/users');
         $this->assertResponseStatus(200);
     }
 
@@ -67,13 +67,13 @@ class UserTest extends BrowserKitTestCase
         factory(User::class, 5)->create(['updated_at' => $this->faker->dateTimeBetween('1/1/2010', '1/1/2015')]);
         factory(User::class, 6)->create(['updated_at' => $this->faker->dateTimeBetween('1/2/2015', '1/1/2017')]);
 
-        $this->withAccessToken(['admin'])->json('GET', 'v2/users?before[updated_at]=1/1/2010');
+        $this->withAccessToken(['admin', 'user'])->json('GET', 'v2/users?before[updated_at]=1/1/2010');
         $this->assertCount(4, $this->decodeResponseJson()['data'], 'can filter `updated_at` before timestamp');
 
-        $this->withAccessToken(['admin'])->json('GET', 'v2/users?after[updated_at]=1/1/2015');
+        $this->withAccessToken(['admin', 'user'])->json('GET', 'v2/users?after[updated_at]=1/1/2015');
         $this->assertCount(6, $this->decodeResponseJson()['data'], 'can filter `updated_at` after timestamp');
 
-        $this->withAccessToken(['admin'])->json('GET', 'v2/users?before[updated_at]=1/2/2015&after[updated_at]=12/31/2009');
+        $this->withAccessToken(['admin', 'user'])->json('GET', 'v2/users?before[updated_at]=1/2/2015&after[updated_at]=12/31/2009');
         $this->assertCount(5, $this->decodeResponseJson()['data'], 'can filter `updated_at` between two timestamps');
     }
 
@@ -437,11 +437,11 @@ class UserTest extends BrowserKitTestCase
     {
         $user = factory(User::class)->create(['email' => $this->faker->email]);
 
-        $this->withAccessToken(['admin'])->json('GET', 'v2/users?search[email]='.$user->email);
+        $this->withAccessToken(['admin', 'user'])->json('GET', 'v2/users?search[email]='.$user->email);
         $this->assertCount(1, $this->decodeResponseJson()['data']);
         $this->assertEquals($this->decodeResponseJson()['data'][0]['email'], $user->email);
 
-        $this->withAccessToken(['admin'])->json('GET', 'v2/users?search='.$user->email);
+        $this->withAccessToken(['admin', 'user'])->json('GET', 'v2/users?search='.$user->email);
         $this->assertCount(1, $this->decodeResponseJson()['data']);
         $this->assertEquals($this->decodeResponseJson()['data'][0]['email'], $user->email);
     }
