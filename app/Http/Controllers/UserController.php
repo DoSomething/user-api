@@ -38,6 +38,7 @@ class UserController extends Controller
         $this->transformer = $transformer;
 
         $this->middleware('role:admin,staff', ['except' => ['show']]);
+        $this->middleware('scope:user');
     }
 
     /**
