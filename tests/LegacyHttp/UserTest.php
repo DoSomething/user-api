@@ -120,7 +120,7 @@ class LegacyUserTest extends BrowserKitTestCase
         $user = factory(User::class)->create(['drupal_id' => '100010']);
 
         // GET /users/drupal_id/<drupal_id>
-        $this->get('v1/users/drupal_id/100010');
+        $this->withLegacyApiKeyScopes(['user'])->get('v1/users/drupal_id/100010');
         $this->assertResponseStatus(200);
         $this->seeJsonSubset([
             'data' => [
@@ -166,10 +166,10 @@ class LegacyUserTest extends BrowserKitTestCase
         // Make some test users to see in the index.
         factory(User::class, 5)->create();
 
-        $this->get('v1/users');
+        $this->withLegacyApiKeyScopes(['user'])->get('v1/users');
         $this->assertResponseStatus(403);
 
-        $this->withLegacyApiKeyScopes(['admin'])->get('v1/users');
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->get('v1/users');
         $this->assertResponseStatus(200);
         $this->seeJsonStructure([
             'data' => [
@@ -196,7 +196,7 @@ class LegacyUserTest extends BrowserKitTestCase
         // Make some test users to see in the index.
         factory(User::class, 5)->create();
 
-        $this->withLegacyApiKeyScopes(['admin'])->get('v1/users?limit=200'); // set a "per page" above the allowed max
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->get('v1/users?limit=200'); // set a "per page" above the allowed max
         $this->assertResponseStatus(200);
         $this->assertSame(100, $this->decodeResponseJson()['meta']['pagination']['per_page']);
 
@@ -222,7 +222,7 @@ class LegacyUserTest extends BrowserKitTestCase
      */
     public function testNonexistentUser()
     {
-        $this->get('v1/users/_id/FAKE');
+        $this->withLegacyApiKeyScopes(['user'])->get('v1/users/_id/FAKE');
         $this->assertResponseStatus(404);
     }
 
@@ -238,7 +238,7 @@ class LegacyUserTest extends BrowserKitTestCase
         $user3 = factory(User::class)->create(['mobile' => $this->faker->unique()->phoneNumber, 'drupal_id' => '123413']);
 
         // Retrieve multiple users by _id
-        $this->withLegacyApiKeyScopes(['admin'])->get('v1/users?filter[id]='.$user1->id.','.$user2->id.',FAKE_ID');
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->get('v1/users?filter[id]='.$user1->id.','.$user2->id.',FAKE_ID');
         $this->assertCount(2, $this->decodeResponseJson()['data']);
         $this->seeJsonStructure([
             'data' => [
@@ -252,11 +252,11 @@ class LegacyUserTest extends BrowserKitTestCase
         ]);
 
         // Retrieve multiple users by drupal_id
-        $this->withLegacyApiKeyScopes(['admin'])->get('v1/users?filter[drupal_id]=FAKE_ID,'.$user1->drupal_id.','.$user2->drupal_id.','.$user3->drupal_id);
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->get('v1/users?filter[drupal_id]=FAKE_ID,'.$user1->drupal_id.','.$user2->drupal_id.','.$user3->drupal_id);
         $this->assertCount(3, $this->decodeResponseJson()['data']);
 
         // Test compound queries
-        $this->withLegacyApiKeyScopes(['admin'])->get('v1/users?filter[drupal_id]=FAKE_ID,'.$user1->drupal_id.','.$user2->drupal_id.','.$user3->drupal_id.'&filter[_id]='.$user1->id);
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->get('v1/users?filter[drupal_id]=FAKE_ID,'.$user1->drupal_id.','.$user2->drupal_id.','.$user3->drupal_id.'&filter[_id]='.$user1->id);
         $this->assertCount(1, $this->decodeResponseJson()['data']);
     }
 
@@ -271,12 +271,12 @@ class LegacyUserTest extends BrowserKitTestCase
         factory(User::class, 2)->create(['mobile' => null]);
 
         // Search should be limited to `admin` scoped keys.
-        $this->get('v1/users?search[email]=search-result@dosomething.org');
+        $this->withLegacyApiKeyScopes(['user'])->get('v1/users?search[email]=search-result@dosomething.org');
         $this->assertResponseStatus(403);
 
         // Query by a "known" search term.
         $query = 'search-result@dosomething.org';
-        $this->withLegacyApiKeyScopes(['admin'])
+        $this->withLegacyApiKeyScopes(['admin', 'user'])
             ->get('v1/users?search[id]='.$query.'&search[email]='.$query.'&search[mobile]='.$query);
         $this->assertResponseStatus(200);
 
@@ -295,13 +295,13 @@ class LegacyUserTest extends BrowserKitTestCase
     {
         // Create some new users
         for ($i = 0; $i < 5; $i++) {
-            $this->withLegacyApiKeyScopes(['admin'])->json('POST', 'v1/users', [
+            $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', [
                 'email' => $this->faker->unique()->email,
                 'mobile' => '', // this should not save a `mobile` field on these users
                 'source' => 'phpunit',
             ]);
 
-            $this->withLegacyApiKeyScopes(['admin'])->json('POST', 'v1/users', [
+            $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', [
                 'email' => '  ', // this should not save a `email` field on these users
                 'mobile' => $this->faker->unique()->phoneNumber,
                 'source' => 'phpunit',
@@ -328,7 +328,7 @@ class LegacyUserTest extends BrowserKitTestCase
             'first_name' => $this->faker->firstName,
         ]);
 
-        $this->withLegacyApiKeyScopes(['admin'])->json('PUT', 'v1/users/_id/'.$user->id, [
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('PUT', 'v1/users/_id/'.$user->id, [
             'mobile' => '', // this should remove the `mobile` field from the document
         ]);
 
@@ -351,7 +351,7 @@ class LegacyUserTest extends BrowserKitTestCase
             'first_name' => $this->faker->firstName,
         ]);
 
-        $this->withLegacyApiKeyScopes(['admin'])->json('PUT', 'v1/users/_id/'.$user->id, [
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('PUT', 'v1/users/_id/'.$user->id, [
             'email' => '',
         ]);
 
@@ -372,7 +372,7 @@ class LegacyUserTest extends BrowserKitTestCase
             'first_name' => $this->faker->firstName,
         ]);
 
-        $this->withLegacyApiKeyScopes(['admin'])->json('PUT', 'v1/users/_id/'.$user->id, [
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('PUT', 'v1/users/_id/'.$user->id, [
             'email' => '',
             'mobile' => '',
         ]);
@@ -398,7 +398,7 @@ class LegacyUserTest extends BrowserKitTestCase
         ];
 
         // This should cause a validation error.
-        $this->withLegacyApiKeyScopes(['admin'])->json('POST', 'v1/users', $payload);
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', $payload);
         $this->assertResponseStatus(422);
     }
 
@@ -413,7 +413,7 @@ class LegacyUserTest extends BrowserKitTestCase
             'email' => 'existing-user@dosomething.org',
         ]);
 
-        $this->withLegacyApiKeyScopes(['admin'])->json('POST', 'v1/users', [
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', [
             'email' => 'EXISTING-USER@dosomething.org',
             'source' => 'phpunit',
         ]);
@@ -436,7 +436,7 @@ class LegacyUserTest extends BrowserKitTestCase
         ]);
 
         // Try to make a conflict up by upserting something that would match 2 accounts.
-        $this->withLegacyApiKeyScopes(['admin'])->json('POST', 'v1/users', [
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', [
             'drupal_id' => '123123',
             'first_name' => 'Bob',
         ]);
@@ -465,7 +465,7 @@ class LegacyUserTest extends BrowserKitTestCase
         ]);
 
         // Try to make a conflict up by upserting something that would match 2 accounts.
-        $this->withLegacyApiKeyScopes(['admin'])->json('POST', 'v1/users', [
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', [
             'email' => 'other-existing-user@example.com',
             'drupal_id' => '123123',
         ]);
@@ -484,7 +484,7 @@ class LegacyUserTest extends BrowserKitTestCase
             'mobile' => '2035551238',
         ]);
 
-        $this->withLegacyApiKeyScopes(['admin'])->json('POST', 'v1/users', [
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', [
             'email' => 'lalalala@dosomething.org',
             'mobile' => '2035551238',
             'source' => 'phpunit',
@@ -509,7 +509,7 @@ class LegacyUserTest extends BrowserKitTestCase
         ]);
 
         // Post a "new" user object to merge into existing record
-        $this->withLegacyApiKeyScopes(['admin'])->json('POST', 'v1/users', [
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', [
             'email' => 'upsert-me@dosomething.org',
             'mobile' => '5556667777',
             'password' => 'secret',
@@ -551,7 +551,7 @@ class LegacyUserTest extends BrowserKitTestCase
         ]);
 
         // Post a "new" user object to merge into existing record
-        $this->withLegacyApiKeyScopes(['admin'])->json('POST', 'v1/users?upsert=false', [
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users?upsert=false', [
             'email' => $user->email,
             'first_name' => 'Puppet',
         ]);
@@ -570,7 +570,7 @@ class LegacyUserTest extends BrowserKitTestCase
     public function testCreateUserWhileOptingOutOfUpsert()
     {
         // Post a "new" user object to merge into existing record
-        $this->withLegacyApiKeyScopes(['admin'])->json('POST', 'v1/users?upsert=false', [
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users?upsert=false', [
             'email' => $this->faker->email,
             'first_name' => 'Puppet',
         ]);
@@ -594,7 +594,7 @@ class LegacyUserTest extends BrowserKitTestCase
         ]);
 
         // Post a "new" user object to merge into existing record
-        $this->withLegacyApiKeyScopes(['admin'])->json('POST', 'v1/users', [
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', [
             'email' => 'upsert-me+2@dosomething.org',
             'mobile' => '5556667777',
             'first_name' => 'Puppet',
@@ -631,7 +631,7 @@ class LegacyUserTest extends BrowserKitTestCase
         $user = User::create(['mobile' => '+15543694724']);
 
         // Update an existing user
-        $this->withLegacyApiKeyScopes(['admin'])->json('PUT', 'v1/users/_id/'.$user->id, [
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('PUT', 'v1/users/_id/'.$user->id, [
             'email' => 'NewEmail@dosomething.org',
         ]);
 
@@ -662,7 +662,7 @@ class LegacyUserTest extends BrowserKitTestCase
         $user = User::create(['email' => 'email@dosomething.org']);
 
         // Update an existing user
-        $this->withLegacyApiKeyScopes(['admin'])->json('PUT', 'v1/users/_id/'.$user->id, [
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('PUT', 'v1/users/_id/'.$user->id, [
             'email' => 'new-email@dosomething.org',
         ]);
 
@@ -686,7 +686,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
         $user = User::create(['email' => 'admiral.ackbar@example.com']);
 
-        $this->withLegacyApiKeyScopes(['admin'])->json('PUT', 'v1/users/_id/'.$user->id, [
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('PUT', 'v1/users/_id/'.$user->id, [
             'mobile' => '(555) 555-0101', // the existing user account
             'first_name' => 'Gial',
             'last_name' => 'Ackbar',
@@ -705,7 +705,7 @@ class LegacyUserTest extends BrowserKitTestCase
         $user1 = factory(User::class)->create(['drupal_id' => '123456']);
         $user2 = factory(User::class)->create(['drupal_id' => '555123']);
 
-        $this->withLegacyApiKeyScopes(['admin'])->json('PUT', 'v1/users/_id/'.$user2->id, [
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('PUT', 'v1/users/_id/'.$user2->id, [
             'drupal_id' => '123456', // the existing user account
         ]);
 
@@ -726,10 +726,10 @@ class LegacyUserTest extends BrowserKitTestCase
         $user = User::create(['email' => 'delete-me@example.com']);
 
         // Only 'admin' scoped keys should be able to delete users.
-        $this->delete('v1/users/'.$user->id);
+        $this->withLegacyApiKeyScopes(['user'])->delete('v1/users/'.$user->id);
         $this->assertResponseStatus(403);
 
-        $this->withLegacyApiKeyScopes(['admin'])->delete('v1/users/'.$user->id);
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->delete('v1/users/'.$user->id);
         $this->assertResponseStatus(200);
     }
 
@@ -741,7 +741,7 @@ class LegacyUserTest extends BrowserKitTestCase
      */
     public function testDeleteNoResource()
     {
-        $this->withLegacyApiKeyScopes(['admin'])->delete('v1/users/DUMMY_ID');
+        $this->withLegacyApiKeyScopes(['admin', 'user'])->delete('v1/users/DUMMY_ID');
         $this->assertResponseStatus(404);
     }
 
@@ -775,7 +775,7 @@ class LegacyUserTest extends BrowserKitTestCase
         $staff = factory(User::class, 'staff')->create();
         factory(User::class, 5)->create();
 
-        $this->asUser($staff, ['role:staff'])->get('v1/users');
+        $this->asUser($staff, ['role:staff', 'user'])->get('v1/users');
         $this->assertResponseStatus(200);
     }
 
@@ -791,7 +791,7 @@ class LegacyUserTest extends BrowserKitTestCase
         $admin = factory(User::class, 'admin')->create();
         factory(User::class, 5)->create();
 
-        $this->asUser($admin, ['role:admin'])->get('v1/users');
+        $this->asUser($admin, ['role:admin', 'user'])->get('v1/users');
         $this->assertResponseStatus(200);
     }
 
@@ -807,13 +807,13 @@ class LegacyUserTest extends BrowserKitTestCase
         factory(User::class, 5)->create(['updated_at' => $this->faker->dateTimeBetween('1/1/2010', '1/1/2015')]);
         factory(User::class, 6)->create(['updated_at' => $this->faker->dateTimeBetween('1/2/2015', '1/1/2017')]);
 
-        $this->withAccessToken(['admin'])->json('GET', 'v1/users?before[updated_at]=1/1/2010');
+        $this->withAccessToken(['admin', 'user'])->json('GET', 'v1/users?before[updated_at]=1/1/2010');
         $this->assertCount(4, $this->decodeResponseJson()['data'], 'can filter `updated_at` before timestamp');
 
-        $this->withAccessToken(['admin'])->json('GET', 'v1/users?after[updated_at]=1/1/2015');
+        $this->withAccessToken(['admin', 'user'])->json('GET', 'v1/users?after[updated_at]=1/1/2015');
         $this->assertCount(6, $this->decodeResponseJson()['data'], 'can filter `updated_at` after timestamp');
 
-        $this->withAccessToken(['admin'])->json('GET', 'v1/users?before[updated_at]=1/2/2015&after[updated_at]=12/31/2009');
+        $this->withAccessToken(['admin', 'user'])->json('GET', 'v1/users?before[updated_at]=1/2/2015&after[updated_at]=12/31/2009');
         $this->assertCount(5, $this->decodeResponseJson()['data'], 'can filter `updated_at` between two timestamps');
     }
 
@@ -1225,11 +1225,11 @@ class LegacyUserTest extends BrowserKitTestCase
     {
         $user = factory(User::class)->create(['email' => $this->faker->email]);
 
-        $this->withAccessToken(['admin'])->json('GET', 'v1/users?search[email]='.$user->email);
+        $this->withAccessToken(['admin', 'user'])->json('GET', 'v1/users?search[email]='.$user->email);
         $this->assertCount(1, $this->decodeResponseJson()['data']);
         $this->assertEquals($this->decodeResponseJson()['data'][0]['email'], $user->email);
 
-        $this->withAccessToken(['admin'])->json('GET', 'v1/users?search='.$user->email);
+        $this->withAccessToken(['admin', 'user'])->json('GET', 'v1/users?search='.$user->email);
         $this->assertCount(1, $this->decodeResponseJson()['data']);
         $this->assertEquals($this->decodeResponseJson()['data'][0]['email'], $user->email);
     }
