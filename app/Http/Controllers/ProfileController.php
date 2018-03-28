@@ -35,6 +35,7 @@ class ProfileController extends Controller
         $this->transformer = new UserTransformer();
 
         $this->middleware('auth');
+        $this->middleware('scope:write', ['only' => ['update']]);
     }
 
     /**

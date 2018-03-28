@@ -31,6 +31,7 @@ class MergeController extends Controller
         $this->merger = $merger;
 
         $this->middleware('role:admin,staff');
+        $this->middleware('scope:write');
     }
 
     /**

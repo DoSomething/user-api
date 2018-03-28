@@ -20,6 +20,7 @@ class ClientController extends Controller
 
         $this->middleware('role:admin');
         $this->middleware('scope:client');
+        $this->middleware('scope:write', ['only' => ['store', 'update', 'destroy']]);
     }
 
     /**
