@@ -1,4 +1,5 @@
 # Profile Endpoints
+The `write` scope is required for the update endpoint.
 
 ## Get Authenticated User's Profile
 Get profile data for the [currently authenticated user](../authentication.md).
