@@ -313,6 +313,25 @@ class LegacyUserTest extends BrowserKitTestCase
     }
 
     /**
+     * Test that creating a user requires the write scope.
+     * POST /users
+     *
+     * @return void
+     */
+    public function testCreateUserRequiresWriteScope()
+    {
+
+        $response = $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', [
+            'email' => $this->faker->unique()->email,
+            'mobile' => '', // this should not save a `mobile` field on these users
+            'source' => 'phpunit',
+        ]);
+
+        $this->assertResponseStatus(403);
+        $this->assertEquals('You must be using an API key with "write" scope to do that.', $response->decodeResponseJson()['error']['message']);
+    }
+
+    /**
      * Test that you set an indexed field to an empty string. This would cause
      * unique constraint violations if multiple users had an empty string set
      * for a unique indexed field.
@@ -377,6 +396,28 @@ class LegacyUserTest extends BrowserKitTestCase
             'mobile' => '',
         ]);
         $this->assertResponseStatus(422);
+    }
+
+    /**
+     * Test that you can't edit a user without write scope.
+     * PUT /users/:id
+     *
+     * @return void
+     */
+    public function testCantEditWithoutWriteScope()
+    {
+        $user = User::create([
+            'email' => $this->faker->email,
+            'mobile' => $this->faker->phoneNumber,
+            'first_name' => $this->faker->firstName,
+        ]);
+
+        $response = $this->withLegacyApiKeyScopes(['admin', 'user'])->json('PUT', 'v1/users/_id/'.$user->id, [
+            'email' => '',
+        ]);
+
+        $this->assertResponseStatus(403);
+        $this->assertEquals('You must be using an API key with "write" scope to do that.', $response->decodeResponseJson()['error']['message']);
     }
 
     /**
@@ -731,6 +772,22 @@ class LegacyUserTest extends BrowserKitTestCase
 
         $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->delete('v1/users/'.$user->id);
         $this->assertResponseStatus(200);
+    }
+
+    /**
+     * Test the write scope is required to delete an existing user
+     * DELETE /users
+     *
+     * @return void
+     */
+    public function testDeleteWithWriteScope()
+    {
+        $user = User::create(['email' => 'delete-me@example.com']);
+
+        $response = $this->withLegacyApiKeyScopes(['admin', 'user'])->delete('v1/users/'.$user->id);
+
+        $this->assertResponseStatus(403);
+        $this->assertEquals('You must be using an API key with "write" scope to do that.', $response->decodeResponseJson()['error']['message']);
     }
 
     /**

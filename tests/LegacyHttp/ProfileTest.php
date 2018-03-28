@@ -68,4 +68,31 @@ class ProfileTest extends BrowserKitTestCase
             ],
         ]);
     }
+
+    /**
+     * Test that the write scope is required to update a profile.
+     * POST /profile
+     *
+     * @test
+     */
+    public function testUpdateProfileWriteScope()
+    {
+        $user = factory(User::class)->create([
+            'email' => $this->faker->email,
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'drupal_id' => 123456,
+            'role' => 'user',
+        ]);
+
+        $response = $this->asUser($user, ['user'])->json('POST', 'v1/profile', [
+            'mobile' => '(555) 123-4567',
+            'language' => 'en',
+            'drupal_id' => 666666,
+            'role' => 'admin',
+        ]);
+
+        $this->assertResponseStatus(401);
+        $this->assertEquals('Requires the `write` scope.', $response->decodeResponseJson()['hint']);
+    }
 }

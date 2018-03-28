@@ -205,4 +205,34 @@ class MergeTest extends BrowserKitTestCase
             'last_accessed_at' => null,
         ]);
     }
+
+    /**
+     * Test that you can't merge without the write scope.
+     * POST /resets
+     *
+     * @test
+     */
+    public function testMergingWithWriteScope()
+    {
+        $admin = factory(User::class, 'admin')->create();
+
+        $user = User::forceCreate([
+            'email' => 'target-account@example.com',
+            'last_accessed_at' => '2018-02-28 00:00:00',
+            'language' => 'hi',
+        ]);
+
+        $duplicate = User::forceCreate([
+            'mobile' => '5551234567',
+            'last_accessed_at' => '2018-02-28 01:00:00',
+            'language' => 'yo',
+        ]);
+
+        $response = $this->asUser($admin, ['role:admin', 'user'])->json('POST', 'v1/users/'.$user->id.'/merge', [
+            'id' => $duplicate->id,
+        ]);
+
+        $this->assertResponseStatus(401);
+        $this->assertEquals('Requires the `write` scope.', $response->decodeResponseJson()['hint']);
+    }
 }
