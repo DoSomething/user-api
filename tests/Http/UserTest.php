@@ -156,7 +156,7 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff'])->json('PUT', 'v2/users/'.$user->id, [
+        $this->asUser($staff, ['user', 'role:staff', 'write'])->json('PUT', 'v2/users/'.$user->id, [
             'first_name' => 'Alexander',
             'last_name' => 'Hamilton',
         ]);
@@ -175,7 +175,7 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff'])->json('PUT', 'v2/users/'.$user->id, [
+        $this->asUser($staff, ['user', 'role:staff', 'write'])->json('PUT', 'v2/users/'.$user->id, [
             'mobile' => '',
         ]);
 
@@ -191,7 +191,7 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff'])->json('PUT', 'v2/users/'.$user->id, [
+        $this->asUser($staff, ['user', 'role:staff', 'write'])->json('PUT', 'v2/users/'.$user->id, [
             'mobile' => null,
         ]);
 
@@ -253,9 +253,8 @@ class UserTest extends BrowserKitTestCase
     public function testV2UpdateProfileAsAdmin()
     {
         $user = factory(User::class)->create();
-        $admin = factory(User::class, 'admin')->create();
 
-        $this->asUser($admin, ['user', 'role:admin'])->json('PUT', 'v2/users/'.$user->id, [
+        $this->asAdminUser()->json('PUT', 'v2/users/'.$user->id, [
             'first_name' => 'Hercules',
             'last_name' => 'Mulligan',
             'role' => 'admin',

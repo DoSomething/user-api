@@ -47,7 +47,7 @@ class ProfileTest extends BrowserKitTestCase
             'role' => 'user',
         ]);
 
-        $this->asUser($user, ['user'])->json('POST', 'v1/profile', [
+        $this->asUser($user, ['user', 'write'])->json('POST', 'v1/profile', [
             'mobile' => '(555) 123-4567',
             'language' => 'en',
             'drupal_id' => 666666,
