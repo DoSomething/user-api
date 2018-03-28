@@ -320,7 +320,6 @@ class LegacyUserTest extends BrowserKitTestCase
      */
     public function testCreateUserRequiresWriteScope()
     {
-
         $response = $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', [
             'email' => $this->faker->unique()->email,
             'mobile' => '', // this should not save a `mobile` field on these users

@@ -115,7 +115,6 @@ class ClientTest extends BrowserKitTestCase
 
         $this->assertResponseStatus(401);
         $this->assertEquals('Requires the `write` scope.', $response->decodeResponseJson()['hint']);
-
     }
 
     /**

@@ -619,7 +619,7 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class, 'staff')->create();
         $userToDelete = factory(User::class)->create();
 
-        $response = $this->asUser($user, ['user', 'role:staff'])->json('DELETE', 'v2/users/' . $userToDelete->id, [
+        $response = $this->asUser($user, ['user', 'role:staff'])->json('DELETE', 'v2/users/'.$userToDelete->id, [
             'first_name' => 'Hercules',
             'last_name' => 'Mulligan',
             'email' => $this->faker->email,
@@ -640,7 +640,7 @@ class UserTest extends BrowserKitTestCase
     {
         $userToDelete = factory(User::class)->create();
 
-        $response = $this->asAdminUser()->json('DELETE', 'v2/users/' . $userToDelete->id, [
+        $response = $this->asAdminUser()->json('DELETE', 'v2/users/'.$userToDelete->id, [
             'first_name' => 'Hercules',
             'last_name' => 'Mulligan',
             'email' => $this->faker->email,
