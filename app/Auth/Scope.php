@@ -110,8 +110,9 @@ class Scope
      */
     public static function gate($scope)
     {
-        if (has_middleware('web')) {
-            return true;
+        // Only check scopes if request is made with an OAuth token.
+        if (! request()->attributes->has('oauth_access_token_id')) {
+            return;
         }
 
         if (! static::allows($scope)) {
