@@ -779,7 +779,7 @@ class LegacyUserTest extends BrowserKitTestCase
      *
      * @return void
      */
-    public function testDeleteWithWriteScope()
+    public function testDeleteWithoutWriteScope()
     {
         $user = User::create(['email' => 'delete-me@example.com']);
 

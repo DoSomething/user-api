@@ -101,7 +101,7 @@ class ClientTest extends BrowserKitTestCase
     /**
      * Verify a the write scope is required to create a new client.
      */
-    public function testStoreWithWriteScope()
+    public function testStoreWithoutWriteScope()
     {
         $admin = factory(User::class, 'admin')->create();
 
@@ -192,7 +192,7 @@ class ClientTest extends BrowserKitTestCase
     /**
      * Verify the write scope is required in order to update a client.
      */
-    public function testUpdateWithWriteScope()
+    public function testUpdateWithoutWriteScope()
     {
         $client = Client::create(['client_id' => 'update_key', 'allowed_grant' => 'password']);
 
@@ -242,7 +242,7 @@ class ClientTest extends BrowserKitTestCase
      * Verify write scope is required to delete a client.
      * @test
      */
-    public function testDestroyWithWriteScope()
+    public function testDestroyWithoutWriteScope()
     {
         $admin = factory(User::class, 'admin')->create();
         $client = Client::create(['client_id' => 'delete_me']);

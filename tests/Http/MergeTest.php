@@ -212,7 +212,7 @@ class MergeTest extends BrowserKitTestCase
      *
      * @test
      */
-    public function testMergingWithWriteScope()
+    public function testMergingWithoutWriteScope()
     {
         $admin = factory(User::class, 'admin')->create();
 

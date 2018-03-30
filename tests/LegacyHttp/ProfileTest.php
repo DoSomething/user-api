@@ -75,7 +75,7 @@ class ProfileTest extends BrowserKitTestCase
      *
      * @test
      */
-    public function testUpdateProfileWriteScope()
+    public function testUpdateProfileWithoutWriteScope()
     {
         $user = factory(User::class)->create([
             'email' => $this->faker->email,
