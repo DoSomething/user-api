@@ -83,7 +83,30 @@ class UserTest extends BrowserKitTestCase
      *
      * @return void
      */
-    public function testV2GetPublicDataFromUser()
+    public function testV2GetPublicDataAsAnonymousUser()
+    {
+        $user = factory(User::class)->create();
+
+        // Test that we can view public profile as another user.
+        $this->get('v2/users/'.$user->id);
+        $this->assertResponseStatus(200);
+
+        // And test that private profile fields are hidden for the other user.
+        $data = $this->decodeResponseJson()['data'];
+        $this->assertArrayHasKey('first_name', $data);
+        $this->assertArrayNotHasKey('last_name', $data);
+        $this->assertArrayNotHasKey('email', $data);
+        $this->assertArrayNotHasKey('mobile', $data);
+        $this->assertArrayNotHasKey('facebook_id', $data);
+    }
+
+    /**
+     * Test that retrieving a user as a non-admin returns limited profile.
+     * GET /v2/users/:id
+     *
+     * @return void
+     */
+    public function testV2GetPublicDataAsAuthenticatedUser()
     {
         $user = factory(User::class)->create();
         $viewer = factory(User::class)->create();
