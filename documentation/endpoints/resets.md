@@ -1,4 +1,5 @@
 # Reset Endpoints
+The `write` scope is required for the create endpoint.
 
 ## Create a Password Reset Link
 Create a new password reset link for the provided user ID. This requires admin privileges.

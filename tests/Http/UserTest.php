@@ -170,7 +170,7 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that a staffer can update a user's profile.
-     * GET /v2/users/:id
+     * PUT /v2/users/:id
      *
      * @return void
      */
@@ -179,7 +179,7 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff'])->json('PUT', 'v2/users/'.$user->id, [
+        $this->asUser($staff, ['user', 'role:staff', 'write'])->json('PUT', 'v2/users/'.$user->id, [
             'first_name' => 'Alexander',
             'last_name' => 'Hamilton',
         ]);
@@ -192,13 +192,33 @@ class UserTest extends BrowserKitTestCase
         $this->assertNotEquals('Hamilton', $user->last_name);
     }
 
+    /**
+     * Test that the write scope is required to update a profile.
+     * PUT /v2/users/:id
+     *
+     * @return void
+     */
+    public function testV2RequiredWriteScopeToUpdateProfile()
+    {
+        $user = factory(User::class)->create();
+        $staff = factory(User::class, 'staff')->create();
+
+        $response = $this->asUser($staff, ['user', 'role:staff'])->json('PUT', 'v2/users/'.$user->id, [
+            'first_name' => 'Alexander',
+            'last_name' => 'Hamilton',
+        ]);
+
+        $this->assertResponseStatus(401);
+        $this->assertEquals('Requires the `write` scope.', $response->decodeResponseJson()['hint']);
+    }
+
     /** @test */
     public function testV2UnsetFieldWithEmptyString()
     {
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff'])->json('PUT', 'v2/users/'.$user->id, [
+        $this->asUser($staff, ['user', 'role:staff', 'write'])->json('PUT', 'v2/users/'.$user->id, [
             'mobile' => '',
         ]);
 
@@ -214,7 +234,7 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff'])->json('PUT', 'v2/users/'.$user->id, [
+        $this->asUser($staff, ['user', 'role:staff', 'write'])->json('PUT', 'v2/users/'.$user->id, [
             'mobile' => null,
         ]);
 
@@ -268,6 +288,27 @@ class UserTest extends BrowserKitTestCase
     }
 
     /**
+     * Test that the write scope is required to create a new user.
+     * POST /v2/users
+     *
+     * @return void
+     */
+    public function testV2RequiredWriteScopeCreateUser()
+    {
+        $user = factory(User::class, 'staff')->create();
+
+        $response = $this->asUser($user, ['user', 'role:staff'])->json('POST', 'v2/users', [
+            'first_name' => 'Hercules',
+            'last_name' => 'Mulligan',
+            'email' => $this->faker->email,
+            'country' => 'us',
+        ]);
+
+        $this->assertResponseStatus(401);
+        $this->assertEquals('Requires the `write` scope.', $response->decodeResponseJson()['hint']);
+    }
+
+    /**
      * Test that an admin can update a user's profile, including their role.
      * PUT /v2/users/:id
      *
@@ -276,9 +317,8 @@ class UserTest extends BrowserKitTestCase
     public function testV2UpdateProfileAsAdmin()
     {
         $user = factory(User::class)->create();
-        $admin = factory(User::class, 'admin')->create();
 
-        $this->asUser($admin, ['user', 'role:admin'])->json('PUT', 'v2/users/'.$user->id, [
+        $this->asAdminUser()->json('PUT', 'v2/users/'.$user->id, [
             'first_name' => 'Hercules',
             'last_name' => 'Mulligan',
             'role' => 'admin',
@@ -589,5 +629,47 @@ class UserTest extends BrowserKitTestCase
                 'id', 'email', 'first_name', 'last_name', 'facebook_id',
             ],
         ]);
+    }
+
+    /**
+     * Test that write scope is required to delete a user.
+     * DELETE /v2/email/:email
+     *
+     * @return void
+     */
+    public function testV2RequiredWriteScopeDeleteUser()
+    {
+        $user = factory(User::class, 'staff')->create();
+        $userToDelete = factory(User::class)->create();
+
+        $response = $this->asUser($user, ['user', 'role:staff'])->json('DELETE', 'v2/users/'.$userToDelete->id, [
+            'first_name' => 'Hercules',
+            'last_name' => 'Mulligan',
+            'email' => $this->faker->email,
+            'country' => 'us',
+        ]);
+
+        $this->assertResponseStatus(401);
+        $this->assertEquals('Requires the `write` scope.', $response->decodeResponseJson()['hint']);
+    }
+
+    /**
+     * Test that admin can delete a user.
+     * DELETE /v2/email/:email
+     *
+     * @return void
+     */
+    public function testV2AdminCanDeleteUser()
+    {
+        $userToDelete = factory(User::class)->create();
+
+        $response = $this->asAdminUser()->json('DELETE', 'v2/users/'.$userToDelete->id, [
+            'first_name' => 'Hercules',
+            'last_name' => 'Mulligan',
+            'email' => $this->faker->email,
+            'country' => 'us',
+        ]);
+
+        $this->assertResponseStatus(200);
     }
 }

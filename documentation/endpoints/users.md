@@ -1,4 +1,6 @@
 # User Endpoints
+The `write` scope is required for create/update/delete endpoints.
+
 ## Retrieve All Users
 Get data for all users in a paginated format. This requires the `user` scope and either the `admin` scope, or "admin" or "staff" role with the appropriate scope.
 

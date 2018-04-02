@@ -46,7 +46,6 @@ $router->group(['prefix' => 'v1', 'as' => 'v1.'], function () {
     $this->resource('users', 'UserController', ['except' => ['show', 'update']]);
     $this->get('users/{term}/{id}', 'UserController@show');
     $this->put('users/{term}/{id}', 'UserController@update');
-    $this->post('users/{id}/avatar', 'AvatarController@store');
     $this->post('users/{id}/merge', 'MergeController@store');
 
     // Profile (the currently authenticated user)

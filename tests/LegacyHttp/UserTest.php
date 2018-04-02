@@ -295,13 +295,13 @@ class LegacyUserTest extends BrowserKitTestCase
     {
         // Create some new users
         for ($i = 0; $i < 5; $i++) {
-            $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', [
+            $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json('POST', 'v1/users', [
                 'email' => $this->faker->unique()->email,
                 'mobile' => '', // this should not save a `mobile` field on these users
                 'source' => 'phpunit',
             ]);
 
-            $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', [
+            $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json('POST', 'v1/users', [
                 'email' => '  ', // this should not save a `email` field on these users
                 'mobile' => $this->faker->unique()->phoneNumber,
                 'source' => 'phpunit',
@@ -310,6 +310,24 @@ class LegacyUserTest extends BrowserKitTestCase
 
         $this->get('v1/users');
         $this->assertCount(10, $this->decodeResponseJson()['data']);
+    }
+
+    /**
+     * Test that creating a user requires the write scope.
+     * POST /users
+     *
+     * @return void
+     */
+    public function testCreateUserRequiresWriteScope()
+    {
+        $response = $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', [
+            'email' => $this->faker->unique()->email,
+            'mobile' => '', // this should not save a `mobile` field on these users
+            'source' => 'phpunit',
+        ]);
+
+        $this->assertResponseStatus(403);
+        $this->assertEquals('You must be using an API key with "write" scope to do that.', $response->decodeResponseJson()['error']['message']);
     }
 
     /**
@@ -328,7 +346,7 @@ class LegacyUserTest extends BrowserKitTestCase
             'first_name' => $this->faker->firstName,
         ]);
 
-        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('PUT', 'v1/users/_id/'.$user->id, [
+        $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json('PUT', 'v1/users/_id/'.$user->id, [
             'mobile' => '', // this should remove the `mobile` field from the document
         ]);
 
@@ -351,7 +369,7 @@ class LegacyUserTest extends BrowserKitTestCase
             'first_name' => $this->faker->firstName,
         ]);
 
-        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('PUT', 'v1/users/_id/'.$user->id, [
+        $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json('PUT', 'v1/users/_id/'.$user->id, [
             'email' => '',
         ]);
 
@@ -372,11 +390,33 @@ class LegacyUserTest extends BrowserKitTestCase
             'first_name' => $this->faker->firstName,
         ]);
 
-        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('PUT', 'v1/users/_id/'.$user->id, [
+        $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json('PUT', 'v1/users/_id/'.$user->id, [
             'email' => '',
             'mobile' => '',
         ]);
         $this->assertResponseStatus(422);
+    }
+
+    /**
+     * Test that you can't edit a user without write scope.
+     * PUT /users/:id
+     *
+     * @return void
+     */
+    public function testCantEditWithoutWriteScope()
+    {
+        $user = User::create([
+            'email' => $this->faker->email,
+            'mobile' => $this->faker->phoneNumber,
+            'first_name' => $this->faker->firstName,
+        ]);
+
+        $response = $this->withLegacyApiKeyScopes(['admin', 'user'])->json('PUT', 'v1/users/_id/'.$user->id, [
+            'email' => '',
+        ]);
+
+        $this->assertResponseStatus(403);
+        $this->assertEquals('You must be using an API key with "write" scope to do that.', $response->decodeResponseJson()['error']['message']);
     }
 
     /**
@@ -398,7 +438,7 @@ class LegacyUserTest extends BrowserKitTestCase
         ];
 
         // This should cause a validation error.
-        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', $payload);
+        $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json('POST', 'v1/users', $payload);
         $this->assertResponseStatus(422);
     }
 
@@ -413,7 +453,7 @@ class LegacyUserTest extends BrowserKitTestCase
             'email' => 'existing-user@dosomething.org',
         ]);
 
-        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', [
+        $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json('POST', 'v1/users', [
             'email' => 'EXISTING-USER@dosomething.org',
             'source' => 'phpunit',
         ]);
@@ -436,7 +476,7 @@ class LegacyUserTest extends BrowserKitTestCase
         ]);
 
         // Try to make a conflict up by upserting something that would match 2 accounts.
-        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', [
+        $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json('POST', 'v1/users', [
             'drupal_id' => '123123',
             'first_name' => 'Bob',
         ]);
@@ -465,7 +505,7 @@ class LegacyUserTest extends BrowserKitTestCase
         ]);
 
         // Try to make a conflict up by upserting something that would match 2 accounts.
-        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', [
+        $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json('POST', 'v1/users', [
             'email' => 'other-existing-user@example.com',
             'drupal_id' => '123123',
         ]);
@@ -484,7 +524,7 @@ class LegacyUserTest extends BrowserKitTestCase
             'mobile' => '2035551238',
         ]);
 
-        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', [
+        $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json('POST', 'v1/users', [
             'email' => 'lalalala@dosomething.org',
             'mobile' => '2035551238',
             'source' => 'phpunit',
@@ -509,7 +549,7 @@ class LegacyUserTest extends BrowserKitTestCase
         ]);
 
         // Post a "new" user object to merge into existing record
-        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', [
+        $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json('POST', 'v1/users', [
             'email' => 'upsert-me@dosomething.org',
             'mobile' => '5556667777',
             'password' => 'secret',
@@ -551,7 +591,7 @@ class LegacyUserTest extends BrowserKitTestCase
         ]);
 
         // Post a "new" user object to merge into existing record
-        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users?upsert=false', [
+        $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json('POST', 'v1/users?upsert=false', [
             'email' => $user->email,
             'first_name' => 'Puppet',
         ]);
@@ -570,7 +610,7 @@ class LegacyUserTest extends BrowserKitTestCase
     public function testCreateUserWhileOptingOutOfUpsert()
     {
         // Post a "new" user object to merge into existing record
-        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users?upsert=false', [
+        $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json('POST', 'v1/users?upsert=false', [
             'email' => $this->faker->email,
             'first_name' => 'Puppet',
         ]);
@@ -594,7 +634,7 @@ class LegacyUserTest extends BrowserKitTestCase
         ]);
 
         // Post a "new" user object to merge into existing record
-        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('POST', 'v1/users', [
+        $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json('POST', 'v1/users', [
             'email' => 'upsert-me+2@dosomething.org',
             'mobile' => '5556667777',
             'first_name' => 'Puppet',
@@ -631,7 +671,7 @@ class LegacyUserTest extends BrowserKitTestCase
         $user = User::create(['mobile' => '+15543694724']);
 
         // Update an existing user
-        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('PUT', 'v1/users/_id/'.$user->id, [
+        $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json('PUT', 'v1/users/_id/'.$user->id, [
             'email' => 'NewEmail@dosomething.org',
         ]);
 
@@ -662,7 +702,7 @@ class LegacyUserTest extends BrowserKitTestCase
         $user = User::create(['email' => 'email@dosomething.org']);
 
         // Update an existing user
-        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('PUT', 'v1/users/_id/'.$user->id, [
+        $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json('PUT', 'v1/users/_id/'.$user->id, [
             'email' => 'new-email@dosomething.org',
         ]);
 
@@ -686,7 +726,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
         $user = User::create(['email' => 'admiral.ackbar@example.com']);
 
-        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('PUT', 'v1/users/_id/'.$user->id, [
+        $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json('PUT', 'v1/users/_id/'.$user->id, [
             'mobile' => '(555) 555-0101', // the existing user account
             'first_name' => 'Gial',
             'last_name' => 'Ackbar',
@@ -705,7 +745,7 @@ class LegacyUserTest extends BrowserKitTestCase
         $user1 = factory(User::class)->create(['drupal_id' => '123456']);
         $user2 = factory(User::class)->create(['drupal_id' => '555123']);
 
-        $this->withLegacyApiKeyScopes(['admin', 'user'])->json('PUT', 'v1/users/_id/'.$user2->id, [
+        $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json('PUT', 'v1/users/_id/'.$user2->id, [
             'drupal_id' => '123456', // the existing user account
         ]);
 
@@ -726,11 +766,27 @@ class LegacyUserTest extends BrowserKitTestCase
         $user = User::create(['email' => 'delete-me@example.com']);
 
         // Only 'admin' scoped keys should be able to delete users.
-        $this->withLegacyApiKeyScopes(['user'])->delete('v1/users/'.$user->id);
+        $this->withLegacyApiKeyScopes(['user', 'write'])->delete('v1/users/'.$user->id);
         $this->assertResponseStatus(403);
 
-        $this->withLegacyApiKeyScopes(['admin', 'user'])->delete('v1/users/'.$user->id);
+        $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->delete('v1/users/'.$user->id);
         $this->assertResponseStatus(200);
+    }
+
+    /**
+     * Test the write scope is required to delete an existing user
+     * DELETE /users
+     *
+     * @return void
+     */
+    public function testDeleteWithoutWriteScope()
+    {
+        $user = User::create(['email' => 'delete-me@example.com']);
+
+        $response = $this->withLegacyApiKeyScopes(['admin', 'user'])->delete('v1/users/'.$user->id);
+
+        $this->assertResponseStatus(403);
+        $this->assertEquals('You must be using an API key with "write" scope to do that.', $response->decodeResponseJson()['error']['message']);
     }
 
     /**
@@ -741,7 +797,7 @@ class LegacyUserTest extends BrowserKitTestCase
      */
     public function testDeleteNoResource()
     {
-        $this->withLegacyApiKeyScopes(['admin', 'user'])->delete('v1/users/DUMMY_ID');
+        $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->delete('v1/users/DUMMY_ID');
         $this->assertResponseStatus(404);
     }
 
@@ -896,7 +952,7 @@ class LegacyUserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff'])->json('PUT', 'v1/users/id/'.$user->id, [
+        $this->asUser($staff, ['user', 'role:staff', 'write'])->json('PUT', 'v1/users/id/'.$user->id, [
             'first_name' => 'Alexander',
             'last_name' => 'Hamilton',
         ]);
@@ -915,7 +971,7 @@ class LegacyUserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff'])->json('PUT', 'v1/users/id/'.$user->id, [
+        $this->asUser($staff, ['user', 'role:staff', 'write'])->json('PUT', 'v1/users/id/'.$user->id, [
             'mobile' => '',
         ]);
 
@@ -931,7 +987,7 @@ class LegacyUserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff'])->json('PUT', 'v1/users/id/'.$user->id, [
+        $this->asUser($staff, ['user', 'role:staff', 'write'])->json('PUT', 'v1/users/id/'.$user->id, [
             'mobile' => null,
         ]);
 
@@ -997,9 +1053,8 @@ class LegacyUserTest extends BrowserKitTestCase
     public function testUpdateProfileAsAdmin()
     {
         $user = factory(User::class)->create();
-        $admin = factory(User::class, 'admin')->create();
 
-        $this->asUser($admin, ['user', 'role:admin'])->json('PUT', 'v1/users/id/'.$user->id, [
+        $this->asAdminUser()->json('PUT', 'v1/users/id/'.$user->id, [
             'first_name' => 'Hercules',
             'last_name' => 'Mulligan',
             'role' => 'admin',

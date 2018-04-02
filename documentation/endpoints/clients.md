@@ -1,4 +1,5 @@
 # Client Endpoints
+The `write` scope is required for create/update/delete endpoints.
 
 ## Retrieve All Clients
 Retrieves all valid OAuth clients. This requires either the `admin` scope, or `role:admin` with an admin user.

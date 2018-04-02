@@ -99,6 +99,25 @@ class ClientTest extends BrowserKitTestCase
     }
 
     /**
+     * Verify a the write scope is required to create a new client.
+     */
+    public function testStoreWithoutWriteScope()
+    {
+        $admin = factory(User::class, 'admin')->create();
+
+        $response = $this->asUser($admin, ['role:admin', 'user', 'client'])->json('POST', 'v2/clients', [
+            'title' => 'Dog',
+            'description' => 'hello this is doge',
+            'client_id' => 'dog',
+            'allowed_grant' => 'client_credentials',
+            'scope' => ['admin'],
+        ]);
+
+        $this->assertResponseStatus(401);
+        $this->assertEquals('Requires the `write` scope.', $response->decodeResponseJson()['hint']);
+    }
+
+    /**
      * Verify a non-admin user is not able to see whether a client exists or not.
      */
     public function testShowWontExposeClientNames()
@@ -171,6 +190,26 @@ class ClientTest extends BrowserKitTestCase
     }
 
     /**
+     * Verify the write scope is required in order to update a client.
+     */
+    public function testUpdateWithoutWriteScope()
+    {
+        $client = Client::create(['client_id' => 'update_key', 'allowed_grant' => 'password']);
+
+        $admin = factory(User::class, 'admin')->create();
+
+        $response = $this->asUser($admin, ['role:admin', 'user', 'client'])->json('PUT', 'v2/clients/'.$client->client_id, [
+            'title' => 'New Title',
+            'scope' => ['admin', 'user'],
+            'allowed_grant' => 'authorization_code',
+            'redirect_uri' => ['http://example.com/callback'],
+        ]);
+
+        $this->assertResponseStatus(401);
+        $this->assertEquals('Requires the `write` scope.', $response->decodeResponseJson()['hint']);
+    }
+
+    /**
      * Verify a non-admin user is not able to delete clients.
      * @test
      */
@@ -197,5 +236,20 @@ class ClientTest extends BrowserKitTestCase
         $this->assertResponseStatus(200);
 
         $this->dontSeeInDatabase('clients', ['client_id' => 'delete_me']);
+    }
+
+    /**
+     * Verify write scope is required to delete a client.
+     * @test
+     */
+    public function testDestroyWithoutWriteScope()
+    {
+        $admin = factory(User::class, 'admin')->create();
+        $client = Client::create(['client_id' => 'delete_me']);
+
+        $response = $this->asUser($admin, ['role:admin', 'user', 'client'])->json('DELETE', 'v2/clients/'.$client->client_id);
+
+        $this->assertResponseStatus(401);
+        $this->assertEquals('Requires the `write` scope.', $response->decodeResponseJson()['hint']);
     }
 }

@@ -27,6 +27,7 @@ class ResetController extends Controller
         $this->phoenix = $phoenix;
 
         $this->middleware('role:admin');
+        $this->middleware('scope:write', ['only' => ['store']]);
     }
 
     /**

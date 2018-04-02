@@ -40,6 +40,7 @@ class UserController extends Controller
 
         $this->middleware('role:admin,staff', ['except' => ['show']]);
         $this->middleware('scope:user');
+        $this->middleware('scope:write', ['only' => ['store', 'update', 'destroy']]);
     }
 
     /**
