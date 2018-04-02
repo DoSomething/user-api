@@ -110,8 +110,11 @@ class Scope
      */
     public static function gate($scope)
     {
-        // Only check scopes if request is made with an OAuth token.
-        if (! request()->attributes->has('oauth_access_token_id')) {
+        // Only check scopes if request is made with OAuth or legacy header.
+        $hasAccessToken = request()->attributes->has('oauth_access_token_id');
+        $hasLegacyAuthHeader = request()->headers->has('x-ds-rest-api-key');
+        $shouldCheckScopes = $hasAccessToken || $hasLegacyAuthHeader;
+        if (! $shouldCheckScopes) {
             return;
         }
 
