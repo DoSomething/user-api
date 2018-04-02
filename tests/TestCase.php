@@ -72,21 +72,6 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     }
 
     /**
-     * Set a header on the request.
-     *
-     * @param $name
-     * @param $value
-     * @return $this
-     */
-    public function withHeader($name, $value)
-    {
-        $header = $this->transformHeadersToServerVars([$name => $value]);
-        $this->serverVariables = array_merge($this->serverVariables, $header);
-
-        return $this;
-    }
-
-    /**
      * Register a new user account.
      */
     public function register()
