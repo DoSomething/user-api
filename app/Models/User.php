@@ -68,6 +68,7 @@ use Northstar\Auth\Role;
  * Messaging subscription status:
  * @property string $sms_status
  * @property bool   $sms_paused
+ * @property string $email_status
  *
  * @property Carbon $last_accessed_at - The timestamp of the user's last token refresh
  * @property Carbon $last_authenticated_at - The timestamp of the user's last successful login
@@ -109,7 +110,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
         // External profiles:
         'mobilecommons_id', 'mobilecommons_status', 'facebook_id', 'slack_id',
-        'sms_status', 'sms_paused', 'last_messaged_at',
+        'sms_status', 'sms_paused', 'email_status', 'last_messaged_at',
     ];
 
     /**
