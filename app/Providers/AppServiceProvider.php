@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
         User::created(function (User $user) {
             // Send payload to Blink for Customer.io profile.
 
-            $blinkPayload = $user->toBlinkPayload();
+            $blinkPayload = $user->toCustomerIoPayload();
             info('blink: user.create', $blinkPayload);
             if (config('features.blink')) {
                 gateway('blink')->userCreate($blinkPayload);
@@ -42,7 +42,7 @@ class AppServiceProvider extends ServiceProvider
 
         User::updated(function (User $user) {
             // Send payload to Blink for Customer.io profile.
-            $blinkPayload = $user->toBlinkPayload();
+            $blinkPayload = $user->toCustomerIoPayload();
             info('blink: user.update', $blinkPayload);
             if (config('features.blink') && config('features.blink-updates')) {
                 gateway('blink')->userCreate($blinkPayload);

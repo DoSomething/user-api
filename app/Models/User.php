@@ -412,7 +412,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @return array
      */
-    public function toBlinkPayload()
+    public function toCustomerIoPayload()
     {
         return [
             'id' => $this->id,

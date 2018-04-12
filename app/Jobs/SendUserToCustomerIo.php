@@ -47,7 +47,7 @@ class SendUserToCustomerIo implements ShouldQueue
             $this->user->touch();
 
             if (config('features.blink')) {
-                $blinkPayload = $this->user->toBlinkPayload();
+                $blinkPayload = $this->user->toCustomerIoPayload();
                 info('blink: user.backfill', $blinkPayload);
                 gateway('blink')->userCreate($blinkPayload);
             }
