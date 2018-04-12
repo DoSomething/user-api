@@ -439,59 +439,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * Transform the user model for Customer.io
-     *
-     * @return array
-     */
-    public function toCustomerIoPayload()
-    {
-        $requiredCustomerIoFields = collect(['id', 'updated_at', 'created_at']);
-
-        // If this user was just created and has an email, mark them as subscribed.
-        // Otherwise set unsubscribed to null so it's removed in the filter later.
-        $isNewUser = $this->updated_at->timestamp === $this->created_at->timestamp;
-        $unsubscribed = ($this->email && $isNewUser) ? false : null;
-
-        $data = collect([
-            'id' => $this->id,
-            'email' => $this->email,
-            'phone' => $this->mobile,
-            'sms_status' => $this->sms_status,
-            'facebook_id' => $this->facebook_id,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'birthdate' => format_date($this->birthdate, 'Y-m-d'),
-            'role' => $this->role,
-            'addr_city' => $this->addr_city,
-            'addr_state' => $this->addr_state,
-            'addr_zip' => $this->addr_zip,
-            'language' => $this->language,
-            'country' => $this->country,
-            'source' => $this->source,
-            'source_detail' => $this->source_detail,
-            'last_messaged_at' => format_date($this->last_messaged_at, 'U'),
-            'last_authenticated_at' => format_date($this->last_authenticated_at, 'U'),
-            'updated_at' => format_date($this->updated_at, 'U'),
-            'created_at' => format_date($this->created_at, 'U'),
-            'unsubscribed' => $unsubscribed,
-        ])->filter(function ($value, $key) use ($requiredCustomerIoFields) {
-            // If it's an address field that isn't a string, get rid of it.
-            if (starts_with($key, 'addr') && gettype($value) !== 'string') {
-                return false;
-            }
-
-            // If the field isn't required and has a null value, remove it.
-            if (! $requiredCustomerIoFields->has($key)) {
-                return $value !== null;
-            }
-
-            return true;
-        });
-
-        return $data->toArray();
-    }
-
-    /**
      * Scope a query to get all of the users in a group.
      *
      * @return \Illuminate\Database\Eloquent\Builder

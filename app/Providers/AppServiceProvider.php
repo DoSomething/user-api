@@ -20,23 +20,19 @@ class AppServiceProvider extends ServiceProvider
             $user->source = $user->source ?: client_id();
         });
 
-        // @TODO: Remove after the weekend of scripting!
-        // 2017/10/27
-        if (! $this->app->runningInConsole()) {
-            User::created(function (User $user) {
-                // Send payload to Blink for Customer.io profile.
+        User::created(function (User $user) {
+            // Send payload to Blink for Customer.io profile.
 
-                $blinkPayload = $user->toBlinkPayload();
-                info('blink: user.create', $blinkPayload);
-                if (config('features.blink')) {
-                    gateway('blink')->userCreate($blinkPayload);
-                }
+            $blinkPayload = $user->toBlinkPayload();
+            info('blink: user.create', $blinkPayload);
+            if (config('features.blink')) {
+                gateway('blink')->userCreate($blinkPayload);
+            }
 
-                // Send metrics to StatHat.
-                app('stathat')->ezCount('user created');
-                app('stathat')->ezCount('user created - '.$user->source);
-            });
-        }
+            // Send metrics to StatHat.
+            app('stathat')->ezCount('user created');
+            app('stathat')->ezCount('user created - '.$user->source);
+        });
 
         User::updating(function (User $user) {
             // Write profile changes to the log, with redacted values for hidden fields.
@@ -44,18 +40,14 @@ class AppServiceProvider extends ServiceProvider
             logger('updated user', ['id' => $user->id, 'client_id' => client_id(), 'changed' => $changed]);
         });
 
-        // @TODO: Remove after the weekend of scripting!
-        // 2017/10/27
-        if (! $this->app->runningInConsole()) {
-            User::updated(function (User $user) {
-                // Send payload to Blink for Customer.io profile.
-                $blinkPayload = $user->toBlinkPayload();
-                info('blink: user.update', $blinkPayload);
-                if (config('features.blink') && config('features.blink-updates')) {
-                    gateway('blink')->userCreate($blinkPayload);
-                }
-            });
-        }
+        User::updated(function (User $user) {
+            // Send payload to Blink for Customer.io profile.
+            $blinkPayload = $user->toBlinkPayload();
+            info('blink: user.update', $blinkPayload);
+            if (config('features.blink') && config('features.blink-updates')) {
+                gateway('blink')->userCreate($blinkPayload);
+            }
+        });
     }
 
     /**
