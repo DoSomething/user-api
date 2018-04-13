@@ -414,7 +414,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function toCustomerIoPayload()
     {
-        return [
+        $payload = [
             'id' => $this->id,
             'email' => $this->email,
             'mobile' => $this->mobile, // TODO: Update Blink to just accept 'phone' field.
@@ -436,6 +436,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'updated_at' => iso8601($this->updated_at), // TODO: Update Blink to just accept timestamp.
             'created_at' => iso8601($this->created_at), // TODO: Update Blink to just accept timestamp.
         ];
+
+        // Only include email subscription status if we have that information
+        if ($this->email_status) {
+            $payload['email_status'] = $this->email_status;
+            $payload['unsubscribed'] = ($this->email_status === 'stop');
+        }
+
+        return $payload;
     }
 
     /**
