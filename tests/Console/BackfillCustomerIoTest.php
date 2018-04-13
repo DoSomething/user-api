@@ -10,8 +10,8 @@ class BackfillCustomerIoTest extends BrowserKitTestCase
     {
         factory(User::class, 5)->create();
 
-        // Mock Blink client & set expectation that it'll be called 5 times.
-        $this->mock(Blink::class)->shouldReceive('userCreate')->times(5);
+        // Mock Blink client & set expectation that it'll be called 10 times.
+        $this->mock(Blink::class)->shouldReceive('userCreate')->times(10);
 
         // Run the Customer.io backfill command.
         $this->artisan('northstar:cio');
