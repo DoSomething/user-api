@@ -4,7 +4,6 @@ namespace Northstar\Console\Commands;
 
 use Northstar\Models\User;
 use Illuminate\Console\Command;
-use Northstar\Services\CustomerIo;
 use Illuminate\Support\Collection;
 use Northstar\Jobs\SendUserToCustomerIo;
 
@@ -29,13 +28,14 @@ class BackfillCustomerIo extends Command
      *
      * @return void
      */
-    public function handle(CustomerIo $customerIo)
+    public function handle()
     {
+        // @TODO: Running this command will cause users to be sent to customer.io twice
         $query = User::where('cio_full_backfill', '!=', true);
         $progress = $this->output->createProgressBar($query->count());
 
-        $query->chunkById(200, function (Collection $users) use ($customerIo, $progress) {
-            $users->each(function (User $user) use ($customerIo, $progress) {
+        $query->chunkById(200, function (Collection $users) use ($progress) {
+            $users->each(function (User $user) use ($progress) {
                 dispatch(new SendUserToCustomerIo($user));
                 $progress->advance();
             });

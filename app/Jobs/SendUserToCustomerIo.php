@@ -41,13 +41,8 @@ class SendUserToCustomerIo implements ShouldQueue
         // Rate limit Blink/Customer.io API requests to 10/s.
         $throttler = Redis::throttle('customerio')->allow(10)->every(1);
         $throttler->then(function () {
-            // Touch 'updated_at' to tell Blink to treat this as an 'update'
-            // and prevent overriding 'unsubscribed' C.io on an existing acct.
-            // @TODO: Remove me if we start queueing this for new users too!
-            $this->user->touch();
-
             if (config('features.blink')) {
-                $blinkPayload = $this->user->toBlinkPayload();
+                $blinkPayload = $this->user->toCustomerIoPayload();
                 info('blink: user.backfill', $blinkPayload);
                 gateway('blink')->userCreate($blinkPayload);
             }
