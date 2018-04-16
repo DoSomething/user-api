@@ -42,8 +42,9 @@ class SendUserToCustomerIo implements ShouldQueue
         $throttler = Redis::throttle('customerio')->allow(10)->every(1);
         $throttler->then(function () {
             if (config('features.blink')) {
+                // @TODO: update logging to be like in Rogue
                 $blinkPayload = $this->user->toCustomerIoPayload();
-                info('blink: user.backfill', $blinkPayload);
+                info('blink: user', $blinkPayload);
                 gateway('blink')->userCreate($blinkPayload);
             }
 
