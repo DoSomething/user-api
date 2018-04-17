@@ -23,9 +23,7 @@ class AppServiceProvider extends ServiceProvider
 
         User::created(function (User $user) {
             // Send payload to Blink for Customer.io profile.
-            if (config('features.blink')) {
-                SendUserToCustomerIo::dispatch($user);
-            }
+            SendUserToCustomerIo::dispatch($user);
 
             // Send metrics to StatHat.
             app('stathat')->ezCount('user created');
@@ -40,7 +38,8 @@ class AppServiceProvider extends ServiceProvider
 
         User::updated(function (User $user) {
             // Send payload to Blink for Customer.io profile.
-            if (config('features.blink') && config('features.blink-updates')) {
+            // KATIE - what is features.blink-updates?
+            if (config('features.blink-updates')) {
                 SendUserToCustomerIo::dispatch($user);
             }
         });
