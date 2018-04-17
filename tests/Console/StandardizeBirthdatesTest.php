@@ -7,6 +7,9 @@ class StandardizeBirthdatesTest extends TestCase
     /** @test */
     public function it_should_fix_birthdates()
     {
+        // We are creating some bad data on purpose, so don't try to send it to Customer.io
+        Bus::fake();
+
         // Create some regular and borked birthday users
         factory(User::class, 5)->create();
         $this->createMongoDocument('users', ['birthdate' => '2018-03-15 00:00:00.000']);

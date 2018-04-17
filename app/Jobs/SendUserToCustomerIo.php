@@ -51,12 +51,6 @@ class SendUserToCustomerIo implements ShouldQueue
             // Log
             $verb = $shouldSendToCustomerIo ? 'sent' : 'would have been sent';
             info('User ' . $this->user->id . ' ' . $verb . ' to Customer.io');
-
-            // KATIE - IS THIS TRUE????
-            // @NOTE: Queue runner does not fire model events, so this will
-            // not trigger another Blink/C.io call. See 'AppServiceProvider'.
-            $this->user->cio_full_backfill = true;
-            $this->user->save();
         }, function () {
             // Could not obtain lock... release to the queue.
             return $this->release(10);
