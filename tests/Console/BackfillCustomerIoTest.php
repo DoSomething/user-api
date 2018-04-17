@@ -2,7 +2,6 @@
 
 use Northstar\Models\User;
 use DoSomething\Gateway\Blink;
-use Northstar\Jobs\SendUserToCustomerIo;
 
 class BackfillCustomerIoTest extends BrowserKitTestCase
 {
