@@ -56,14 +56,4 @@ class SendUserToCustomerIo implements ShouldQueue
             return $this->release(10);
         });
     }
-
-    /**
-     * Get the id of the user we are sending to Customer.io
-     *
-     * @return int
-     */
-    public function getUserId()
-    {
-        return $this->user->id;
-    }
 }

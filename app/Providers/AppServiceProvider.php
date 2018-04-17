@@ -38,7 +38,6 @@ class AppServiceProvider extends ServiceProvider
 
         User::updated(function (User $user) {
             // Send payload to Blink for Customer.io profile.
-            // KATIE - what is features.blink-updates?
             if (config('features.blink-updates')) {
                 SendUserToCustomerIo::dispatch($user);
             }

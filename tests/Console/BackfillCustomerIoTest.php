@@ -14,7 +14,7 @@ class BackfillCustomerIoTest extends BrowserKitTestCase
         // Run the Customer.io backfill command.
         $this->artisan('northstar:cio');
 
-        // I think that this is the best way to test this (5 times when created, 5 times when we call the command)
+        // Make sure we send to Customer.io the expected number of times (5 times when created, 5 times when we call the command)
         $this->blinkMock->shouldHaveReceived('userCreate')->times(10);
     }
 }
