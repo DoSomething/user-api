@@ -1,7 +1,6 @@
 <?php
 
 use Northstar\Models\User;
-use DoSomething\Gateway\Blink;
 
 class BackfillCustomerIoTest extends BrowserKitTestCase
 {

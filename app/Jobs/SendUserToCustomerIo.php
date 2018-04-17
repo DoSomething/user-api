@@ -50,7 +50,7 @@ class SendUserToCustomerIo implements ShouldQueue
 
             // Log
             $verb = $shouldSendToCustomerIo ? 'sent' : 'would have been sent';
-            info('User ' . $this->user->id . ' ' . $verb . ' to Customer.io');
+            info('User '.$this->user->id.' '.$verb.' to Customer.io');
         }, function () {
             // Could not obtain lock... release to the queue.
             return $this->release(10);
