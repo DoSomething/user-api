@@ -14,8 +14,6 @@ return [
 
     'blink' => env('DS_ENABLE_BLINK'),
 
-    'blink-updates' => env('DS_ENABLE_BLINK_UPDATES'),
-
     'password-grant' => env('DS_ENABLE_PASSWORD_GRANT', true),
 
     'rate-limiting' => env('DS_ENABLE_RATE_LIMITING'),

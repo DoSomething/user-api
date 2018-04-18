@@ -4,6 +4,7 @@ namespace Northstar\Providers;
 
 use Northstar\Models\User;
 use Illuminate\Support\ServiceProvider;
+use Northstar\Jobs\SendUserToCustomerIo;
 use Northstar\Database\MongoFailedJobProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,12 +23,7 @@ class AppServiceProvider extends ServiceProvider
 
         User::created(function (User $user) {
             // Send payload to Blink for Customer.io profile.
-
-            $blinkPayload = $user->toCustomerIoPayload();
-            info('blink: user.create', $blinkPayload);
-            if (config('features.blink')) {
-                gateway('blink')->userCreate($blinkPayload);
-            }
+            SendUserToCustomerIo::dispatch($user);
 
             // Send metrics to StatHat.
             app('stathat')->ezCount('user created');
@@ -42,11 +38,7 @@ class AppServiceProvider extends ServiceProvider
 
         User::updated(function (User $user) {
             // Send payload to Blink for Customer.io profile.
-            $blinkPayload = $user->toCustomerIoPayload();
-            info('blink: user.update', $blinkPayload);
-            if (config('features.blink') && config('features.blink-updates')) {
-                gateway('blink')->userCreate($blinkPayload);
-            }
+            SendUserToCustomerIo::dispatch($user);
         });
     }
 

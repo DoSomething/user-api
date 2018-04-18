@@ -41,16 +41,16 @@ class SendUserToCustomerIo implements ShouldQueue
         // Rate limit Blink/Customer.io API requests to 10/s.
         $throttler = Redis::throttle('customerio')->allow(10)->every(1);
         $throttler->then(function () {
-            if (config('features.blink')) {
+            // Send to Customer.io
+            $shouldSendToCustomerIo = config('features.blink');
+            if ($shouldSendToCustomerIo) {
                 $blinkPayload = $this->user->toCustomerIoPayload();
-                info('blink: user.backfill', $blinkPayload);
                 gateway('blink')->userCreate($blinkPayload);
             }
 
-            // @NOTE: Queue runner does not fire model events, so this will
-            // not trigger another Blink/C.io call. See 'AppServiceProvider'.
-            $this->user->cio_full_backfill = true;
-            $this->user->save();
+            // Log
+            $verb = $shouldSendToCustomerIo ? 'sent' : 'would have been sent';
+            info('User '.$this->user->id.' '.$verb.' to Customer.io');
         }, function () {
             // Could not obtain lock... release to the queue.
             return $this->release(10);

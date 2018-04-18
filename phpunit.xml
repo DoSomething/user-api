@@ -21,7 +21,6 @@
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>
         <env name="DS_ENABLE_BLINK" value="true"/>
-        <env name="DS_ENABLE_BLINK_UPDATES" value="true"/>
         <env name="DS_ENABLE_RATE_LIMITING" value="true"/>
         <env name="DS_ENABLE_PASSWORD_GRANT" value="true"/>
     </php>
