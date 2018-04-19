@@ -51,7 +51,7 @@ class Merger
         return $this->chooseMostRecentFromAudit('last_name', $target, $duplicate);
     }
 
-     public function mergeBirthdate($target, $duplicate)
+    public function mergeBirthdate($target, $duplicate)
     {
         return $this->chooseMostRecentFromAudit('birthdate', $target, $duplicate);
     }
