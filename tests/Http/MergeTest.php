@@ -207,6 +207,108 @@ class MergeTest extends BrowserKitTestCase
     }
 
     /**
+     * Test first_name merge logic.
+     * POST /resets
+     *
+     * @test
+     */
+    public function testMergingFirstName()
+    {
+        $user = User::forceCreate([
+            'email' => 'target-account@example.com',
+            'first_name' => 'Not Me',
+        ]);
+
+        $this->mockTime('+1 minute');
+
+        $duplicate = User::forceCreate([
+            'mobile' => '5551234567',
+            'first_name' => 'Keep Me',
+        ]);
+
+        $this->asAdminUser()->json('POST', 'v1/users/'.$user->id.'/merge', [
+            'id' => $duplicate->id,
+        ]);
+
+        // The "target" user should have the dupe's profile fields.
+        $this->assertEquals($user->fresh()->first_name, 'Keep Me');
+
+        // The "duplicate" user should have the duplicate fields removed.
+        $this->seeInDatabase('users', [
+            '_id' => $duplicate->id,
+            'first_name' => null,
+        ]);
+    }
+
+    /**
+     * Test last_name merge logic.
+     * POST /resets
+     *
+     * @test
+     */
+    public function testMergingLastName()
+    {
+        $user = User::forceCreate([
+            'email' => 'target-account@example.com',
+            'last_name' => 'Older',
+        ]);
+
+        $this->mockTime('+1 minute');
+
+        $duplicate = User::forceCreate([
+            'mobile' => '5551234567',
+            'last_name' => 'Newer',
+        ]);
+
+        $this->asAdminUser()->json('POST', 'v1/users/'.$user->id.'/merge', [
+            'id' => $duplicate->id,
+        ]);
+
+        // The "target" user should have the dupe's profile fields.
+        $this->assertEquals($user->fresh()->last_name, 'Newer');
+
+        // The "duplicate" user should have the duplicate fields removed.
+        $this->seeInDatabase('users', [
+            '_id' => $duplicate->id,
+            'first_name' => null,
+        ]);
+    }
+
+    /**
+     * Test birthdate merge logic.
+     * POST /resets
+     *
+     * @test
+     */
+    public function testMergingBirthdate()
+    {
+        $user = User::forceCreate([
+            'email' => 'target-account@example.com',
+            'birthdate' => '1995-03-15',
+        ]);
+
+        $this->mockTime('+1 minute');
+
+        $duplicate = User::forceCreate([
+            'mobile' => '5551234567',
+            'birthdate' => '1991-04-20',
+        ]);
+
+        $this->asAdminUser()->json('POST', 'v1/users/'.$user->id.'/merge', [
+            'id' => $duplicate->id,
+        ]);
+
+        // The "target" user should have the dupe's profile fields.
+        $this->assertEquals(format_date($user->fresh()->birthdate, 'Y-m-d'), '1991-04-20');
+
+        // The "duplicate" user should have the duplicate fields removed.
+        $this->seeInDatabase('users', [
+            '_id' => $duplicate->id,
+            'first_name' => null,
+        ]);
+    }
+
+    /**
      * Test that you can't merge without the write scope.
      * POST /resets
      *

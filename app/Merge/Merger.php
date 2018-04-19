@@ -41,11 +41,34 @@ class Merger
         return $duplicate->language;
     }
 
+    public function mergeFirstName($target, $duplicate)
+    {
+        return $this->chooseMostRecentFromAudit('first_name', $target, $duplicate);
+    }
+
+    public function mergeLastName($target, $duplicate)
+    {
+        return $this->chooseMostRecentFromAudit('last_name', $target, $duplicate);
+    }
+
+     public function mergeBirthdate($target, $duplicate)
+    {
+        return $this->chooseMostRecentFromAudit('birthdate', $target, $duplicate);
+    }
+
     public function chooseMostRecentDate($field, $target, $duplicate)
     {
         $targetValue = $target->{$field};
         $duplicateValue = $duplicate->{$field};
 
         return $targetValue > $duplicateValue ? $targetValue : $duplicateValue;
+    }
+
+    public function chooseMostRecentFromAudit($field, $target, $duplicate)
+    {
+        $targetUpdatedTimestamp = $target->audit[$field]['updated_at']['date'];
+        $duplicateUpdatedTimestamp = $duplicate->audit[$field]['updated_at']['date'];
+
+        return $targetUpdatedTimestamp > $duplicateUpdatedTimestamp ? $target->{$field} : $duplicate->{$field};
     }
 }
