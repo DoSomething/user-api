@@ -56,7 +56,7 @@ class StandardizeBirthdates extends Command
                 $user->setBirthdateAttribute($date);
                 $user->save();
 
-                if (!$date) {
+                if (! $date) {
                     info('northstar:bday - removed invalid birthdate from '.$user->id.' - '.$value);
                 } else {
                     info('northstar:bday - updated user '.$user->id.' birthdate from '.$value.' to '.$date);
