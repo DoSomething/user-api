@@ -31,6 +31,7 @@ use Northstar\Auth\Role;
  * @property array  $interests
  * @property string $source
  * @property string $source_detail
+ * @property string $voter_registration_status
  * @property string $role - The user's role, e.g. 'user', 'staff', or 'admin'
  *
  * @property string $addr_street1
@@ -98,7 +99,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'email', 'mobile', 'password', 'role',
 
         // Profile:
-        'first_name', 'last_name', 'birthdate', 'photo', 'interests',
+        'first_name', 'last_name', 'birthdate', 'photo', 'interests', 'voter_registration_status',
 
         // @TODO: Remove these? We get these from Niche but don't use anywhere.
         'school_id', 'college_name', 'degree_type', 'major_name', 'hs_gradyear', 'hs_name',
