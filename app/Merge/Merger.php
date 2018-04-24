@@ -69,6 +69,13 @@ class Merger
         $targetUpdatedTimestamp = $target->audit[$field]['updated_at']['date'];
         $duplicateUpdatedTimestamp = $duplicate->audit[$field]['updated_at']['date'];
 
+        // If we have no audit information return the field from the accound that was accessed most recently
+        if (! $targetUpdatedTimestamp && ! $duplicateUpdatedTimestamp) {
+            $choice = ($target->last_accessed_at > $duplicate->last_accessed_at) ? $target->{$field} : $duplicate->{$field};
+
+            return $choice;
+        }
+
         return $targetUpdatedTimestamp > $duplicateUpdatedTimestamp ? $target->{$field} : $duplicate->{$field};
     }
 }
