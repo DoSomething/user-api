@@ -51,6 +51,9 @@ class UserTransformer extends TransformerAbstract
             // Subscription status
             $response['sms_status'] = $user->sms_status;
             $response['sms_paused'] = (bool) $user->sms_paused;
+
+            // Voter registration status
+            $response['voter_registration_status'] = $user->voter_registration_status;
         }
 
         $response['language'] = $user->language;
