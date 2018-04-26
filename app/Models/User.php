@@ -430,6 +430,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'addr_zip' => $this->addr_zip,
             'language' => $this->language,
             'country' => $this->country,
+            'voter_registration_status' => $this->voter_registration_status,
             'source' => $this->source,
             'source_detail' => $this->source_detail,
             'last_messaged_at' => optional($this->last_messaged_at)->timestamp,
