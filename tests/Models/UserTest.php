@@ -15,7 +15,6 @@ class UserModelTest extends BrowserKitTestCase
         ]);
 
         // We should have made one "create" request to Blink.
-        // $this->blinkMock->shouldHaveReceived('userCreate')->once();
         $this->blinkMock->shouldHaveReceived('userCreate')->once()->with([
             'id' => $user->id,
             'first_name' => $user->first_name,
@@ -30,6 +29,7 @@ class UserModelTest extends BrowserKitTestCase
             'addr_state' => $user->addr_state,
             'addr_zip' => $user->addr_zip,
             'country' => $user->country,
+            'voter_registration_status' => $user->voter_registration_status,
             'language' => $user->language,
             'source' => $user->source,
             'source_detail' => $user->source_detail,
