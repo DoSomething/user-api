@@ -253,6 +253,7 @@ curl -X GET \
         "birthdate": "12/17/91",
         "first_name": "First",
         "last_name": "Last",
+        "voter_registration_status": "register-form",
         "role": "user",
         "updated_at": "2016-02-25T19:33:24+0000",
         "created_at": "2016-02-25T19:33:24+0000"
