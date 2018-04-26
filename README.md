@@ -5,7 +5,7 @@ Northstar is built using [Laravel 5.5](https://laravel.com/docs/5.5), [OAuth 2.0
 
 ### Getting Started
 
-Check out the [API Documentation](https://github.com/DoSomething/northstar/blob/dev/documentation/README.md) to start using
+Check out the [API Documentation](https://github.com/DoSomething/northstar/blob/master/documentation/README.md) to start using
 Northstar! :sparkles:
 
 ### Contributing
