@@ -31,7 +31,8 @@
     "league/oauth2-server": "~6.0.0",
     "predis/predis": "^1.1",
     "symfony/psr-http-message-bridge": "^1.0.0",
-    "zendframework/zend-diactoros": "^1.3"
+    "zendframework/zend-diactoros": "^1.3",
+    "seatgeek/sixpack-php": "^2.1"
   },
   "require-dev": {
     "filp/whoops": "~2.0",
