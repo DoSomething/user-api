@@ -178,7 +178,7 @@ class AuthController extends BaseController
 
         if (config('services.sixpack.enabled')) {
             $sixpack = app(Sixpack::class);
-            $alt = $sixpack->participate('example-test', array('exp_form', 'normal_form'))->getAlternative();
+            $alt = $sixpack->participate('example-test', ['exp_form', 'normal_form'])->getAlternative();
             if ($alt == 'exp_form') {
                 $experiment = true;
             }
