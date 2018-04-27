@@ -13,6 +13,7 @@ use Northstar\Exceptions\NorthstarValidationException;
 use Northstar\Models\User;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use SeatGeek\Sixpack\Session\Base as Sixpack;
 
 class AuthController extends BaseController
 {
@@ -173,7 +174,17 @@ class AuthController extends BaseController
      */
     public function getRegister()
     {
-        return view('auth.register');
+        $experiment = false;
+
+        if (config('services.sixpack.enabled')) {
+            $sixpack = app(Sixpack::class);
+            $alt = $sixpack->participate('example-test', array('exp_form', 'normal_form'))->getAlternative();
+            if ($alt == 'exp_form') {
+                $experiment = true;
+            }
+        }
+
+        return view('auth.register', ['exp' => $experiment]);
     }
 
     /**
@@ -185,6 +196,9 @@ class AuthController extends BaseController
      */
     public function postRegister(Request $request)
     {
+        $sixpack = app(Sixpack::class);
+        $sixpack->convert('example-test');
+
         $this->registrar->validate($request, null, [
             'first_name' => 'required|max:50',
             'birthdate' => 'required|date|before:now',

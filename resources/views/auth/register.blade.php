@@ -61,6 +61,12 @@
                 <span class="password-visibility__toggle -hide"></span>
             </div>
 
+            @if ($exp)
+                <div>
+                    Hello you are in an experiment!
+                </div>
+            @endif
+
             <div class="form-actions -padded -left">
                 <input type="submit" id="register-submit" class="button" value="{{ trans('auth.log_in.submit') }}">
             </div>
