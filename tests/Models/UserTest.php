@@ -20,7 +20,7 @@ class UserModelTest extends BrowserKitTestCase
             'id' => $user->id,
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
-            'birthdate' => '1990-01-02',
+            'birthdate' => '631238400',
             'email' => $user->email,
             'mobile' => $user->mobile,
             'sms_status' => $user->sms_status,
