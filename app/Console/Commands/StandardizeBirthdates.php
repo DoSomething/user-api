@@ -51,7 +51,7 @@ class StandardizeBirthdates extends Command
                 try {
                     $date = Carbon::parse($value);
                     app('db')->collection('users')->where(['_id' => $user->id])
-                ->update(['birthdate' => new UTCDateTime($date->getTimestamp() * 1000)]);
+                        ->update(['birthdate' => new UTCDateTime($date->getTimestamp() * 1000)]);
                 } catch (\Exception $e) {
                     $user->setBirthdateAttribute(null);
                     $user->save();
