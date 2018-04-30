@@ -31,6 +31,7 @@ class BackfillCustomerIo extends Command
     public function handle()
     {
         // @TODO: Running this command will cause users to be sent to customer.io twice
+        $query = $this->newQuery(User::class);
         $progress = $this->output->createProgressBar($query->count());
 
         $query->chunkById(200, function (Collection $users) use ($progress) {
