@@ -424,7 +424,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'facebook_id' => $this->facebook_id,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
-            'birthdate' => format_date($this->birthdate, 'Y-m-d'),
+            'birthdate' => optional($this->birthdate)->timestamp,
             'addr_city' => $this->addr_city,
             'addr_state' => $this->addr_state,
             'addr_zip' => $this->addr_zip,

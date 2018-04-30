@@ -30,8 +30,7 @@ class BackfillCustomerIo extends Command
      */
     public function handle()
     {
-        // @TODO: Running this command will cause users to be sent to customer.io twice
-        $query = User::where('cio_full_backfill', '!=', true);
+        $query = (new User)->newQuery();
         $progress = $this->output->createProgressBar($query->count());
 
         $query->chunkById(200, function (Collection $users) use ($progress) {
