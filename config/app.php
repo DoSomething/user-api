@@ -181,7 +181,7 @@ return [
         Northstar\Providers\OAuthServiceProvider::class,
         Northstar\Providers\RouteServiceProvider::class,
         Northstar\Providers\ValidationServiceProvider::class,
-
+        Northstar\Providers\SixpackServiceProvider::class,
     ],
 
     /*

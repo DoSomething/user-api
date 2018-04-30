@@ -72,4 +72,11 @@ return [
     'puck' => [
         'url' => env('PUCK_URL'),
     ],
+
+    'sixpack' => [
+        'enabled' => env('SIXPACK_ENABLED'),
+        'url' => env('SIXPACK_BASE_URL'),
+        'prefix' => env('SIXPACK_COOKIE_PREFIX'),
+        'timeout' => env('SIXPACK_TIMEOUT'),
+    ],
 ];
