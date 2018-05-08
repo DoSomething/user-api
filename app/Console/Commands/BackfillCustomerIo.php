@@ -1,4 +1,4 @@
-]<?php
+<?php
 
 namespace Northstar\Console\Commands;
 
