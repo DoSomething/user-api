@@ -35,7 +35,9 @@ class BackfillCustomerIo extends Command
 
         $query->chunkById(200, function (Collection $users) use ($progress) {
             $users->each(function (User $user) use ($progress) {
-                dispatch(new SendUserToCustomerIo($user));
+                $queue = config('queue.names.backfill');
+
+                dispatch(new SendUserToCustomerIo($user))->onQueue($queue);
                 $progress->advance();
             });
         });
