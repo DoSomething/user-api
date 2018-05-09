@@ -69,7 +69,7 @@ use Northstar\Auth\Role;
  * Messaging subscription status:
  * @property string $sms_status
  * @property bool   $sms_paused
- * @property string $email_status
+ * @property string $email_frequency
  *
  * @property Carbon $last_accessed_at - The timestamp of the user's last token refresh
  * @property Carbon $last_authenticated_at - The timestamp of the user's last successful login
@@ -111,7 +111,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
         // External profiles:
         'mobilecommons_id', 'mobilecommons_status', 'facebook_id', 'slack_id',
-        'sms_status', 'sms_paused', 'email_status', 'last_messaged_at',
+        'sms_status', 'sms_paused', 'email_frequency', 'last_messaged_at',
     ];
 
     /**
@@ -440,9 +440,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         ];
 
         // Only include email subscription status if we have that information
-        if ($this->email_status) {
-            $payload['email_status'] = $this->email_status;
-            $payload['unsubscribed'] = ($this->email_status === 'stop');
+        if ($this->email_frequency) {
+            $payload['email_frequency'] = $this->email_frequency;
+            $payload['unsubscribed'] = ($this->email_frequency === 'stop');
         }
 
         return $payload;
