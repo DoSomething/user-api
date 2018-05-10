@@ -27,8 +27,6 @@ use Northstar\Auth\Role;
  * @property string $first_name
  * @property string $last_name
  * @property Carbon $birthdate
- * @property string $photo
- * @property array  $interests
  * @property string $source
  * @property string $source_detail
  * @property string $voter_registration_status
@@ -45,26 +43,10 @@ use Northstar\Auth\Role;
  * Source for the address fields (e.g. 'sms')
  * @property string $addr_source
  *
- * We also collect a bunch of fields from Niche.com users:
- * @property string $race
- * @property string $religion
- * @property string $school_id
- * @property string $college_name
- * @property string $degree_type
- * @property string $major_name
- * @property string $hs_gradyear
- * @property string $hs_name
- * @property int $sat_math
- * @property int $sat_verbal
- * @property int $sat_writing
- *
  * And we store some external service IDs for hooking things together:
  * @property string $mobilecommons_id
- * @property string $cgg_id
  * @property string $drupal_id
- * @property string $agg_id
  * @property string $facebook_id
- * @property string $slack_id
  *
  * Messaging subscription status:
  * @property string $sms_status
@@ -99,18 +81,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'email', 'mobile', 'password', 'role',
 
         // Profile:
-        'first_name', 'last_name', 'birthdate', 'photo', 'interests', 'voter_registration_status',
-
-        // @TODO: Remove these? We get these from Niche but don't use anywhere.
-        'school_id', 'college_name', 'degree_type', 'major_name', 'hs_gradyear', 'hs_name',
-        'sat_math', 'sat_verbal', 'sat_writing', 'race', 'religion',
+        'first_name', 'last_name', 'birthdate', 'voter_registration_status',
 
         // Address:
         'addr_street1', 'addr_street2', 'addr_city', 'addr_state', 'addr_zip',
         'country', 'language', 'addr_source',
 
         // External profiles:
-        'mobilecommons_id', 'mobilecommons_status', 'facebook_id', 'slack_id',
+        'mobilecommons_id', 'mobilecommons_status', 'facebook_id',
         'sms_status', 'sms_paused', 'email_frequency', 'last_messaged_at',
     ];
 
@@ -121,7 +99,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     public static $internal = [
-        'cgg_id', 'drupal_id', 'agg_id', 'role', 'facebook_id', 'slack_id',
+        'drupal_id', 'role', 'facebook_id',
         'mobilecommons_id', 'mobilecommons_status', 'sms_status', 'sms_paused',
         'last_messaged_at',
     ];
@@ -177,7 +155,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $casts = [
-        'cgg_id' => 'integer',
         'birthdate' => 'date',
         'sms_paused' => 'boolean',
     ];
@@ -202,19 +179,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function setEmailAttribute($value)
     {
         $this->attributes['email'] = normalize('email', $value);
-    }
-
-    /**
-     * Mutator to add interests to the user's interests array, either by
-     * passing an array or a comma-separated list of values.
-     *
-     * @param string|array $value
-     */
-    public function setInterestsAttribute($value)
-    {
-        $interests = is_array($value) ? $value : array_map('trim', explode(',', $value));
-
-        $this->push('interests', $interests, true);
     }
 
     /**
