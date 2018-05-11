@@ -52,8 +52,7 @@ class UnsetFieldCommand extends Command
             if ($burnItDown || $this->option('force')) {
                 info('Removing field from all users: '.$field);
 
-                $usersToUnset = (new User)->newQuery();
-                $usersToUnset->whereRaw([$field => ['$exists' => true]]);
+                $usersToUnset = User::whereRaw([$field => ['$exists' => true]]);
 
                 $this->line('Progess removing '.$field.':');
                 $progressBar = $this->output->createProgressBar($usersToUnset->count());
