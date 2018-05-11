@@ -13,7 +13,7 @@ class UnsetFieldCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'northstar:unset {field*}';
+    protected $signature = 'northstar:unset {field*} {--force}';
 
     /**
      * The console command description.
@@ -40,11 +40,16 @@ class UnsetFieldCommand extends Command
     public function handle()
     {
         $fieldsToRemove = $this->argument('field');
+        $force = $this->option('force');
 
         foreach ($fieldsToRemove as $field) {
-            $burnItDown = $this->confirm('Are you sure you want to remove this field from ALL USERS? `'.$field.'`');
+            $burnItDown = false;
 
-            if ($burnItDown) {
+            if (! $force) {
+                $burnItDown = $this->confirm('Are you sure you want to remove this field from ALL USERS? `'.$field.'`');
+            }
+
+            if ($burnItDown || $this->option('force')) {
                 info('Removing field from all users: '.$field);
 
                 $usersToUnset = (new User)->newQuery();
@@ -62,6 +67,8 @@ class UnsetFieldCommand extends Command
 
                 $progressBar->finish();
                 info('Field removed: '.$field);
+            } else {
+                $this->line('Did NOT remove '.$field);
             }
         }
     }
