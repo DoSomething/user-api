@@ -4,7 +4,7 @@ use Northstar\Models\User;
 
 class UnsetFieldsTest extends TestCase
 {
-     /** @test */
+    /** @test */
     public function it_should_remove_fields()
     {
         // Create some users
