@@ -39,9 +39,10 @@ class UnsetFieldCommand extends Command
      */
     public function handle()
     {
-        if ($this->confirm('Have you made sure that there is NOT a broadcast in progress or starting soon?')) {
+        $force = $this->option('force');
+
+        if ($force || $this->confirm('Have you made sure that there is NOT a broadcast in progress or starting soon?')) {
             $fieldsToRemove = $this->argument('field');
-            $force = $this->option('force');
 
             foreach ($fieldsToRemove as $field) {
                 $burnItDown = false;
