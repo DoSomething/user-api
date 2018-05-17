@@ -3,7 +3,6 @@
 namespace Northstar\Console\Commands;
 
 use DB;
-use Northstar\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 
@@ -60,7 +59,7 @@ class UnsetFieldCommand extends Command
 
                     $usersLeft = DB::collection('users')->whereRaw([$field => ['$exists' => true]])->count();
 
-                    if (!$usersLeft) {
+                    if (! $usersLeft) {
                         $this->line('Field removed from all users: '.$field);
                     } else {
                         $this->line('Oops! '.$usersLeft.' users still have field: '.$field);
