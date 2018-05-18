@@ -27,14 +27,14 @@ class UserTransformer extends TransformerAbstract
         }
 
         $response['last_initial'] = $user->last_initial;
-        $response['photo'] = $user->photo;
+        $response['photo'] = null;
 
         if (Scope::allows('admin') || Gate::allows('view-full-profile', $user)) {
             $response['email'] = $user->email;
             $response['mobile'] = format_legacy_mobile($user->mobile);
             $response['facebook_id'] = $user->facebook_id;
 
-            $response['interests'] = $user->interests;
+            $response['interests'] = [];
             $response['birthdate'] = format_date($user->birthdate, 'Y-m-d');
 
             $response['addr_street1'] = $user->addr_street1;
@@ -51,7 +51,7 @@ class UserTransformer extends TransformerAbstract
             $response['source_detail'] = $user->source_detail;
 
             // Internal & third-party service IDs:
-            $response['slack_id'] = $user->slack_id;
+            $response['slack_id'] = null;
             $response['mobilecommons_id'] = $user->mobilecommons_id;
             $response['mobilecommons_status'] = $user->sms_status; // @DEPRECATED: Will be removed.
             $response['parse_installation_ids'] = $user->parse_installation_ids;
