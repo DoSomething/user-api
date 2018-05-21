@@ -71,6 +71,7 @@ class OAuthTest extends BrowserKitTestCase
             'grant_type' => 'authorization_code',
             'client_id' => $client->client_id,
             'client_secret' => $client->client_secret,
+            'redirect_uri' => 'http://example.com/',
             'code' => $code,
         ]);
 
