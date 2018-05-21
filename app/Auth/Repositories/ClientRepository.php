@@ -19,7 +19,7 @@ class ClientRepository implements ClientRepositoryInterface
      *
      * @return \League\OAuth2\Server\Entities\ClientEntityInterface
      */
-    public function getClientEntity($clientIdentifier, $grantType, $clientSecret = null, $mustValidateSecret = true)
+    public function getClientEntity($clientIdentifier, $grantType = null, $clientSecret = null, $mustValidateSecret = true)
     {
         /** @var \Northstar\Models\Client $model */
         $model = Client::where('client_id', $clientIdentifier)->first();
