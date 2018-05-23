@@ -55,7 +55,7 @@ class AnonymizeUserCommand extends Command
         $users = $users_csv->getRecords();
 
         $this->line('Anonymizing users...');
-        $bar = $this->output->createProgressBar(count($users));
+        $bar = $this->output->createProgressBar(count($users_csv));
 
         foreach ($users as $user) {
             $user = User::find($user['user_id']);
