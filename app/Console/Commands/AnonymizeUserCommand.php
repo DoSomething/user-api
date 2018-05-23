@@ -62,7 +62,9 @@ class AnonymizeUserCommand extends Command
 
             // Overwrites
             $user->first_name = 'EU Member. Removed because of GDPR';
-            $user->birthdate = $user->birthdate->year.'-01-01';
+            if ($user->birthdate) {
+                $user->birthdate = $user->birthdate->year.'-01-01';
+            }
 
             // Removals
             foreach ($fields_to_unset as $field) {
