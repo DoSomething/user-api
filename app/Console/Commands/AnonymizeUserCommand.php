@@ -40,7 +40,7 @@ class AnonymizeUserCommand extends Command
      */
     public function handle()
     {
-        $fields_to_unset = ['last_name', 'email', 'mobile', 'addr_street1', 'addr_street2', 'addr_city', 'addr_state', 'addr_zip', 'mobilecommons_id', 'drupal_id', 'facebook_id'];
+        $fields_to_unset = ['last_name', 'email', 'mobile', 'addr_street1', 'addr_street2', 'addr_state', 'mobilecommons_id', 'drupal_id', 'facebook_id'];
 
         // Make a local copy of the CSV
         $path = $this->argument('path');
