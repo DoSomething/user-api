@@ -44,7 +44,7 @@ class AnonymizeUserCommand extends Command
 
         // Make a local copy of the CSV
         $path = $this->argument('path');
-        $this->line('Loading in csv from ' . $path);
+        $this->line('Loading in csv from '.$path);
 
         $temp = tempnam('temp', 'command_csv');
         file_put_contents($temp, fopen($this->argument('path'), 'r'));
@@ -62,7 +62,7 @@ class AnonymizeUserCommand extends Command
 
             // Overwrites
             $user->first_name = 'EU Member. Removed because of GDPR';
-            $user->birthdate = $user->birthdate->year . '-01-01';
+            $user->birthdate = $user->birthdate->year.'-01-01';
 
             // Removals
             foreach ($fields_to_unset as $field) {
