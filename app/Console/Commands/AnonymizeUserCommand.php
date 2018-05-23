@@ -5,6 +5,7 @@ namespace Northstar\Console\Commands;
 use League\Csv\Reader;
 use Northstar\Models\User;
 use Illuminate\Console\Command;
+use Northstar\Models\RefreshToken;
 
 class AnonymizeUserCommand extends Command
 {
@@ -67,8 +68,11 @@ class AnonymizeUserCommand extends Command
             foreach ($fields_to_unset as $field) {
                 $user->unset($field);
             }
-
             $user->save();
+
+            // Delete refresh token
+            $token = RefreshToken::where('user_id', $user->id)->delete();
+
             $bar->advance();
         }
 
