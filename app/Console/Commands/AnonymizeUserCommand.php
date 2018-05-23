@@ -20,7 +20,7 @@ class AnonymizeUserCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Removes name, email, phone, and address fields for users given in CSV.';
+    protected $description = 'Removes PII for users given in CSV.';
 
     /**
      * Create a new command instance.
@@ -39,8 +39,6 @@ class AnonymizeUserCommand extends Command
      */
     public function handle()
     {
-        // @TODO: add progress bar
-        // @TODO: confirm that these "address fields" are correct
         $fields_to_unset = ['last_name', 'email', 'mobile', 'addr_street1', 'addr_street2', 'addr_city', 'addr_state', 'addr_zip', 'mobilecommons_id', 'drupal_id', 'facebook_id'];
 
         // Make a local copy of the CSV
