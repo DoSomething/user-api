@@ -58,7 +58,7 @@ class AnonymizeUserCommand extends Command
         $bar = $this->output->createProgressBar(count($users_csv));
 
         foreach ($users as $user) {
-            $user = User::find($user['user_id']);
+            $user = User::find($user['Users Northstar ID']);
 
             // Overwrites
             $user->first_name = 'EU Member. Removed because of GDPR';
