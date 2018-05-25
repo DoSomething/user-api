@@ -2,17 +2,18 @@
 
 namespace Northstar\Http\Controllers\Web;
 
-use Illuminate\Contracts\Auth\Factory as Auth;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller as BaseController;
-use League\OAuth2\Server\AuthorizationServer;
-use Northstar\Auth\Entities\UserEntity;
-use Northstar\Auth\Registrar;
-use Northstar\Exceptions\NorthstarValidationException;
 use Northstar\Models\User;
+use Illuminate\Http\Request;
+use Northstar\Auth\Registrar;
 use Psr\Http\Message\ResponseInterface;
+use Northstar\Auth\Entities\UserEntity;
 use Psr\Http\Message\ServerRequestInterface;
+use League\OAuth2\Server\AuthorizationServer;
+use SeatGeek\Sixpack\Session\Base as Sixpack;
+use Illuminate\Contracts\Auth\Factory as Auth;
+use Illuminate\Routing\Controller as BaseController;
+use Northstar\Exceptions\NorthstarValidationException;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class AuthController extends BaseController
 {
@@ -173,7 +174,17 @@ class AuthController extends BaseController
      */
     public function getRegister()
     {
-        return view('auth.register');
+        $experiment = false;
+
+        if (config('services.sixpack.enabled')) {
+            $sixpack = app(Sixpack::class);
+            $alt = $sixpack->participate('voter-status-reg-form', ['normal_form', 'voter_form'])->getAlternative();
+            if ($alt == 'voter_form') {
+                $experiment = true;
+            }
+        }
+
+        return view('auth.register', ['voter_reg_status_form' => $experiment]);
     }
 
     /**
@@ -185,6 +196,9 @@ class AuthController extends BaseController
      */
     public function postRegister(Request $request)
     {
+        $sixpack = app(Sixpack::class);
+        $sixpack->convert('voter-status-reg-form');
+
         $this->registrar->validate($request, null, [
             'first_name' => 'required|max:50',
             'birthdate' => 'required|date|before:now',
