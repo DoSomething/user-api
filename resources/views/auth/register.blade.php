@@ -64,21 +64,27 @@
 
                 <div class="form-item">
                     <label for="voter_registration_status" class="field-label">{{ "Are you registered to vote at your current address?"}}</label>
-                    <label class="option -radio">
-                      <input type="radio" name="voter_registration_status" value="confirmed">
-                      <span class="option__indicator"></span>
-                      <span>Yes</span>
-                    </label>
-                    <label class="option -radio">
-                      <input type="radio" name="voter_registration_status" value="no">
-                      <span class="option__indicator"></span>
-                      <span>No</span>
-                    </label>
-                    <label class="option -radio">
-                      <input type="radio" name="voter_registration_status" value="uncertain">
-                      <span class="option__indicator"></span>
-                      <span>I'm not sure</span>
-                    </label>
+                    <div class="form-item -reduced">
+                        <label class="option -radio">
+                          <input type="radio" name="voter_registration_status" value="confirmed">
+                          <span class="option__indicator"></span>
+                          <span>Yes</span>
+                        </label>
+                    </div>
+                    <div class="form-item -reduced">
+                        <label class="option -radio">
+                          <input type="radio" name="voter_registration_status" value="no">
+                          <span class="option__indicator"></span>
+                          <span>No</span>
+                        </label>
+                    </div>
+                    <div class="form-item -reduced">
+                        <label class="option -radio">
+                          <input type="radio" name="voter_registration_status" value="uncertain">
+                          <span class="option__indicator"></span>
+                          <span>I'm not sure</span>
+                        </label>
+                    </div>
                 </div>
 
                 <div class="form-actions -padded -left">
