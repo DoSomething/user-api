@@ -262,7 +262,7 @@ function get_client_environment_vars()
  *
  * @param string $experiment
  * @param array $alternatives
-
+ *
  * @return string
  */
 function participate($experiment, $alternatives)
