@@ -28,7 +28,7 @@
             </div>
         @endif
 
-        @if ($voter_reg_status_form)
+        @if ($voter_reg_status_form === 'voter_form')
             <form id="profile-registration-form" method="POST" action="{{ url('register') }}">
                 <input name="_token" type="hidden" value="{{ csrf_token() }}">
 

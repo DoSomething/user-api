@@ -174,17 +174,9 @@ class AuthController extends BaseController
      */
     public function getRegister()
     {
-        $experiment = false;
+        $showVoterStatusForm = participate('voter-status-reg-form', ['normal_form', 'voter_form']);
 
-        if (config('services.sixpack.enabled')) {
-            $sixpack = app(Sixpack::class);
-            $alt = $sixpack->participate('voter-status-reg-form', ['normal_form', 'voter_form'])->getAlternative();
-            if ($alt == 'voter_form') {
-                $experiment = true;
-            }
-        }
-
-        return view('auth.register', ['voter_reg_status_form' => $experiment]);
+        return view('auth.register', ['voter_reg_status_form' => $showVoterStatusForm]);
     }
 
     /**
@@ -196,10 +188,7 @@ class AuthController extends BaseController
      */
     public function postRegister(Request $request)
     {
-        if (config('services.sixpack.enabled')) {
-            $sixpack = app(Sixpack::class);
-            $sixpack->convert('voter-status-reg-form');
-        }
+        convert('voter-status-reg-form');
 
         $this->registrar->validate($request, null, [
             'first_name' => 'required|max:50',
