@@ -73,7 +73,7 @@
                     </div>
                     <div class="form-item -reduced">
                         <label class="option -radio">
-                          <input type="radio" name="voter_registration_status" value="no">
+                          <input type="radio" name="voter_registration_status" value="unregistered">
                           <span class="option__indicator"></span>
                           <span>No</span>
                         </label>
