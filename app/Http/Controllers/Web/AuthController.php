@@ -196,8 +196,10 @@ class AuthController extends BaseController
      */
     public function postRegister(Request $request)
     {
-        $sixpack = app(Sixpack::class);
-        $sixpack->convert('voter-status-reg-form');
+        if (config('services.sixpack.enabled')) {
+            $sixpack = app(Sixpack::class);
+            $sixpack->convert('voter-status-reg-form');
+        }
 
         $this->registrar->validate($request, null, [
             'first_name' => 'required|max:50',
