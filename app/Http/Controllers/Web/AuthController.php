@@ -2,17 +2,17 @@
 
 namespace Northstar\Http\Controllers\Web;
 
-use Illuminate\Contracts\Auth\Factory as Auth;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller as BaseController;
-use League\OAuth2\Server\AuthorizationServer;
-use Northstar\Auth\Entities\UserEntity;
-use Northstar\Auth\Registrar;
-use Northstar\Exceptions\NorthstarValidationException;
 use Northstar\Models\User;
+use Illuminate\Http\Request;
+use Northstar\Auth\Registrar;
 use Psr\Http\Message\ResponseInterface;
+use Northstar\Auth\Entities\UserEntity;
 use Psr\Http\Message\ServerRequestInterface;
+use League\OAuth2\Server\AuthorizationServer;
+use Illuminate\Contracts\Auth\Factory as Auth;
+use Illuminate\Routing\Controller as BaseController;
+use Northstar\Exceptions\NorthstarValidationException;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class AuthController extends BaseController
 {
@@ -173,7 +173,9 @@ class AuthController extends BaseController
      */
     public function getRegister()
     {
-        return view('auth.register');
+        $showVoterStatusForm = participate('voter-status-reg-form', ['normal_form', 'voter_form']);
+
+        return view('auth.register', ['voter_reg_status_form' => $showVoterStatusForm]);
     }
 
     /**
@@ -185,6 +187,8 @@ class AuthController extends BaseController
      */
     public function postRegister(Request $request)
     {
+        convert('voter-status-reg-form');
+
         $this->registrar->validate($request, null, [
             'first_name' => 'required|max:50',
             'birthdate' => 'required|date|before:now',

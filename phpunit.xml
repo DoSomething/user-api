@@ -23,5 +23,6 @@
         <env name="DS_ENABLE_BLINK" value="true"/>
         <env name="DS_ENABLE_RATE_LIMITING" value="true"/>
         <env name="DS_ENABLE_PASSWORD_GRANT" value="true"/>
+        <env name="SIXPACK_ENABLED" value="false"/>
     </php>
 </phpunit>

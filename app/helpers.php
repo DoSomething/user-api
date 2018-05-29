@@ -2,11 +2,12 @@
 
 use Carbon\Carbon;
 use Illuminate\Support\Str;
-use Illuminate\Support\HtmlString;
-use libphonenumber\PhoneNumberFormat;
-use libphonenumber\PhoneNumberUtil;
-use Northstar\Auth\Normalizer;
 use Northstar\Models\Client;
+use Northstar\Auth\Normalizer;
+use Illuminate\Support\HtmlString;
+use libphonenumber\PhoneNumberUtil;
+use libphonenumber\PhoneNumberFormat;
+use SeatGeek\Sixpack\Session\Base as Sixpack;
 
 /**
  * Normalize the given value.
@@ -254,4 +255,39 @@ function get_client_environment_vars()
     return [
         'PUCK_URL' => config('services.puck.url'),
     ];
+}
+
+/**
+ * Setup a Sixpack experiment
+ *
+ * @param string $experiment
+ * @param array $alternatives
+ *
+ * @return string
+ */
+function participate($experiment, $alternatives)
+{
+    if (! config('services.sixpack.enabled')) {
+        return false;
+    }
+
+    return app(Sixpack::class)
+        ->participate($experiment, $alternatives)
+        ->getAlternative();
+}
+
+/**
+ * Convert a Sixpack experiment
+ *
+ * @param string $experiment
+ *
+ * @return SeatGeek\Sixpack\Response\Conversion
+ */
+function convert($experiment)
+{
+    if (! config('services.sixpack.enabled')) {
+        return;
+    }
+
+    return app(Sixpack::class)->convert($experiment);
 }
