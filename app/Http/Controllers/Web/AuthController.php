@@ -9,7 +9,6 @@ use Psr\Http\Message\ResponseInterface;
 use Northstar\Auth\Entities\UserEntity;
 use Psr\Http\Message\ServerRequestInterface;
 use League\OAuth2\Server\AuthorizationServer;
-use SeatGeek\Sixpack\Session\Base as Sixpack;
 use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Routing\Controller as BaseController;
 use Northstar\Exceptions\NorthstarValidationException;

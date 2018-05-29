@@ -265,7 +265,8 @@ function get_client_environment_vars()
 
  * @return string
  */
-function participate($experiment, $alternatives) {
+function participate($experiment, $alternatives)
+{
     if (! config('services.sixpack.enabled')) {
         return false;
     }
@@ -282,7 +283,8 @@ function participate($experiment, $alternatives) {
  *
  * @return SeatGeek\Sixpack\Response\Conversion
  */
-function convert($experiment) {
+function convert($experiment)
+{
     if (! config('services.sixpack.enabled')) {
         return;
     }
