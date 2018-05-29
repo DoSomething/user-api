@@ -28,38 +28,38 @@
             </div>
         @endif
 
-            <form id="profile-registration-form" method="POST" action="{{ url('register') }}">
-                <input name="_token" type="hidden" value="{{ csrf_token() }}">
+        <form id="profile-registration-form" method="POST" action="{{ url('register') }}">
+            <input name="_token" type="hidden" value="{{ csrf_token() }}">
 
-                <div>
-                    <div class="form-item -reduced">
-                        <label for="first_name" class="field-label">{{ trans('auth.fields.first_name') }}</label>
-                        <input name="first_name" type="text" id="first_name" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.call_you') }}" value="{{ old('first_name') }}" autofocus data-validate="first_name" data-validate-required />
-                    </div>
-
-                    <div class="form-item -reduced">
-                        <label for="birthdate" class="field-label">{{ trans('auth.fields.birthday') }}</label>
-                        <input name="birthdate" type="text" id="birthdate" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.birthday') }}" value="{{ old('birthdate') }}" data-validate="birthday" data-validate-required />
-                    </div>
+            <div>
+                <div class="form-item -reduced">
+                    <label for="first_name" class="field-label">{{ trans('auth.fields.first_name') }}</label>
+                    <input name="first_name" type="text" id="first_name" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.call_you') }}" value="{{ old('first_name') }}" autofocus data-validate="first_name" data-validate-required />
                 </div>
 
+                <div class="form-item -reduced">
+                    <label for="birthdate" class="field-label">{{ trans('auth.fields.birthday') }}</label>
+                    <input name="birthdate" type="text" id="birthdate" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.birthday') }}" value="{{ old('birthdate') }}" data-validate="birthday" data-validate-required />
+                </div>
+            </div>
+
+            <div class="form-item">
+                <label for="email" class="field-label">{{ trans('auth.fields.email') }}</label>
+                <input name="email" type="text" id="email" class="text-field required js-validate" placeholder="puppet-sloth@example.org" value="{{ old('email') }}" data-validate="email" data-validate-required />
+            </div>
+
+            @if (App::getLocale() === 'en')
                 <div class="form-item">
-                    <label for="email" class="field-label">{{ trans('auth.fields.email') }}</label>
-                    <input name="email" type="text" id="email" class="text-field required js-validate" placeholder="puppet-sloth@example.org" value="{{ old('email') }}" data-validate="email" data-validate-required />
+                    <label for="mobile" class="field-label">{{ trans('auth.fields.mobile') }} <em>{{ trans('auth.validation.optional') }}</em></label>
+                    <input name="mobile" type="text" id="mobile" class="text-field js-validate" placeholder="(555) 555-5555" value="{{ old('mobile') }}" data-validate="phone" />
                 </div>
+            @endif
 
-                @if (App::getLocale() === 'en')
-                    <div class="form-item">
-                        <label for="mobile" class="field-label">{{ trans('auth.fields.mobile') }} <em>{{ trans('auth.validation.optional') }}</em></label>
-                        <input name="mobile" type="text" id="mobile" class="text-field js-validate" placeholder="(555) 555-5555" value="{{ old('mobile') }}" data-validate="phone" />
-                    </div>
-                @endif
-
-                <div class="form-item password-visibility">
-                    <label for="password" class="field-label">{{ trans('auth.fields.password') }}</label>
-                    <input name="password" type="password" id="password" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.password') }}" data-validate="password" data-validate-required data-validate-trigger="#password_confirmation" />
-                    <span class="password-visibility__toggle -hide"></span>
-                </div>
+            <div class="form-item password-visibility">
+                <label for="password" class="field-label">{{ trans('auth.fields.password') }}</label>
+                <input name="password" type="password" id="password" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.password') }}" data-validate="password" data-validate-required data-validate-trigger="#password_confirmation" />
+                <span class="password-visibility__toggle -hide"></span>
+            </div>
 
             @if ($voter_reg_status_form === 'voter_form')
                 <div class="form-item">
@@ -88,10 +88,10 @@
                 </div>
             @endif
 
-                <div class="form-actions -padded -left">
-                    <input type="submit" id="register-submit" class="button" value="{{ trans('auth.log_in.submit') }}">
-                </div>
-            </form>
+            <div class="form-actions -padded -left">
+                <input type="submit" id="register-submit" class="button" value="{{ trans('auth.log_in.submit') }}">
+            </div>
+        </form>
     </div>
 
     <div class="container__block -centered">
