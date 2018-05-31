@@ -4,7 +4,6 @@ namespace Northstar\Auth\Repositories;
 
 use League\OAuth2\Server\CryptKey;
 
-use File;
 use Storage;
 
 class KeyRepository
@@ -40,8 +39,6 @@ class KeyRepository
             if (! file_exists(storage_path('cache/keys'))) {
                 mkdir(storage_path('cache/keys'), 0777, true);
             }
-            dump(file_exists(storage_path('cache'))); //TRUE
-            dump(file_exists(storage_path('cache/keys'))); //TRUE
 
             $key = Storage::get($path);
             file_put_contents($cachedPath, $key);
