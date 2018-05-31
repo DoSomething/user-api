@@ -3,9 +3,9 @@
 namespace Northstar\Providers;
 
 use DateInterval;
+use Northstar\Auth\Repositories\KeyRepository;
 use Illuminate\Cache\RateLimiter;
 use Illuminate\Support\ServiceProvider;
-use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 use League\OAuth2\Server\Grant\PasswordGrant;
@@ -76,7 +76,7 @@ class OAuthServiceProvider extends ServiceProvider
                 app(ClientRepositoryInterface::class),
                 app(AccessTokenRepositoryInterface::class),
                 app(ScopeRepositoryInterface::class),
-                $this->makeCryptKey('private.key'),
+                app(KeyRepository::class)->getPrivateKey(),
                 config('app.key'),
                 app(BearerTokenResponse::class)
             );
@@ -110,22 +110,8 @@ class OAuthServiceProvider extends ServiceProvider
         $this->app->singleton(ResourceServer::class, function () {
             return new ResourceServer(
                 app(AccessTokenRepositoryInterface::class),
-                $this->makeCryptKey('public.key')
+                app(KeyRepository::class)->getPublicKey()
             );
         });
-    }
-
-    /**
-     * Create a CryptKey instance.
-     *
-     * @param string $key
-     * @return \League\OAuth2\Server\CryptKey
-     */
-    protected function makeCryptKey($key)
-    {
-        $shouldCheckPermissions = config('app.debug') === false;
-        $path = 'file://'.storage_path('keys/'.$key);
-
-        return new CryptKey($path, null, $shouldCheckPermissions);
     }
 }

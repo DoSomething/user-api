@@ -4,6 +4,7 @@ namespace Northstar\Console\Commands;
 
 use phpseclib\Crypt\RSA;
 use Illuminate\Console\Command;
+use Northstar\Auth\Repositories\KeyRepository;
 
 class KeysCommand extends Command
 {
@@ -12,7 +13,7 @@ class KeysCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'northstar:keys {--force : Overwrite any keys that already exist.}';
+    protected $signature = 'northstar:keys';
 
     /**
      * The console command description.
@@ -27,24 +28,12 @@ class KeysCommand extends Command
      * @param RSA $rsa
      * @return void
      */
-    public function handle(RSA $rsa)
+    public function handle(RSA $rsa, KeyRepository $repository)
     {
-        // Shamelessly borrowed from Laravel Passport! (https://git.io/vdj4A)
         $keys = $rsa->createKey(4096);
 
-        list($publicKey, $privateKey) = [
-            storage_path('keys/public.key'),
-            storage_path('keys/private.key'),
-        ];
-
-        if ((file_exists($publicKey) || file_exists($privateKey)) && ! $this->option('force')) {
-            $this->error('Encryption keys already exist. Use the --force option to overwrite them.');
-
-            return;
-        }
-
-        file_put_contents($publicKey, array_get($keys, 'publickey'));
-        file_put_contents($privateKey, array_get($keys, 'privatekey'));
+        $repository->writePublicKey($keys['publickey']);
+        $repository->writePrivateKey($keys['privatekey']);
 
         $this->info('Encryption keys generated successfully.');
     }
