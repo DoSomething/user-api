@@ -2,37 +2,72 @@
 
 namespace Northstar\Auth\Repositories;
 
-use League\OAuth2\Server\CryptKey;
-
 use Storage;
+use League\OAuth2\Server\CryptKey;
 
 class KeyRepository
 {
-    public function hasKeys() {
+    /**
+     * Check to see if any keys are stored.
+     *
+     * @return bool
+     */
+    public function hasKeys()
+    {
         return Storage::has('keys/public.key') || Storage::has('keys/private.key');
     }
 
+    /**
+     * Get the public key.
+     *
+     * @return \League\OAuth2\Server\CryptKey
+     */
     public function getPublicKey()
     {
         return $this->getFileCached('keys/public.key');
     }
 
-    public function writePublicKey($key) {
+    /**
+     * Add the public key. Will not overwrite an existing public key.
+     *
+     * @param string $key
+     * @return void
+     */
+    public function writePublicKey($key)
+    {
         Storage::write('keys/public.key', $key);
     }
 
+    /**
+     * Get the private key.
+     *
+     * @return \League\OAuth2\Server\CryptKey
+     */
     public function getPrivateKey()
     {
         return $this->getFileCached('keys/private.key');
     }
 
-    public function writePrivateKey($key) {
+    /**
+     * Add the private key. Will not overwrite an existing private key.
+     *
+     * @param string $key
+     * @return void
+     */
+    public function writePrivateKey($key)
+    {
         Storage::write('keys/private.key', $key);
     }
 
+    /**
+     * See if the key file is cached. If not, get from storage and cache.
+     *
+     * @param string $path
+     * @return \League\OAuth2\Server\CryptKey
+     */
     protected function getFileCached($path)
     {
-        $cachedPath = storage_path('cache/'. $path);
+        $cachedPath = storage_path('cache/'.$path);
 
         // If this isn't cached locally, fetch it from storage driver.
         if (! file_exists($cachedPath)) {
