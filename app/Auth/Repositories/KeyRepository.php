@@ -72,7 +72,7 @@ class KeyRepository
         // If this isn't cached locally, fetch it from storage driver.
         if (! file_exists($cachedPath)) {
             if (! file_exists(storage_path('cache/keys'))) {
-                mkdir(storage_path('cache/keys'), 0777, true);
+                mkdir(storage_path('cache/keys'), 0770, true);
             }
 
             $key = Storage::get($path);
