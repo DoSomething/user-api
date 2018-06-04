@@ -28,7 +28,7 @@ namespace :deploy do
 
   task :link_folders do
     run "ln -nfs #{shared_path}/.env #{release_path}/"
-    rm -rf "#{release_path}/storage/app/keys"
+    run "rm -rf #{release_path}/storage/app/keys"
     run "ln -nfs #{shared_path}/keys #{release_path}/storage/app/keys"
     folders.each do |folder|
       run "rm -rf #{release_path}/storage/#{folder}"
