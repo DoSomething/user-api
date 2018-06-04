@@ -125,7 +125,7 @@ trait WithAuthentication
             $accessToken->addScope($entity);
         }
 
-        $header = 'Bearer '.$accessToken->convertToJWT(new CryptKey(storage_path('keys/private.key'), null, false));
+        $header = 'Bearer '.$accessToken->convertToJWT(new CryptKey(storage_path('app/keys/private.key'), null, false));
         $this->serverVariables = array_replace($this->serverVariables, [
             'HTTP_Authorization' => $header,
         ]);

@@ -4,16 +4,19 @@ namespace Northstar\Http\Controllers;
 
 use JOSE_JWK;
 use phpseclib\Crypt\RSA;
+use Northstar\Auth\Repositories\KeyRepository;
 
 class KeyController extends Controller
 {
+    protected $repository;
+
     /**
      * Make a new KeyController, inject dependencies,
      * and set middleware for this controller's methods.
      */
-    public function __construct()
+    public function __construct(KeyRepository $repository)
     {
-        //
+        $this->repository = $repository;
     }
 
     /**
@@ -24,7 +27,7 @@ class KeyController extends Controller
      */
     public function index()
     {
-        $path = base_path('storage/keys/public.key');
+        $path = $this->repository->getPublicKey()->getKeyPath();
         $key = new RSA();
 
         // Create the JWK payload for our public key.
