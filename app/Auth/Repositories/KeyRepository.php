@@ -77,6 +77,7 @@ class KeyRepository
 
             $key = Storage::get($path);
             file_put_contents($cachedPath, $key);
+            chmod($cachedPath, 0660);
         }
 
         $shouldCheckPermissions = config('app.debug') === false;
