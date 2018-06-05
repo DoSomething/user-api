@@ -14,8 +14,7 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
         factory(User::class)->create(['_id' => '5acfbf609a89201c340543e4']);
         factory(User::class)->create(['_id' => '5acfbf609a89201c340543e5']);
 
-
-        // Run the Birthdate Standardizer command.
+        // Run the user update command.
         $this->artisan('northstar:update', ['path' => 'tests/Console/example-user-updates.csv', 'fields' => ['source', 'created_at']]);
 
         // Make sure the updates were made
