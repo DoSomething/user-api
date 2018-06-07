@@ -23,11 +23,12 @@ build:
           export REDIS_PORT=$REDIS_PORT_6379_TCP_PORT
           vendor/bin/phpunit
     - script:
-        name: discover production packages
+        name: prepare for production
         code: |-
+          rm -rf storage/cache # clear cached test keys
           rm .env # reset APP_ENV=production
-          composer install --no-dev
-          php artisan package:discover
+          composer install --no-dev # remove dev dependencies
+          php artisan package:discover # discover packages
 
 deploy:
   steps:
