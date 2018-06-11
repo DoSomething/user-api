@@ -46,20 +46,20 @@ class UpdateUserFieldsCommand extends Command
         $temp = tempnam('temp', 'command_csv');
         file_put_contents($temp, fopen($this->argument('path'), 'r'));
 
-        // Load the missing signups from the CSV
-        $users_csv = Reader::createFromPath($temp, 'r');
-        $users_csv->setHeaderOffset(0);
-        $users_to_update = $users_csv->getRecords();
+        // Load the user updates from the CSV
+        $usersCsv = Reader::createFromPath($temp, 'r');
+        $usersCsv->setHeaderOffset(0);
+        $usersToUpdate = $usersCsv->getRecords();
 
         $this->line('Updating users...');
-        $bar = $this->output->createProgressBar(count($users_csv));
+        $bar = $this->output->createProgressBar(count($usersCsv));
         $fieldsToUpdate = $this->argument('fields');
 
-        foreach ($users_to_update as $user_to_update) {
-            $user = User::find($user_to_update['northstar_id']);
+        foreach ($usersToUpdate as $userToUpdate) {
+            $user = User::find($userToUpdate['northstar_id']);
 
             foreach ($fieldsToUpdate as $field) {
-                $user->{$field} = $user_to_update[$field];
+                $user->{$field} = $userToUpdate[$field];
             }
 
             $user->save();
