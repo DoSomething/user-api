@@ -52,6 +52,8 @@
                 <div class="form-item">
                     <label for="mobile" class="field-label">{{ trans('auth.fields.mobile') }} <em>{{ trans('auth.validation.optional') }}</em></label>
                     <input name="mobile" type="text" id="mobile" class="text-field js-validate" placeholder="(555) 555-5555" value="{{ old('mobile') }}" data-validate="phone" />
+                </div>
+                <div class="form-item">
                     <p class="footnote"><em>Enter to receive weekly actions you can take and relevant news and reminders from 38383. Message & data rates may apply. Text <strong>STOP</strong> to opt-out, <strong>HELP</strong> for help.</em></p>
                 </div>
             @endif
