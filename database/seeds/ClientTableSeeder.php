@@ -19,6 +19,7 @@ class ClientTableSeeder extends Seeder
         factory(Client::class, 'authorization_code')->create([
             'title' => 'Local Development',
             'description' => 'This is an example web OAuth client seeded with your local Northstar installation.',
+            'allowed_grant' => 'authorization_code',
             'client_id' => 'oauth-test-client',
             'client_secret' => 'secret1',
             'scope' => collect(Scope::all())->except('admin')->keys()->toArray(),
@@ -30,6 +31,7 @@ class ClientTableSeeder extends Seeder
         factory(Client::class, 'client_credentials')->create([
             'title' => 'Local Development (Machine)',
             'description' => 'This is an example machine OAuth client seeded with your local Northstar installation.',
+            'allowed_grant' => 'client_credentials',
             'client_id' => 'machine-test-client',
             'client_secret' => 'secret2',
             'scope' => collect(Scope::all())->keys()->toArray(),
