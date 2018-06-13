@@ -1,5 +1,14 @@
 <?php
 
+// Convert Heroku's `REDIS_URL` to standard `REDIS_HOST`, `REDIS_PORT`,
+// and `REDIS_PASSWORD` environment variables:
+if (env('REDIS_URL')) {
+    $url = parse_url(env('REDIS_URL'));
+    putenv('REDIS_HOST='.$url['host']);
+    putenv('REDIS_PORT='.$url['port']);
+    putenv('REDIS_PASSWORD='.$url['pass']);
+}
+
 return [
 
     /*
@@ -91,9 +100,10 @@ return [
         'cluster' => false,
 
         'default' => [
-            'host' => env('REDIS_HOST', '127.0.0.1'),
+            'host' => env('REDIS_HOST', 'localhost'),
+            'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', 6379),
-            'database' => 0,
+            'database' => env('REDIS_DATABASE', 0),
         ],
 
     ],
