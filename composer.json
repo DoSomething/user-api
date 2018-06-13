@@ -75,6 +75,11 @@
     "post-autoload-dump": [
       "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
       "@php artisan package:discover"
+    ],
+    "warmup": [
+      "@php artisan gateway:key",
+      "@php artisan route:cache",
+      "@php artisan config:cache"
     ]
   },
   "config": {
