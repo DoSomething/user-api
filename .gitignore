@@ -1,6 +1,9 @@
 # Compiled assets
 /public/dist
 
+# Cache directories
+/storage/cache
+
 # PHP
 /vendor
 .env
