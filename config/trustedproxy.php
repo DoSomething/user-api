@@ -1,5 +1,11 @@
 <?php
 
+// Pre-process any comma-separated values into an array.
+$trustedProxies = env('TRUSTED_PROXY_IP_ADDRESSES');
+if (str_contains($trustedProxies, ',')) {
+    $trustedProxies = explode(',', $trustedProxies);
+}
+
 return [
     /*
      * Set trusted proxy IP addresses.
@@ -17,7 +23,7 @@ return [
      * It will mean that $request->getClientIp() always gets the originating client IP,
      * no matter how many proxies that client's request has subsequently passed through.
      */
-    'proxies' => explode(',', env('TRUSTED_PROXY_IP_ADDRESSES')),
+    'proxies' => $trustedProxies,
 
     /*
      * Default Header Names
