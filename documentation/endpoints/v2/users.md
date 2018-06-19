@@ -150,7 +150,7 @@ Either a mobile number or email is required.
   cgg_id: Number
   slack_id: String
   interests: String, Array // CSV values or array will be appended to existing interests
-  sms_status: String // Either 'active', 'stop', 'less', 'undeliverable' or 'unknown'
+  sms_status: String // Either 'active', 'stop', 'less', 'undeliverable', 'pending', or 'unknown'
   sms_paused: Boolean // Whether a user is in a support conversation.
   source: String // Immutable. Will only be set on new records.
   source_detail: String // Only accepted alongside a valid 'source'.
@@ -389,7 +389,7 @@ PUT /v2/users/:user_id
   slack_id: String
   interests: String, Array // CSV values or array will be appended to existing interests
   role: String // Can only be modified by admins. Either 'user' (default), 'staff', or 'admin'.
-  sms_status: String // Either 'active', 'stop', less', 'undeliverable' or 'unknown'
+  sms_status: String // Either 'active', 'stop', less', 'undeliverable', 'pending', or 'unknown'
   sms_paused: Boolean // Whether a user is in a support conversation.
 
   // Hidden fields (optional):
