@@ -201,6 +201,10 @@ class Registrar
 
         $user->fill($input);
 
+        if ($user->mobile) {
+            $user->sms_status = 'active';
+        }
+
         if (! is_null($customizer)) {
             $customizer($user);
         }
