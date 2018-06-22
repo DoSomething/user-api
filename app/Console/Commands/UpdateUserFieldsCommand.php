@@ -58,6 +58,12 @@ class UpdateUserFieldsCommand extends Command
         foreach ($usersToUpdate as $userToUpdate) {
             $user = User::find($userToUpdate['northstar_id']);
 
+            if (! $user) {
+                $this->line('Oops! Could not find user: ' . $userToUpdate['northstar_id']);
+
+                continue;
+            }
+
             foreach ($fieldsToUpdate as $field) {
                 if (! empty($userToUpdate[$field])) {
                     $user->{$field} = $userToUpdate[$field];
