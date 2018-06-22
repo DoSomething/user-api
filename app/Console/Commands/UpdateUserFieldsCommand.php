@@ -59,7 +59,7 @@ class UpdateUserFieldsCommand extends Command
             $user = User::find($userToUpdate['northstar_id']);
 
             if (! $user) {
-                $this->line('Oops! Could not find user: ' . $userToUpdate['northstar_id']);
+                $this->line('Oops! Could not find user: '.$userToUpdate['northstar_id']);
 
                 continue;
             }
