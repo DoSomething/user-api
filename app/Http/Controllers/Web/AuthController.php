@@ -205,6 +205,11 @@ class AuthController extends BaseController
 
             // Set language based on locale (either 'en', 'es-mx')
             $user->language = app()->getLocale();
+
+            // Set sms_status, if applicable
+            if ($user->mobile) {
+                $user->sms_status = 'active';
+            }
         });
 
         $this->auth->guard('web')->login($user, true);

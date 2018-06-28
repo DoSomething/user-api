@@ -185,7 +185,7 @@ class Registrar
     }
 
     /**
-     * Create a new user.
+     * Create a new user OR update an existing user (if given).
      *
      * @param array $input - Profile fields
      * @param User $user - Optionally, user to update
@@ -200,10 +200,6 @@ class Registrar
         }
 
         $user->fill($input);
-
-        if ($user->mobile) {
-            $user->sms_status = 'active';
-        }
 
         if (! is_null($customizer)) {
             $customizer($user);
