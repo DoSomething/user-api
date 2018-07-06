@@ -133,7 +133,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var array
      */
-    protected $hidden = ['drupal_password', 'password'];
+    protected $hidden = ['drupal_password', 'password', 'audit'];
 
     /**
      * The attributes that should be mutated to dates.
