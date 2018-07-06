@@ -76,16 +76,10 @@ class UserModelTest extends BrowserKitTestCase
 
         $logger->shouldHaveReceived('debug')->once()->with('updated user', [
             'id' => $user->id,
-            'client_id' => 'northstar',
             'changed' => [
                 'first_name' => 'Caroline',
                 'password' => '*****',
-                'audit' => [
-                    'source' => $auditMock,
-                    '_id' => $auditMock,
-                    'first_name' => $auditMock,
-                    'password' => $auditMock,
-                ],
+                'audit' => '*****',
             ],
         ]);
     }
