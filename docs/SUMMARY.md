@@ -1,6 +1,6 @@
-# Table of Contents
+# Table of contents
 
-* [✨ Northstar ✨](/README.md)
+* [✨ Northstar ✨](README.md)
 
 ## Development
 

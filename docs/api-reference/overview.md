@@ -11,3 +11,4 @@ This is the Northstar API, which is used for collecting and distributing user an
 * [Northstar API Version 2.0](api-v2/)
 
 ![DoSomething Bot](../.gitbook/assets/dsbot.png)
+
