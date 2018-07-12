@@ -108,5 +108,9 @@ The currently applied rate limit and remaining requests are returned as headers 
 | `X-RateLimit-Remaining` | The number of requests remaining of your provided limit. |
 | `Retry-After` | If rate limit is exceeded, this is the amount of time until you may make another request. |
 
+### Libraries
+
+You can use **Gateway**, our standard API client, in [PHP](https://github.com/DoSomething/gateway) or [JavaScript](https://github.com/DoSomething/gateway-js) applications.
+
 ![DoSomething Bot](../.gitbook/assets/dsbot.png)
 
