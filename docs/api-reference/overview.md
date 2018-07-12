@@ -46,7 +46,7 @@ For example:
 
 Northstar returns standard HTTP status codes to indicate how a request turned out. In general, `2xx` codes are returned on successful requests, `4xx` codes indicate an error in the request, and `5xx` error codes indicate an unexpected problem on the API end.
 
-| Code | Meaning |
+| **Code** | **Meaning** |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 200 | **Okay** – Everything is awesome. |
 | 400 | **Bad Request** – The request has incorrect syntax. |
@@ -58,6 +58,55 @@ Northstar returns standard HTTP status codes to indicate how a request turned ou
 | 429 | **Too Many Requests** – The user/client has sent too many requests in the past minute. See Rate Limiting. |
 | 500 | **Internal Server Error** – Northstar has encountered an internal error. Please [make a bug report](https://github.com/DoSomething/northstar/issues/new) with as much detail as possible about what led to the error! |
 | 503 | **Service Unavailable** – Northstar is temporarily unavailable. |
+
+We return a standard `error` response on all errors that should provide a human-readable explanation of the problem:
+
+```javascript
+{
+    "error": {
+        "code": 418,
+        "message": "Tea. Earl Grey. Hot."
+        
+        // For 422 Unprocessable Entity, the "fields" object has specific validation errors:
+        "fields": {
+          "email": ["The email must be a valid email address."],
+          "mobile": ["The mobile has already been taken."]
+        }
+    },
+    // When running locally, debug information will be included in the response:
+    "debug": {
+        "file": "/home/vagrant/sites/northstar/app/Http/Controllers/UserController.php",
+        "line": 115
+    }
+}
+```
+
+OAuth authentication errors are formatted slightly differently \(to conform to [the OAuth spec](https://tools.ietf.org/html/rfc6749#section-5.2)\):
+
+```javascript
+{
+  // A machine-readable error code.
+  "error": "access_denied", "invalid_request", "invalid_client", "invalid_grant", "unauthorized_client", "unsupported_grant_type", "invalid_scope",
+  
+  // A human readable explanation of the problem.
+  "message": "...",
+  
+  // Optionally, more specific details on the issue.
+  "hint": "..."
+}
+```
+
+### Rate Limiting
+
+Authentication and registration attempts are rate limited to prevent abuse. Users are limited by IP address to 10 logins or registrations per 15 minutes, and 10 failed client authentication attempts.
+
+The currently applied rate limit and remaining requests are returned as headers on each response:
+
+| **Header** | **Description** |
+| --- | --- | --- | --- |
+| `X-RateLimit-Limit` | The maximum number of requests that this client may make per hour. |
+| `X-RateLimit-Remaining` | The number of requests remaining of your provided limit. |
+| `Retry-After` | If rate limit is exceeded, this is the amount of time until you may make another request. |
 
 ![DoSomething Bot](../.gitbook/assets/dsbot.png)
 
