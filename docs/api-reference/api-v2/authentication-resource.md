@@ -169,9 +169,9 @@ curl -X POST \
 
 This grant should be used when the access token given by the [Authorization Code Grant](authentication-resource.md#create-token-authorization-code-grant) expires. It will verify the provided refresh token \(given alongside the original access token\) and create a new JWT authentication token. The provided refresh token will be "consumed" and a new refresh token will be returned.
 
-{% api-method method="get" host="https://identity.dosomething.org" path="/v2/auth/token" %}
+{% api-method method="post" host="https://identity.dosomething.org" path="/v2/auth/token" %}
 {% api-method-summary %}
-Create a Refresh Token
+Create a Token \(Refresh Token Grant\)
 {% endapi-method-summary %}
 
 {% api-method-description %}
@@ -240,6 +240,82 @@ curl -X POST \
   -H "Accept: application/json" \
   -d '{"grant_type": "refresh_token", "client_id": "${CLIENT_ID}", "client_secret": "${CLIENT_SECRET}", \
   "refresh_token": "${REFRESH_TOKEN}"}' \
+  https://northstar.dosomething.org/v2/auth/token
+```
+
+{% hint style="warning" %}
+If an invalid refresh token is provided, a `400 Bad Request` error will be returned.
+{% endhint %}
+
+### Create Token \(Client Credentials Grant\)
+
+This will verify a client application's credentials and create a JWT authentication token, which can be used to sign future requests by the application. If invalid credentials are provided, this endpoint will return a `401 Unauthorized` error.
+
+{% api-method method="post" host="https://identity.dosomething.org" path="/v2/auth/token" %}
+{% api-method-summary %}
+Create a Token \(Client Credentials Grant\)
+{% endapi-method-summary %}
+
+{% api-method-description %}
+
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+{% api-method-headers %}
+{% api-method-parameter name="Content-Type" type="string" required=true %}
+application/json
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="Accept" type="string" required=true %}
+application/json
+{% endapi-method-parameter %}
+{% endapi-method-headers %}
+
+{% api-method-body-parameters %}
+{% api-method-parameter name="grant\_type" type="string" required=true %}
+Value of "client\_credentials".
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="client\_id" type="string" required=true %}
+The client application's Client ID.
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="client\_secret" type="string" required=false %}
+The client application's Client Secret \(required for "trusted" applications\).
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="scope" type="string" required=false %}
+Space-delimited list of scopes to request.
+{% endapi-method-parameter %}
+{% endapi-method-body-parameters %}
+{% endapi-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+
+{% endapi-method-response-example-description %}
+
+```javascript
+{
+  "token_type": "Bearer",
+  "expires_in": 3600,
+  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjU1ZDEwNjk4MTAzNDliMDVhNjdjODI1NDQ2NzIxYmFhNTcyMDM2MTg1MDNhOTlhYjA5ZWYxODVmMGJhZTI2MmJhY2VjZWVhMTY2YjIwYmE5In0.eyJhdWQiOiIiLCJqdGkiOiI1NWQxMDY5ODEwMzQ5YjA1YTY3YzgyNTQ0NjcyMWJhYTU3MjAzNjE4NTAzYTk5YWIwOWVmMTg1ZjBiYWUyNjJiYWNlY2VlYTE2NmIyMGJhOSIsImlhdCI6MTQ2MDQwMDU0NCwibmJmIjoxNDYwNDAwNTQ0LCJleHAiOjE0NjA0MDQxNDQsInN1YiI6IjU0MzBlODUwZHQ4aGJjNTQxYzM3dHQzZCIsInNjb3BlcyI6WyJhZG1pbiJdfQ.Q9SvBEjbJlDEBbBzzvxiL_Dg_nC29Zz34Slrs5WdDdxPKrIwHI6SqnjPvMo4gwoWTr2s9dWye--3Dv0hNNn3xIo7MF6b6DDS96XKplzFRGx2043AzPIVmxxDPz4QdeF18Lnx5W2Aj-_YdRGc-S2n-du2rVYTaGpEzVII4W4Wh7Q"
+}
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
+**Example request in curl:**
+
+```bash
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{"grant_type": "client_credentials", "client_id": "${CLIENT_ID}", "client_secret": "${CLIENT_SECRET}"'
   https://northstar.dosomething.org/v2/auth/token
 ```
 
