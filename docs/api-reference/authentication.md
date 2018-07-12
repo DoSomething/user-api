@@ -2,7 +2,9 @@
 
 We handle authentication using **OAuth 2**, an [open standard](https://tools.ietf.org/html/rfc6749) for authorization. OAuth allows us to issue access tokens \(so a user or machine's credentials don't need to be sent with every request\) and refresh tokens \(so that a user's credentials do not need to be stored to re-authorize later\). Most importantly, Northstar access tokens can be used to make requests to _any_ other DoSomething.org service!
 
-**Here's the tl;dr:** If a user is logging in to an application and making requests, use the [Authorization Code grant](https://github.com/DoSomething/northstar/tree/79cbc752bd6fd475478d7538f311bc5d27ed4cb7/docs/api-reference/endpoints/auth.md#create-token-authorization-code-grant) to request an access & refresh token for them. If you're performing requests as a "machine" \(not as a direct result of a user's action\), use the [Client Credentials Grant](https://github.com/DoSomething/northstar/tree/79cbc752bd6fd475478d7538f311bc5d27ed4cb7/docs/api-reference/endpoints/auth.md#create-token-client-credentials-grant).
+{% hint style="info" %}
+**tl;dr:** If a user is logging in to an application and making requests, use the [Authorization Code grant](https://github.com/DoSomething/northstar/tree/79cbc752bd6fd475478d7538f311bc5d27ed4cb7/docs/api-reference/endpoints/auth.md#create-token-authorization-code-grant) to request an access & refresh token for them. If you're performing requests as a "machine" \(not as a direct result of a user's action\), use the [Client Credentials Grant](https://github.com/DoSomething/northstar/tree/79cbc752bd6fd475478d7538f311bc5d27ed4cb7/docs/api-reference/endpoints/auth.md#create-token-client-credentials-grant).
+{% endhint %}
 
 ## Clients
 
