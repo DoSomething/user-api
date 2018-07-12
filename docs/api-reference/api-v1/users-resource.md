@@ -27,31 +27,31 @@ Bearer ${ACCESS\_TOKEN}
 
 {% api-method-query-parameters %}
 {% api-method-parameter name="pagination" type="string" required=false %}
-
+Either "standard" or "cursor". Cursor pagination is _significantly_ faster, but does not provide any information on the total number of results \(only whether another page exists\).
 {% endapi-method-parameter %}
 
 {% api-method-parameter name="limit" type="string" required=false %}
-
+Set the number of results to include per page. Default is 20. Maximum is 100.
 {% endapi-method-parameter %}
 
 {% api-method-parameter name="page" type="string" required=false %}
-
+Set the page number to get results from.
 {% endapi-method-parameter %}
 
 {% api-method-parameter name="before" type="string" required=false %}
-
+Filter the collection to include _only_ users with timestamps before the given date or datetime.
 {% endapi-method-parameter %}
 
 {% api-method-parameter name="after" type="string" required=false %}
-
+Filter the collection to include only users with timestamps _after_ the given date or datetime.
 {% endapi-method-parameter %}
 
 {% api-method-parameter name="filter" type="string" required=false %}
-
+Filter the collection to include only users matching the following comma-separated values.
 {% endapi-method-parameter %}
 
 {% api-method-parameter name="search" type="string" required=false %}
-
+Search the collection for users with fields whose values match the query. You can search by "id", "drupal\_id", "email", and "mobile".
 {% endapi-method-parameter %}
 {% endapi-method-query-parameters %}
 {% endapi-method-request %}
@@ -101,6 +101,64 @@ This endpoint requires the `user` scope and either the `admin` scope, or "admin"
 curl -X GET \
   -H "Authorization: Bearer ${ACCESS_TOKEN}" \
   https://northstar.dosomething.org/v1/users?limit=15&page=1
+```
+
+{% api-method method="get" host="https://identity.dosomething.org" path="/v1/users?filter\[drupal\_id\]=10010" %}
+{% api-method-summary %}
+Retrieve all Users \(filtered\)
+{% endapi-method-summary %}
+
+{% api-method-description %}
+
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+{% api-method-query-parameters %}
+{% api-method-parameter name="filter\[drupal\_id\]" type="string" required=false %}
+Example value: "10010"
+{% endapi-method-parameter %}
+{% endapi-method-query-parameters %}
+{% endapi-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+
+{% endapi-method-response-example-description %}
+
+```javascript
+{
+    "data": [
+        {
+            "id": "5480c950bffebc651c8b456f",
+            "drupal_id": "10010",
+            // ...the rest of the user data...
+        }
+    ],
+    "meta": {
+        "pagination": [
+            "total": 1,
+            "count": 1,
+            "per_page": 20,
+            "current_page": 1,
+            "total_pages": 1,
+            "links": {}
+        ]
+    }
+}
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
+**Example filtered request in curl:**
+
+```bash
+curl -X GET \
+  -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+  https://northstar.dosomething.org/v1/users?filter[drupal_id]=10010
 ```
 
 {% api-method method="get" host="https://identity.dosomething.org" path="/v1/users/:term/:identifier" %}
