@@ -4,6 +4,10 @@ description: API v1 endpoints documentation.
 
 # API v1
 
+{% hint style="warning" %}
+The following v1 endpoints have been deprecated. Please use the v2 endpoints.
+{% endhint %}
+
 ## Users
 
 * [Retrieve a User](users-resource.md)
