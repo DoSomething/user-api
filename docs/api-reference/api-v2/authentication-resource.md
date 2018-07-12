@@ -319,5 +319,131 @@ curl -X POST \
   https://northstar.dosomething.org/v2/auth/token
 ```
 
+### Revoke Token
 
+This will revoke the provided refresh token, if the user is authorized to do so.
+
+{% api-method method="delete" host="https://identity.dosomething.org" path="/v2/auth/token" %}
+{% api-method-summary %}
+Revoke a Token
+{% endapi-method-summary %}
+
+{% api-method-description %}
+
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+{% api-method-headers %}
+{% api-method-parameter name="Content-Type" type="string" required=false %}
+application/json
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="Accept" type="string" required=false %}
+application/json
+{% endapi-method-parameter %}
+{% endapi-method-headers %}
+
+{% api-method-body-parameters %}
+{% api-method-parameter name="token" type="string" required=false %}
+The refresh token to be revoked.
+{% endapi-method-parameter %}
+{% endapi-method-body-parameters %}
+{% endapi-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+
+{% endapi-method-response-example-description %}
+
+```
+{
+  "success": {
+    "code": 200,
+    "message": "That refresh token has been successfully revoked."
+  }
+}
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
+**Example request in curl:**
+
+```bash
+curl -X DELETE \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{"token": "${REFRESH_TOKEN}"}'
+  https://northstar.dosomething.org/v2/auth/token
+```
+
+### Get User Info
+
+This will display the user's profile according to the format [defined in the OpenID Connect specification](http://openid.net/specs/openid-connect-core-1_0.html#UserInfo).
+
+{% api-method method="get" host="https://identity.dosomething.org" path="/v2/auth/info" %}
+{% api-method-summary %}
+Get a User's information
+{% endapi-method-summary %}
+
+{% api-method-description %}
+
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+{% api-method-headers %}
+{% api-method-parameter name="Authorization" type="string" required=true %}
+Bearer ${ACCESS\_TOKEN}
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="Accept" type="string" required=true %}
+application/json
+{% endapi-method-parameter %}
+{% endapi-method-headers %}
+{% endapi-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+
+{% endapi-method-response-example-description %}
+
+```javascript
+{
+  "data": {
+    "id": "57dac28fbffebcb7708b4567",
+    "given_name": "Ezra",
+    "family_name": null,
+    "email": "test@dosomething.org",
+    "phone_number": "3294927429",
+    "birthdate": "1990-10-25",
+    "address": {
+      "street_address": "518 Lorenza Creek Suite 862\n",
+      "locality": null,
+      "region": "AL",
+      "postal_code": "04296",
+      "country": "SY"
+    },
+    "updated_at": 1473954542,
+    "created_at": 1473954447
+  }
+}
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
+**Example request in curl:**
+
+```javascript
+curl -X GET \
+  -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+  -H "Accept: application/json" \
+  https://northstar.dosomething.org/v2/auth/info
+```
 
