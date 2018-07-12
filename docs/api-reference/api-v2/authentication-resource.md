@@ -10,11 +10,11 @@ Each access token includes the authorized user's ID, expiration timestamp, and s
 **tl;dr:** If a user is logging in to an application and making requests, use the [Authorization Code Grant](authentication-resource.md#create-a-token-authorization-code-grant) to request an access & refresh token for them. If you're performing requests as a "machine" \(not as a direct result of a user's action\), use the Client Credentials Grant.
 {% endhint %}
 
-### Create Token \(Authorization Code Grant\)
+## Create Token \(Authorization Code Grant\)
 
 The authorization code grant allows you to authorize a user without needing to manually handle their username or password. It's a two-step process that involves redirecting the user to Northstar in their web browser, and then using the "code" returned to the application's redirect URL to request an _access_ & _refresh token_.
 
-#### Step One: Authorize the User
+### Step One: Authorize the User
 
 To obtain an authorization code, redirect the user to Northstar's `/authorize` page using the following method:
 
@@ -91,7 +91,7 @@ The user will be presented with a login page \(unless they've previously logged 
 | `code` | With the authorization code \(used below\). |
 | `state` | With the CSRF token \(compare this to what you provided\). |
 
-#### Step Two: Request a Token
+### Step Two: Request a Token
 
 You may now use the provided code from step one to request a token:
 
@@ -165,7 +165,7 @@ curl -X POST \
   https://northstar.dosomething.org/v2/auth/token
 ```
 
-### Create Token \(Refresh Token Grant\)
+## Create Token \(Refresh Token Grant\)
 
 This grant should be used when the access token given by the [Authorization Code Grant](authentication-resource.md#create-token-authorization-code-grant) expires. It will verify the provided refresh token \(given alongside the original access token\) and create a new JWT authentication token. The provided refresh token will be "consumed" and a new refresh token will be returned.
 
@@ -247,7 +247,7 @@ curl -X POST \
 If an invalid refresh token is provided, a `400 Bad Request` error will be returned.
 {% endhint %}
 
-### Create Token \(Client Credentials Grant\)
+## Create Token \(Client Credentials Grant\)
 
 This will verify a client application's credentials and create a JWT authentication token, which can be used to sign future requests by the application. If invalid credentials are provided, this endpoint will return a `401 Unauthorized` error.
 
@@ -319,7 +319,7 @@ curl -X POST \
   https://northstar.dosomething.org/v2/auth/token
 ```
 
-### Revoke Token
+## Revoke Token
 
 This will revoke the provided refresh token, if the user is authorized to do so.
 
@@ -380,7 +380,7 @@ curl -X DELETE \
   https://northstar.dosomething.org/v2/auth/token
 ```
 
-### Get User Info
+## Get User Info
 
 This will display the user's profile according to the format [defined in the OpenID Connect specification](http://openid.net/specs/openid-connect-core-1_0.html#UserInfo).
 
