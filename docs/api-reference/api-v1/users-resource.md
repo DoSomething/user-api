@@ -4,17 +4,57 @@
 The following v1 endpoints have been deprecated. Please use the v2 endpoints.
 {% endhint %}
 
+{% hint style="info" %}
+The `write` scope is required for create/update/delete endpoints.
+{% endhint %}
+
 {% api-method method="get" host="https://identity.dosomething.org" path="/v1/users" %}
 {% api-method-summary %}
 Retrieve all Users
 {% endapi-method-summary %}
 
 {% api-method-description %}
-Get an index list of all users.
+Get an index list of all users in a paginated format.
 {% endapi-method-description %}
 
 {% api-method-spec %}
 {% api-method-request %}
+{% api-method-headers %}
+{% api-method-parameter name="Authorization" type="string" required=false %}
+Bearer ${ACCESS\_TOKEN}
+{% endapi-method-parameter %}
+{% endapi-method-headers %}
+
+{% api-method-query-parameters %}
+{% api-method-parameter name="pagination" type="string" required=false %}
+
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="limit" type="string" required=false %}
+
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="page" type="string" required=false %}
+
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="before" type="string" required=false %}
+
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="after" type="string" required=false %}
+
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="filter" type="string" required=false %}
+
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="search" type="string" required=false %}
+
+{% endapi-method-parameter %}
+{% endapi-method-query-parameters %}
+{% endapi-method-request %}
 
 {% api-method-response %}
 {% api-method-response-example httpCode=200 %}
@@ -50,6 +90,18 @@ Get an index list of all users.
 {% endapi-method-response %}
 {% endapi-method-spec %}
 {% endapi-method %}
+
+{% hint style="info" %}
+This endpoint requires the `user` scope and either the `admin` scope, or "admin" or "staff" role with the appropriate scope.
+{% endhint %}
+
+**Example request in curl:**
+
+```bash
+curl -X GET \
+  -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+  https://northstar.dosomething.org/v1/users?limit=15&page=1
+```
 
 {% api-method method="get" host="https://identity.dosomething.org" path="/v1/users/:term/:identifier" %}
 {% api-method-summary %}

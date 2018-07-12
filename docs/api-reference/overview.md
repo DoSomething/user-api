@@ -12,7 +12,7 @@ This is the Northstar API, which is used for collecting and distributing user an
 
 ## Responses
 
-We provide standard response formatting for all resource types using Transformers.
+We provide standard response formatting for all resource types using [Transformers](https://github.com/DoSomething/northstar/tree/master/app/Http/Transformers).
 
 ### Resources
 
@@ -55,7 +55,7 @@ Northstar returns standard HTTP status codes to indicate how a request turned ou
 | 404 | **Not Found** – The specified resource could not be found. |
 | 418 | **I'm a teapot** – The user [needs more caffeine](https://www.ietf.org/rfc/rfc2324.txt). |
 | 422 | **Unprocessable Entity** – The request couldn't be completed due to validation errors. See the `error.fields`property on the response. |
-| 429 | **Too Many Requests** – The user/client has sent too many requests in the past minute. See Rate Limiting. |
+| 429 | **Too Many Requests** – The user/client has sent too many requests in the past minute. See [Rate Limiting](overview.md#rate-limiting). |
 | 500 | **Internal Server Error** – Northstar has encountered an internal error. Please [make a bug report](https://github.com/DoSomething/northstar/issues/new) with as much detail as possible about what led to the error! |
 | 503 | **Service Unavailable** – Northstar is temporarily unavailable. |
 
