@@ -32,7 +32,8 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
-        $clients = $this->newQuery(Client::class);
+        $clients = $this->newQuery(Client::class)
+            ->orderBy('client_id', 'asc');
 
         return $this->paginatedCollection($clients, $request);
     }
