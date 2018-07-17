@@ -14,35 +14,36 @@ class Scope
      */
     protected static $scopes = [
         'role:admin' => [
-            'description' => 'Allows this client to act as an administrator if the user has that role.',
+            'description' => 'Allows application to use a admin user\'s permissions.',
         ],
         'role:staff' => [
-            'description' => 'Allows this client to act as a staff member if the user has that role.',
+            'description' => 'Allows application to use a staff user\'s permissions.',
         ],
         'admin' => [
             'description' => 'Grant administrative privileges to this token, whether or not the user has the admin role.',
-            'warning' => true,
+            'hint' => 'Careful, don\'t use this scope with Authorization Code clients!',
         ],
         'user' => [
-            'description' => 'Allows actions to be made on a user\'s behalf.',
-        ],
-        'profile' => [
-            'description' => 'Allows viewing an authenticated user\'s full profile.',
-        ],
-        'email' => [
-            'description' => 'Allows viewing the authenticated user\'s email address.',
-        ],
-        'openid' => [
-            'description' => 'Allows users to be authorized by OpenID Connect.',
+            'description' => 'Allows access to the user resource.',
         ],
         'client' => [
             'description' => 'Allows access to the client resource.',
+            'hint' => 'Be sure you need this scope before assigning! This allows your app to read other OAuth client secrets, so a leaked key is extra dangerous.',
         ],
         'activity' => [
-            'description' => 'Allows access to user activity.',
+            'description' => 'Allows access to user activity resources (signups, posts, etc.) in Rogue.',
         ],
         'write' => [
             'description' => 'Allows access to create/update/delete endpoints.',
+        ],
+        'profile' => [
+            'description' => 'Some third-party implementations may request this scope.',
+        ],
+        'email' => [
+            'description' => 'Some third-party implementations may request this scope.',
+        ],
+        'openid' => [
+            'description' => 'Some third-party implementations may request this scope.',
         ],
     ];
 

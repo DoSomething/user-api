@@ -32,7 +32,8 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
-        $clients = $this->newQuery(Client::class);
+        $clients = $this->newQuery(Client::class)
+            ->orderBy('client_id', 'asc');
 
         return $this->paginatedCollection($clients, $request);
     }
@@ -55,6 +56,8 @@ class ClientController extends Controller
             'allowed_grant' => 'string|in:authorization_code,password,client_credentials',
             'redirect_uri' => 'array|required_if:allowed_grant,authorization_code',
             'redirect_uri.*' => 'url',
+        ], [
+            'redirect_uri.*.url' => 'The :attribute field is not a valid URL.',
         ]);
 
         $key = Client::create($request->except('client_secret'));
@@ -93,6 +96,8 @@ class ClientController extends Controller
             'allowed_grant' => 'string|in:authorization_code,password,client_credentials',
             'redirect_uri' => 'array|required_if:allowed_grant,authorization_code',
             'redirect_uri.*' => 'url',
+        ], [
+            'redirect_uri.*.url' => 'The :attribute field is not a valid URL.',
         ]);
 
         $client = Client::findOrFail($client_id);
