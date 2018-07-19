@@ -33,10 +33,10 @@
     "mailcheck": "^1.1.1"
   },
   "devDependencies": {
-    "@dosomething/babel-config": "^1.0",
-    "@dosomething/webpack-config": "^2.0.2",
+    "@dosomething/babel-config": "^2.2.0",
+    "@dosomething/webpack-config": "^4.1.0",
     "modernizr": "^3.3.1",
-    "webpack": "^2.4.1",
-    "webpack-dev-server": "^2.4.2"
+    "webpack": "^4.15.1",
+    "webpack-cli": "^2.1.5"
   }
 }

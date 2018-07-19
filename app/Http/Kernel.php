@@ -15,6 +15,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
+        \Northstar\Http\Middleware\LogMemoryUsage::class,
         \Northstar\Http\Middleware\TrimStrings::class,
         \Fideloper\Proxy\TrustProxies::class,
     ];
