@@ -20,7 +20,7 @@ class ClientTableSeeder extends Seeder
             'title' => 'Local Development',
             'description' => 'This is an example web OAuth client seeded with your local Northstar installation.',
             'allowed_grant' => 'authorization_code',
-            'client_id' => 'oauth-test-client',
+            'client_id' => 'dev-oauth',
             'client_secret' => 'secret1',
             'scope' => collect(Scope::all())->except('admin')->keys()->toArray(),
             // @NOTE: We're omitting 'redirect_uri' here for easy local dev.
@@ -32,7 +32,7 @@ class ClientTableSeeder extends Seeder
             'title' => 'Local Development (Machine)',
             'description' => 'This is an example machine OAuth client seeded with your local Northstar installation.',
             'allowed_grant' => 'client_credentials',
-            'client_id' => 'machine-test-client',
+            'client_id' => 'dev-machine',
             'client_secret' => 'secret2',
             'scope' => collect(Scope::all())->keys()->toArray(),
         ]);
