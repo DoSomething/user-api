@@ -36,5 +36,9 @@ class ClientTableSeeder extends Seeder
             'client_secret' => 'secret2',
             'scope' => collect(Scope::all())->keys()->toArray(),
         ]);
+
+        // ...and a few other random ones for good measure!
+        factory(Client::class, 'authorization_code', 2)->create();
+        factory(Client::class, 'client_credentials', 2)->create();
     }
 }
