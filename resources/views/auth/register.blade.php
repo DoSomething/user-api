@@ -62,7 +62,7 @@
 
             <div class="form-item password-visibility">
                 <label for="password" class="field-label">{{ trans('auth.fields.password') }}</label>
-                <input name="password" type="password" id="password" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.password') }}" data-validate="password" data-validate-required data-validate-trigger="#password_confirmation" />
+                <input name="password" type="password" id="password" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.password') }}" data-validate="password" data-validate-required />
                 <span class="password-visibility__toggle -hide"></span>
             </div>
 
