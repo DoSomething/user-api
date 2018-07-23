@@ -4,11 +4,10 @@
   "description": "The DoSomething.org user & identity API.",
   "main": "index.js",
   "scripts": {
-    "start": "npm run modernizr && NODE_ENV=development webpack --watch",
-    "build": "npm run modernizr && NODE_ENV=production webpack",
-    "build:dev": "npm run modernizr && NODE_ENV=development webpack",
+    "start": "NODE_ENV=development webpack --watch",
+    "build": "NODE_ENV=production webpack && npm run modernizr",
+    "build:dev": "NODE_ENV=development webpack && npm run modernizr",
     "modernizr": "modernizr -c modernizr.json -d public/dist/modernizr.js",
-    "clean": "rm -rf public/dist",
     "test": "echo \"Error: no test specified\" && exit 1",
     "heroku-postbuild": "npm run build"
   },
