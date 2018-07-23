@@ -26,7 +26,7 @@
   "dependencies": {
     "@dosomething/analytics": "^1.0.2",
     "@dosomething/forge": "^6.7.4",
-    "@dosomething/puck-client": "^1.1.0",
+    "@dosomething/puck-client": "^1.5.1",
     "dosomething-validation": "^0.2.4",
     "jquery": "^3.1.1",
     "lodash": "^4.17.4",
@@ -34,9 +34,9 @@
   },
   "devDependencies": {
     "@dosomething/babel-config": "^2.2.0",
-    "@dosomething/webpack-config": "^4.1.0",
+    "@dosomething/webpack-config": "^4.1.1",
     "modernizr": "^3.3.1",
-    "webpack": "^4.15.1",
+    "webpack": "^4.16.2",
     "webpack-cli": "^2.1.5"
   }
 }
