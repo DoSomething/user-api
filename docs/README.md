@@ -5,8 +5,8 @@ Welcome! This is **Northstar**, the DoSomething.org user & identity service. It'
 Northstar is maintained by [Team Bleed](https://github.com/orgs/DoSomething/teams/team-bleed):
 
 * 💁 [Jen](https://github.com/ngjo) - Product Manager
-* 👩‍💻 [Chloe](https://github.com/chloealee) - Engineer
 * 👩‍💻 [Katie](https://github.com/katiecrane) - Engineer
+* 👩‍💻 [Chloe](https://github.com/chloealee) - Engineer
 * 👨‍🎨 [Luke](https://github.com/lkpttn) - Product Designer
 * 👨‍🔬 [Dave](https://github.com/DFurnes) - Staff Engineer
 

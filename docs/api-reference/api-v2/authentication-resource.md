@@ -87,7 +87,7 @@ GET /authorize?response_type=code&client_id=puppet-sloth&scope=user&state=MCceWS
 The user will be presented with a login page \(unless they've previously logged in to Northstar, in which case we'll just use their existing session\), and then redirected back to your application's registered `redirect_uri` with the following values in the query string of the request:
 
 | **Parameter** | **Value** |
-| --- | --- | --- |
+| :--- | :--- |
 | `code` | With the authorization code \(used below\). |
 | `state` | With the CSRF token \(compare this to what you provided\). |
 

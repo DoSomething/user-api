@@ -47,7 +47,7 @@ For example:
 Northstar returns standard HTTP status codes to indicate how a request turned out. In general, `2xx` codes are returned on successful requests, `4xx` codes indicate an error in the request, and `5xx` error codes indicate an unexpected problem on the API end.
 
 | **Code** | **Meaning** |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| :--- | :--- |
 | 200 | **Okay** – Everything is awesome. |
 | 400 | **Bad Request** – The request has incorrect syntax. |
 | 401 | **Unauthorized** – The given credentials are invalid or you are not authorized to view that resource. |
@@ -103,7 +103,7 @@ Authentication and registration attempts are rate limited to prevent abuse. User
 The currently applied rate limit and remaining requests are returned as headers on each response:
 
 | **Header** | **Description** |
-| --- | --- | --- | --- |
+| :--- | :--- |
 | `X-RateLimit-Limit` | The maximum number of requests that this client may make per hour. |
 | `X-RateLimit-Remaining` | The number of requests remaining of your provided limit. |
 | `Retry-After` | If rate limit is exceeded, this is the amount of time until you may make another request. |
