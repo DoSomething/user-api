@@ -15,4 +15,5 @@
 * [API v2](api-reference/api-v2/README.md)
   * [Authentication Resource](api-reference/api-v2/authentication-resource.md)
   * [Users Resource](api-reference/api-v2/users-resource.md)
+  * [Profile Resource](api-reference/api-v2/profile-resource.md)
 
