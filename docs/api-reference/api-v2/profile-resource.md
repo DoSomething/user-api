@@ -59,7 +59,7 @@ application/json
 {% endapi-method-spec %}
 {% endapi-method %}
 
-{% api-method method="patch" host="" path="" %}
+{% api-method method="patch" host="https://identity.dosomething.org" path="/v1/profile" %}
 {% api-method-summary %}
 Update Authenticated User
 {% endapi-method-summary %}
