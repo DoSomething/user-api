@@ -102,7 +102,7 @@ curl -X POST \
 
 This grant should be used when the access token given by the [Authorization Code grant](#create-token-authorization-code-grant) expires. It will verify the provided refresh token (given alongside the original access token) and create a new JWT authentication token. The provided refresh token will be "consumed" and a new refresh token will be returned.
 
-If an invalid refresh token is provided, a `400 Bad Request` error will be returned.
+If an invalid refresh token is provided, a `401 Unauthorized` error will be returned.
 
 ```
 POST /v2/auth/token
