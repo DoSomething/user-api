@@ -77,7 +77,7 @@ class OAuthServiceProvider extends ServiceProvider
                 app(AccessTokenRepositoryInterface::class),
                 app(ScopeRepositoryInterface::class),
                 app(KeyRepository::class)->getPrivateKey(),
-                config('app.key'),
+                config('auth.key'),
                 app(BearerTokenResponse::class)
             );
 

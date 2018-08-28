@@ -474,7 +474,7 @@ class OAuthTest extends BrowserKitTestCase
             'scope' => 'admin user',
             'refresh_token' => $jwt['refresh_token'],
         ]);
-        $this->assertResponseStatus(401);
+        $this->assertResponseStatus(400);
     }
 
     /**
