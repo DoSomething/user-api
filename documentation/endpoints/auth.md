@@ -24,21 +24,23 @@ Redirect the user to Northstar's "authorize" page with the following query strin
 
 * `response_type` with the value `code`
 * `client_id` with your Client ID
+* `scope` with a space-delimited list of scopes to request
+* `state` with a CSRF token that can be validated below
+* `redirect_uri` with the address to redirect to
 * `destination` with a destination to display on the login page (optional)
 * `title` with a title to display on the registration page (optional)
 * `callToAction` with a call to action to display on the registration page (optional)
 * `coverImage` with a link to a cover image to display on the registration page (optional)
-* `scope` with a space-delimited list of scopes to request
-* `state` with a CSRF token that can be validated below
+
 
 For example, an application named `puppet-sloth` may initiate a user authorization request like so:
 
 ```
-GET /authorize?response_type=code&client_id=puppet-sloth&scope=user&state=MCceWSE5vHVyYQovh3CL4UWBqe0Uhcpf
+GET /authorize?response_type=code&client_id=puppet-sloth&scope=user&state=MCceWSE5vHVyYQovh3CL4UWBqe0Uhcpf&redirect_uri=https%3A%2F%2Fidentity-qa.dosomething.org%2Fcallback
 ```
 
 The user will be presented with a login page (unless they've previously logged in to Northstar, in which case we'll just use
-their existing session), and then redirected back to your application's registered `redirect_uri` with the following values
+their existing session), and then redirected back to the given `redirect_uri` with the following values
 in the query string of the request:
 
 * `code` with the authorization code (used below)
