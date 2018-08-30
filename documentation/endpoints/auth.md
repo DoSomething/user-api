@@ -26,7 +26,7 @@ Redirect the user to Northstar's "authorize" page with the following query strin
 * `client_id` with your Client ID
 * `scope` with a space-delimited list of scopes to request
 * `state` with a CSRF token that can be validated below
-* `redirect_uri` with the address to redirect to
+* `redirect_uri` with the address to redirect to (must be one of the registered `redirect_uri`s on for the client, you can see a list on the client's page on Aurora)
 * `destination` with a destination to display on the login page (optional)
 * `title` with a title to display on the registration page (optional)
 * `callToAction` with a call to action to display on the registration page (optional)
