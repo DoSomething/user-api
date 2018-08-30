@@ -2,6 +2,7 @@
 
 namespace Northstar\Console\Commands;
 
+use Defuse\Crypto\Key;
 use Illuminate\Console\Command;
 use DFurnes\Environmentalist\ConfiguresApplication;
 
@@ -31,6 +32,10 @@ class SetupCommand extends Command
     public function handle()
     {
         $this->createEnvironmentFile($this->option('reset'));
+
+        // Generate key and save to APP_AUTH_KEY in .env file
+        $key = Key::createNewRandomKey();
+        $this->writeEnvironmentVariable('APP_AUTH_KEY', $key->saveToAsciiSafeString());
 
         $this->runCommand('key:generate', 'Creating application key');
 

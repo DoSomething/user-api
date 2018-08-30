@@ -3,31 +3,32 @@
 namespace Northstar\Providers;
 
 use DateInterval;
-use Northstar\Auth\Repositories\KeyRepository;
+use Defuse\Crypto\Key;
+use Northstar\Auth\Registrar;
 use Illuminate\Cache\RateLimiter;
 use Illuminate\Support\ServiceProvider;
-use League\OAuth2\Server\Grant\AuthCodeGrant;
-use League\OAuth2\Server\Grant\ClientCredentialsGrant;
-use League\OAuth2\Server\Grant\PasswordGrant;
-use League\OAuth2\Server\Grant\RefreshTokenGrant;
-use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
-use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
-use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
-use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
-use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
-use League\OAuth2\Server\Repositories\UserRepositoryInterface;
-use League\OAuth2\Server\AuthorizationServer;
-use League\OAuth2\Server\ResourceServer;
 use Northstar\Auth\NorthstarTokenGuard;
+use League\OAuth2\Server\ResourceServer;
 use Northstar\Auth\NorthstarUserProvider;
-use Northstar\Auth\Registrar;
-use Northstar\Auth\Repositories\AccessTokenRepository;
-use Northstar\Auth\Repositories\AuthCodeRepository;
-use Northstar\Auth\Repositories\ClientRepository;
-use Northstar\Auth\Repositories\RefreshTokenRepository;
-use Northstar\Auth\Repositories\ScopeRepository;
+use League\OAuth2\Server\Grant\AuthCodeGrant;
+use League\OAuth2\Server\Grant\PasswordGrant;
+use League\OAuth2\Server\AuthorizationServer;
+use Northstar\Auth\Repositories\KeyRepository;
 use Northstar\Auth\Repositories\UserRepository;
+use Northstar\Auth\Repositories\ScopeRepository;
+use League\OAuth2\Server\Grant\RefreshTokenGrant;
+use Northstar\Auth\Repositories\ClientRepository;
 use Northstar\Auth\Responses\BearerTokenResponse;
+use Northstar\Auth\Repositories\AuthCodeRepository;
+use League\OAuth2\Server\Grant\ClientCredentialsGrant;
+use Northstar\Auth\Repositories\AccessTokenRepository;
+use Northstar\Auth\Repositories\RefreshTokenRepository;
+use League\OAuth2\Server\Repositories\UserRepositoryInterface;
+use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
+use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
+use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
+use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
+use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 
 class OAuthServiceProvider extends ServiceProvider
 {
@@ -77,7 +78,7 @@ class OAuthServiceProvider extends ServiceProvider
                 app(AccessTokenRepositoryInterface::class),
                 app(ScopeRepositoryInterface::class),
                 app(KeyRepository::class)->getPrivateKey(),
-                config('app.key'),
+                Key::loadFromAsciiSafeString(config('auth.key')),
                 app(BearerTokenResponse::class)
             );
 

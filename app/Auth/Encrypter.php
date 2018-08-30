@@ -2,6 +2,7 @@
 
 namespace Northstar\Auth;
 
+use Defuse\Crypto\Key;
 use League\OAuth2\Server\CryptTrait;
 
 class Encrypter
@@ -10,7 +11,7 @@ class Encrypter
 
     public function __construct()
     {
-        $this->setEncryptionKey(config('app.key'));
+        $this->setEncryptionKey(Key::loadFromAsciiSafeString(config('auth.key')));
     }
 
     public function decryptData($encryptedData)
