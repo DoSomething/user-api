@@ -384,6 +384,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'email' => $this->email,
             'mobile' => $this->mobile, // TODO: Update Blink to just accept 'phone' field.
             'sms_status' => $this->sms_status,
+            'sms_status_source' => (isset($this->audit['sms_status']['source'])) ? $this->audit['sms_status']['source'] : null,
             'sms_paused' => (bool) $this->sms_paused,
             'facebook_id' => $this->facebook_id,
             'first_name' => $this->first_name,

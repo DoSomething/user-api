@@ -24,6 +24,7 @@ class UserModelTest extends BrowserKitTestCase
             'mobile' => $user->mobile,
             'sms_status' => $user->sms_status,
             'sms_paused' => (bool) $user->sms_paused,
+            'sms_status_source' => 'northstar',
             'facebook_id' => $user->facebook_id,
             'addr_city' => $user->addr_city,
             'addr_state' => $user->addr_state,
