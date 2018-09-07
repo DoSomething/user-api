@@ -23,6 +23,20 @@ class UpdateUserFieldsCommand extends Command
     protected $description = 'For each user in the csv, overwrites each given field with the new value given in the csv.';
 
     /**
+     * The total number of records to process.
+     *
+     * @var int
+     */
+    protected $totalCount;
+
+    /**
+     * The number of records that have been processed so far.
+     *
+     * @var int
+     */
+    protected $currentCount;
+
+    /**
      * Create a new command instance.
      *
      * @return void
@@ -41,7 +55,7 @@ class UpdateUserFieldsCommand extends Command
     {
         // Make a local copy of the CSV
         $path = $this->argument('path');
-        $this->line('Loading in csv from '.$path);
+        info('northstar:update: Loading in csv from '.$path);
 
         $temp = tempnam('temp', 'command_csv');
         file_put_contents($temp, fopen($this->argument('path'), 'r'));
@@ -51,15 +65,19 @@ class UpdateUserFieldsCommand extends Command
         $usersCsv->setHeaderOffset(0);
         $usersToUpdate = $usersCsv->getRecords();
 
-        $this->line('Updating users...');
-        $bar = $this->output->createProgressBar(count($usersCsv));
+        info('northstar:update: Updating '.count($usersCsv).' users...');
         $fieldsToUpdate = $this->argument('fields');
+
+        $this->totalCount = count($usersCsv);
+        $currentCount = 0;
 
         foreach ($usersToUpdate as $userToUpdate) {
             $user = User::find($userToUpdate['northstar_id']);
 
             if (! $user) {
-                $this->line('Oops! Could not find user: '.$userToUpdate['northstar_id']);
+                info('northstar:update: Oops! Could not find user: '.$userToUpdate['northstar_id']);
+
+                $this->logPercent();
 
                 continue;
             }
@@ -71,9 +89,24 @@ class UpdateUserFieldsCommand extends Command
             }
 
             $user->save();
-            $bar->advance();
+
+            $this->logPercent();
         }
 
-        $bar->finish();
+        info('northstar:update: Done updating users!');
+    }
+
+    /**
+     * Increment the current count and log an update if we've processed a multiple of 1000 records.
+     *
+     * @return void
+     */
+    public function logPercent()
+    {
+        $this->currentCount++;
+        if ($this->currentCount % 1000 === 0) {
+            $percent = ($this->currentCount / $this->totalCount) * 100;
+            info('northstar:update: '.$this->currentCount.'/'.$this->totalCount.' - '.$percent.'% done');
+        }
     }
 }
