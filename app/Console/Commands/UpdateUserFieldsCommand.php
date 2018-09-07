@@ -94,7 +94,6 @@ class UpdateUserFieldsCommand extends Command
         }
 
         info('northstar:update: Done updating users!');
-
     }
 
     /**
@@ -106,7 +105,7 @@ class UpdateUserFieldsCommand extends Command
     {
         $this->currentCount++;
         if ($this->currentCount % 1000 === 0) {
-            $percent = ($this->currentCount/$this->totalCount) * 100;
+            $percent = ($this->currentCount / $this->totalCount) * 100;
             info('northstar:update: '.$this->currentCount.'/'.$this->totalCount.' - '.$percent.'% done');
         }
     }
