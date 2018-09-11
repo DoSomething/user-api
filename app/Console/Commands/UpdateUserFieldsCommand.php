@@ -57,7 +57,7 @@ class UpdateUserFieldsCommand extends Command
         $path = $this->argument('path');
         info('northstar:update: Loading in csv from '.$path);
 
-        $temp = tempnam('temp', 'command_csv');
+        $temp = tempnam(sys_get_temp_dir(), 'command_csv');
         file_put_contents($temp, fopen($this->argument('path'), 'r'));
 
         // Load the user updates from the CSV
