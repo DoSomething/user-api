@@ -13,7 +13,9 @@ class UpdateUserFieldsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'northstar:update {path} {fields*}';
+    protected $signature = 'northstar:update
+                            {path : URL of the csv with the updated data}
+                            {fields* : Which fields we should look for in the csv and update on the user}';
 
     /**
      * The console command description.
@@ -89,6 +91,10 @@ class UpdateUserFieldsCommand extends Command
             }
 
             $user->save();
+
+            if ($this->option('verbose')) {
+                info('northstar:update: Updated user - '.$user->id);
+            }
 
             $this->logPercent();
         }
