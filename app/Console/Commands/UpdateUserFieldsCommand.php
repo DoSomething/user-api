@@ -94,7 +94,8 @@ class UpdateUserFieldsCommand extends Command
 
             if ($this->option('verbose')) {
                 info('northstar:update: Updated user - '.$user->id);
-                info('northstar:update: '.memory_get_peak_usage() / 1000000.' Mb used');
+                $mb = memory_get_peak_usage() / 1000000;
+                info('northstar:update: '.$mb.' Mb used');
             }
 
             $this->logPercent();
