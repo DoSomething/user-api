@@ -1,4 +1,4 @@
-box: dosomething/ds-docker-php
+box: dosomething/ds-docker-php:7.2
 
 services:
   - redis
