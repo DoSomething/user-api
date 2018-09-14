@@ -39,6 +39,7 @@ class Kernel extends HttpKernel
         'api' => [
             \Northstar\Http\Middleware\ParseOAuthHeader::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \Barryvdh\Cors\HandleCors::class,
             'guard:api',
         ],
     ];
