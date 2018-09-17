@@ -74,6 +74,7 @@ class Registrar
             'sms_status' => 'in:active,less,stop,undeliverable,unknown,pending',
             'sms_paused' => 'boolean',
             'last_messaged_at' => 'date',
+            'email_frequency' => 'in:active,none',
         ];
 
         // If existing user is provided, merge indexes into the request so
