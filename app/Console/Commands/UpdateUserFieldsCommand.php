@@ -114,7 +114,8 @@ class UpdateUserFieldsCommand extends Command
         $this->currentCount++;
         if ($this->currentCount % 1000 === 0) {
             $percent = ($this->currentCount / $this->totalCount) * 100;
-            $this->line('northstar:update: '.$this->currentCount.'/'.$this->totalCount.' - '.$percent.'% done');
+            $mb = memory_get_peak_usage() / 1000000;
+            $this->line('northstar:update: '.$this->currentCount.'/'.$this->totalCount.' - '.$percent.'% done - '.$mb.' Mb used');
         }
     }
 }
