@@ -57,7 +57,7 @@ class UpdateUserFieldsCommand extends Command
     {
         // Make a local copy of the CSV
         $path = $this->argument('path');
-        info('northstar:update: Loading in csv from '.$path);
+        $this->line('northstar:update: Loading in csv from '.$path);
 
         $temp = tempnam(sys_get_temp_dir(), 'command_csv');
         file_put_contents($temp, fopen($this->argument('path'), 'r'));
@@ -67,7 +67,7 @@ class UpdateUserFieldsCommand extends Command
         $usersCsv->setHeaderOffset(0);
         $usersToUpdate = $usersCsv->getRecords();
 
-        info('northstar:update: Updating '.count($usersCsv).' users...');
+        $this->line('northstar:update: Updating '.count($usersCsv).' users...');
         $fieldsToUpdate = $this->argument('fields');
 
         $this->totalCount = count($usersCsv);
@@ -77,7 +77,7 @@ class UpdateUserFieldsCommand extends Command
             $user = User::find($userToUpdate['northstar_id']);
 
             if (! $user) {
-                info('northstar:update: Oops! Could not find user: '.$userToUpdate['northstar_id']);
+                $this->line('northstar:update: Oops! Could not find user: '.$userToUpdate['northstar_id']);
 
                 $this->logPercent();
 
@@ -93,15 +93,15 @@ class UpdateUserFieldsCommand extends Command
             $user->save();
 
             if ($this->option('verbose')) {
-                info('northstar:update: Updated user - '.$user->id);
+                $this->line('northstar:update: Updated user - '.$user->id);
                 $mb = memory_get_peak_usage() / 1000000;
-                info('northstar:update: '.$mb.' Mb used');
+                $this->line('northstar:update: '.$mb.' Mb used');
             }
 
             $this->logPercent();
         }
 
-        info('northstar:update: Done updating users!');
+        $this->line('northstar:update: Done updating users!');
     }
 
     /**
@@ -114,7 +114,7 @@ class UpdateUserFieldsCommand extends Command
         $this->currentCount++;
         if ($this->currentCount % 1000 === 0) {
             $percent = ($this->currentCount / $this->totalCount) * 100;
-            info('northstar:update: '.$this->currentCount.'/'.$this->totalCount.' - '.$percent.'% done');
+            $this->line('northstar:update: '.$this->currentCount.'/'.$this->totalCount.' - '.$percent.'% done');
         }
     }
 }
