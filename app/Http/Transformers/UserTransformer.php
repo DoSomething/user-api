@@ -59,6 +59,7 @@ class UserTransformer extends TransformerAbstract
             // Subscription status
             $response['sms_status'] = $user->sms_status;
             $response['sms_paused'] = (bool) $user->sms_paused;
+            $response['email_frequency'] = isset($user->email_frequency) ? $user->email_frequency : null;
 
             // Voter registration status
             $response['voter_registration_status'] = $user->voter_registration_status;
