@@ -73,6 +73,8 @@ class UpdateUserFieldsCommand extends Command
         $this->totalCount = count($usersCsv);
         $currentCount = 0;
 
+        $user = null;
+
         foreach ($usersToUpdate as $userToUpdate) {
             $user = User::find($userToUpdate['northstar_id']);
 
@@ -99,6 +101,7 @@ class UpdateUserFieldsCommand extends Command
             }
 
             $this->logPercent();
+            unset($userToUpdate);
         }
 
         $this->line('northstar:update: Done updating users!');
