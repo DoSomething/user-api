@@ -53,6 +53,12 @@ use Northstar\Auth\Role;
  * @property bool   $sms_paused
  * @property string $email_frequency
  *
+ * Fields for Make a Voting Plan
+ * @property string $voting_plan_status
+ * @property string $voting_plan_method_of_transport
+ * @property string $voting_plan_time_of_day
+ * @property string $voting_plan_attending_with
+ *
  * @property Carbon $last_accessed_at - The timestamp of the user's last token refresh
  * @property Carbon $last_authenticated_at - The timestamp of the user's last successful login
  * @property Carbon $last_messaged_at - The timestamp of the last message this user sent
@@ -90,6 +96,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         // External profiles:
         'mobilecommons_id', 'mobilecommons_status', 'facebook_id',
         'sms_status', 'sms_paused', 'email_frequency', 'last_messaged_at',
+
+        // Voting Plan:
+        'voting_plan_status', 'voting_plan_method_of_transport', 'voting_plan_time_of_day', 'voting_plan_attending_with',
     ];
 
     /**
@@ -408,6 +417,23 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         if ($this->email_frequency) {
             $payload['email_frequency'] = $this->email_frequency;
             $payload['unsubscribed'] = ($this->email_frequency === 'stop');
+        }
+
+        // Only include Voting Plan info. if we have it.
+        if ($this->voting_plan_status) {
+            $payload['voting_plan_status'] = $this->voting_plan_status;
+        }
+
+        if ($this->voting_plan) {
+            $payload['voting_plan_method_of_transport'] = $this->voting_plan_method_of_transport;
+        }
+
+        if ($this->voting_plan) {
+            $payload['voting_plan_time_of_day'] = $this->voting_plan_time_of_day;
+        }
+
+        if ($this->voting_plan) {
+            $payload['voting_plan_attending_with'] = $this->voting_plan_attending_with;
         }
 
         return $payload;
