@@ -55,6 +55,12 @@ class UserTransformer extends TransformerAbstract
 
             // Voter registration status
             $response['voter_registration_status'] = $user->voter_registration_status;
+
+            // Voting Plan
+            $response['voting_plan_status'] = $user->voting_plan_status;
+            $response['voting_plan_method_of_transport'] = $user->voting_plan_method_of_transport;
+            $response['voting_plan_time_of_day'] = $user->voting_plan_time_of_day;
+            $response['voting_plan_attending_with'] = $user->voting_plan_attending_with;
         }
 
         $response['language'] = $user->language;
