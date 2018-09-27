@@ -701,7 +701,7 @@ class LegacyUserTest extends BrowserKitTestCase
     {
         $user = User::create([
             'email' => 'votetest@dosomething.org',
-            'voter_registration_status' => 'ineligible'
+            'voter_registration_status' => 'ineligible',
         ]);
 
         // Update to a higher status
@@ -733,7 +733,7 @@ class LegacyUserTest extends BrowserKitTestCase
     {
         $user = User::create([
             'email' => 'votetest@dosomething.org',
-            'voter_registration_status' => 'registration_complete'
+            'voter_registration_status' => 'registration_complete',
         ]);
 
         // Try to update to a lower status
