@@ -692,6 +692,70 @@ class LegacyUserTest extends BrowserKitTestCase
     }
 
     /**
+     * Test for updating an existing user's voter_registration_status to something HIGHER on the hierarchy
+     * PUT /users/_id/:id
+     *
+     * @return void
+     */
+    public function testUpdateUserCanGoUpVoterRegHierarchy()
+    {
+        $user = User::create([
+            'email' => 'votetest@dosomething.org',
+            'voter_registration_status' => 'ineligible'
+        ]);
+
+        // Update to a higher status
+        $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json('PUT', 'v1/users/_id/'.$user->id, [
+            'voter_registration_status' => 'confirmed',
+        ]);
+
+        $this->assertResponseStatus(200);
+        $this->seeJsonSubset([
+            'data' => [
+                'voter_registration_status' => 'confirmed',
+            ],
+        ]);
+
+        // Verify user data got updated
+        $this->seeInDatabase('users', [
+            '_id' => $user->id,
+            'voter_registration_status' => 'confirmed',
+        ]);
+    }
+
+    /**
+     * Test for updating an existing user's voter_registration_status to something LOWER on the hierarchy
+     * PUT /users/_id/:id
+     *
+     * @return void
+     */
+    public function testUpdateUserCanNotGoDownVoterRegHierarchy()
+    {
+        $user = User::create([
+            'email' => 'votetest@dosomething.org',
+            'voter_registration_status' => 'registration_complete'
+        ]);
+
+        // Try to update to a lower status
+        $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json('PUT', 'v1/users/_id/'.$user->id, [
+            'voter_registration_status' => 'confirmed',
+        ]);
+
+        $this->assertResponseStatus(200);
+        $this->seeJsonSubset([
+            'data' => [
+                'voter_registration_status' => 'registration_complete',
+            ],
+        ]);
+
+        // Verify user data did not change
+        $this->seeInDatabase('users', [
+            '_id' => $user->id,
+            'voter_registration_status' => 'registration_complete',
+        ]);
+    }
+
+    /**
      * Test for updating an existing user's index.
      * PUT /users/_id/:id
      *
