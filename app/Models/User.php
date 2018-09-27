@@ -424,15 +424,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             $payload['voting_plan_status'] = $this->voting_plan_status;
         }
 
-        if ($this->voting_plan) {
+        if ($this->voting_plan_method_of_transport) {
             $payload['voting_plan_method_of_transport'] = $this->voting_plan_method_of_transport;
         }
 
-        if ($this->voting_plan) {
+        if ($this->voting_plan_time_of_day) {
             $payload['voting_plan_time_of_day'] = $this->voting_plan_time_of_day;
         }
 
-        if ($this->voting_plan) {
+        if ($this->voting_plan_attending_with) {
             $payload['voting_plan_attending_with'] = $this->voting_plan_attending_with;
         }
 
