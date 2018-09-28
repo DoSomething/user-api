@@ -420,20 +420,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         }
 
         // Only include Voting Plan info. if we have it.
-        if ($this->voting_plan_status) {
-            $payload['voting_plan_status'] = $this->voting_plan_status;
-        }
+        $votingPlanAttributes = ['voting_plan_status', 'voting_plan_method_of_transport', 'voting_plan_time_of_day', 'voting_plan_attending_with'];
 
-        if ($this->voting_plan_method_of_transport) {
-            $payload['voting_plan_method_of_transport'] = $this->voting_plan_method_of_transport;
-        }
-
-        if ($this->voting_plan_time_of_day) {
-            $payload['voting_plan_time_of_day'] = $this->voting_plan_time_of_day;
-        }
-
-        if ($this->voting_plan_attending_with) {
-            $payload['voting_plan_attending_with'] = $this->voting_plan_attending_with;
+        foreach ($votingPlanAttributes as $votingPlanAttribute) {
+             if ($this->{$votingPlanAttribute}) {
+                 $payload[$votingPlanAttribute] = $this->{$votingPlanAttribute};
+            }
         }
 
         return $payload;
