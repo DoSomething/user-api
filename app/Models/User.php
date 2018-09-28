@@ -423,8 +423,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $votingPlanAttributes = ['voting_plan_status', 'voting_plan_method_of_transport', 'voting_plan_time_of_day', 'voting_plan_attending_with'];
 
         foreach ($votingPlanAttributes as $votingPlanAttribute) {
-             if ($this->{$votingPlanAttribute}) {
-                 $payload[$votingPlanAttribute] = $this->{$votingPlanAttribute};
+            if ($this->{$votingPlanAttribute}) {
+                $payload[$votingPlanAttribute] = $this->{$votingPlanAttribute};
             }
         }
 
