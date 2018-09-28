@@ -64,7 +64,6 @@ class UserTransformer extends TransformerAbstract
         $response['voting_plan_method_of_transport'] = $user->voting_plan_method_of_transport;
         $response['voting_plan_time_of_day'] = $user->voting_plan_time_of_day;
         $response['voting_plan_attending_with'] = $user->voting_plan_attending_with;
-
         $response['language'] = $user->language;
         $response['country'] = $user->country;
 
