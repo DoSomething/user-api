@@ -411,21 +411,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'last_authenticated_at' => iso8601($this->last_authenticated_at), // TODO: Update Blink to just accept timestamp.
             'updated_at' => iso8601($this->updated_at), // TODO: Update Blink to just accept timestamp.
             'created_at' => iso8601($this->created_at), // TODO: Update Blink to just accept timestamp.
+            'voting_plan_status' => $this->voting_plan_status,
+            'voting_plan_method_of_transport' => $this->voting_plan_method_of_transport,
+            'voting_plan_time_of_day' => $this->voting_plan_time_of_day,
+            'voting_plan_attending_with' => $this->voting_plan_attending_with,
         ];
 
         // Only include email subscription status if we have that information
         if ($this->email_frequency) {
             $payload['email_frequency'] = $this->email_frequency;
             $payload['unsubscribed'] = ($this->email_frequency === 'stop');
-        }
-
-        // Only include Voting Plan info. if we have it.
-        $votingPlanAttributes = ['voting_plan_status', 'voting_plan_method_of_transport', 'voting_plan_time_of_day', 'voting_plan_attending_with'];
-
-        foreach ($votingPlanAttributes as $votingPlanAttribute) {
-            if ($this->{$votingPlanAttribute}) {
-                $payload[$votingPlanAttribute] = $this->{$votingPlanAttribute};
-            }
         }
 
         return $payload;
