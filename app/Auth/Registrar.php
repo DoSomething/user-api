@@ -75,6 +75,7 @@ class Registrar
             'sms_paused' => 'boolean',
             'last_messaged_at' => 'date',
             'email_frequency' => 'in:active,none',
+            'voter_registration_status' => 'in:uncertain,ineligible,confirmed,registration_complete',
         ];
 
         // If existing user is provided, merge indexes into the request so
