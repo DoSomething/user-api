@@ -38,6 +38,10 @@ class UserModelTest extends BrowserKitTestCase
             'last_messaged_at' => null,
             'updated_at' => $user->updated_at->toIso8601String(),
             'created_at' => $user->created_at->toIso8601String(),
+            'voting_plan_status' => null,
+            'voting_plan_method_of_transport' => null,
+            'voting_plan_time_of_day' => null,
+            'voting_plan_attending_with' => null,
         ]);
     }
 
