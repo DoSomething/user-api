@@ -2,12 +2,14 @@
 
 namespace Northstar\Http\Controllers;
 
+use Auth;
+use Northstar\Auth\Role;
+use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
-use Northstar\Auth\Role;
-use Northstar\Exceptions\NorthstarValidationException;
+use Northstar\Services\Fastly;
 use Northstar\Http\Transformers\UserTransformer;
-use Northstar\Models\User;
+use Northstar\Exceptions\NorthstarValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends Controller
