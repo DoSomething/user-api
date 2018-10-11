@@ -185,6 +185,11 @@ class UserController extends Controller
 
         $this->registrar->register($request->all(), $user);
 
+        // Purge Fastly cache of user
+        if (! is_null(config('services.fastly.url')) && ! is_null(config('services.fastly.key')) && ! is_null(config('services.fastly.service_id'))) {
+            $this->fastly->purgeKey('user-'.$user->id);
+        }
+
         return $this->item($user);
     }
 
