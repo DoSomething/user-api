@@ -79,4 +79,10 @@ return [
         'prefix' => env('SIXPACK_COOKIE_PREFIX'),
         'timeout' => env('SIXPACK_TIMEOUT'),
     ],
+
+    'fastly' => [
+        'url' => env('FASTLY_URL'),
+        'key' => env('FASTLY_API_TOKEN'),
+        'service_id' => env('FASTLY_SERVICE_ID'),
+    ],
 ];
