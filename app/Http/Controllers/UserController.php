@@ -150,7 +150,14 @@ class UserController extends Controller
 
         $user = $this->registrar->resolveOrFail([$term => $id]);
 
-        return $this->item($user);
+        $response = $this->item($user);
+
+        if (! Auth::user()) {
+            $response->headers->set('Surrogate-Key', 'user-'.$user->id);
+        }
+
+        return $response;
+
     }
 
     /**
