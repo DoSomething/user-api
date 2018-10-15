@@ -208,6 +208,11 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
+        // Purge Fastly cache of user
+        if (! is_null(config('services.fastly.url')) && ! is_null(config('services.fastly.key')) && ! is_null(config('services.fastly.service_id'))) {
+            $this->fastly->purgeKey('user-'.$id);
+        }
+
         return $this->respond('No Content.');
     }
 }
