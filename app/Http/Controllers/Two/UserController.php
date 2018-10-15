@@ -29,16 +29,22 @@ class UserController extends Controller
     protected $transformer;
 
     /**
+     * @var Fastly
+     */
+    protected $fastly;
+
+    /**
      * Make a new UserController, inject dependencies,
      * and set middleware for this controller's methods.
      *
      * @param Registrar $registrar
      * @param UserTransformer $transformer
      */
-    public function __construct(Registrar $registrar, UserTransformer $transformer)
+    public function __construct(Registrar $registrar, UserTransformer $transformer, Fastly $fastly)
     {
         $this->registrar = $registrar;
         $this->transformer = $transformer;
+        $this->fastly = $fastly;
 
         $this->middleware('role:admin,staff', ['except' => ['show']]);
         $this->middleware('scope:user');
@@ -170,6 +176,11 @@ class UserController extends Controller
 
         $this->registrar->register($request->all(), $user);
 
+        // Purge Fastly cache of user
+        if (! is_null(config('services.fastly.url')) && ! is_null(config('services.fastly.key')) && ! is_null(config('services.fastly.service_id'))) {
+            $this->fastly->purgeKey('user-'.$id);
+        }
+
         return $this->item($user);
     }
 
@@ -185,6 +196,11 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
+
+        // Purge Fastly cache of user
+        if (! is_null(config('services.fastly.url')) && ! is_null(config('services.fastly.key')) && ! is_null(config('services.fastly.service_id'))) {
+            $this->fastly->purgeKey('user-'.$id);
+        }
 
         return $this->respond('No Content.');
     }
