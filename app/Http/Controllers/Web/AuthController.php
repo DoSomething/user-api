@@ -173,9 +173,7 @@ class AuthController extends BaseController
      */
     public function getRegister()
     {
-        $showVoterStatusForm = participate('voter-status-reg-form', ['normal_form', 'voter_form']);
-
-        return view('auth.register', ['voter_reg_status_form' => $showVoterStatusForm]);
+        return view('auth.register');
     }
 
     /**
@@ -187,8 +185,6 @@ class AuthController extends BaseController
      */
     public function postRegister(Request $request)
     {
-        convert('voter-status-reg-form');
-
         $this->registrar->validate($request, null, [
             'first_name' => 'required|max:50',
             'birthdate' => 'required|date|before:now',
