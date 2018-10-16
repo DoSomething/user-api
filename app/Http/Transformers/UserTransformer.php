@@ -56,9 +56,7 @@ class UserTransformer extends TransformerAbstract
             $response['mobilecommons_status'] = $user->sms_status; // @DEPRECATED: Will be removed.
             $response['parse_installation_ids'] = $user->parse_installation_ids;
 
-            // Subscription status
-            $response['sms_status'] = $user->sms_status;
-            $response['sms_paused'] = (bool) $user->sms_paused;
+            // Email subscription status
             $response['email_frequency'] = $user->email_frequency;
 
             // Voter registration status
@@ -79,6 +77,10 @@ class UserTransformer extends TransformerAbstract
         // Drupal ID for this user. Used in the mobile app.
         $response['drupal_id'] = $user->drupal_id;
         $response['role'] = $user->role;
+
+        // SMS subscription status
+        $response['sms_status'] = $user->sms_status;
+        $response['sms_paused'] = (bool) $user->sms_paused;
 
         if (Scope::allows('admin') || Gate::allows('view-full-profile', $user)) {
             $response['last_accessed_at'] = iso8601($user->last_accessed_at);
