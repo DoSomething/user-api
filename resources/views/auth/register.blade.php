@@ -66,32 +66,30 @@
                 <span class="password-visibility__toggle -hide"></span>
             </div>
 
-            @if ($voter_reg_status_form === 'voter_form')
-                <div class="form-item">
-                    <label for="voter_registration_status" class="field-label">{{ "Are you registered to vote at your current address?"}}</label>
-                    <div class="form-item -reduced">
-                        <label class="option -radio">
-                          <input type="radio" name="voter_registration_status" value="confirmed">
-                          <span class="option__indicator"></span>
-                          <span>Yes</span>
-                        </label>
-                    </div>
-                    <div class="form-item -reduced">
-                        <label class="option -radio">
-                          <input type="radio" name="voter_registration_status" value="unregistered">
-                          <span class="option__indicator"></span>
-                          <span>No</span>
-                        </label>
-                    </div>
-                    <div class="form-item -reduced">
-                        <label class="option -radio">
-                          <input type="radio" name="voter_registration_status" value="uncertain">
-                          <span class="option__indicator"></span>
-                          <span>I'm not sure</span>
-                        </label>
-                    </div>
+            <div class="form-item">
+                <label for="voter_registration_status" class="field-label">{{ "Are you registered to vote at your current address?"}}</label>
+                <div class="form-item -reduced">
+                    <label class="option -radio">
+                      <input type="radio" name="voter_registration_status" value="confirmed">
+                      <span class="option__indicator"></span>
+                      <span>Yes</span>
+                    </label>
                 </div>
-            @endif
+                <div class="form-item -reduced">
+                    <label class="option -radio">
+                      <input type="radio" name="voter_registration_status" value="unregistered">
+                      <span class="option__indicator"></span>
+                      <span>No</span>
+                    </label>
+                </div>
+                <div class="form-item -reduced">
+                    <label class="option -radio">
+                      <input type="radio" name="voter_registration_status" value="uncertain">
+                      <span class="option__indicator"></span>
+                      <span>I'm not sure</span>
+                    </label>
+                </div>
+            </div>
 
             <div class="form-actions -padded -left">
                 <input type="submit" id="register-submit" class="button" value="{{ trans('auth.log_in.submit') }}">
