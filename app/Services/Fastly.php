@@ -30,8 +30,7 @@ class Fastly extends RestApiClient
      */
     public function purgeKey($cacheKey)
     {
-        $fastlyConfigured = config('features.glide') &&
-            ! is_null(config('services.fastly.url')) &&
+        $fastlyConfigured = ! is_null(config('services.fastly.url')) &&
             ! is_null(config('services.fastly.key')) &&
             ! is_null(config('services.fastly.service_id')) &&
             isset($cacheKey);
