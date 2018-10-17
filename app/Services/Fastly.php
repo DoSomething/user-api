@@ -36,7 +36,7 @@ class Fastly extends RestApiClient
             isset($cacheKey);
 
         if (! $fastlyConfigured) {
-            info('image_cache_purge_failed', ['response' => 'Fastly not configured correctly on this environment.']);
+            info('cache_purge_failed', ['response' => 'Fastly not configured correctly on this environment.']);
 
             return null;
         }
@@ -44,8 +44,6 @@ class Fastly extends RestApiClient
         $service = config('services.fastly.service_id');
 
         $purgeResponse = $this->post('service/'.$service.'/purge/'.$cacheKey);
-
-        info('image_cache_purge_successful', ['response' => $purgeResponse]);
 
         return $purgeResponse;
     }

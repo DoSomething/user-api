@@ -7,7 +7,6 @@ use Northstar\Auth\Role;
 use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
-use Northstar\Services\Fastly;
 use Northstar\Http\Transformers\UserTransformer;
 use Northstar\Exceptions\NorthstarValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -28,22 +27,16 @@ class UserController extends Controller
     protected $transformer;
 
     /**
-     * @var Fastly
-     */
-    protected $fastly;
-
-    /**
      * Make a new UserController, inject dependencies,
      * and set middleware for this controller's methods.
      *
      * @param Registrar $registrar
      * @param UserTransformer $transformer
      */
-    public function __construct(Registrar $registrar, UserTransformer $transformer, Fastly $fastly)
+    public function __construct(Registrar $registrar, UserTransformer $transformer)
     {
         $this->registrar = $registrar;
         $this->transformer = $transformer;
-        $this->fastly = $fastly;
 
         $this->middleware('role:admin,staff', ['except' => ['show']]);
         $this->middleware('scope:user');
@@ -187,11 +180,6 @@ class UserController extends Controller
 
         $this->registrar->register($request->all(), $user);
 
-        // Purge Fastly cache of user
-        if (! is_null(config('services.fastly.url')) && ! is_null(config('services.fastly.key')) && ! is_null(config('services.fastly.service_id'))) {
-            $this->fastly->purgeKey('user-'.$user->id);
-        }
-
         return $this->item($user);
     }
 
@@ -207,11 +195,6 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-
-        // Purge Fastly cache of user
-        if (! is_null(config('services.fastly.url')) && ! is_null(config('services.fastly.key')) && ! is_null(config('services.fastly.service_id'))) {
-            $this->fastly->purgeKey('user-'.$id);
-        }
 
         return $this->respond('No Content.');
     }
