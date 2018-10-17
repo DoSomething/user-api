@@ -81,7 +81,7 @@ return [
     ],
 
     'fastly' => [
-        'url' => env('FASTLY_URL'),
+        'url' => 'https://api.fastly.com/',
         'key' => env('FASTLY_API_TOKEN'),
         'service_id' => env('FASTLY_SERVICE_ID'),
     ],
