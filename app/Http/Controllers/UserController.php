@@ -154,8 +154,9 @@ class UserController extends Controller
 
         $response = $this->item($user);
 
-        if (! Auth::user()) {
+        if (Auth::guest()) {
             $response->headers->set('Surrogate-Key', 'user-'.$user->id);
+            $response->setPublic();
         }
 
         return $response;
