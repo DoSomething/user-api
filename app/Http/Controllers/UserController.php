@@ -2,12 +2,13 @@
 
 namespace Northstar\Http\Controllers;
 
+use Auth;
+use Northstar\Auth\Role;
+use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
-use Northstar\Auth\Role;
-use Northstar\Exceptions\NorthstarValidationException;
 use Northstar\Http\Transformers\UserTransformer;
-use Northstar\Models\User;
+use Northstar\Exceptions\NorthstarValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends Controller
@@ -144,7 +145,14 @@ class UserController extends Controller
 
         $user = $this->registrar->resolveOrFail([$term => $id]);
 
-        return $this->item($user);
+        $response = $this->item($user);
+
+        if (Auth::guest()) {
+            $response->headers->set('Surrogate-Key', 'user-'.$user->id);
+            $response->setPublic();
+        }
+
+        return $response;
     }
 
     /**

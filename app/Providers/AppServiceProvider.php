@@ -3,6 +3,7 @@
 namespace Northstar\Providers;
 
 use Northstar\Models\User;
+use Northstar\Services\Fastly;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Northstar\Jobs\SendUserToCustomerIo;
@@ -41,6 +42,10 @@ class AppServiceProvider extends ServiceProvider
         User::updated(function (User $user) {
             // Send payload to Blink for Customer.io profile.
             SendUserToCustomerIo::dispatch($user);
+
+            // Purge Fastly cache of user
+            $fastly = new Fastly;
+            $fastly->purgeKey('user-'.$user->id);
         });
 
         // Attach the user & request ID to context for all log messages.

@@ -48,9 +48,7 @@ class UserTransformer extends TransformerAbstract
             // Internal & third-party service IDs:
             $response['slack_id'] = null;
 
-            // Subscription status
-            $response['sms_status'] = $user->sms_status;
-            $response['sms_paused'] = (bool) $user->sms_paused;
+            // Email subscription status
             $response['email_frequency'] = $user->email_frequency;
 
             // Voter registration status
@@ -66,6 +64,10 @@ class UserTransformer extends TransformerAbstract
         $response['voting_plan_attending_with'] = $user->voting_plan_attending_with;
         $response['language'] = $user->language;
         $response['country'] = $user->country;
+
+        // SMS subscription status
+        $response['sms_status'] = $user->sms_status;
+        $response['sms_paused'] = (bool) $user->sms_paused;
 
         $response['role'] = $user->role;
 
