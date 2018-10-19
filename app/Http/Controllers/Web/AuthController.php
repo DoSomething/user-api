@@ -210,6 +210,8 @@ class AuthController extends BaseController
             }
         });
 
+        convert('voter-status-mandatory');
+
         $this->auth->guard('web')->login($user, true);
 
         return redirect()->intended('/');
