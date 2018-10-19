@@ -173,7 +173,9 @@ class AuthController extends BaseController
      */
     public function getRegister()
     {
-        return view('auth.register');
+        $mandatoryVoterStatus = participate('voter-status-mandatory', ['normal_form', 'mandatory_voter_form']);
+
+        return view('auth.register', ['voter_status_mandatory' => $mandatoryVoterStatus]);
     }
 
     /**
