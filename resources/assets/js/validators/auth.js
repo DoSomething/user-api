@@ -227,29 +227,3 @@ Validation.registerValidationFunction("phone", function(string, done) {
     });
   }
 });
-
-// ## Voter Registration Status
-// Checks that field is filled out.
-Validation.registerValidationFunction("voter_registration_status", function(
-  string,
-  done
-) {
-  console.log("validating voter reg");
-  console.log(string);
-  // console.log(string);
-  // console.log(done);
-  if (
-    string !== "confirmed" ||
-    string !== "unregistered" ||
-    string !== "uncertain"
-  ) {
-    return done({
-      success: false,
-      message: "Let us know if you are registered to vote."
-    });
-  }
-  return done({
-    success: true,
-    message: "Thanks!"
-  });
-});

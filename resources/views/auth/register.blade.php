@@ -68,10 +68,10 @@
 
             @if ($voter_status_mandatory === 'mandatory_voter_form')
                 <div class="form-item">
-                    <label for="voter_registration_status" class="field-label"  >{{ "Are you registered to vote at your current address?"}}</label>
+                    <label for="voter_registration_status" class="field-label">{{ "Are you registered to vote at your current address?"}}</label>
                     <div class="form-item -reduced">
                         <label class="option -radio">
-                          <input type="radio" name="voter_registration_status" value="confirmed" class="required js-validate" data-validate="voter_registration_status" data-validate-required>
+                          <input type="radio" name="voter_registration_status" value="confirmed">
                           <span class="option__indicator"></span>
                           <span>Yes</span>
                         </label>

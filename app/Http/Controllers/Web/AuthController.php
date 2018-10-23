@@ -173,6 +173,7 @@ class AuthController extends BaseController
      */
     public function getRegister()
     {
+        // Mandatory voter reg question experiment
         $mandatoryVoterStatus = participate('voter-status-mandatory', ['normal_form', 'mandatory_voter_form']);
 
         return view('auth.register', ['voter_status_mandatory' => $mandatoryVoterStatus]);
@@ -187,13 +188,22 @@ class AuthController extends BaseController
      */
     public function postRegister(Request $request)
     {
-        $this->registrar->validate($request, null, [
+        // Grab alternative for this user again (it will be the same)
+        $mandatoryVoterStatus = participate('voter-status-mandatory', ['normal_form', 'mandatory_voter_form']);
+
+        $validationRules = [
             'first_name' => 'required|max:50',
             'birthdate' => 'required|date|before:now',
             'email' => 'required|email|unique:users',
             'mobile' => 'mobile|nullable|unique:users',
             'password' => 'required|min:6|max:512',
-        ]);
+        ];
+
+        if ($mandatoryVoterStatus === 'mandatory_voter_form') {
+            $validationRules['voter_registration_status'] = 'required';
+        }
+
+        $this->registrar->validate($request, null, $validationRules);
 
         // Register and login the user.
         $editableFields = $request->except(User::$internal);
