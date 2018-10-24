@@ -173,6 +173,10 @@ class AuthController extends BaseController
      */
     public function getRegister()
     {
+        // Mandatory voter reg question experiment
+        $mandatoryVoterStatus = participate('voter-status-mandatory', ['normal_form', 'mandatory_voter_form']);
+        session(['ab_voter_status_mandatory' => $mandatoryVoterStatus]);
+
         return view('auth.register');
     }
 
@@ -185,12 +189,16 @@ class AuthController extends BaseController
      */
     public function postRegister(Request $request)
     {
+        // Grab alternative for this user again (it will be the same)
+        $mandatoryVoterStatus = session('ab_voter_status_mandatory') === 'mandatory_voter_form' ? true : false;
+
         $this->registrar->validate($request, null, [
             'first_name' => 'required|max:50',
             'birthdate' => 'required|date|before:now',
             'email' => 'required|email|unique:users',
             'mobile' => 'mobile|nullable|unique:users',
             'password' => 'required|min:6|max:512',
+            'voter_registration_status' => $mandatoryVoterStatus ? 'required' : '',
         ]);
 
         // Register and login the user.
@@ -207,6 +215,8 @@ class AuthController extends BaseController
                 $user->sms_status = 'active';
             }
         });
+
+        convert('voter-status-mandatory');
 
         $this->auth->guard('web')->login($user, true);
 
