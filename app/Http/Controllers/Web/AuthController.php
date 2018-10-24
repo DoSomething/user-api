@@ -175,8 +175,9 @@ class AuthController extends BaseController
     {
         // Mandatory voter reg question experiment
         $mandatoryVoterStatus = participate('voter-status-mandatory', ['normal_form', 'mandatory_voter_form']);
+        session(['ab_voter_status_mandatory' => $mandatoryVoterStatus]);
 
-        return view('auth.register', ['voter_status_mandatory' => $mandatoryVoterStatus]);
+        return view('auth.register');
     }
 
     /**
@@ -189,7 +190,7 @@ class AuthController extends BaseController
     public function postRegister(Request $request)
     {
         // Grab alternative for this user again (it will be the same)
-        $mandatoryVoterStatus = participate('voter-status-mandatory', ['normal_form', 'mandatory_voter_form']);
+        $mandatoryVoterStatus = session('ab_voter_status_mandatory');
 
         $validationRules = [
             'first_name' => 'required|max:50',
