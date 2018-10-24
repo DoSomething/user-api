@@ -190,21 +190,16 @@ class AuthController extends BaseController
     public function postRegister(Request $request)
     {
         // Grab alternative for this user again (it will be the same)
-        $mandatoryVoterStatus = session('ab_voter_status_mandatory');
+        $mandatoryVoterStatus = session('ab_voter_status_mandatory') === 'mandatory_voter_form' ? true : false;
 
-        $validationRules = [
+        $this->registrar->validate($request, null, [
             'first_name' => 'required|max:50',
             'birthdate' => 'required|date|before:now',
             'email' => 'required|email|unique:users',
             'mobile' => 'mobile|nullable|unique:users',
             'password' => 'required|min:6|max:512',
-        ];
-
-        if ($mandatoryVoterStatus === 'mandatory_voter_form') {
-            $validationRules['voter_registration_status'] = 'required';
-        }
-
-        $this->registrar->validate($request, null, $validationRules);
+            'voter_registration_status' => $mandatoryVoterStatus ? 'required' : '',
+        ]);
 
         // Register and login the user.
         $editableFields = $request->except(User::$internal);
