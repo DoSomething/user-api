@@ -148,8 +148,9 @@ class UserController extends Controller
         $response = $this->item($user);
 
         if (Auth::guest()) {
+            // If this is an anonymous request, cache in Fastly until it changes.
             $response->headers->set('Surrogate-Key', 'user-'.$user->id);
-            $response->setPublic();
+            $response->setPublic()->setMaxAge(60 * 60 * 24 * 365);
         }
 
         return $response;
