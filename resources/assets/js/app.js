@@ -13,7 +13,7 @@ import '../scss/app.scss';
 window.Drupal = {
   t: function(value) {
     return value;
-  }
+  },
 };
 
 // Utilities
@@ -22,6 +22,9 @@ import DeLorean from './utilities/DeLorean';
 import Puck from './utilities/Puck';
 import PasswordVisibility from './utilities/PasswordVisibility';
 import './validators/auth';
+
+// Display environment badge on local, dev, or QA:
+require('environment-badge')();
 
 // Register validation rules for en lang only.
 if (document.documentElement.lang !== 'en') {
