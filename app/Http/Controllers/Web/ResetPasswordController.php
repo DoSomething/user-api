@@ -66,6 +66,6 @@ class ResetPasswordController extends Controller
      */
     public function redirectPath()
     {
-        return config('services.drupal.url').'/user/authorize';
+        return config('services.phoenix.url') .'/next/login';
     }
 }
