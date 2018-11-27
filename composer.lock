@@ -60,16 +60,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.75.0",
+            "version": "3.76.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "b62357d506a43c1377926d531136e5f1fe824732"
+                "reference": "ae331953146493aa71853b5c675f0b7b48c9c952"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b62357d506a43c1377926d531136e5f1fe824732",
-                "reference": "b62357d506a43c1377926d531136e5f1fe824732",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ae331953146493aa71853b5c675f0b7b48c9c952",
+                "reference": "ae331953146493aa71853b5c675f0b7b48c9c952",
                 "shasum": ""
             },
             "require": {
@@ -139,7 +139,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-11-26T09:00:47+00:00"
+            "time": "2018-11-27T05:14:58+00:00"
         },
         {
             "name": "barryvdh/laravel-cors",
