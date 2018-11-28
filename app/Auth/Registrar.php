@@ -138,7 +138,8 @@ class Registrar
     }
 
     /**
-     * Validate a user against the given credentials.
+     * Validate a user against the given credentials. If the user has a Drupal
+     * password & it matches, re-hash and save to the user document.
      *
      * @param UserContract|User $user
      * @param array $credentials
