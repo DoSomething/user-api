@@ -158,6 +158,17 @@ class Registrar
             return true;
         }
 
+        if (! $user->password && DrupalPasswordHash::check($credentials['password'], $user->drupal_password)) {
+            // If this user has a Drupal-hashed password, rehash it, remove the
+            // Drupal password field from the user document, and save the user.
+            $user->password = $credentials['password'];
+            $user->save();
+
+            event(new \Illuminate\Auth\Events\Login($user, false));
+
+            return true;
+        }
+
         // Well, looks like we couldn't authenticate...
         event(new \Illuminate\Auth\Events\Failed($user, $credentials));
 
