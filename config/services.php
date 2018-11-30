@@ -27,11 +27,8 @@ return [
         'secret' => env('MANDRILL_SECRET'),
     ],
 
-    'drupal' => [
-        'url' => env('DRUPAL_API_URL'),
-        'version' => 'v1',
-        'username' => env('DRUPAL_API_USERNAME'),
-        'password' => env('DRUPAL_API_PASSWORD'),
+    'phoenix' => [
+        'url' => env('PHOENIX_URL'),
     ],
 
     'parse' => [

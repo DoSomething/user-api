@@ -4,18 +4,10 @@ namespace Tests;
 
 use FakerPhoneNumber;
 use DoSomething\Gateway\Blink;
-use Northstar\Services\Phoenix;
 use Illuminate\Contracts\Console\Kernel;
 
 trait CreatesApplication
 {
-    /**
-     * The Phoenix API client mock.
-     *
-     * @var \Mockery\MockInterface
-     */
-    protected $phoenixMock;
-
     /**
      * The Blink API client mock.
      *
@@ -40,12 +32,6 @@ trait CreatesApplication
         $app = require __DIR__.'/../bootstrap/app.php';
 
         $app->make(Kernel::class)->bootstrap();
-
-        // Configure a mock for Phoenix & default `createDrupalUser` response.
-        $this->phoenixMock = $this->mock(Phoenix::class);
-        $this->phoenixMock->shouldReceive('createDrupalUser')->andReturnUsing(function () {
-            return $this->faker->unique()->numberBetween(1, 30000000);
-        });
 
         // Configure a mock for Blink model events.
         $this->blinkMock = $this->mock(Blink::class);

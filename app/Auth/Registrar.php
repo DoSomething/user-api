@@ -4,24 +4,16 @@ namespace Northstar\Auth;
 
 use Closure;
 use Exception;
-use Illuminate\Contracts\Hashing\Hasher;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Validation\Factory as Validation;
-use Illuminate\Http\Request;
-use Northstar\Exceptions\NorthstarValidationException;
 use Northstar\Models\User;
-use Northstar\Services\Phoenix;
+use Illuminate\Http\Request;
+use Illuminate\Contracts\Hashing\Hasher;
+use Illuminate\Validation\Factory as Validation;
+use Northstar\Exceptions\NorthstarValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 
 class Registrar
 {
-    /**
-     * Phoenix Drupal API wrapper.
-     *
-     * @var Phoenix
-     */
-    protected $phoenix;
-
     /**
      * Laravel's validation factory.
      *
@@ -39,13 +31,11 @@ class Registrar
     /**
      * Registrar constructor.
      *
-     * @param Phoenix $phoenix
      * @param Validation $validation
      * @param Hasher $hasher
      */
-    public function __construct(Phoenix $phoenix, Validation $validation, Hasher $hasher)
+    public function __construct(Validation $validation, Hasher $hasher)
     {
-        $this->phoenix = $phoenix;
         $this->validation = $validation;
         $this->hasher = $hasher;
     }
@@ -208,31 +198,6 @@ class Registrar
         }
 
         $user->save();
-
-        // If this user doesn't have a `drupal_id`, try to make one.
-        if (! $user->drupal_id) {
-            $user = $this->createDrupalUser($user);
-            $user->save();
-        }
-
-        return $user;
-    }
-
-    /**
-     * Create a Drupal user for the given account.
-     *
-     * @param User $user
-     * @return mixed
-     */
-    public function createDrupalUser($user)
-    {
-        try {
-            $drupal_id = $this->phoenix->createDrupalUser($user);
-            $user->drupal_id = $drupal_id;
-        } catch (Exception $e) {
-            logger('Encountered error when creating Drupal user', ['user' => $user, 'error' => $e]);
-            app('stathat')->ezCount('error creating drupal uid for user');
-        }
 
         return $user;
     }

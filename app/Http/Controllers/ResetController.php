@@ -2,30 +2,18 @@
 
 namespace Northstar\Http\Controllers;
 
-use Jenssegers\Mongodb\Auth\DatabaseTokenRepository;
 use Northstar\Models\User;
 use Illuminate\Http\Request;
-use Northstar\Services\Phoenix;
+use Jenssegers\Mongodb\Auth\DatabaseTokenRepository;
 
 class ResetController extends Controller
 {
     /**
-     * Phoenix Drupal API wrapper.
-     *
-     * @var Phoenix
-     */
-    protected $phoenix;
-
-    /**
      * Make a new ResetController, inject dependencies,
      * and set middleware for this controller's methods.
-     *
-     * @param Phoenix $phoenix
      */
-    public function __construct(Phoenix $phoenix)
+    public function __construct()
     {
-        $this->phoenix = $phoenix;
-
         $this->middleware('role:admin');
         $this->middleware('scope:write', ['only' => ['store']]);
     }
