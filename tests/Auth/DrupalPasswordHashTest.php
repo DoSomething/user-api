@@ -77,7 +77,7 @@ class DrupalPasswordHashTest extends BrowserKitTestCase
 
         // Fails if given a bad password
         $this->assertFalse(DrupalPasswordHash::check('secret', '$S$DYvEbMTfOWVPq5FyHhp70eXBrt8FClzE8bV8RoR8alahwR71PoLE'), 'Fails if given a bad password');
-        
+
         // Can check older MD5 passwords.
         $this->assertTrue(DrupalPasswordHash::check('derpalicious', '$P$DxTIL/YfZCdJtFYNh1Ef9ERbMBkuQ91'), 'Password check succeeds on valid MD5 password.');
         $this->assertTrue(DrupalPasswordHash::check('derpalicious', '$H$DxTIL/YfZCdJtFYNh1Ef9ERbMBkuQ91'), 'Password check succeeds on valid MD5 password.');
