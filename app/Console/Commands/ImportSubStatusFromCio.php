@@ -81,7 +81,6 @@ class ImportSubStatusFromCio extends Command
 
                 // Make sure we don't go over 10 requests per second
                 sleep(.1);
-
             });
         });
 
