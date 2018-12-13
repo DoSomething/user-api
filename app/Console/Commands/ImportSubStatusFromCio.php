@@ -59,7 +59,7 @@ class ImportSubStatusFromCio extends Command
 
                     // Do not update this user if they were last updated after the specified date
                     if ($lastUpdated > $date) {
-                        continue;
+                        return false;
                     }
                 }
 
