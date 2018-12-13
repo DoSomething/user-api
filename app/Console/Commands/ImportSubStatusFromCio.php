@@ -69,7 +69,12 @@ class ImportSubStatusFromCio extends Command
                 $unsubscribed = $body->customer->unsubscribed;
 
                 // Update subscription status on user
-                $user->email_frequency = !$unsubscribed;
+                if ($unsubscribed) {
+                    $user->email_frequency = 'none';
+                }
+                if (! $unsubscribed) {
+                    $user->email_frequency = 'active';
+                }
                 $user->save();
 
                 $this->line('Updated user: '.$user->id);
