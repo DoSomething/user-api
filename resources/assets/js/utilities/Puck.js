@@ -11,15 +11,15 @@ function init() {
 
   $(document).ready(() => {
     $('.facebook-login').on('click', () => (
-      puck.trackEvent('clicked facebook auth')
+      puck.trackEvent('northstar_clicked_login_facebook')
     ));
 
     $('#register-submit').on('click', () => (
-      puck.trackEvent('clicked register-submit')
+      puck.trackEvent('northstar_submitted_register')
     ));
 
     $('#login-submit').on('click', () => (
-      puck.trackEvent('clicked login-submit')
+      puck.trackEvent('northstar_submitted_login')
     ));
 
     const $validationErrors = $('.validation-error');
