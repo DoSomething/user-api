@@ -64,7 +64,7 @@ class ImportSubStatusFromCio extends Command
                 }
 
                 // Make request to c.io to get that user's subscription status
-                $response = $client->get('/v1/api/customers/' . $user->id . '/attributes', ['auth' => $auth]);
+                $response = $client->get('/v1/api/customers/'.$user->id.'/attributes', ['auth' => $auth]);
                 $body = json_decode($response->getBody());
                 $unsubscribed = $body->customer->unsubscribed;
 
