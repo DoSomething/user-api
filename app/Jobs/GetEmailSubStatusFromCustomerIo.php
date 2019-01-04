@@ -56,5 +56,8 @@ class GetEmailSubStatusFromCustomerIo implements ShouldQueue
         $this->user->save();
 
         info('User '.$this->user->id.' email subscription status grabbed from Customer.io');
+
+        // Make sure we don't go over 10 requests/second
+        throttle(600);
     }
 }
