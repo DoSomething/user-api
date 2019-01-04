@@ -5,6 +5,7 @@ namespace Northstar\Console\Commands;
 use Northstar\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
+use Northstar\Jobs\GetEmailSubStatusFromCustomerIo;
 
 class ImportSubStatusFromCio extends Command
 {
@@ -29,11 +30,13 @@ class ImportSubStatusFromCio extends Command
      */
     public function handle()
     {
+        // Grab users who have email addresses
         $query = (new User)->newQuery();
+        $query = $query->where('email', 'exists', true);
 
         $query->chunkById(200, function (Collection $users){
             $users->each(function (User $user){
-                $queue = config('queue.names.backfill');
+                $queue = config('queue.names.low');
 
                 dispatch(new GetEmailSubStatusFromCustomerIo($user))->onQueue($queue);
             });
