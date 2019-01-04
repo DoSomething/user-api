@@ -50,22 +50,10 @@ return [
 
         's3' => [
             'driver' => 's3',
-            'key' => env('S3_KEY'),
-            'secret' => env('S3_SECRET'),
+            'key' => env('AWS_ACCESS_KEY'),
+            'secret' => env('AWS_SECRET_KEY'),
             'region' => 'us-east-1',
             'bucket' => env('S3_BUCKET'),
-            'base_url' => 'https://s3-external-1.amazonaws.com',
-            'public_url' => env('S3_URL'),
-        ],
-
-        'rackspace' => [
-            'driver' => 'rackspace',
-            'username' => 'your-username',
-            'key' => 'your-key',
-            'container' => 'your-container',
-            'endpoint' => 'https://identity.api.rackspacecloud.com/v2.0/',
-            'region' => 'IAD',
-            'url_type' => 'publicURL',
         ],
 
     ],

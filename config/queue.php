@@ -27,8 +27,8 @@ return [
     |
     */
     'names' => [
-        'customerio' => env('SQS_DEFAULT_QUEUE'),
-        'backfill' => env('SQS_BACKFILL_QUEUE'),
+        'high' => env('SQS_DEFAULT_QUEUE'),
+        'low' => env('SQS_LOW_PRIORITY_QUEUE'),
     ],
 
     /*
@@ -64,8 +64,8 @@ return [
 
         'sqs' => [
             'driver' => 'sqs',
-            'key'    => env('SQS_PUBLIC_KEY'),
-            'secret' => env('SQS_SECRET_KEY'),
+            'key'    => env('AWS_ACCESS_KEY'),
+            'secret' => env('AWS_SECRET_KEY'),
             'queue'  => env('SQS_DEFAULT_QUEUE'),
             'region' => 'us-east-1',
         ],
