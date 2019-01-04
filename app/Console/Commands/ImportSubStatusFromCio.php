@@ -34,8 +34,8 @@ class ImportSubStatusFromCio extends Command
         $query = (new User)->newQuery();
         $query = $query->where('email', 'exists', true);
 
-        $query->chunkById(200, function (Collection $users){
-            $users->each(function (User $user){
+        $query->chunkById(200, function (Collection $users) {
+            $users->each(function (User $user) {
                 $queue = config('queue.names.low');
 
                 dispatch(new GetEmailSubStatusFromCustomerIo($user))->onQueue($queue);
