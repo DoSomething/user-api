@@ -57,15 +57,6 @@ return [
             'base_url' => 'https://s3-external-1.amazonaws.com',
             'public_url' => env('S3_URL'),
         ],
-
-        'rackspace' => [
-            'driver' => 'rackspace',
-            'username' => 'your-username',
-            'key' => 'your-key',
-            'container' => 'your-container',
-            'endpoint' => 'https://identity.api.rackspacecloud.com/v2.0/',
-            'region' => 'IAD',
-            'url_type' => 'publicURL',
         ],
 
     ],
