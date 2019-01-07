@@ -2,6 +2,7 @@
 
 namespace Northstar\Jobs;
 
+use Redis;
 use Northstar\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -37,27 +38,31 @@ class GetEmailSubStatusFromCustomerIo implements ShouldQueue
      */
     public function handle()
     {
-        // Customer.io authentication
-        $auth = [config('services.customerio.username'), config('services.customerio.password')];
+        $key = 'GetEmailSubStatusFromCustomerIo-'.$this->user->id;
 
-        // Create a Guzzle Client to use with the Customer.io Beta API
-        $client = new \GuzzleHttp\Client([
-            'base_uri' => 'https://beta-api.customer.io',
-            'auth' => $auth,
-        ]);
+        Redis::throttle($key)->allow(10)->every(1)->then(function () {
+            // Customer.io authentication
+            $auth = [config('services.customerio.username'), config('services.customerio.password')];
 
-        // Make request to c.io to get that user's subscription status
-        $response = $client->get('/v1/api/customers/'.$this->user->id.'/attributes');
-        $body = json_decode($response->getBody());
-        $unsubscribed = $body->customer->unsubscribed;
+            // Create a Guzzle Client to use with the Customer.io Beta API
+            $client = new \GuzzleHttp\Client([
+                'base_uri' => 'https://beta-api.customer.io',
+                'auth' => $auth,
+            ]);
 
-        // Update subscription status on user
-        $this->user->email_frequency = $unsubscribed ? 'none' : 'active';
-        $this->user->save();
+            // Make request to c.io to get that user's subscription status
+            $response = $client->get('/v1/api/customers/'.$this->user->id.'/attributes');
+            $body = json_decode($response->getBody());
+            $unsubscribed = $body->customer->unsubscribed;
 
-        info('User '.$this->user->id.' email subscription status grabbed from Customer.io');
+            // Update subscription status on user
+            $this->user->email_frequency = $unsubscribed ? 'none' : 'active';
+            $this->user->save();
 
-        // Make sure we don't go over 10 requests/second
-        throttle(600);
+            info('User '.$this->user->id.' email subscription status grabbed from Customer.io');
+        }, function () {
+            info('Unable to get email subscription status for '.$this->user->id.' at this time, job pushed back onto queue.');
+            return $this->release(10);
+        });
     }
 }
