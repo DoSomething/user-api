@@ -62,6 +62,7 @@ class GetEmailSubStatusFromCustomerIo implements ShouldQueue
             info('User '.$this->user->id.' email subscription status grabbed from Customer.io');
         }, function () {
             info('Unable to get email subscription status for '.$this->user->id.' at this time, job pushed back onto queue.');
+
             return $this->release(10);
         });
     }
