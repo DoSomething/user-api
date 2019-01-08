@@ -38,9 +38,7 @@ class GetEmailSubStatusFromCustomerIo implements ShouldQueue
      */
     public function handle()
     {
-        $key = 'GetEmailSubStatusFromCustomerIo-'.$this->user->id;
-
-        Redis::throttle($key)->allow(10)->every(1)->then(function () {
+        Redis::throttle('customerioemailsubstatus')->allow(10)->every(1)->then(function () {
             // Customer.io authentication
             $auth = [config('services.customerio.username'), config('services.customerio.password')];
 
