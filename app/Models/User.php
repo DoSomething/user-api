@@ -418,9 +418,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         ];
 
         // Only include email subscription status if we have that information
-        if ($this->email_frequency) {
-            $payload['email_frequency'] = $this->email_frequency;
-            $payload['unsubscribed'] = ($this->email_frequency === 'stop');
+        if ($this->email_subscription_status) {
+            $payload['email_subscription_status'] = $this->email_subscription_status;
+            $payload['unsubscribed'] = (! $this->email_subscription_status);
         }
 
         return $payload;
