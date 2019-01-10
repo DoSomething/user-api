@@ -51,7 +51,7 @@ use Northstar\Auth\Role;
  * Messaging subscription status:
  * @property string $sms_status
  * @property bool   $sms_paused
- * @property string $email_frequency
+ * @property string $email_subscription_status
  *
  * Fields for Make a Voting Plan
  * @property string $voting_plan_status
@@ -95,7 +95,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
         // External profiles:
         'mobilecommons_id', 'mobilecommons_status', 'facebook_id',
-        'sms_status', 'sms_paused', 'email_frequency', 'last_messaged_at',
+        'sms_status', 'sms_paused', 'email_subscription_status', 'last_messaged_at',
 
         // Voting Plan:
         'voting_plan_status', 'voting_plan_method_of_transport', 'voting_plan_time_of_day', 'voting_plan_attending_with',
