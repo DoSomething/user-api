@@ -64,7 +64,7 @@ class Registrar
             'sms_status' => 'in:active,less,stop,undeliverable,unknown,pending',
             'sms_paused' => 'boolean',
             'last_messaged_at' => 'date',
-            'email_frequency' => 'in:active,none',
+            'email_subscription_status' => 'boolean',
             'voter_registration_status' => 'in:uncertain,ineligible,confirmed,registration_complete',
         ];
 
