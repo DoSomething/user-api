@@ -54,7 +54,7 @@ class GetEmailSubStatusFromCustomerIo implements ShouldQueue
             $unsubscribed = $body->customer->unsubscribed;
 
             // Update subscription status on user
-            $this->user->email_subscription_status = $unsubscribed ? 'none' : 'active';
+            $this->user->email_subscription_status = $unsubscribed ? false : true;
             $this->user->save();
 
             info('User '.$this->user->id.' email subscription status grabbed from Customer.io');
