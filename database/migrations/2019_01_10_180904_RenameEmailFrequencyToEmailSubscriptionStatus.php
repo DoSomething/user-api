@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class RenameEmailFrequencyToEmailSubscriptionStatus extends Migration
@@ -26,7 +24,7 @@ class RenameEmailFrequencyToEmailSubscriptionStatus extends Migration
         $this->renameField('users', 'email_subscription_status', 'email_frequency');
     }
 
-     /**
+    /**
      * Rename the given field on any documents in the collection.
      *
      * @param string $collection
