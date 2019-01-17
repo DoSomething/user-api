@@ -51,7 +51,7 @@ use Northstar\Auth\Role;
  * Messaging subscription status:
  * @property string $sms_status
  * @property bool   $sms_paused
- * @property string $email_subscription_status
+ * @property bool $email_subscription_status
  *
  * Fields for Make a Voting Plan
  * @property string $voting_plan_status
@@ -166,6 +166,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $casts = [
         'birthdate' => 'date',
         'sms_paused' => 'boolean',
+        'email_subscription_status' => 'boolean',
     ];
 
     /**

@@ -49,7 +49,7 @@ class UserTransformer extends TransformerAbstract
             $response['slack_id'] = null;
 
             // Email subscription status
-            $response['email_subscription_status'] = $user->email_subscription_status;
+            $response['email_subscription_status'] = (bool) $user->email_subscription_status;
 
             // Voter registration status
             $response['voter_registration_status'] = $user->voter_registration_status;
