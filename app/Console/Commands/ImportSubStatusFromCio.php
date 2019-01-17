@@ -17,6 +17,13 @@ class ImportSubStatusFromCio extends Command
     protected $signature = 'northstar:importsub';
 
     /**
+     * The number of jobs queued up so far.
+     *
+     * @var string
+     */
+    protected $currentCount = 0;
+
+    /**
      * The console command description.
      *
      * @var string
@@ -34,14 +41,21 @@ class ImportSubStatusFromCio extends Command
         $query = (new User)->newQuery();
         $query = $query->where('email', 'exists', true);
 
-        $query->chunkById(200, function (Collection $users) {
-            $users->each(function (User $user) {
+        $totalCount = $query->count();
+
+        $query->chunkById(200, function (Collection $users) use ($totalCount) {
+            $users->each(function (User $user) use ($totalCount) {
                 $queue = config('queue.names.low');
 
                 dispatch(new GetEmailSubStatusFromCustomerIo($user))->onQueue($queue);
             });
+
+            // Logging to track progress
+            $this->currentCount += 200;
+            $percentDone = ($this->currentCount/$totalCount) * 100;
+            $this->line('northstar:importsub - '.$this->currentCount.'/'.$totalCount.' - '.$percentDone.'% done');
         });
 
-        $this->info('Queued up a job to grab email status for each user!');
+        $this->line('northstar:importsub - Queued up a job to grab email status for each user!');
     }
 }
