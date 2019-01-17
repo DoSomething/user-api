@@ -52,7 +52,7 @@ class ImportSubStatusFromCio extends Command
 
             // Logging to track progress
             $this->currentCount += 200;
-            $percentDone = ($this->currentCount/$totalCount) * 100;
+            $percentDone = ($this->currentCount / $totalCount) * 100;
             $this->line('northstar:importsub - '.$this->currentCount.'/'.$totalCount.' - '.$percentDone.'% done');
         });
 
