@@ -187,6 +187,9 @@ class WebAuthenticationTest extends BrowserKitTestCase
 
         $this->assertEquals('US', $user->country);
         $this->assertEquals('en', $user->language);
+
+        // The user should be signed up for email messaging.
+        $this->assertEquals(true, $user->email_subscription_status);
     }
 
     /**
