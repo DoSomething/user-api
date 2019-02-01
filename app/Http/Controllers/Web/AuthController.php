@@ -210,6 +210,9 @@ class AuthController extends BaseController
             // Set language based on locale (either 'en', 'es-mx')
             $user->language = app()->getLocale();
 
+            // Sign the user up for email messaging.
+            $user->email_subscription_status = true;
+
             // Set sms_status, if applicable
             if ($user->mobile) {
                 $user->sms_status = 'active';
