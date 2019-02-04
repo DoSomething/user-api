@@ -84,6 +84,7 @@ class AuthController extends BaseController
                 'title' => request()->query('title', trans('auth.get_started.create_account')),
                 'callToAction' => request()->query('callToAction', trans('auth.get_started.call_to_action')),
                 'coverImage' => request()->query('coverImage', asset('members.jpg')),
+                'trafficSource' => request()->query('trafficSource'),
             ]);
 
             return redirect()->guest($authorizationRoute);
@@ -216,6 +217,12 @@ class AuthController extends BaseController
             // Set sms_status, if applicable
             if ($user->mobile) {
                 $user->sms_status = 'active';
+            }
+
+            // Set the traffic source as the `source_detail` if provided
+            $trafficSource = session()->pull('trafficSource');
+            if ($trafficSource) {
+                $user->source_detail = $trafficSource;
             }
         });
 
