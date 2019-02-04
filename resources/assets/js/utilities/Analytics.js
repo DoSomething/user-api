@@ -44,6 +44,21 @@ function init() {
 
   // Attach any custom events.
   $(document).ready(() => {
+    // Track an auto focused form field (which will already be focused upon page load).
+    const focusedElement = $('input:focus');
+    if (focusedElement.length) {
+      const inputName = focusedElement.attr('name');
+      Analytics.analyze('Form', 'Focused', inputName);
+      puck.trackEvent(`northstar_focused_field_${inputName}`);
+    }
+
+    // Tracks when user focuses on form field.
+    $('input').on('focus', (element) => {
+      const elementName = element.target.name;
+      Analytics.analyze('Form', 'Focused', elementName);
+      puck.trackEvent(`northstar_focused_field_${elementName}`);
+    })
+
     $('#profile-login-form').on('submit', () => {
       // Tracks login form submissions.
       Analytics.analyze('Form', 'Submitted', 'profile-login-form')
