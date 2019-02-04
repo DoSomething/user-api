@@ -15,24 +15,29 @@ function init() {
 
   // Validation Events
   Validation.Events.subscribe('Validation:InlineError', (topic, args) => {
+    // Tracks each individual inline error.
     Analytics.analyze('Form', 'Inline Validation Error', args);
     puck.trackEvent(`northstar_failed_inline_validation_${args}`);
   });
 
   Validation.Events.subscribe('Validation:Suggestion', (topic, args) => {
+    // Tracks email fix suggestion.
     Analytics.analyze('Form', 'Suggestion', args);
   });
 
   Validation.Events.subscribe('Validation:SuggestionUsed', (topic, args) => {
+    // Tracks when email fix suggestion is used.
     Analytics.analyze('Form', 'Suggestion Used', args);
   });
 
   Validation.Events.subscribe('Validation:Submitted', (topic, args) => {
+    // Tracks when an inline validation error free submission is made.
     Analytics.analyze('Form', 'Submitted', args);
     puck.trackEvent('northstar_submitted_register');
   });
 
   Validation.Events.subscribe('Validation:SubmitError', (topic, args) => {
+    // Tracks when a submission is prevented due to inline validation errors.
     Analytics.analyze('Form', 'Validation Error on submit', args);
     puck.trackEvent('northstar_failed_submission_register');
   });
@@ -40,20 +45,24 @@ function init() {
   // Attach any custom events.
   $(document).ready(() => {
     $('#profile-login-form').on('submit', () => {
+      // Tracks login form submissions.
       Analytics.analyze('Form', 'Submitted', 'profile-login-form')
       puck.trackEvent('northstar_submitted_login');
     });
 
     $('#profile-edit-form').on('submit', () => {
+      // Tracks profile edit form submissions.
       Analytics.analyze('Form', 'Submitted', 'profile-edit-form')
       puck.trackEvent('northstar_submitted_edit_profile');
     });
 
     $('.facebook-login').on('click', () => {
+      // Tracks clicking on the Login With Facebook button.
       Analytics.analyze('Form', 'Clicked', 'facebook-login');
       puck.trackEvent('northstar_clicked_login_facebook')
     });
 
+    // Check for and track validation errors returned from the backend after form submission.
     const $validationErrors = $('.validation-error');
     if ($validationErrors && $validationErrors.length) {
       const errors = window.ERRORS || {};
