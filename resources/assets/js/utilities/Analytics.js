@@ -71,6 +71,18 @@ function init() {
       puck.trackEvent('northstar_submitted_edit_profile');
     });
 
+    $('#forgot-password-form').on('submit', () => {
+      // Tracks forgot password email form submissions.
+      Analytics.analyze('Form', 'Submitted', 'forgot-password-form');
+      puck.trackEvent('northstar_submitted_forgot_password');
+    })
+
+    $('#password-reset-form').on('submit', () => {
+      // Tracks password reset form submissions.
+      Analytics.analyze('Form', 'Submitted', 'password-reset-form');
+      puck.trackEvent('northstar_submitted_reset_password');
+    })
+
     $('.facebook-login').on('click', () => {
       // Tracks clicking on the Login With Facebook button.
       Analytics.analyze('Form', 'Clicked', 'facebook-login');
