@@ -89,6 +89,24 @@ function init() {
       puck.trackEvent('northstar_clicked_login_facebook')
     });
 
+    $('.login-link').on('click', () => {
+      // Tracks clicking on any of the 'Log in' buttons and links.
+      Analytics.analyze('Form', 'Clicked', 'login-link');
+      puck.trackEvent('northstar_clicked_link_login');
+    })
+
+    $('.register-link').on('click', () => {
+      // Tracks clicking on any of the 'Register' or 'Create account' buttons and links.
+      Analytics.analyze('Form', 'Clicked', 'register-link');
+      puck.trackEvent('northstar_clicked_link_register');
+    })
+
+    $('.forgot-password-link').on('click', () => {
+      // Tracks clicking on the 'Forgot Password' link.
+      Analytics.analyze('Form', 'Clicked', 'forgot-password-link');
+      puck.trackEvent('northstar_clicked_link_forgot_password');
+    })
+
     // Check for and track validation errors returned from the backend after form submission.
     const $validationErrors = $('.validation-error');
     if ($validationErrors && $validationErrors.length) {
