@@ -58,8 +58,8 @@
         @include('auth.facebook')
 
         <ul>
-            <li><a href="{{ url('register') }}">{{ trans('auth.log_in.create') }}</a></li>
-            <li><a href="{{ url('password/reset') }}">{{ trans('auth.forgot_password.header') }}</a></li>
+            <li><a href="{{ url('register') }}" class="register-link">{{ trans('auth.log_in.create') }}</a></li>
+            <li><a href="{{ url('password/reset') }}" class="forgot-password-link">{{ trans('auth.forgot_password.header') }}</a></li>
         </ul>
     </div>
 @stop

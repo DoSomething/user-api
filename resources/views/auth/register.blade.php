@@ -11,7 +11,7 @@
     <div class="container__block">
         <ul class="form-actions -inline">
             <li>@include('auth.facebook')</li>
-            <li><a href="{{ url('login') }}" class="button">{{ trans('auth.log_in.default') }}</a></li>
+            <li><a href="{{ url('login') }}" class="button login-link">{{ trans('auth.log_in.default') }}</a></li>
         </ul>
         <span class="divider"></span>
     </div>
