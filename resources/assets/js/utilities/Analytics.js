@@ -49,10 +49,10 @@ function init() {
       puck.trackEvent('northstar_submitted_edit_profile');
     });
 
-    $('.facebook-login').on('click', () => (
+    $('.facebook-login').on('click', () => {
       Analytics.analyze('Form', 'Clicked', 'facebook-login');
       puck.trackEvent('northstar_clicked_login_facebook')
-    ));
+    });
 
     const $validationErrors = $('.validation-error');
     if ($validationErrors && $validationErrors.length) {
