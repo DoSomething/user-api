@@ -16,6 +16,7 @@ function init() {
   // Validation Events
   Validation.Events.subscribe('Validation:InlineError', (topic, args) => {
     Analytics.analyze('Form', 'Inline Validation Error', args);
+    puck.trackEvent(`northstar_failed_inline_validation_${args}`);
   });
 
   Validation.Events.subscribe('Validation:Suggestion', (topic, args) => {
@@ -28,33 +29,29 @@ function init() {
 
   Validation.Events.subscribe('Validation:Submitted', (topic, args) => {
     Analytics.analyze('Form', 'Submitted', args);
+    puck.trackEvent('northstar_submitted_register');
   });
 
   Validation.Events.subscribe('Validation:SubmitError', (topic, args) => {
     Analytics.analyze('Form', 'Validation Error on submit', args);
+    puck.trackEvent('northstar_failed_submission_register');
   });
 
   // Attach any custom events.
   $(document).ready(() => {
     $('#profile-login-form').on('submit', () => {
       Analytics.analyze('Form', 'Submitted', 'profile-login-form')
+      puck.trackEvent('northstar_submitted_login');
     });
 
     $('#profile-edit-form').on('submit', () => {
       Analytics.analyze('Form', 'Submitted', 'profile-edit-form')
+      puck.trackEvent('northstar_submitted_edit_profile');
     });
 
-    // Puck events.
     $('.facebook-login').on('click', () => (
+      Analytics.analyze('Form', 'Clicked', 'facebook-login');
       puck.trackEvent('northstar_clicked_login_facebook')
-    ));
-
-    $('#register-submit').on('click', () => (
-      puck.trackEvent('northstar_submitted_register')
-    ));
-
-    $('#login-submit').on('click', () => (
-      puck.trackEvent('northstar_submitted_login')
     ));
 
     const $validationErrors = $('.validation-error');
@@ -68,6 +65,9 @@ function init() {
         invalidFields,
         validationMessages,
       });
+
+      const formId = $('form').attr('id');
+      Analytics.analyze('Form', 'Validation Error', formId);
     }
   });
 }
