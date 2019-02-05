@@ -11,7 +11,9 @@ function trackInputFocus(puck, inputName) {
   }
 
   Analytics.analyze('Form', 'Focused', inputName);
-  puck && puck.trackEvent(`northstar_focused_field_${inputName}`);
+  if (puck) {
+    puck.trackEvent(`northstar_focused_field_${inputName}`);
+  }
 }
 
 function init() {
