@@ -13,10 +13,11 @@ function trackInputFocus(puck, inputName) {
     return;
   }
 
-  Analytics.analyze('Form', 'Focused', inputName);
-  if (puck) {
-    puck.trackEvent(`northstar_focused_field_${inputName}`);
-  }
+  trackEvent(puck, {
+    verb: 'focused',
+    noun: 'field',
+    adjective: inputName,
+  });
 }
 
 // Formats event naming and tracks event to Puck and GA.
@@ -49,8 +50,11 @@ function init() {
   // Validation Events for the Register form.
   Validation.Events.subscribe('Validation:InlineError', (topic, args) => {
     // Tracks each individual inline error.
-    Analytics.analyze('Form', 'Inline Validation Error', args);
-    puck.trackEvent(`northstar_triggered_error_field_${args}`);
+    trackEvent(puck, {
+      verb: 'triggered',
+      noun: 'error',
+      adjective: `field_${args}`,
+    });
   });
 
   Validation.Events.subscribe('Validation:Suggestion', (topic, args) => {
@@ -65,14 +69,19 @@ function init() {
 
   Validation.Events.subscribe('Validation:Submitted', (topic, args) => {
     // Tracks when an inline validation error free submission is made.
-    Analytics.analyze('Form', 'Submitted', args);
-    puck.trackEvent('northstar_submitted_register');
+    trackEvent(puck, {
+      verb: 'submitted',
+      noun: 'register',
+    });
   });
 
   Validation.Events.subscribe('Validation:SubmitError', (topic, args) => {
     // Tracks when a submission is prevented due to inline validation errors.
-    Analytics.analyze('Form', 'Validation Error on submit', args);
-    puck.trackEvent('northstar_triggered_error_submit_register');
+    trackEvent(puck, {
+      verb: 'triggered',
+      noun: 'error',
+      adjective: 'submit_register',
+    });
   });
 
   // Custom tracking events.
@@ -92,50 +101,66 @@ function init() {
 
     $('#profile-login-form').on('submit', () => {
       // Tracks login form submissions.
-      Analytics.analyze('Form', 'Submitted', 'profile-login-form')
-      puck.trackEvent('northstar_submitted_login');
+      trackEvent(puck, {
+        verb: 'submitted',
+        noun: 'login',
+      });
     });
 
     $('#profile-edit-form').on('submit', () => {
       // Tracks profile edit form submissions.
-      Analytics.analyze('Form', 'Submitted', 'profile-edit-form')
-      puck.trackEvent('northstar_submitted_edit_profile');
+      trackEvent(puck, {
+        verb: 'submitted',
+        noun: 'edit_profile',
+      });
     });
 
     $('#forgot-password-form').on('submit', () => {
       // Tracks forgot password email form submissions.
-      Analytics.analyze('Form', 'Submitted', 'forgot-password-form');
-      puck.trackEvent('northstar_submitted_forgot_password');
+      trackEvent(puck, {
+        verb: 'submitted',
+        noun: 'forgot_password',
+      });
     })
 
     $('#password-reset-form').on('submit', () => {
       // Tracks password reset form submissions.
-      Analytics.analyze('Form', 'Submitted', 'password-reset-form');
-      puck.trackEvent('northstar_submitted_reset_password');
+      trackEvent(puck, {
+        verb: 'submitted',
+        noun: 'reset_password',
+      });
     })
 
     $('.facebook-login').on('click', () => {
       // Tracks clicking on the Login With Facebook button.
-      Analytics.analyze('Form', 'Clicked', 'facebook-login');
-      puck.trackEvent('northstar_clicked_login_facebook')
+      trackEvent(puck, {
+        verb: 'clicked',
+        noun: 'login_facebook',
+      });
     });
 
     $('.login-link').on('click', () => {
       // Tracks clicking on any of the 'Log in' buttons and links.
-      Analytics.analyze('Form', 'Clicked', 'login-link');
-      puck.trackEvent('northstar_clicked_login');
+      trackEvent(puck, {
+        verb: 'clicked',
+        noun: 'login',
+      });
     })
 
     $('.register-link').on('click', () => {
       // Tracks clicking on any of the 'Register' or 'Create account' buttons and links.
-      Analytics.analyze('Form', 'Clicked', 'register-link');
-      puck.trackEvent('northstar_clicked_register');
+      trackEvent(puck, {
+        verb: 'clicked',
+        noun: 'register',
+      });
     })
 
     $('.forgot-password-link').on('click', () => {
       // Tracks clicking on the 'Forgot Password' link.
-      Analytics.analyze('Form', 'Clicked', 'forgot-password-link');
-      puck.trackEvent('northstar_clicked_forgot_password');
+      trackEvent(puck, {
+        verb:'clicked',
+        noun: 'forgot_password',
+      });
     })
 
     // Check for and track validation errors returned from the backend after form submission.
@@ -146,13 +171,14 @@ function init() {
 
       const validationMessages = flattenDeep(Object.values(errors));
 
-      puck.trackEvent('northstar_failed_validation', {
-        invalidFields,
-        validationMessages,
+      trackEvent(puck, {
+        verb: 'failed',
+        noun: 'validation',
+        data: {
+          invalidFields,
+          validationMessages,
+        },
       });
-
-      const formId = $('form').attr('id');
-      Analytics.analyze('Form', 'Validation Error', formId);
     }
   });
 }
