@@ -4,6 +4,16 @@ const Analytics = require('@dosomething/analytics');
 const Validation = require('dosomething-validation');
 const { Engine } = require('@dosomething/puck-client');
 
+// Helper method to track field focus analytics events.
+function trackInputFocus(puck, inputName) {
+  if (!inputName) {
+    return;
+  }
+
+  Analytics.analyze('Form', 'Focused', inputName);
+  puck && puck.trackEvent(`northstar_focused_field_${inputName}`);
+}
+
 function init() {
   Analytics.init();
 
@@ -44,22 +54,17 @@ function init() {
 
   // Attach any custom events.
   $(document).ready(() => {
-    // Track an auto focused form field (which will already be focused upon page load).
+    // Tracks an auto focused form field (which will already be focused upon page load).
     const focusedElement = $('input:focus');
     if (focusedElement.length) {
       const inputName = focusedElement.attr('name');
-      Analytics.analyze('Form', 'Focused', inputName);
-      puck.trackEvent(`northstar_focused_field_${inputName}`);
+      trackInputFocus(puck, inputName);
     }
 
     // Tracks when user focuses on form field.
     $('input').on('focus', (element) => {
       const inputName = element.target.name;
-      if (!inputName) {
-        return;
-      }
-      Analytics.analyze('Form', 'Focused', inputName);
-      puck.trackEvent(`northstar_focused_field_${inputName}`);
+      trackInputFocus(puck, inputName);
     })
 
     $('#profile-login-form').on('submit', () => {
