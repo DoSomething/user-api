@@ -115,7 +115,7 @@ function init() {
 
       const validationMessages = flattenDeep(Object.values(errors));
 
-      puck.trackEvent('has validation errors', {
+      puck.trackEvent('northstar_failed_validation', {
         invalidFields,
         validationMessages,
       });
