@@ -4,6 +4,9 @@ const Analytics = require('@dosomething/analytics');
 const Validation = require('dosomething-validation');
 const { Engine } = require('@dosomething/puck-client');
 
+// App name prefix used for analytics event naming.
+const APP_PREFIX = 'northstar';
+
 // Helper method to track field focus analytics events.
 function trackInputFocus(puck, inputName) {
   if (!inputName) {
@@ -13,6 +16,24 @@ function trackInputFocus(puck, inputName) {
   Analytics.analyze('Form', 'Focused', inputName);
   if (puck) {
     puck.trackEvent(`northstar_focused_field_${inputName}`);
+  }
+}
+
+// Formats event naming and tracks event to Puck and GA.
+function trackEvent(puck, event) {
+  const { verb, noun, adjective, data } = event;
+
+  let eventName = `${APP_PREFIX}_${verb}_${noun}`;
+  if (adjective) {
+    eventName += `_${adjective}`;
+  }
+
+  const category = `${APP_PREFIX}_${noun}`;
+  const label = window.location.pathname;
+
+  Analytics.analyze(category, eventName, label);
+  if (puck) {
+    puck.trackEvent(eventName, data);
   }
 }
 
