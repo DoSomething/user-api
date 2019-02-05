@@ -54,12 +54,12 @@ function init() {
 
     // Tracks when user focuses on form field.
     $('input').on('focus', (element) => {
-      const elementName = element.target.name;
-      if (!elementName) {
+      const inputName = element.target.name;
+      if (!inputName) {
         return;
       }
-      Analytics.analyze('Form', 'Focused', elementName);
-      puck.trackEvent(`northstar_focused_field_${elementName}`);
+      Analytics.analyze('Form', 'Focused', inputName);
+      puck.trackEvent(`northstar_focused_field_${inputName}`);
     })
 
     $('#profile-login-form').on('submit', () => {
