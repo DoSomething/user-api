@@ -23,7 +23,7 @@ function init() {
     getUser: () => window.NORTHSTAR_ID,
   });
 
-  // Validation Events
+  // Validation Events for the Register form.
   Validation.Events.subscribe('Validation:InlineError', (topic, args) => {
     // Tracks each individual inline error.
     Analytics.analyze('Form', 'Inline Validation Error', args);
@@ -52,7 +52,7 @@ function init() {
     puck.trackEvent('northstar_failed_submission_register');
   });
 
-  // Attach any custom events.
+  // Custom tracking events.
   $(document).ready(() => {
     // Tracks an auto focused form field (which will already be focused upon page load).
     const focusedElement = $('input:focus');
