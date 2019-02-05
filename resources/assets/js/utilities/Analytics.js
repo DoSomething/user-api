@@ -29,7 +29,7 @@ function init() {
   Validation.Events.subscribe('Validation:InlineError', (topic, args) => {
     // Tracks each individual inline error.
     Analytics.analyze('Form', 'Inline Validation Error', args);
-    puck.trackEvent(`northstar_failed_inline_validation_${args}`);
+    puck.trackEvent(`northstar_triggered_error_field_${args}`);
   });
 
   Validation.Events.subscribe('Validation:Suggestion', (topic, args) => {
@@ -51,7 +51,7 @@ function init() {
   Validation.Events.subscribe('Validation:SubmitError', (topic, args) => {
     // Tracks when a submission is prevented due to inline validation errors.
     Analytics.analyze('Form', 'Validation Error on submit', args);
-    puck.trackEvent('northstar_failed_submission_register');
+    puck.trackEvent('northstar_triggered_error_submit_register');
   });
 
   // Custom tracking events.
@@ -102,19 +102,19 @@ function init() {
     $('.login-link').on('click', () => {
       // Tracks clicking on any of the 'Log in' buttons and links.
       Analytics.analyze('Form', 'Clicked', 'login-link');
-      puck.trackEvent('northstar_clicked_link_login');
+      puck.trackEvent('northstar_clicked_login');
     })
 
     $('.register-link').on('click', () => {
       // Tracks clicking on any of the 'Register' or 'Create account' buttons and links.
       Analytics.analyze('Form', 'Clicked', 'register-link');
-      puck.trackEvent('northstar_clicked_link_register');
+      puck.trackEvent('northstar_clicked_register');
     })
 
     $('.forgot-password-link').on('click', () => {
       // Tracks clicking on the 'Forgot Password' link.
       Analytics.analyze('Form', 'Clicked', 'forgot-password-link');
-      puck.trackEvent('northstar_clicked_link_forgot_password');
+      puck.trackEvent('northstar_clicked_forgot_password');
     })
 
     // Check for and track validation errors returned from the backend after form submission.
