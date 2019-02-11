@@ -64,7 +64,7 @@ function init() {
       noun: 'suggestion',
       adjective: 'field_email',
       data: {
-        suggestionDomain: args,
+        suggestion: args,
       }
     });
   });
