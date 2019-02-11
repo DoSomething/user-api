@@ -59,12 +59,23 @@ function init() {
 
   Validation.Events.subscribe('Validation:Suggestion', (topic, args) => {
     // Tracks email fix suggestion.
-    Analytics.analyze('Form', 'Suggestion', args);
+    trackEvent(puck, {
+      verb: 'triggered',
+      noun: 'suggestion',
+      adjective: 'field_email',
+      data: {
+        suggestionDomain: args,
+      }
+    });
   });
 
   Validation.Events.subscribe('Validation:SuggestionUsed', (topic, args) => {
     // Tracks when email fix suggestion is used.
-    Analytics.analyze('Form', 'Suggestion Used', args);
+    trackEvent(puck, {
+      verb: 'used',
+      noun: 'suggestion',
+      adjective: 'field_email',
+    });
   });
 
   Validation.Events.subscribe('Validation:Submitted', (topic, args) => {
