@@ -19,7 +19,6 @@ window.Drupal = {
 // Utilities
 import Analytics from './utilities/Analytics';
 import DeLorean from './utilities/DeLorean';
-import Puck from './utilities/Puck';
 import PasswordVisibility from './utilities/PasswordVisibility';
 import './validators/auth';
 
@@ -40,6 +39,3 @@ DeLorean.init();
 
 // Initialize password visibility toggle.
 PasswordVisibility.init();
-
-// Initialize Puck based analytics.
-Puck.init();

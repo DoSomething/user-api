@@ -21,7 +21,7 @@
                     </div>
                 @endif
 
-                <form role="form" method="POST" action="{{ url('/password/email') }}">
+                <form id="forgot-password-form" role="form" method="POST" action="{{ url('/password/email') }}">
                     {{ csrf_field() }}
 
                     <div class="form-item">
@@ -36,8 +36,8 @@
             </div>
             <div class="container__block -centered">
                 <ul>
-                    <li><a href="{{ url('login') }}">{{ trans('auth.log_in.existing') }}</a></li>
-                    <li><a href="{{ url('register') }}">{{ trans('auth.log_in.create') }}</a></li>
+                    <li><a href="{{ url('login') }}" class="login-link">{{ trans('auth.log_in.existing') }}</a></li>
+                    <li><a href="{{ url('register') }}" class="register-link">{{ trans('auth.log_in.create') }}</a></li>
                 </ul>
             </div>
         </div>
