@@ -52,12 +52,12 @@ class GetEmailSubStatusFromCustomerIo implements ShouldQueue
             $response = $client->get('/v1/api/customers/'.$this->user->id.'/attributes');
             $body = json_decode($response->getBody());
             $unsubscribed = $body->customer->unsubscribed;
+            info('[GetEmailSubStatusFromCustomerIo] For user '.$this->user->id.' got unsubscribed='.$unsubscribed);
 
             // Update subscription status on user
             $this->user->email_subscription_status = $unsubscribed ? false : true;
             $this->user->save();
-
-            info('User '.$this->user->id.' email subscription status grabbed from Customer.io');
+            info('[GetEmailSubStatusFromCustomerIo] For user '.$this->user->id.' set email_subscription_status='.$this->user->email_subscription_status);
         }, function () {
             info('Unable to get email subscription status for '.$this->user->id.' at this time, job pushed back onto queue.');
 
