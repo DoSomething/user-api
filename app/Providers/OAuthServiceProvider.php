@@ -12,6 +12,7 @@ use League\OAuth2\Server\ResourceServer;
 use Northstar\Auth\NorthstarUserProvider;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\PasswordGrant;
+use League\OAuth2\Server\Grant\ImplicitGrant;
 use League\OAuth2\Server\AuthorizationServer;
 use Northstar\Auth\Repositories\KeyRepository;
 use Northstar\Auth\Repositories\UserRepository;
@@ -93,10 +94,15 @@ class OAuthServiceProvider extends ServiceProvider
                 $grants[] = PasswordGrant::class;
             }
 
+
             // Enable each grant w/ an access token TTL of 1 hour.
+            $accessTokenTtl = new DateInterval('PT1H');
             foreach ($grants as $grant) {
-                $server->enableGrantType(app($grant), new DateInterval('PT1H'));
+                $server->enableGrantType(app($grant), $accessTokenTtl);
             }
+
+            // TEMPORARY: Enable the implict grant to test out improved SPA auth.
+            $server->enableGrantType(new ImplicitGrant($accessTokenTtl), $accessTokenTtl);
 
             // Rate limit failed client authentication attempts.
             // @see: OAuthController::createToken

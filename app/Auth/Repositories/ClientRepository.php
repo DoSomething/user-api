@@ -55,6 +55,12 @@ class ClientRepository implements ClientRepositoryInterface
             return in_array($client->allowed_grant, ['password', 'authorization_code']);
         }
 
+        // HACK: For now, treat implicit grant as 'auth code' grant so that
+        // we don't need to do a bunch of extra work for an experiment.
+        if ($grantType === 'implicit') {
+            $grantType = 'authorization_code';
+        }
+
         // Otherwise, the client must always match the grant being used.
         return $client->allowed_grant === $grantType;
     }

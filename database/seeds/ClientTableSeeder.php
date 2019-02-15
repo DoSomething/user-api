@@ -23,8 +23,7 @@ class ClientTableSeeder extends Seeder
             'client_id' => 'dev-oauth',
             'client_secret' => 'secret1',
             'scope' => collect(Scope::all())->except('admin')->keys()->toArray(),
-            // @NOTE: We're omitting 'redirect_uri' here for easy local dev.
-            'redirect_uri' => null,
+            'redirect_uri' => ['http://localhost:3000/', 'http://northstar.test/callback'],
         ]);
 
         // ..and one for machine authentication:
