@@ -52,6 +52,11 @@ use Northstar\Auth\Role;
  * @property string $sms_status
  * @property bool   $sms_paused
  * @property bool $email_subscription_status
+ * @property bool $news_email_subscription_status
+ * @property bool $lifestyle_email_subscription_status
+ * @property bool $action_email_subscription_status
+ * @property bool $scholarship_email_subscription_status
+ *
  *
  * Fields for Make a Voting Plan
  * @property string $voting_plan_status
@@ -95,7 +100,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
         // External profiles:
         'mobilecommons_id', 'mobilecommons_status', 'facebook_id',
-        'sms_status', 'sms_paused', 'email_subscription_status', 'last_messaged_at',
+        'sms_status', 'sms_paused', 'email_subscription_status',  'news_email_subscription_status', 'lifestyle_email_subscription_status', 'action_email_subscription_status', 'scholarship_email_subscription_status', 'last_messaged_at',
 
         // Voting Plan:
         'voting_plan_status', 'voting_plan_method_of_transport', 'voting_plan_time_of_day', 'voting_plan_attending_with',
@@ -167,6 +172,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'birthdate' => 'date',
         'sms_paused' => 'boolean',
         'email_subscription_status' => 'boolean',
+        'news_email_subscription_status' => 'boolean',
+        'lifestyle_email_subscription_status' => 'boolean',
+        'action_email_subscription_status' => 'boolean',
+        'scholarship_email_subscription_status'  => 'boolean',
     ];
 
     /**
@@ -416,6 +425,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'voting_plan_method_of_transport' => $this->voting_plan_method_of_transport,
             'voting_plan_time_of_day' => $this->voting_plan_time_of_day,
             'voting_plan_attending_with' => $this->voting_plan_attending_with,
+            'news_email_subscription_status' => $this->news_email_subscription_status,
+            'lifestyle_email_subscription_status' => $this->lifestyle_email_subscription_status,
+            'action_email_subscription_status' => $this->action_email_subscription_status,
+            'scholarship_email_subscription_status' => $this->scholarship_email_subscription_status,
         ];
 
         // Only include email subscription status if we have that information
