@@ -55,7 +55,6 @@ class UserTransformer extends TransformerAbstract
             $response['action_email_subscription_status'] = (bool) $user->action_email_subscription_status;
             $response['scholarship_email_subscription_status']  = (bool) $user->scholarship_email_subscription_status;
 
-
             // Voter registration status
             $response['voter_registration_status'] = $user->voter_registration_status;
 
