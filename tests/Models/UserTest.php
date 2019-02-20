@@ -42,6 +42,10 @@ class UserModelTest extends BrowserKitTestCase
             'voting_plan_method_of_transport' => null,
             'voting_plan_time_of_day' => null,
             'voting_plan_attending_with' => null,
+            'news_email_subscription_status' => null,
+            'lifestyle_email_subscription_status' => null,
+            'action_email_subscription_status' => null,
+            'scholarship_email_subscription_status' => null,
         ]);
     }
 
