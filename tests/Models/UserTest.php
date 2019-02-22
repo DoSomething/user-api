@@ -42,10 +42,10 @@ class UserModelTest extends BrowserKitTestCase
             'voting_plan_method_of_transport' => null,
             'voting_plan_time_of_day' => null,
             'voting_plan_attending_with' => null,
-            'news_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('news', $this->email_subscription_topics) : false,
-            'lifestyle_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('lifestyle', $this->email_subscription_topics) : false,
-            'action_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('actions', $this->email_subscription_topics) : false,
-            'scholarship_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('scholarships', $this->email_subscription_topics) : false,
+            'news_email_subscription_status' => isset($user->email_subscription_topics) ? in_array('news', $user->email_subscription_topics) : false,
+            'lifestyle_email_subscription_status' => isset($user->email_subscription_topics) ? in_array('lifestyle', $user->email_subscription_topics) : false,
+            'action_email_subscription_status' => isset($user->email_subscription_topics) ? in_array('actions', $user->email_subscription_topics) : false,
+            'scholarship_email_subscription_status' => isset($user->email_subscription_topics) ? in_array('scholarships', $user->email_subscription_topics) : false,
         ]);
     }
 

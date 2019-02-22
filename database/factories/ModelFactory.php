@@ -27,7 +27,7 @@ $factory->define(Northstar\Models\User::class, function (Faker\Generator $faker)
         'country' => $faker->countryCode,
         'language' => $faker->languageCode,
         'source' => 'factory',
-        'email_subscription_topics' => $faker->randomElements(['news', 'lifestyle', 'actions', 'scholarships'], $faker->numberBetween(0, 3)),
+        'email_subscription_topics' => $faker->randomElements(['news', 'lifestyle', 'actions', 'scholarships'], $faker->numberBetween(0, 4)),
     ];
 });
 
