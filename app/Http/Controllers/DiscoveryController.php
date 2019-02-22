@@ -21,6 +21,8 @@ class DiscoveryController extends Controller
             'token_endpoint' => url($url.'/v2/auth/token'),
             'userinfo_endpoint' => url($url.'/v2/userinfo'),
             'jwks_uri' => url($url.'/v2/keys'),
+            'end_session_endpoint' => url($url.'/logout'),
+
 
             'response_types_supported' => ['code'],
             'subject_types_supported' => ['public'],
