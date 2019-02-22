@@ -48,8 +48,9 @@ class UserTransformer extends TransformerAbstract
             // Internal & third-party service IDs:
             $response['slack_id'] = null;
 
-            // Email subscription status
+            // Email subscription statuses
             $response['email_subscription_status'] = (bool) $user->email_subscription_status;
+            $response['email_subscription_topics'] = $user->email_subscription_topics;
 
             // Voter registration status
             $response['voter_registration_status'] = $user->voter_registration_status;

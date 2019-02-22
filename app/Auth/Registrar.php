@@ -65,6 +65,7 @@ class Registrar
             'sms_paused' => 'boolean',
             'last_messaged_at' => 'date',
             'email_subscription_status' => 'boolean',
+            'email_subscription_topics.*' => 'in:news,scholarships,lifestyle,actions',
             'voter_registration_status' => 'in:uncertain,ineligible,confirmed,registration_complete',
         ];
 

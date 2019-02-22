@@ -56,8 +56,9 @@ class UserTransformer extends TransformerAbstract
             $response['mobilecommons_status'] = $user->sms_status; // @DEPRECATED: Will be removed.
             $response['parse_installation_ids'] = $user->parse_installation_ids;
 
-            // Email subscription status
+            // Email subscription statuses
             $response['email_subscription_status'] = (bool) $user->email_subscription_status;
+            $response['email_subscription_topics'] = $user->email_subscription_topics;
 
             // Voter registration status
             $response['voter_registration_status'] = $user->voter_registration_status;

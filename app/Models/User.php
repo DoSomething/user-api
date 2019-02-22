@@ -52,6 +52,8 @@ use Northstar\Auth\Role;
  * @property string $sms_status
  * @property bool   $sms_paused
  * @property bool $email_subscription_status
+ * @property array $email_subscription_topics
+ *
  *
  * Fields for Make a Voting Plan
  * @property string $voting_plan_status
@@ -95,7 +97,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
         // External profiles:
         'mobilecommons_id', 'mobilecommons_status', 'facebook_id',
-        'sms_status', 'sms_paused', 'email_subscription_status', 'last_messaged_at',
+        'sms_status', 'sms_paused', 'email_subscription_status', 'email_subscription_topics', 'last_messaged_at',
 
         // Voting Plan:
         'voting_plan_status', 'voting_plan_method_of_transport', 'voting_plan_time_of_day', 'voting_plan_attending_with',
@@ -416,6 +418,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'voting_plan_method_of_transport' => $this->voting_plan_method_of_transport,
             'voting_plan_time_of_day' => $this->voting_plan_time_of_day,
             'voting_plan_attending_with' => $this->voting_plan_attending_with,
+            'news_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('news', $this->email_subscription_topics) : false,
+            'lifestyle_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('lifestyle', $this->email_subscription_topics) : false,
+            'action_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('actions', $this->email_subscription_topics) : false,
+            'scholarship_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('scholarships', $this->email_subscription_topics) : false,
         ];
 
         // Only include email subscription status if we have that information
