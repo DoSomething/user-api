@@ -1,8 +1,7 @@
 <?php
 
-use Northstar\Auth\Notifications\ResetPassword;
+use Northstar\Mail\ResetPassword;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Notification;
 use Northstar\Auth\Registrar;
 use Northstar\Models\User;
 
@@ -22,7 +21,7 @@ class PasswordResetTest extends BrowserKitTestCase
      */
     public function testPasswordResetFlow()
     {
-        Notification::fake();
+        Mail::fake();
 
         $user = factory(User::class)->create(['email' => 'forgetful@example.com']);
         $token = '';
@@ -35,11 +34,10 @@ class PasswordResetTest extends BrowserKitTestCase
         ]);
 
         // We'll assert that the email was sent & take note of the token for the next step.
-        Notification::assertSentTo($user, ResetPassword::class, function ($email, $channels) use (&$token) {
-            $token = $email->token;
+        Mail::assertSent(ResetPassword::class, function ($mail) use (&$user, &$token) {
+            $token = $mail->token;
 
-            // The notification should have been sent via email.
-            return in_array('mail', $channels);
+            return $mail->hasTo($user->email);
         });
 
         // The user should visit the link that was sent via email & set a new password.
