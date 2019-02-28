@@ -19,8 +19,8 @@ class ResetController extends Controller
     }
 
     /**
-     * Create a new password reset token.
-     * POST /users
+     * Sends a password reset email.
+     * POST /resets
      *
      * @param Request $request
      * @return array
@@ -29,6 +29,7 @@ class ResetController extends Controller
     {
         $this->validate($request, [
             'id' => 'required',
+            'type' => 'required',
         ]);
 
         /** @var \Northstar\Models\User $user */
@@ -36,11 +37,10 @@ class ResetController extends Controller
 
         $tokenRepository = $this->createTokenRepository();
         $token = $tokenRepository->create($user);
-        $email = $user->getEmailForPasswordReset();
+        // TODO: Throw error if invalid type is passed.
+        $message = $user->sendPasswordReset($token, $request['type']);
 
-        return [
-            'url' => config('app.url').'/password/reset/'.$token.'?email='.urlencode($email),
-        ];
+        return ['url' => $message->url];
     }
 
     /**
