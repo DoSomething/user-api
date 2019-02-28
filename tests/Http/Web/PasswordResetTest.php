@@ -34,7 +34,7 @@ class PasswordResetTest extends BrowserKitTestCase
         ]);
 
         // We'll assert that the email was sent & take note of the token for the next step.
-        Mail::assertSent(ResetPassword::class, function ($mail) use (&$user, &$token) {
+        Mail::assertSent(ResetPassword::class, function ($mail) use ($user, &$token) {
             $token = $mail->token;
 
             return $mail->hasTo($user->email);
