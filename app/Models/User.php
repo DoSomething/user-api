@@ -484,7 +484,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * Sends a password reset email for the given type.
+     * Creates a password_reset Customer.io event by posting to Blink.
      *
      * @param  string  $token
      * @param  string  $type
@@ -492,10 +492,22 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function sendPasswordReset($token, $type)
     {
-        $email = $this->getEmailForPasswordReset();
-        $message = new PasswordResetMail($email, $token, $type);
-        Mail::to($email)->send($message);
-        // TODO: Send json_encode($message->render()) as body to Blink /events/user-password-reset
+        $message = new PasswordResetMail($this->email, $token, $type);
+        $payload = [
+            'subject' => $message->subject,
+            'type' => $type,
+            'url' => $message->url,
+            'user_id' => $this->id,
+        ];
+
+        if (config('features.blink')) {
+            debug('Posting password_reset to Customer.io', $payload);
+            $payload['body'] = json_encode($message->render());
+            gateway('blink')->userPasswordReset($payload);
+        } else {
+            info('Would have sent password_reset to Customer.io', $payload);
+        }
+
         return $message;
     }
 
