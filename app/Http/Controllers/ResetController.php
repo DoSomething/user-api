@@ -31,7 +31,7 @@ class ResetController extends Controller
     {
         $this->validate($request, [
             'id' => 'required',
-            'type' => ['required', Rule::in(PasswordResetType::all())]
+            'type' => ['required', Rule::in(PasswordResetType::all())],
         ]);
 
         /** @var \Northstar\Models\User $user */
