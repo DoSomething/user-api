@@ -9,11 +9,12 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as ResetPasswordContract;
 use Illuminate\Support\Facades\Mail;
-use Northstar\Mail\ResetPassword as ResetPasswordMail;
+use Northstar\Mail\PasswordReset as PasswordResetMail;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Northstar\Auth\Role;
+use Northstar\PasswordResetType;
 
 /**
  * The User model. (Fight for the user!)
@@ -479,9 +480,23 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function sendPasswordResetNotification($token)
     {
-        $message = new ResetPasswordMail($this, $token);
-        Mail::to($this->email)->send($message);
+        return $this->sendPasswordReset($token, PasswordResetType::$forgotPassword);
+    }
+
+    /**
+     * Sends a password reset email for the given type.
+     *
+     * @param  string  $token
+     * @param  string  $type
+     * @return PasswordReset
+     */
+    public function sendPasswordReset($token, $type)
+    {
+        $email = $this->getEmailForPasswordReset();
+        $message = new PasswordResetMail($email, $token, $type);
+        Mail::to($email)->send($message);
         // TODO: Send json_encode($message->render()) as body to Blink /events/user-password-reset
+        return $message;
     }
 
     /**

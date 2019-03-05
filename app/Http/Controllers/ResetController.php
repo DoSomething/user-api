@@ -3,6 +3,8 @@
 namespace Northstar\Http\Controllers;
 
 use Northstar\Models\User;
+use Northstar\PasswordResetType;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Jenssegers\Mongodb\Auth\DatabaseTokenRepository;
 
@@ -19,8 +21,8 @@ class ResetController extends Controller
     }
 
     /**
-     * Create a new password reset token.
-     * POST /users
+     * Sends a password reset email.
+     * POST /resets
      *
      * @param Request $request
      * @return array
@@ -29,6 +31,7 @@ class ResetController extends Controller
     {
         $this->validate($request, [
             'id' => 'required',
+            'type' => ['required', Rule::in(PasswordResetType::all())],
         ]);
 
         /** @var \Northstar\Models\User $user */
@@ -36,11 +39,9 @@ class ResetController extends Controller
 
         $tokenRepository = $this->createTokenRepository();
         $token = $tokenRepository->create($user);
-        $email = $user->getEmailForPasswordReset();
+        $message = $user->sendPasswordReset($token, $request['type']);
 
-        return [
-            'url' => config('app.url').'/password/reset/'.$token.'?email='.urlencode($email),
-        ];
+        return $this->respond('Message sent.');
     }
 
     /**
