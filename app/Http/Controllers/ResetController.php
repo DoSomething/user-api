@@ -41,7 +41,7 @@ class ResetController extends Controller
         $token = $tokenRepository->create($user);
         $message = $user->sendPasswordReset($token, $request['type']);
 
-        return ['url' => $message->url];
+        return $this->respond('Message sent.');
     }
 
     /**

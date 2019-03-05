@@ -36,10 +36,10 @@ class ResetTest extends BrowserKitTestCase
 
         $this->asAdminUser()->post('v2/resets', [
             'id' => $user->id,
-            'type' => PasswordResetType::$forgotPassword,
+            'type' => 'forgot-password',
         ]);
         $this->assertResponseStatus(200);
-        $this->seeJsonStructure(['url']);
+        $this->seeJsonStructure(['success']);
 
         $this->seeInDatabase('password_resets', ['email' => $user->email]);
     }

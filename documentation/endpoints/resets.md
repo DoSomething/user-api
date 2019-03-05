@@ -28,7 +28,10 @@ curl -X POST \
 // 200 OK
 
 {
-  "url": "http:\/\/northstar.dev:8000\/password\/reset\/5d8c35cb8d5151ec2fa8b278fd17e0ba19f1a52a3c01ffc9c2e454961038fb1d?email=passwordless-fool92%40dosomething.org&type=forgot-password"
+    "success": {
+        "code": 200,
+        "message": "Message sent."
+    }
 }
 ```
 </details>
