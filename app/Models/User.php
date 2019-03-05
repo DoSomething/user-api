@@ -8,13 +8,13 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as ResetPasswordContract;
-use Illuminate\Support\Facades\Mail;
 use Northstar\Mail\PasswordReset as PasswordResetMail;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Northstar\Auth\Role;
 use Northstar\PasswordResetType;
+use Northstar\Jobs\SendPasswordResetToCustomerIo;
 
 /**
  * The User model. (Fight for the user!)
@@ -488,27 +488,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @param  string  $token
      * @param  string  $type
-     * @return PasswordReset
+     * @return void
      */
     public function sendPasswordReset($token, $type)
     {
-        $message = new PasswordResetMail($this->email, $token, $type);
-        $payload = [
-            'subject' => $message->subject,
-            'type' => $type,
-            'url' => $message->url,
-            'user_id' => $this->id,
-        ];
-
-        if (config('features.blink')) {
-            debug('Posting password_reset to Customer.io', $payload);
-            $payload['body'] = json_encode($message->render());
-            gateway('blink')->userPasswordReset($payload);
-        } else {
-            info('Would have sent password_reset to Customer.io', $payload);
-        }
-
-        return $message;
+        SendPasswordResetToCustomerIo::dispatch(new PasswordResetMail($this, $token, $type));
     }
 
     /**
