@@ -32,6 +32,7 @@ class ResetTest extends BrowserKitTestCase
      */
     public function testCreatePasswordResetLink()
     {
+        config(['features.blink' => true]);
         $user = factory(User::class)->create();
 
         $this->asAdminUser()->post('v2/resets', [
@@ -40,6 +41,7 @@ class ResetTest extends BrowserKitTestCase
         ]);
         $this->assertResponseStatus(200);
         $this->seeJsonStructure(['success']);
+        $this->blinkMock->shouldHaveReceived('userPasswordReset')->once();
 
         $this->seeInDatabase('password_resets', ['email' => $user->email]);
     }

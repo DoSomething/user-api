@@ -36,6 +36,7 @@ trait CreatesApplication
         // Configure a mock for Blink model events.
         $this->blinkMock = $this->mock(Blink::class);
         $this->blinkMock->shouldReceive('userCreate')->andReturn(true);
+        $this->blinkMock->shouldReceive('userPasswordReset')->andReturn(true);
 
         return $app;
     }
