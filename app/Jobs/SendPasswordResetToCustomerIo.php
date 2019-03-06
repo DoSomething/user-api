@@ -19,7 +19,7 @@ class SendPasswordResetToCustomerIo implements ShouldQueue
      *
      * @var PasswordReset
      */
-    protected $passwordReset;
+    public $passwordReset;
 
     /**
      * Create a new job instance.

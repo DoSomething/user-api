@@ -1,7 +1,7 @@
 <?php
 
-use Northstar\Mail\PasswordReset;
-use Illuminate\Support\Facades\Mail;
+use Northstar\Jobs\SendPasswordResetToCustomerIo;
+use Illuminate\Support\Facades\Bus;
 use Northstar\Auth\Registrar;
 use Northstar\Models\User;
 
@@ -21,7 +21,7 @@ class PasswordResetTest extends BrowserKitTestCase
      */
     public function testPasswordResetFlow()
     {
-        Mail::fake();
+        Bus::fake();
 
         $user = factory(User::class)->create(['email' => 'forgetful@example.com']);
         $token = '';
@@ -34,10 +34,11 @@ class PasswordResetTest extends BrowserKitTestCase
         ]);
 
         // We'll assert that the email was sent & take note of the token for the next step.
-        Mail::assertSent(PasswordReset::class, function ($mail) use ($user, &$token) {
-            $token = $mail->token;
+        Bus::assertNotDispatched(SendPasswordResetToCustomerIo::class, function ($job) use ($user, &$token) {
+            $message = $job->passwordReset;
+            $token = $message->token;
 
-            return $mail->hasTo($user->email);
+            return $message->hasTo($message->user->email);
         });
 
         // The user should visit the link that was sent via email & set a new password.
