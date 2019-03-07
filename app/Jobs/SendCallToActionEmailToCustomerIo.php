@@ -2,7 +2,6 @@
 
 namespace Northstar\Jobs;
 
-use Northstar\Mail\PasswordReset;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Queue\SerializesModels;
@@ -10,25 +9,26 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class SendPasswordResetToCustomerIo implements ShouldQueue
+class SendCallToActionEmailToCustomerIo implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * The serialized PasswordReset mail.
+     * The serialized Call To Action Email event parameters.
      *
-     * @var PasswordReset
+     * @var array
      */
-    public $passwordReset;
+    public $params;
+
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(PasswordReset $passwordReset)
+    public function __construct($params)
     {
-        $this->passwordReset = $passwordReset;
+        $this->params = $params; 
     }
 
     /**
@@ -41,15 +41,13 @@ class SendPasswordResetToCustomerIo implements ShouldQueue
         // Rate limit Blink/Customer.io API requests to 10/s.
         $throttler = Redis::throttle('customerio')->allow(10)->every(1);
         $throttler->then(function () {
-            // Send to Customer.io
             $shouldSendToCustomerIo = config('features.blink');
             if ($shouldSendToCustomerIo) {
-                gateway('blink')->userPasswordReset($this->passwordReset->toCustomerIoPayload());
+                gateway('blink')->userCallToActionEmail($this->params);
             }
 
-            // Log
             $verb = $shouldSendToCustomerIo ? 'sent' : 'would have been sent';
-            info('Password reset for '.$this->passwordReset->user->id.' '.$verb.' to Customer.io');
+            info('Call To Action Email for '.$this->params['userId'].' '.$verb.' to Customer.io');
         }, function () {
             // Could not obtain lock... release to the queue.
             return $this->release(10);

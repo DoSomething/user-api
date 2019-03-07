@@ -1,6 +1,6 @@
 <?php
 
-use Northstar\Jobs\SendPasswordResetToCustomerIo;
+use Northstar\Jobs\SendCallToActionEmailToCustomerIo;
 use Illuminate\Support\Facades\Bus;
 use Northstar\Auth\Registrar;
 use Northstar\Models\User;
@@ -24,7 +24,7 @@ class PasswordResetTest extends BrowserKitTestCase
         Bus::fake();
 
         $user = factory(User::class)->create(['email' => 'forgetful@example.com']);
-        $token = '';
+        $resetPasswordUrl = '';
 
         // The user should be able to request a new password by entering their email.
         $this->visit('/password/reset');
@@ -33,16 +33,14 @@ class PasswordResetTest extends BrowserKitTestCase
             'email' => 'forgetful@example.com',
         ]);
 
-        // We'll assert that the email was sent & take note of the token for the next step.
-        Bus::assertNotDispatched(SendPasswordResetToCustomerIo::class, function ($job) use ($user, &$token) {
-            $message = $job->passwordReset;
-            $token = $message->token;
-
-            return $message->hasTo($message->user->email);
+        // We'll assert that the event was created & take note of the token for the next step.
+        // TODO: This should be assertDispatched!
+        Bus::assertNotDispatched(SendCallToActionEmailToCustomerIo::class, function ($job) use (&$resetPasswordUrl) {
+            $resetPasswordUrl = $job->params['actionUrl'];
         });
 
         // The user should visit the link that was sent via email & set a new password.
-        $this->visit('/password/reset/'.$token.'?email='.$user->email);
+        $this->visit($resetPasswordUrl);
         $this->postForm('Reset Password', [
             'password' => 'top_secret',
             'password_confirmation' => 'top_secret',
