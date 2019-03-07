@@ -20,7 +20,6 @@ class SendCallToActionEmailToCustomerIo implements ShouldQueue
      */
     public $params;
 
-
     /**
      * Create a new job instance.
      *
@@ -28,7 +27,7 @@ class SendCallToActionEmailToCustomerIo implements ShouldQueue
      */
     public function __construct($params)
     {
-        $this->params = $params; 
+        $this->params = $params;
     }
 
     /**
