@@ -32,7 +32,6 @@ class ResetTest extends BrowserKitTestCase
      */
     public function testCreatePasswordResetLink()
     {
-        config(['features.blink' => true]);
         $user = factory(User::class)->create();
 
         $this->asAdminUser()->post('v2/resets', [
