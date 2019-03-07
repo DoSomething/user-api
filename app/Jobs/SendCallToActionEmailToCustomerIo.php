@@ -18,7 +18,7 @@ class SendCallToActionEmailToCustomerIo implements ShouldQueue
      *
      * @var array
      */
-    public $params;
+    protected $params;
 
     /**
      * Create a new job instance.
@@ -28,6 +28,16 @@ class SendCallToActionEmailToCustomerIo implements ShouldQueue
     public function __construct($params)
     {
         $this->params = $params;
+    }
+
+    /**
+     * Returns the action URL of the Call To Action Email.
+     *
+     * @return string
+     */
+    public function getActionUrl()
+    {
+        return $this->params['actionUrl'];
     }
 
     /**
