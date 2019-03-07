@@ -491,13 +491,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function sendPasswordReset($token, $type)
     {
-        $payload = PasswordResetType::getVars($type);
-        $payload['actionUrl'] = route('password.reset', [
-            $token,
-            'email' => $this->email,
-            'type' => $type,
-        ]);
-        $payload['userId'] = $this->id;
+        $payload = PasswordResetType::getCallToActionEmailParams($this, $token, $type);
         SendCallToActionEmailToCustomerIo::dispatch($payload);
     }
 

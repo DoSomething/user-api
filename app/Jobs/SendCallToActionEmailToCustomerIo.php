@@ -15,6 +15,7 @@ class SendCallToActionEmailToCustomerIo implements ShouldQueue
 
     /**
      * The serialized Call To Action Email event parameters.
+     * @see https://github.com/DoSomething/blink/wiki/Message-Schemas#calltoactionemailmessage
      *
      * @var array
      */
@@ -23,6 +24,7 @@ class SendCallToActionEmailToCustomerIo implements ShouldQueue
     /**
      * Create a new job instance.
      *
+     * @param array $params
      * @return void
      */
     public function __construct($params)
