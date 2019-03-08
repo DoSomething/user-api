@@ -16,17 +16,25 @@ class SendPasswordResetToCustomerIo implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * The Call To Action Email event parameters.
-     *
-     * @var array
-     */
-    protected $params;
-    /**
      * The serialized user model.
      *
      * @var User
      */
     protected $user;
+
+    /**
+     * The password reset token.
+     *
+     * @var string
+     */
+    protected $token;
+
+    /**
+     * The password reset type.
+     *
+     * @var string
+     */
+    protected $type;
 
     /**
      * Create a new job instance.
@@ -39,19 +47,18 @@ class SendPasswordResetToCustomerIo implements ShouldQueue
     public function __construct(User $user, $token, $type)
     {
         $this->user = $user;
-        $this->params = PasswordResetType::getEmailVars($type);
-        $this->params['userId'] = $this->user->id;
-        $this->params['actionUrl'] = $this->user->getPasswordResetUrl($token, $type);
+        $this->token = $token;
+        $this->type = $type;
     }
 
     /**
-     * Returns params for the Call To Action Email event.
+     * Returns the password reset URL sent as the Call To Action Email actionUrl.
      *
      * @return array
      */
-    public function getParams()
+    public function getUrl()
     {
-        return $this->params;
+        return $this->user->getPasswordResetUrl($this->token, $this->type);
     }
 
     /**
@@ -64,13 +71,17 @@ class SendPasswordResetToCustomerIo implements ShouldQueue
         // Rate limit Blink/Customer.io API requests to 10/s.
         $throttler = Redis::throttle('customerio')->allow(10)->every(1);
         $throttler->then(function () {
+            $payload = PasswordResetType::getEmailVars($this->type);
+            $payload['userId'] = $this->user->id;
+            $payload['actionUrl'] = $this->getUrl();
+
             $shouldSendToCustomerIo = config('features.blink');
             if ($shouldSendToCustomerIo) {
-                gateway('blink')->userCallToActionEmail($this->params);
+                gateway('blink')->userCallToActionEmail($payload);
             }
 
             $verb = $shouldSendToCustomerIo ? 'sent' : 'would have been sent';
-            info('Call To Action Email for '.$this->params['userId'].' '.$verb.' to Customer.io');
+            info('Call To Action Email for '.$payload['userId'].' '.$verb.' to Customer.io');
         }, function () {
             // Could not obtain lock... release to the queue.
             return $this->release(10);

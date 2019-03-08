@@ -34,10 +34,8 @@ class PasswordResetTest extends BrowserKitTestCase
         ]);
 
         // We'll assert that the event was created & take note of reset URL for the next step.
-        Bus::assertDispatched(SendPasswordResetToCustomerIo::class, function ($job) use (&$user, &$resetPasswordUrl) {
-            $params = $job->getParams();
-            $resetPasswordUrl = $params['actionUrl'];
-            $this->assertEquals($user->id, $params['userId']);
+        Bus::assertDispatched(SendPasswordResetToCustomerIo::class, function ($job) use (&$resetPasswordUrl) {
+            $resetPasswordUrl = $job->getUrl();
 
             return true;
         });
