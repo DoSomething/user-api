@@ -33,13 +33,13 @@ class SendCallToActionEmailToCustomerIo implements ShouldQueue
     }
 
     /**
-     * Returns the action URL of the Call To Action Email.
+     * Returns params for the Call To Action Email event.
      *
-     * @return string
+     * @return array
      */
-    public function getActionUrl()
+    public function getParams()
     {
-        return $this->params['actionUrl'];
+        return $this->params;
     }
 
     /**
