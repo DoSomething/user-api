@@ -16,7 +16,7 @@ class SendPasswordResetToCustomerIo implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * The serialized user model.
+     * The Call To Action Email event parameters.
      *
      * @var array
      */

@@ -88,4 +88,17 @@ class UserModelTest extends BrowserKitTestCase
             ],
         ]);
     }
+
+    /** @test */
+    public function it_should_return_password_reset_url_with_token()
+    {
+        $email = 'forgetful@example.com';
+        $token = 'd858c12a87cd43eafc24cc04bf0e06ddd2da6b7457e03ce093b3';
+        $type = 'forgot-password';
+
+        $user = factory(User::class)->create(['email' => $email]);
+        $result = $user->getPasswordResetUrl($token, $type);
+
+        $this->assertEquals($result, route('password.reset', [$token, 'email' => $email, 'type' => $type]));
+    }
 }
