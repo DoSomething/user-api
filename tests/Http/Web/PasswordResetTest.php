@@ -1,6 +1,6 @@
 <?php
 
-use Northstar\Jobs\SendCallToActionEmailToCustomerIo;
+use Northstar\Jobs\SendPasswordResetToCustomerIo;
 use Illuminate\Support\Facades\Bus;
 use Northstar\Auth\Registrar;
 use Northstar\Models\User;
@@ -34,7 +34,7 @@ class PasswordResetTest extends BrowserKitTestCase
         ]);
 
         // We'll assert that the event was created & take note of reset URL for the next step.
-        Bus::assertDispatched(SendCallToActionEmailToCustomerIo::class, function ($job) use (&$user, &$resetPasswordUrl) {
+        Bus::assertDispatched(SendPasswordResetToCustomerIo::class, function ($job) use (&$user, &$resetPasswordUrl) {
             $params = $job->getParams();
             $resetPasswordUrl = $params['actionUrl'];
             $this->assertEquals($user->id, $params['userId']);

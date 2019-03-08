@@ -13,7 +13,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Northstar\Auth\Role;
 use Northstar\PasswordResetType;
-use Northstar\Jobs\SendCallToActionEmailToCustomerIo;
+use Northstar\Jobs\SendPasswordResetToCustomerIo;
 
 /**
  * The User model. (Fight for the user!)
@@ -472,6 +472,22 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
+     * Returns password reset URL with given token and type.
+     *
+     * @param  string  $token
+     * @param  string  $type
+     * @return string
+     */
+    public function getPasswordResetUrl($token, $type)
+    {
+        return route('password.reset', [
+            $token,
+            'email' => $this->email,
+            'type' => $type,
+        ]);
+    }
+
+    /**
      * Overrides the default method to send a password reset email.
      *
      * @param  string  $token
@@ -491,8 +507,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function sendPasswordReset($token, $type)
     {
-        $payload = PasswordResetType::getCallToActionEmailParams($this, $token, $type);
-        SendCallToActionEmailToCustomerIo::dispatch($payload);
+        SendPasswordResetToCustomerIo::dispatch($this, $token, $type);
     }
 
     /**

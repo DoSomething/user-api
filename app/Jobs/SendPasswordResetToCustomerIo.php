@@ -2,6 +2,8 @@
 
 namespace Northstar\Jobs;
 
+use Northstar\Models\User;
+use Northstar\PasswordResetType;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Queue\SerializesModels;
@@ -9,27 +11,37 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class SendCallToActionEmailToCustomerIo implements ShouldQueue
+class SendPasswordResetToCustomerIo implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * The serialized Call To Action Email event parameters.
-     * @see https://github.com/DoSomething/blink/wiki/Message-Schemas#calltoactionemailmessage
+     * The serialized user model.
      *
      * @var array
      */
     protected $params;
+    /**
+     * The serialized user model.
+     *
+     * @var User
+     */
+    protected $user;
 
     /**
      * Create a new job instance.
      *
-     * @param array $params
+     * @param User $user
+     * @param string $token
+     * @param string $type
      * @return void
      */
-    public function __construct($params)
+    public function __construct(User $user, $token, $type)
     {
-        $this->params = $params;
+        $this->user = $user;
+        $this->params = PasswordResetType::getEmailVars($type);
+        $this->params['userId'] = $this->user->id;
+        $this->params['actionUrl'] = $this->user->getPasswordResetUrl($token, $type);
     }
 
     /**
