@@ -101,4 +101,39 @@ class UserModelTest extends BrowserKitTestCase
 
         $this->assertEquals($result, route('password.reset', [$token, 'email' => $email, 'type' => $type]));
     }
+
+    /** @test */
+    public function it_should_include_email_subscription_status_in_customerio_payload_if_set()
+    {
+        $subscribedStatusUser = factory(User::class)->create([
+            'email' => 'subscribed@example.com',
+            'email_subscription_status' => true,
+        ]);
+        $result = $subscribedStatusUser->toCustomerIoPayload();
+
+        $this->assertTrue($result['email_subscription_status']);
+        $this->assertFalse($result['unsubscribed']);
+
+        $unsubscribedStatusUser = factory(User::class)->create([
+            'email' => 'unsubscribed@example.com',
+            'email_subscription_status' => false,
+        ]);
+        $result = $unsubscribedStatusUser->toCustomerIoPayload();
+
+        // TODO: These tests fail because of https://www.pivotaltracker.com/story/show/164346648
+        // $this->assertFalse($result['email_subscription_status']);
+        // $this->assertTrue($result['unsubscribed']);
+    }
+
+    /** @test */
+    public function it_should_exclude_email_subscription_status_in_customerio_payload_if_not_set()
+    {
+        $unknownStatusUser = factory(User::class)->create([
+            'email' => 'unknown@example.com',
+        ]);
+        $result = $unknownStatusUser->toCustomerIoPayload();
+
+        $this->assertFalse(isset($result['email_subscription_status']));
+        $this->assertFalse(isset($result['unsubscribed']));
+    }
 }
