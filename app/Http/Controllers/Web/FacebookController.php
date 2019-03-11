@@ -4,8 +4,9 @@ namespace Northstar\Http\Controllers\Web;
 
 use Socialite;
 use Illuminate\Contracts\Auth\Factory as Auth;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
-use DoSomething\StatHat\Client as StatHat;
+use Laravel\Socialite\Two\InvalidStateException;
 use Northstar\Auth\Registrar;
 use Northstar\Models\User;
 
@@ -73,8 +74,8 @@ class FacebookController extends Controller
             $facebookUser = Socialite::driver('facebook')
                 ->fields(['email', 'first_name', 'last_name', 'birthday'])
                 ->userFromToken($requestUser->token);
-        } catch (RequestException $e) {
-            $this->stathat->ezCount('facebook token mismatch');
+        } catch (RequestException | ClientException | InvalidStateException $e) {
+            logger()->warning('facebook token mismatch');
 
             return redirect('/register')->with('status', 'Unable to verify Facebook account.');
         }
