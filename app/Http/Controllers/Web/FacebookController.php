@@ -4,8 +4,9 @@ namespace Northstar\Http\Controllers\Web;
 
 use Socialite;
 use Illuminate\Contracts\Auth\Factory as Auth;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
-use DoSomething\StatHat\Client as StatHat;
+use Laravel\Socialite\Two\InvalidStateException;
 use Northstar\Auth\Registrar;
 use Northstar\Models\User;
 
@@ -26,25 +27,16 @@ class FacebookController extends Controller
     protected $registrar;
 
     /**
-     * The StatHat client.
-     *
-     * @var StatHat
-     */
-    protected $stathat;
-
-    /**
      * Make a new FacebookController, inject dependencies,
      * and set middleware for this controller's methods.
      *
      * @param Auth $auth
      * @param Registrar $registrar
-     * @param StatHat $stathat
      */
-    public function __construct(Auth $auth, Registrar $registrar, StatHat $stathat)
+    public function __construct(Auth $auth, Registrar $registrar)
     {
         $this->auth = $auth;
         $this->registrar = $registrar;
-        $this->stathat = $stathat;
     }
 
     /**
@@ -73,15 +65,15 @@ class FacebookController extends Controller
             $facebookUser = Socialite::driver('facebook')
                 ->fields(['email', 'first_name', 'last_name', 'birthday'])
                 ->userFromToken($requestUser->token);
-        } catch (RequestException $e) {
-            $this->stathat->ezCount('facebook token mismatch');
+        } catch (RequestException | ClientException | InvalidStateException $e) {
+            logger()->warning('facebook_token_mismatch');
 
             return redirect('/register')->with('status', 'Unable to verify Facebook account.');
         }
 
         // If we were denied access to read email, do not log them in.
         if (empty($facebookUser->email)) {
-            $this->stathat->ezCount('facebook email hidden');
+            logger()->info('facebook_email_hidden');
 
             return redirect('/register')->with('status', 'We need your email to contact you if you win a scholarship.');
         }
@@ -114,7 +106,7 @@ class FacebookController extends Controller
         }
 
         $this->auth->guard('web')->login($northstarUser, true);
-        $this->stathat->ezCount('facebook authentication');
+        logger()->info('facebook_authentication');
 
         return redirect()->intended('/');
     }
