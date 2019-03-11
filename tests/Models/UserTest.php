@@ -120,9 +120,8 @@ class UserModelTest extends BrowserKitTestCase
         ]);
         $result = $unsubscribedStatusUser->toCustomerIoPayload();
 
-        // TODO: These tests fail because of https://www.pivotaltracker.com/story/show/164346648
-        // $this->assertFalse($result['email_subscription_status']);
-        // $this->assertTrue($result['unsubscribed']);
+        $this->assertFalse($result['email_subscription_status']);
+        $this->assertTrue($result['unsubscribed']);
     }
 
     /** @test */

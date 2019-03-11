@@ -422,7 +422,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'scholarship_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('scholarships', $this->email_subscription_topics) : false,
         ];
 
-        // Only include email subscription status when a value exists.
+        // Only include email subscription status if we have that information.
         if (isset($this->email_subscription_status)) {
             $payload['email_subscription_status'] = $this->email_subscription_status;
             $payload['unsubscribed'] = (! $this->email_subscription_status);
