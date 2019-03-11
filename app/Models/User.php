@@ -8,13 +8,12 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as ResetPasswordContract;
-use Illuminate\Support\Facades\Mail;
-use Northstar\Mail\PasswordReset as PasswordResetMail;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Northstar\Auth\Role;
 use Northstar\PasswordResetType;
+use Northstar\Jobs\SendPasswordResetToCustomerIo;
 
 /**
  * The User model. (Fight for the user!)
@@ -473,6 +472,22 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
+     * Returns password reset URL with given token and type.
+     *
+     * @param  string  $token
+     * @param  string  $type
+     * @return string
+     */
+    public function getPasswordResetUrl($token, $type)
+    {
+        return route('password.reset', [
+            $token,
+            'email' => $this->email,
+            'type' => $type,
+        ]);
+    }
+
+    /**
      * Overrides the default method to send a password reset email.
      *
      * @param  string  $token
@@ -484,19 +499,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * Sends a password reset email for the given type.
+     * Creates a call_to_action_email Customer.io event with a password reset URL.
      *
      * @param  string  $token
      * @param  string  $type
-     * @return PasswordReset
+     * @return void
      */
     public function sendPasswordReset($token, $type)
     {
-        $email = $this->getEmailForPasswordReset();
-        $message = new PasswordResetMail($email, $token, $type);
-        Mail::to($email)->send($message);
-        // TODO: Send json_encode($message->render()) as body to Blink /events/user-password-reset
-        return $message;
+        SendPasswordResetToCustomerIo::dispatch($this, $token, $type);
     }
 
     /**

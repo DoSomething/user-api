@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "39cd2eba04ac31c6ca9278c5cf6261cb",
+    "content-hash": "35e0bf639411f5a797645b0c5513bd7b",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -455,16 +455,16 @@
         },
         {
             "name": "dosomething/gateway",
-            "version": "v1.14.9",
+            "version": "v1.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DoSomething/gateway.git",
-                "reference": "15d3201b904d34d4220193938c0d4dce067f32dc"
+                "reference": "204e42fbc091aa45f8b3caeb63e32cd43b8daa94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DoSomething/gateway/zipball/15d3201b904d34d4220193938c0d4dce067f32dc",
-                "reference": "15d3201b904d34d4220193938c0d4dce067f32dc",
+                "url": "https://api.github.com/repos/DoSomething/gateway/zipball/204e42fbc091aa45f8b3caeb63e32cd43b8daa94",
+                "reference": "204e42fbc091aa45f8b3caeb63e32cd43b8daa94",
                 "shasum": ""
             },
             "require": {
@@ -512,7 +512,7 @@
                 }
             ],
             "description": "Standard PHP API client for DoSomething.org services.",
-            "time": "2018-05-30T16:15:17+00:00"
+            "time": "2019-03-07T19:20:34+00:00"
         },
         {
             "name": "dosomething/stathat",
@@ -4972,8 +4972,7 @@
             "authors": [
                 {
                     "name": "Chris Boulton",
-                    "homepage": "http://github.com/chrisboulton",
-                    "role": "Original developer"
+                    "homepage": "http://github.com/chrisboulton"
                 }
             ],
             "description": "A comprehensive library for generating differences between two hashable objects (strings or arrays).",
@@ -5508,6 +5507,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2017-06-30T09:13:00+00:00"
         },
         {
