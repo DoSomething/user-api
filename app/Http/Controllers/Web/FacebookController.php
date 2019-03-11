@@ -2,7 +2,7 @@
 
 namespace Northstar\Http\Controllers\Web;
 
-use Socialite;
+use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Contracts\Auth\Factory as Auth;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
@@ -58,10 +58,9 @@ class FacebookController extends Controller
      */
     public function handleProviderCallback()
     {
-        $requestUser = Socialite::driver('facebook')->user();
-
-        // Grab the user profile using their oauth token.
+        // Grab the user's profile using their Facebook OAuth token.
         try {
+            $requestUser = Socialite::driver('facebook')->user();
             $facebookUser = Socialite::driver('facebook')
                 ->fields(['email', 'first_name', 'last_name', 'birthday'])
                 ->userFromToken($requestUser->token);
