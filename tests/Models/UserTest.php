@@ -101,4 +101,38 @@ class UserModelTest extends BrowserKitTestCase
 
         $this->assertEquals($result, route('password.reset', [$token, 'email' => $email, 'type' => $type]));
     }
+
+    /** @test */
+    public function it_should_include_unsubscribed_false_in_customerio_payload_if_email_subscription_status_true()
+    {
+        $subscribedStatusUser = factory(User::class)->create([
+            'email_subscription_status' => true,
+        ]);
+        $result = $subscribedStatusUser->toCustomerIoPayload();
+
+        $this->assertTrue($result['email_subscription_status']);
+        $this->assertFalse($result['unsubscribed']);
+    }
+
+    /** @test */
+    public function it_should_include_unsubscribed_true_in_customerio_payload_if_email_subscription_status_false()
+    {
+        $unsubscribedStatusUser = factory(User::class)->create([
+            'email_subscription_status' => false,
+        ]);
+        $result = $unsubscribedStatusUser->toCustomerIoPayload();
+
+        $this->assertFalse($result['email_subscription_status']);
+        $this->assertTrue($result['unsubscribed']);
+    }
+
+    /** @test */
+    public function it_should_exclude_unsubscribed_in_customerio_payload_if_email_subscription_status_not_set()
+    {
+        $unknownStatusUser = factory(User::class)->create();
+        $result = $unknownStatusUser->toCustomerIoPayload();
+
+        $this->assertFalse(isset($result['email_subscription_status']));
+        $this->assertFalse(isset($result['unsubscribed']));
+    }
 }
