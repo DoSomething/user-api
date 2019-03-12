@@ -24,7 +24,7 @@ class Model extends BaseModel
     {
         parent::setAttribute($key, $value);
 
-        // Empty strings should be saved as `null` when our attribute is a string.
+        // Empty string values should be saved as `null` if attribute is not boolean.
         $booleanFields = ['email_subscription_status', 'sms_paused'];
         if (empty($this->attributes[$key]) && ! in_array($key, $booleanFields)) {
             $this->attributes[$key] = null;

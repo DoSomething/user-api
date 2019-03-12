@@ -103,7 +103,7 @@ class UserModelTest extends BrowserKitTestCase
     }
 
     /** @test */
-    public function it_should_include_email_subscription_status_in_customerio_payload_if_set()
+    public function it_should_include_unsubscribed_false_in_customerio_payload_if_email_subscription_status_true()
     {
         $subscribedStatusUser = factory(User::class)->create([
             'email' => 'subscribed@example.com',
@@ -113,7 +113,11 @@ class UserModelTest extends BrowserKitTestCase
 
         $this->assertTrue($result['email_subscription_status']);
         $this->assertFalse($result['unsubscribed']);
+    }
 
+    /** @test */
+    public function it_should_include_unsubscribed_true_in_customerio_payload_if_email_subscription_status_false()
+    {
         $unsubscribedStatusUser = factory(User::class)->create([
             'email' => 'unsubscribed@example.com',
             'email_subscription_status' => false,
@@ -125,7 +129,7 @@ class UserModelTest extends BrowserKitTestCase
     }
 
     /** @test */
-    public function it_should_exclude_email_subscription_status_in_customerio_payload_if_not_set()
+    public function it_should_exclude_unsubscribed_in_customerio_payload_if_email_subscription_status_not_set()
     {
         $unknownStatusUser = factory(User::class)->create([
             'email' => 'unknown@example.com',
