@@ -74,6 +74,7 @@ class SendPasswordResetToCustomerIo implements ShouldQueue
             $payload = PasswordResetType::getEmailVars($this->type);
             $payload['userId'] = $this->user->id;
             $payload['actionUrl'] = $this->getUrl();
+            $payload['type'] = $this->type;
 
             $shouldSendToCustomerIo = config('features.blink');
             if ($shouldSendToCustomerIo) {
