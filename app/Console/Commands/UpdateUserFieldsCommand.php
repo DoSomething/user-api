@@ -68,6 +68,7 @@ class UpdateUserFieldsCommand extends Command
         $usersToUpdate = $usersCsv->getRecords();
 
         $this->line('northstar:update: Updating '.count($usersCsv).' users...');
+
         $fieldsToUpdate = $this->argument('fields');
 
         $this->totalCount = count($usersCsv);
@@ -95,7 +96,7 @@ class UpdateUserFieldsCommand extends Command
 
                         // Don't add topic if it is already there
                         if (in_array($userToUpdate[$field], $topics)) {
-                            return;
+                            continue;
                         }
 
                         // Add the new topic to our array
