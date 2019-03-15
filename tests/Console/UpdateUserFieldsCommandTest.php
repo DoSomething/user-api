@@ -43,7 +43,7 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
         ]);
     }
 
-        /** @test */
+    /** @test */
     public function it_should_update_email_topics()
     {
         // Create the users given in the test csv
