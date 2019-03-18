@@ -68,6 +68,7 @@ class UpdateUserFieldsCommand extends Command
         $usersToUpdate = $usersCsv->getRecords();
 
         $this->line('northstar:update: Updating '.count($usersCsv).' users...');
+
         $fieldsToUpdate = $this->argument('fields');
 
         $this->totalCount = count($usersCsv);
@@ -88,7 +89,24 @@ class UpdateUserFieldsCommand extends Command
 
             foreach ($fieldsToUpdate as $field) {
                 if (! empty($userToUpdate[$field])) {
-                    $user->{$field} = $userToUpdate[$field];
+                    // Special instructions when working with array field
+                    if ($field === 'email_subscription_topics') {
+                        // Get current email topics
+                        $topics = $user->email_subscription_topics ? $user->email_subscription_topics : [];
+
+                        // Don't add topic if it is already there
+                        if (in_array($userToUpdate[$field], $topics)) {
+                            continue;
+                        }
+
+                        // Add the new topic to our array
+                        array_push($topics, $userToUpdate[$field]);
+
+                        // Add the full array of topics to the user
+                        $user->email_subscription_topics = $topics;
+                    } else {
+                        $user->{$field} = $userToUpdate[$field];
+                    }
                 }
             }
 

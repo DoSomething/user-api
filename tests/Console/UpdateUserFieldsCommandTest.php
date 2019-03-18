@@ -42,4 +42,41 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
             'created_at' => Carbon::parse('2018-01-01 10:00:00'),
         ]);
     }
+
+    /** @test */
+    public function it_should_update_email_topics()
+    {
+        // Create the users given in the test csv
+        factory(User::class)->create(['_id' => '5acfbf609a89201c340543e2', 'email_subscription_topics' => []]);
+        factory(User::class)->create(['_id' => '5acfbf609a89201c340543e3', 'email_subscription_topics' => ['news', 'lifestyle']]);
+        factory(User::class)->create(['_id' => '5acfbf609a89201c340543e4', 'email_subscription_topics' => ['lifestyle']]);
+        $user = factory(User::class)->create(['_id' => '5acfbf609a89201c340543e5', 'email_subscription_topics' => ['lifestyle']]);
+
+        // Run the user update command.
+        $this->artisan('northstar:update', ['path' => 'tests/Console/example-topic-updates.csv', 'fields' => ['email_subscription_topics']]);
+
+        // Updating user with no email topics
+        $this->seeInDatabase('users', [
+            '_id' => '5acfbf609a89201c340543e2',
+            'email_subscription_topics' => ['lifestyle'],
+        ]);
+
+        // Updating user with 2 existing email topics
+        $this->seeInDatabase('users', [
+            '_id' => '5acfbf609a89201c340543e3',
+            'email_subscription_topics' => ['news', 'lifestyle', 'scholarships'],
+        ]);
+
+        // Updating user to make sure a topic isn't duplicated
+        $this->seeInDatabase('users', [
+            '_id' => '5acfbf609a89201c340543e4',
+            'email_subscription_topics' => ['lifestyle'],
+        ]);
+
+        // Updating user with 1 existing email topic
+        $this->seeInDatabase('users', [
+            '_id' => '5acfbf609a89201c340543e5',
+            'email_subscription_topics' => ['lifestyle', 'news'],
+        ]);
+    }
 }
