@@ -3,7 +3,6 @@
 namespace Northstar\Jobs;
 
 use Northstar\Models\User;
-use Northstar\PasswordResetType;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Queue\SerializesModels;
@@ -71,10 +70,11 @@ class SendPasswordResetToCustomerIo implements ShouldQueue
         // Rate limit Blink/Customer.io API requests to 10/s.
         $throttler = Redis::throttle('customerio')->allow(10)->every(1);
         $throttler->then(function () {
-            $payload = PasswordResetType::getEmailVars($this->type);
-            $payload['userId'] = $this->user->id;
-            $payload['actionUrl'] = $this->getUrl();
-            $payload['type'] = $this->type;
+            $payload = [
+                'actionUrl' => $this->getUrl(),
+                'type' => $this->type,
+                'userId' => $this->user->id,
+            ];
 
             $shouldSendToCustomerIo = config('features.blink');
             if ($shouldSendToCustomerIo) {
