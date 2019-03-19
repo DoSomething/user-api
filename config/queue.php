@@ -103,4 +103,18 @@ return [
         'table' => 'failed_jobs',
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Queue Jobs For Updating/Creating Users
+    |--------------------------------------------------------------------------
+    |
+    | This option configures which queue is used when a job is triggered by
+    | updating or creating a user.
+    |
+    */
+
+    'jobs' => [
+        'users' => 'high',
+    ],
+
 ];

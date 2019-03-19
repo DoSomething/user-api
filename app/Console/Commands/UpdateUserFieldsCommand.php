@@ -55,6 +55,9 @@ class UpdateUserFieldsCommand extends Command
      */
     public function handle()
     {
+        // Use low priority queue for these updates
+        config(['queue.jobs.users' => 'low']);
+
         // Make a local copy of the CSV
         $path = $this->argument('path');
         $this->line('northstar:update: Loading in csv from '.$path);

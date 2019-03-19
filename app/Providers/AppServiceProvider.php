@@ -25,7 +25,9 @@ class AppServiceProvider extends ServiceProvider
 
         User::created(function (User $user) {
             // Send payload to Blink for Customer.io profile.
-            SendUserToCustomerIo::dispatch($user);
+            $queueLevel = config('queue.jobs.users');
+            $queue = config('queue.names.'.$queueLevel);
+            SendUserToCustomerIo::dispatch($user)->onQueue($queue);
 
             // Send metrics to StatHat.
             app('stathat')->ezCount('user created');
@@ -41,7 +43,9 @@ class AppServiceProvider extends ServiceProvider
 
         User::updated(function (User $user) {
             // Send payload to Blink for Customer.io profile.
-            SendUserToCustomerIo::dispatch($user);
+            $queueLevel = config('queue.jobs.users');
+            $queue = config('queue.names.'.$queueLevel);
+            SendUserToCustomerIo::dispatch($user)->onQueue($queue);
 
             // Purge Fastly cache of user
             $fastly = new Fastly;
