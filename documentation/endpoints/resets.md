@@ -1,4 +1,5 @@
 # Reset Endpoints
+
 The `write` scope is required for the create endpoint.
 
 ## Send a Password Reset Email
@@ -7,6 +8,18 @@ Sends a password reset email to the user with provided user ID. This requires ad
 
 ```
 POST /v2/resets
+```
+
+**Request Parameters:**
+
+```js
+{
+  /* The user id to send a password reset email to. */
+  id: String
+
+  /* The type of password reset email to send. Valid types are 'forgot-password', 'rock-the-vote-activate-account' */
+  type: String
+}
 ```
 
 <details>
