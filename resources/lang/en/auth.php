@@ -50,7 +50,7 @@ return [
     'forgot_password' => [
         'header' => 'Forgot your password?',
         'instructions' => 'We\'ve all been there. Reset by entering your email.',
-        'request' => 'Request New Password',
+        'submit_forgot_password' => 'Request New Password',
         'submit_new_password' => 'Reset Password',
     ],
     'footnote' => [
