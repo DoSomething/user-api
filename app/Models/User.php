@@ -418,7 +418,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'created_at' => iso8601($this->created_at), // TODO: Update Blink to just accept timestamp.
             'news_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('news', $this->email_subscription_topics) : false,
             'lifestyle_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('lifestyle', $this->email_subscription_topics) : false,
-            'action_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('actions', $this->email_subscription_topics) : false,
+            'community_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('community', $this->email_subscription_topics) : false,
             'scholarship_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('scholarships', $this->email_subscription_topics) : false,
         ];
 
