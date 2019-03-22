@@ -19,7 +19,7 @@ class PasswordResetTest extends BrowserKitTestCase
     /**
      * Test that the homepage redirects to login page.
      */
-    public function testPasswordResetFlow()
+    public function testForgotPasswordResetFlow()
     {
         Bus::fake();
 
@@ -29,6 +29,7 @@ class PasswordResetTest extends BrowserKitTestCase
         // The user should be able to request a new password by entering their email.
         $this->visit('/password/reset');
         $this->see('Forgot your password?');
+        $this->see('We\'ve all been there. Reset by entering your email.');
         $this->submitForm('Request New Password', [
             'email' => 'forgetful@example.com',
         ]);
@@ -39,6 +40,7 @@ class PasswordResetTest extends BrowserKitTestCase
 
             return true;
         });
+        info('testForgotPasswordResetFlow '.$resetPasswordUrl);
 
         // The user should visit the link that was sent via email & set a new password.
         $this->visit($resetPasswordUrl);
@@ -78,5 +80,50 @@ class PasswordResetTest extends BrowserKitTestCase
         ]);
 
         $this->see('Too many attempts.');
+    }
+
+    /**
+     * Test that the Reset Password form displays Activate Account per type query parameter.
+     */
+    public function testActivateAccountResetFlow()
+    {
+        Bus::fake();
+
+        $user = factory(User::class)->create();
+        $passwordResetUrl = '';
+
+        /*
+        $this->asAdminUser()->post('v2/resets', [
+            'id' => $user->id,
+            'type' => 'rock-the-vote-activate-account',
+        ]);
+        $this->assertResponseStatus(200);
+        $this->seeJsonStructure(['success']);
+        // We'll assert that the event was created & take note of reset URL for the next step.
+        Bus::assertDispatched(SendPasswordResetToCustomerIo::class, function ($job) use (&$resetPasswordUrl) {
+            $passwordResetUrl = $job->getUrl();
+
+            return true;
+        });
+        */
+
+        $resetPasswordUrl = 'password/reset/f4da1d2ab8ba48ac992518933653beb7a59d57dc5a45275b083ec2b02a1528dc?email=kdeckow%40example.com&type=rock-the-vote-activate-account';
+
+        $this->visit($resetPasswordUrl);
+        $this->see('Welcome to your DoSomething.org account!');
+        $this->see('Create a password to join a movement of young people dedicated to making their communities a better place for everyone.');
+        /*
+        $this->postForm('Activate Account', [
+            'password' => 'top_secret',
+            'password_confirmation' => 'top_secret',
+        ]);
+
+        // The user should be logged-in to Northstar, and redirected to Phoenix's OAuth flow.
+        $this->seeIsAuthenticatedAs($user, 'web');
+        $this->assertRedirectedTo('https://www-dev.dosomething.org/next/login');
+
+        // And their account should be updated with their new password.
+        $this->assertTrue(app(Registrar::class)->validateCredentials($user->fresh(), ['password' => 'top_secret']));
+        */
     }
 }
