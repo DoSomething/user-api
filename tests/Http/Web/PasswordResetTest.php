@@ -90,8 +90,7 @@ class PasswordResetTest extends BrowserKitTestCase
         Bus::fake();
 
         $user = factory(User::class)->create();
-        $passwordResetUrl = '';
-
+        $resetPasswordUrl = '';
         /*
         $this->asAdminUser()->post('v2/resets', [
             'id' => $user->id,
@@ -101,13 +100,14 @@ class PasswordResetTest extends BrowserKitTestCase
         $this->seeJsonStructure(['success']);
         // We'll assert that the event was created & take note of reset URL for the next step.
         Bus::assertDispatched(SendPasswordResetToCustomerIo::class, function ($job) use (&$resetPasswordUrl) {
-            $passwordResetUrl = $job->getUrl();
+            $resetPasswordUrl = $job->getUrl();
 
             return true;
         });
+        info('test 2 '.$resetPasswordUrl);
         */
 
-        $resetPasswordUrl = 'password/reset/f4da1d2ab8ba48ac992518933653beb7a59d57dc5a45275b083ec2b02a1528dc?email=kdeckow%40example.com&type=rock-the-vote-activate-account';
+        $resetPasswordUrl = 'http://localhost/password/reset/15f5b5dbead3e0455e10955febd0458948d088f153016c51f166740bb2d37bfd?email=davon11%40example.org&type=rock-the-vote-activate-account';
 
         $this->visit($resetPasswordUrl);
         $this->see('Welcome to your DoSomething.org account!');
