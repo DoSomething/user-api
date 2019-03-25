@@ -213,7 +213,7 @@ class AuthController extends BaseController
 
             // Sign the user up for email messaging & give them the "community" topic.
             $user->email_subscription_status = true;
-            $user->email_subscription_topics = ["community"];
+            $user->email_subscription_topics = ['community'];
 
             // Set sms_status, if applicable
             if ($user->mobile) {
