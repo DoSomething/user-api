@@ -49,7 +49,7 @@ return [
     'forgot_password' => [
         'header' => '¿Olvidaste la contraseña?',
         'instructions' => 'A todos nos ha pasado. Ingresa tu cuenta de correo para restablecer tu contraseña.',
-        'request' => 'Request New Password',
+        'submit_forgot_password' => 'Request New Password',
     ],
     'footnote' => [
         'create' => 'Crear una cuenta significa que aceptas nuestros',

@@ -2,6 +2,7 @@
 
 namespace Northstar\Http\Controllers\Web;
 
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Auth;
@@ -47,6 +48,45 @@ class ResetPasswordController extends Controller
         event(new PasswordReset($user));
 
         $this->guard()->login($user);
+    }
+
+    /**
+     * Display the password reset view for the given token.
+     *
+     * If no token is present, display the link request form.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string|null  $token
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showResetForm(Request $request, $token = null)
+    {
+        $data = [
+            'title' => 'Forgot Password',
+            'header' => trans('auth.forgot_password.header'),
+            'instructions' => trans('auth.forgot_password.instructions'),
+            'new_password_field' => trans('auth.fields.new_password'),
+            'confirm_new_password_field' => trans('auth.fields.confirm_new_password'),
+            'new_password_submit' => trans('auth.forgot_password.submit_new_password'),
+            'display_footer' => true,
+        ];
+
+        if (str_contains(request()->input('type'), 'activate-account')) {
+            $data = [
+                'title' => 'Activate Account',
+                'header' => trans('auth.activate_account.header'),
+                'instructions' => trans('auth.activate_account.instructions'),
+                'new_password_field' => trans('auth.fields.password'),
+                'confirm_new_password_field' => trans('auth.fields.confirm_password'),
+                'new_password_submit' => trans('auth.activate_account.submit_new_password'),
+                'display_footer' => false,
+            ];
+        }
+
+        $data['token'] = $token;
+        $data['email'] = $request->email;
+
+        return view('auth.passwords.reset')->with($data);
     }
 
     /**

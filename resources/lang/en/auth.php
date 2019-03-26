@@ -50,12 +50,18 @@ return [
     'forgot_password' => [
         'header' => 'Forgot your password?',
         'instructions' => 'We\'ve all been there. Reset by entering your email.',
-        'request' => 'Request New Password',
+        'submit_forgot_password' => 'Request New Password',
+        'submit_new_password' => 'Reset Password',
     ],
     'footnote' => [
         'create' => 'Creating an account means you agree to our',
         'terms_of_service' => 'Terms of Service',
         'privacy_policy' => 'Privacy Policy',
         'messaging' => 'and to receive our weekly update. Message &amp; data rates may apply. Text STOP to opt-out, HELP for help.',
+    ],
+    'activate_account' => [
+        'header' => 'Welcome to your DoSomething.org account!',
+        'instructions' => 'Create a password to join a movement of young people dedicated to making their communities a better place for everyone.',
+        'submit_new_password' => 'Activate Account',
     ],
 ];

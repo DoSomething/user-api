@@ -30,7 +30,7 @@
                     </div>
 
                     <div class="form-actions -padded">
-                        <input id="request-reset" type="submit" class="button" value="{{ trans('auth.forgot_password.request') }}">
+                        <input id="request-reset" type="submit" class="button" value="{{ trans('auth.forgot_password.submit_forgot_password') }}">
                     </div>
                 </form>
             </div>

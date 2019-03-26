@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Forgot Password | DoSomething.org')
+@section('title', $title. ' | DoSomething.org')
 
 @section('content')
     <div class="container -padded">
         <div class="wrapper">
             <div class="container__block -centered">
-                <h1>{{ trans('auth.forgot_password.header') }}</h1>
-                <h3>{{ trans('auth.forgot_password.instructions') }}</h3>
+                <h1>{{ $header }}</h1>
+                <h3>{{ $instructions }}</h3>
             </div>
             <div class="container__block -centered">
                 @if (count($errors) > 0)
@@ -32,26 +32,28 @@
                     </div>
 
                     <div class="form-item">
-                        <label for="password" class="field-label">{{ trans('auth.fields.new_password') }}</label>
+                        <label for="password" class="field-label">{{ $new_password_field }}</label>
                         <input name="password" type="password" class="text-field" placeholder="••••••">
                     </div>
 
                     <div class="form-item">
-                        <label for="password_confirmation" class="field-label">{{ trans('auth.fields.confirm_new_password') }}</label>
+                        <label for="password_confirmation" class="field-label">{{ $confirm_new_password_field }}</label>
                         <input name="password_confirmation" type="password" class="text-field" placeholder="••••••">
                     </div>
 
                     <div class="form-actions -padded">
-                        <input id="reset-password" type="submit" class="button" value="Reset Password">
+                        <input id="reset-password" type="submit" class="button" value="{{ $new_password_submit }}">
                     </div>
                 </form>
             </div>
-            <div class="container__block -centered">
-                <ul>
-                    <li><a href="{{ url('login') }}" class="login-link">{{ trans('auth.log_in.existing') }}</a></li>
-                    <li><a href="{{ url('register') }}" class="register-link">{{ trans('auth.log_in.create') }}</a></li>
-                </ul>
-            </div>
+            @if ($display_footer)
+                <div class="container__block -centered">
+                    <ul>
+                        <li><a href="{{ url('login') }}" class="login-link">{{ trans('auth.log_in.existing') }}</a></li>
+                        <li><a href="{{ url('register') }}" class="register-link">{{ trans('auth.log_in.create') }}</a></li>
+                    </ul>
+                </div>
+            @endif
         </div>
     </div>
 @stop
