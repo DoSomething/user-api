@@ -90,29 +90,29 @@ class PasswordResetTest extends BrowserKitTestCase
         Bus::fake();
 
         $user = factory(User::class)->create();
-        $resetPasswordUrl = '';
-        /*
+        $resetPasswordUrl = null;
+
         $this->asAdminUser()->post('v2/resets', [
             'id' => $user->id,
             'type' => 'rock-the-vote-activate-account',
         ]);
+
         $this->assertResponseStatus(200);
         $this->seeJsonStructure(['success']);
+
         // We'll assert that the event was created & take note of reset URL for the next step.
         Bus::assertDispatched(SendPasswordResetToCustomerIo::class, function ($job) use (&$resetPasswordUrl) {
             $resetPasswordUrl = $job->getUrl();
 
             return true;
         });
-        info('test 2 '.$resetPasswordUrl);
-        */
 
-        $resetPasswordUrl = 'http://localhost/password/reset/15f5b5dbead3e0455e10955febd0458948d088f153016c51f166740bb2d37bfd?email=davon11%40example.org&type=rock-the-vote-activate-account';
+        $this->refreshApplication();
 
         $this->visit($resetPasswordUrl);
         $this->see('Welcome to your DoSomething.org account!');
         $this->see('Create a password to join a movement of young people dedicated to making their communities a better place for everyone.');
-        /*
+
         $this->postForm('Activate Account', [
             'password' => 'top_secret',
             'password_confirmation' => 'top_secret',
@@ -124,6 +124,5 @@ class PasswordResetTest extends BrowserKitTestCase
 
         // And their account should be updated with their new password.
         $this->assertTrue(app(Registrar::class)->validateCredentials($user->fresh(), ['password' => 'top_secret']));
-        */
     }
 }
