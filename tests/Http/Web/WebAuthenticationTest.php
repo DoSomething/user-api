@@ -190,6 +190,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
 
         // The user should be signed up for email messaging.
         $this->assertEquals(true, $user->email_subscription_status);
+        $this->assertEquals(['community'], $user->email_subscription_topics);
     }
 
     /**
