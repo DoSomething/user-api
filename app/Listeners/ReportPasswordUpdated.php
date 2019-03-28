@@ -2,7 +2,7 @@
 
 namespace Northstar\Listeners;
 
-use Illuminate\Auth\Events\PasswordReset;
+use Northstar\Events\PasswordUpdated;
 
 class ReportPasswordUpdated
 {
@@ -34,10 +34,10 @@ class ReportPasswordUpdated
      * @param PasswordReset $event
      * @return void
      */
-    public function handle(PasswordReset $event)
+    public function handle(PasswordUpdated $event)
     {
         $response = $this->client->post('customers/'.$event->user->id.'/events', [
-            'form_params' => ['name' => 'password_updated'],
+            'form_params' => ['name' => 'password_updated', 'data[source]' => $event->source],
         ]);
     }
 }

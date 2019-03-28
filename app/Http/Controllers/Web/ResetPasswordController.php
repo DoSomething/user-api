@@ -4,7 +4,7 @@ namespace Northstar\Http\Controllers\Web;
 
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\ResetsPasswords;
-use Illuminate\Auth\Events\PasswordReset;
+use Northstar\Events\PasswordUpdated;
 use Illuminate\Support\Facades\Auth;
 
 class ResetPasswordController extends Controller
@@ -45,7 +45,8 @@ class ResetPasswordController extends Controller
             'remember_token' => str_random(60),
         ])->save();
 
-        event(new PasswordReset($user));
+        // TODO: Pass reset type argument and send through as the PasswordUpdated source.
+        event(new PasswordUpdated($user, 'forgot-password'));
 
         $this->guard()->login($user);
     }
