@@ -4,6 +4,7 @@ namespace Northstar\Http\Controllers\Web;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Auth\Events\PasswordReset;
 use Northstar\Auth\Registrar;
 use Northstar\Models\User;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -98,6 +99,10 @@ class UserController extends BaseController
         $values = array_diff($request->all(), ['']);
 
         $user->fill($values)->save();
+
+        if (isset($values['password'])) {
+            event(new PasswordReset($user));
+        }
 
         return redirect('/');
     }
