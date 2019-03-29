@@ -57,7 +57,7 @@ class SendPasswordUpdatedToCustomerIo implements ShouldQueue
                 'name' => 'password_updated',
                 'data[source]' => $this->source,
             ]);
-            info('Sent password_updated for '.$this->user->id.' to Customer.io', ['response' => $response]);
+            info("Sent password_updated for {$this->user->id} to Customer.io", ['response' => $response]);
         }, function () {
             // Could not obtain lock... release to the queue.
             return $this->release(10);

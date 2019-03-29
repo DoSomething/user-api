@@ -28,7 +28,7 @@ class CustomerIo
      * Track Customer.io event for given user with given name and data.
      *
      * @param User $user
-     * @param User $user
+     * @param array $payload
      */
     public function trackEvent($user, $payload)
     {

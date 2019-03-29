@@ -25,7 +25,7 @@ class PasswordUpdated
      * Create a new event instance.
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
-     * @param  string
+     * @param  string  $source
      * @return void
      */
     public function __construct($user, $source)
