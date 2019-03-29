@@ -533,4 +533,27 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
         $this->attributes['voter_registration_status'] = $status;
     }
+
+
+    /**
+     * Add the given topic to the user's array of topics if it is not already there.
+     *
+     * @param string $status
+     */
+    public function addEmailSubscriptionTopic($topic)
+    {
+        // Get current email topics
+        $topics = $this->email_subscription_topics ?: [];
+
+        // Don't add topic if it is already there
+        if (in_array($topic, $topics)) {
+            return;
+        }
+
+        // Add the new topic to our array
+        array_push($topics, $topic);
+
+        // Add the full array of topics to the user
+        $this->email_subscription_topics = $topics;
+    }
 }
