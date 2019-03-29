@@ -46,6 +46,10 @@ return [
         'confirm_password' => 'Confirm Password',
         'new_password' => 'New Password',
         'confirm_new_password' => 'Confirm New Password',
+        'current_password' => 'Current Password',
+    ],
+    'change_password' => [
+        'submit_change_password' => 'Submit',
     ],
     'forgot_password' => [
         'header' => 'Forgot your password?',

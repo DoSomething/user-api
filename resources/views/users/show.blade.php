@@ -42,5 +42,8 @@
         <div class="form-actions">
             <a href="{{ route('users.edit', $user->id) }}" class="button -secondary">Edit Profile</a>
         </div>
+        <div class="form-actions">
+            <a href="/password/change" class="button -secondary">Change Password</a>
+        </div>
     </div>
 @stop

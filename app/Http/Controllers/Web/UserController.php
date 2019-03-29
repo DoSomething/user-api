@@ -4,6 +4,8 @@ namespace Northstar\Http\Controllers\Web;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Northstar\Auth\Registrar;
 use Northstar\Models\User;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -100,5 +102,38 @@ class UserController extends BaseController
         $user->fill($values)->save();
 
         return redirect('/');
+    }
+
+    public function showChangePasswordForm(){
+        return view('auth.passwords.change');
+    }
+
+    public function changePassword(Request $request){
+        $user = Auth::user();
+
+        $this->registrar->validate($request, $user, [
+            'current_password' => 'required',
+            'new_password' => 'nullable|min:6|max:512|confirmed',
+            'new_password_confirmation' => 'required|same:new_password'
+        ]);
+        info('test 1');
+        /*
+        if (!(Hash::check($request->get('current_password'), $user->password))) {
+            info('password does not match', ['password' => $user->password]);
+            $this->registrar->errors()->add('current_password', 'Your current password does not matches with the password you provided. Please try again.');
+        }
+        info('test 2');
+        if (str_is($request->get('current_password'), $request->get('new_password'))) {
+            return redirect()->back()->with("error", "New Password cannot be same as your current password. Please choose a different password.");
+        }
+        info('test 3');
+        */
+
+        //Change Password
+        $user->password = bcrypt($request->get('new_password'));
+        $user->save();
+        info('test 3');
+
+        return redirect('/')->with("success", "Password changed successfully !");
     }
 }

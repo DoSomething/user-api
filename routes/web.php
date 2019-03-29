@@ -41,3 +41,5 @@ $router->get('password/reset', 'ForgotPasswordController@showLinkRequestForm');
 $router->post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
 $router->get('password/reset/{token}', ['as' => 'password.reset', 'uses' => 'ResetPasswordController@showResetForm']);
 $router->post('password/reset', 'ResetPasswordController@reset');
+$router->get('password/change', 'UserController@showChangePasswordForm');
+$router->post('password/change', 'UserController@changePassword');
