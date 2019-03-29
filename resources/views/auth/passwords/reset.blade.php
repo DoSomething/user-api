@@ -21,7 +21,7 @@
                     </div>
                 @endif
 
-                <form id="password-reset-form" role="form" method="POST" action="{{ url('/password/reset') }}">
+                <form id="password-reset-form" role="form" method="POST" action="{{ url('/password/reset/'.$type) }}">
                     {{ csrf_field() }}
 
                     <input type="hidden" name="token" value="{{ $token }}">
