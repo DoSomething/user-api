@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\ResetsPasswords;
 use Northstar\Events\PasswordUpdated;
 use Northstar\PasswordResetType;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ResetPasswordController extends Controller
 {
@@ -36,6 +37,7 @@ class ResetPasswordController extends Controller
      * Reset the given user's password.
      *
      * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
+     * @param  string  $password
      * @return void
      */
     protected function resetPassword($user, $password)
@@ -45,6 +47,7 @@ class ResetPasswordController extends Controller
             'remember_token' => str_random(60),
         ])->save();
 
+        // Pass along the password reset type route parameter as the source of password update.
         event(new PasswordUpdated($user, request()->type));
 
         $this->guard()->login($user);
@@ -64,6 +67,10 @@ class ResetPasswordController extends Controller
     {
         if (! isset($type)) {
             $type = PasswordResetType::$forgotPassword;
+        }
+
+        if (! in_array($type, PasswordResetType::all())) {
+            throw new NotFoundHttpException;
         }
 
         $data = [
