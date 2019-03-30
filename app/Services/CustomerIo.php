@@ -26,12 +26,20 @@ class CustomerIo
 
     /**
      * Track Customer.io event for given user with given name and data.
+     * @see https://customer.io/docs/api/#apitrackeventsevent_add
      *
      * @param User $user
-     * @param array $payload
+     * @param string $eventName
+     * @param array $eventData
      */
-    public function trackEvent($user, $payload)
+    public function trackEvent($user, $eventName, $eventData = [])
     {
+        $payload = ['name' => $eventName];
+
+        foreach ($eventData as $key => $value) {
+            $payload["data[$key]"] = $value;
+        }
+
         return $this->client->post('customers/'.$user->id.'/events', [
             'form_params' => $payload,
         ]);

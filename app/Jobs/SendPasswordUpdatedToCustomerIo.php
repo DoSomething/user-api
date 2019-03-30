@@ -53,9 +53,8 @@ class SendPasswordUpdatedToCustomerIo implements ShouldQueue
         $throttler = Redis::throttle('customerio')->allow(10)->every(1);
         $throttler->then(function () {
             $customerIo = new CustomerIo;
-            $response = $customerIo->trackEvent($this->user, [
-                'name' => 'password_updated',
-                'data[source]' => $this->source,
+            $response = $customerIo->trackEvent($this->user, 'password_updated', [
+                'source' => $this->source,
             ]);
             info("Sent password_updated for {$this->user->id} to Customer.io", ['response' => $response]);
         }, function () {
