@@ -4,8 +4,10 @@ namespace Northstar\Http\Controllers\Web;
 
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\ResetsPasswords;
-use Illuminate\Auth\Events\PasswordReset;
+use Northstar\Events\PasswordUpdated;
+use Northstar\PasswordResetType;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ResetPasswordController extends Controller
 {
@@ -45,22 +47,32 @@ class ResetPasswordController extends Controller
             'remember_token' => str_random(60),
         ])->save();
 
-        event(new PasswordReset($user));
+        // Pass along the password reset type route parameter as the source of password update.
+        event(new PasswordUpdated($user, request()->type));
 
         $this->guard()->login($user);
     }
 
     /**
-     * Display the password reset view for the given token.
+     * Display the password reset view for the given password reset type and token.
      *
      * If no token is present, display the link request form.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  string  $type
      * @param  string|null  $token
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function showResetForm(Request $request, $token = null)
+    public function showResetForm(Request $request, $type, $token = null)
     {
+        if (! isset($type)) {
+            $type = PasswordResetType::$forgotPassword;
+        }
+
+        if (! in_array($type, PasswordResetType::all())) {
+            throw new NotFoundHttpException;
+        }
+
         $data = [
             'title' => 'Forgot Password',
             'header' => trans('auth.forgot_password.header'),
@@ -71,7 +83,7 @@ class ResetPasswordController extends Controller
             'display_footer' => true,
         ];
 
-        if (str_contains(request()->input('type'), 'activate-account')) {
+        if (str_contains($type, 'activate-account')) {
             $data = [
                 'title' => 'Activate Account',
                 'header' => trans('auth.activate_account.header'),
@@ -84,6 +96,7 @@ class ResetPasswordController extends Controller
         }
 
         $data['token'] = $token;
+        $data['type'] = $type;
         $data['email'] = $request->email;
 
         return view('auth.passwords.reset')->with($data);

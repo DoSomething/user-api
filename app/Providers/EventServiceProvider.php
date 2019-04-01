@@ -6,10 +6,12 @@ use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Routing\Events\RouteMatched;
+use Northstar\Events\PasswordUpdated;
 use Northstar\Events\Throttled;
 use Northstar\Listeners\ReportFailedAuthenticationAttempt;
 use Northstar\Listeners\ReportThrottledRequest;
 use Northstar\Listeners\ReportSuccessfulAuthentication;
+use Northstar\Listeners\ReportPasswordUpdated;
 use Event;
 
 class EventServiceProvider extends ServiceProvider
@@ -23,6 +25,7 @@ class EventServiceProvider extends ServiceProvider
         Login::class => [ReportSuccessfulAuthentication::class],
         Failed::class => [ReportFailedAuthenticationAttempt::class],
         Throttled::class => [ReportThrottledRequest::class],
+        PasswordUpdated::class => [ReportPasswordUpdated::class],
     ];
 
     /**
