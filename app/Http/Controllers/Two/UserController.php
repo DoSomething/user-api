@@ -7,6 +7,7 @@ use Northstar\Auth\Role;
 use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
+use Illuminate\Support\Facades\Gate;
 use Northstar\Http\Controllers\Controller;
 use Northstar\Http\Transformers\Two\UserTransformer;
 use Northstar\Exceptions\NorthstarValidationException;
@@ -169,7 +170,10 @@ class UserController extends Controller
             Role::gate(['admin']);
         }
 
-        $this->registrar->register($request->all(), $user);
+        if (Gate::allows('edit-profile', $user)) {
+            $this->registrar->register($request->all(), $user);
+        }
+
 
         return $this->item($user);
     }
