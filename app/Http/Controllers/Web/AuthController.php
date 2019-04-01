@@ -221,10 +221,10 @@ class AuthController extends BaseController
                 $user->sms_status = 'active';
             }
 
-            // Set the traffic source as the `source_detail` if provided
-            $trafficSource = session()->pull('trafficSource');
-            if ($trafficSource) {
-                $user->source_detail = 'utm_medium:'.$trafficSource;
+            // Set source_detail, if applicable.
+            $sourceDetail = get_source_detail();
+            if ($sourceDetail) {
+                $user->source_detail = $sourceDetail;
             }
         });
 
