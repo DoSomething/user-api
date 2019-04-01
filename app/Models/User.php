@@ -534,7 +534,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $this->attributes['voter_registration_status'] = $status;
     }
 
-
     /**
      * Add the given topic to the user's array of topics if it is not already there.
      *

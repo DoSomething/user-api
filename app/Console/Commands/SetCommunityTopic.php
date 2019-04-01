@@ -55,6 +55,7 @@ class SetCommunityTopic extends Command
 
         if ($totalCount === 0) {
             $this->line('northstar:community - No users need updating!');
+
             return;
         }
 
