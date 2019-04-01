@@ -15,6 +15,6 @@ class ReportPasswordUpdated
      */
     public function handle(PasswordUpdated $event)
     {
-        SendPasswordUpdatedToCustomerIo::dispatch($event->user, $event->source);
+        SendPasswordUpdatedToCustomerIo::dispatch($event->user, $event->updatedVia);
     }
 }

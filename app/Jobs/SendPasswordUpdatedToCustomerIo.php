@@ -27,19 +27,19 @@ class SendPasswordUpdatedToCustomerIo implements ShouldQueue
      *
      * @var string
      */
-    protected $source;
+    protected $updatedVia;
 
     /**
      * Create a new job instance.
      *
      * @param User $user
-     * @param string $source
+     * @param string $updatedVia
      * @return void
      */
-    public function __construct(User $user, $source)
+    public function __construct(User $user, $updatedVia)
     {
         $this->user = $user;
-        $this->source = $source;
+        $this->updatedVia = $updatedVia;
     }
 
     /**
@@ -54,7 +54,7 @@ class SendPasswordUpdatedToCustomerIo implements ShouldQueue
         $throttler->then(function () {
             $customerIo = new CustomerIo;
             $response = $customerIo->trackEvent($this->user, 'password_updated', [
-                'source' => $this->source,
+                'updated_via' => $this->updatedVia,
             ]);
             info("Sent password_updated for {$this->user->id} to Customer.io", ['response' => $response]);
         }, function () {

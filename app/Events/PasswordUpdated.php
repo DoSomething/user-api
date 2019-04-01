@@ -15,22 +15,22 @@ class PasswordUpdated
     public $user;
 
     /**
-     * Source of password update (either profile or type of reset password form).
+     * Where user updated their password from (e.g type of reset password form, profile).
      *
      * @var string
      */
-    public $source;
+    public $updatedVia;
 
     /**
      * Create a new event instance.
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
-     * @param  string  $source
+     * @param  string  $updatedVia
      * @return void
      */
-    public function __construct($user, $source)
+    public function __construct($user, $updatedVia)
     {
         $this->user = $user;
-        $this->source = $source;
+        $this->updatedVia = $updatedVia;
     }
 }
