@@ -174,7 +174,6 @@ class UserController extends Controller
             $this->registrar->register($request->all(), $user);
         }
 
-
         return $this->item($user);
     }
 
