@@ -85,6 +85,7 @@ class AuthController extends BaseController
                 'callToAction' => request()->query('callToAction', trans('auth.get_started.call_to_action')),
                 'coverImage' => request()->query('coverImage', asset('members.jpg')),
                 'trafficSource' => request()->query('trafficSource'),
+                'referrerId' => request()->query('referrerId'),
             ]);
 
             return redirect()->guest($authorizationRoute);
