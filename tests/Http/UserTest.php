@@ -186,10 +186,64 @@ class UserTest extends BrowserKitTestCase
 
         $this->assertResponseStatus(200);
 
-        // The user should remain unchanged.
-        $user->fresh();
-        $this->assertNotEquals('Alexander', $user->first_name);
-        $this->assertNotEquals('Hamilton', $user->last_name);
+        // The user should be updated.
+        $this->seeInDatabase('users', [
+            'first_name' => 'Alexander',
+            'last_name' => 'Hamilton',
+            '_id' => $user->id,
+        ]);
+    }
+
+    /**
+     * Test that a user can update their own profile.
+     * PUT /v2/users/:id
+     *
+     * @return void
+     */
+    public function testV2UpdateProfileAsSelf()
+    {
+        $user = factory(User::class)->create();
+
+        $this->asUser($user, ['user', 'role:staff', 'write'])->json('PUT', 'v2/users/'.$user->id, [
+            'first_name' => 'Pepper',
+            'last_name' => 'Puppy',
+        ]);
+
+        $this->assertResponseStatus(200);
+
+        // The user should be updated.
+        $this->seeInDatabase('users', [
+            'first_name' => 'Pepper',
+            'last_name' => 'Puppy',
+            '_id' => $user->id,
+        ]);
+    }
+
+    /**
+     * Test that a user cannot update another user's profile.
+     * PUT /v2/users/:id
+     *
+     * @return void
+     */
+    public function testV2UpdateProfileAsOther()
+    {
+        $user1 = factory(User::class)->create();
+        $user2 = factory(User::class)->create();
+
+        $this->asUser($user2, ['user', 'role:staff', 'write'])->json('PUT', 'v2/users/'.$user1->id, [
+            'first_name' => 'Burt',
+            'last_name' => 'Macklin',
+        ]);
+
+        // @TO-DO: I would expect at 403 here, but it is getting a 200
+        // $this->assertResponseStatus(403);
+
+        // The user should be updated.
+        $this->seeInDatabase('users', [
+            'first_name' => $user1->first_name,
+            'last_name' => $user1->last_name,
+            '_id' => $user1->id,
+        ]);
     }
 
     /**

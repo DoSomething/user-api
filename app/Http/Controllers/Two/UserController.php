@@ -40,7 +40,7 @@ class UserController extends Controller
         $this->registrar = $registrar;
         $this->transformer = $transformer;
 
-        $this->middleware('role:admin,staff', ['except' => ['show']]);
+        $this->middleware('role:admin,staff', ['except' => ['show', 'update']]);
         $this->middleware('scope:user');
         $this->middleware('scope:write', ['only' => ['store', 'update', 'destroy']]);
     }
