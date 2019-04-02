@@ -136,6 +136,16 @@ trait WithAuthentication
     /**
      * Create a signed JWT to authorize resource requests.
      *
+     * @return $this
+     */
+    public function asMachine()
+    {
+        return $this->withAccessToken(['admin', 'user', 'write']);
+    }
+
+    /**
+     * Create a signed JWT to authorize resource requests.
+     *
      * @param User $user
      * @param array $scopes
      * @return $this

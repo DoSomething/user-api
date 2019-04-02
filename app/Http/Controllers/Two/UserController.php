@@ -4,10 +4,13 @@ namespace Northstar\Http\Controllers\Two;
 
 use Auth;
 use Northstar\Auth\Role;
+use Northstar\Auth\Scope;
 use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
+use Illuminate\Support\Facades\Gate;
 use Northstar\Http\Controllers\Controller;
+use Illuminate\Auth\AuthenticationException;
 use Northstar\Http\Transformers\Two\UserTransformer;
 use Northstar\Exceptions\NorthstarValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -39,7 +42,7 @@ class UserController extends Controller
         $this->registrar = $registrar;
         $this->transformer = $transformer;
 
-        $this->middleware('role:admin,staff', ['except' => ['show']]);
+        $this->middleware('role:admin,staff', ['except' => ['show', 'update']]);
         $this->middleware('scope:user');
         $this->middleware('scope:write', ['only' => ['store', 'update', 'destroy']]);
     }
@@ -159,6 +162,10 @@ class UserController extends Controller
     public function update($id, Request $request)
     {
         $user = User::findOrFail($id);
+
+        if (! (Scope::allows('admin') || Gate::allows('edit-profile', $user))) {
+            throw new AuthenticationException('This action is unauthorized.');
+        }
 
         // Normalize input and validate the request
         $request = normalize('credentials', $request);
