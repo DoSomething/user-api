@@ -235,8 +235,7 @@ class UserTest extends BrowserKitTestCase
             'last_name' => 'Macklin',
         ]);
 
-        // @TO-DO: I would expect at 403 here, but it is getting a 200
-        // $this->assertResponseStatus(403);
+        $this->assertResponseStatus(401);
 
         // The user should be updated.
         $this->seeInDatabase('users', [

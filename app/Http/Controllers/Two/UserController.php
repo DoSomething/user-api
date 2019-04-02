@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
 use Illuminate\Support\Facades\Gate;
 use Northstar\Http\Controllers\Controller;
+use Illuminate\Auth\AuthenticationException;
 use Northstar\Http\Transformers\Two\UserTransformer;
 use Northstar\Exceptions\NorthstarValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -161,6 +162,10 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
+        if (! Gate::allows('edit-profile', $user)) {
+            throw new AuthenticationException('This action is unauthorized.');
+        }
+
         // Normalize input and validate the request
         $request = normalize('credentials', $request);
         $this->registrar->validate($request, $user);
@@ -170,9 +175,7 @@ class UserController extends Controller
             Role::gate(['admin']);
         }
 
-        if (Gate::allows('edit-profile', $user)) {
-            $this->registrar->register($request->all(), $user);
-        }
+        $this->registrar->register($request->all(), $user);
 
         return $this->item($user);
     }
