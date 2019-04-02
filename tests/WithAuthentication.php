@@ -143,7 +143,6 @@ trait WithAuthentication
         return $this->withAccessToken(['admin', 'user', 'write']);
     }
 
-
     /**
      * Create a signed JWT to authorize resource requests.
      *
