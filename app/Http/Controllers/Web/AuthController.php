@@ -85,6 +85,7 @@ class AuthController extends BaseController
                 'callToAction' => request()->query('callToAction', trans('auth.get_started.call_to_action')),
                 'coverImage' => request()->query('coverImage', asset('members.jpg')),
                 'trafficSource' => request()->query('trafficSource'),
+                'referrerId' => request()->query('referrerId'),
             ]);
 
             return redirect()->guest($authorizationRoute);
@@ -220,10 +221,10 @@ class AuthController extends BaseController
                 $user->sms_status = 'active';
             }
 
-            // Set the traffic source as the `source_detail` if provided
-            $trafficSource = session()->pull('trafficSource');
-            if ($trafficSource) {
-                $user->source_detail = 'utm_medium:'.$trafficSource;
+            // Set source_detail, if applicable.
+            $sourceDetail = get_source_detail();
+            if ($sourceDetail) {
+                $user->source_detail = $sourceDetail;
             }
         });
 

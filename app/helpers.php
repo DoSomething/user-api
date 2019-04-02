@@ -291,3 +291,26 @@ function convert($experiment)
 
     return app(Sixpack::class)->convert($experiment);
 }
+
+/**
+ * Create a formatted source_detail string using session values.
+ *
+ * @return string
+ */
+function get_source_detail()
+{
+    $trafficSource = session()->pull('trafficSource');
+    $referrerId = session()->pull('referrerId');
+
+    $sourceDetail = [];
+
+    if ($trafficSource) {
+        array_push($sourceDetail, 'utm_medium:'.$trafficSource);
+    }
+
+    if ($referrerId) {
+        array_push($sourceDetail, 'referrer_id:'.$referrerId);
+    }
+
+    return implode($sourceDetail, ',');
+}
