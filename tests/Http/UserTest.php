@@ -246,6 +246,31 @@ class UserTest extends BrowserKitTestCase
     }
 
     /**
+     * Test that a machine can update a user's profile.
+     * PUT /v2/users/:id
+     *
+     * @return void
+     */
+    public function testV2UpdateProfileAsMachine()
+    {
+        $user = factory(User::class)->create();
+
+        $this->asMachine()->json('PUT', 'v2/users/'.$user->id, [
+            'first_name' => 'Wilhelmina',
+            'last_name' => 'Grubbly-Plank',
+        ]);
+
+        $this->assertResponseStatus(200);
+
+        // The user should be updated.
+        $this->seeInDatabase('users', [
+            'first_name' => 'Wilhelmina',
+            'last_name' => 'Grubbly-Plank',
+            '_id' => $user->id,
+        ]);
+    }
+
+    /**
      * Test that the write scope is required to update a profile.
      * PUT /v2/users/:id
      *
