@@ -26,6 +26,7 @@ POST /v2/resets
   type: String
 }
 ```
+Looking to send a new type of password reset email? Check out http://docs.dosomething.org/non-traditional-member-activation#create-new-type.
 
 <details>
 <summary><strong>Example Request</strong></summary>
@@ -53,6 +54,3 @@ curl -X POST \
 }
 ```
 </details>
-
-Looking to send a new type of Password Reset email? Check out http://docs.dosomething.org/non-traditional-member-activation#create-new-type.
-
