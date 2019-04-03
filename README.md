@@ -50,6 +50,6 @@ and will be promptly addressed. Thank you for taking the time to responsibly dis
 
 ### License
 
-&copy;2017 DoSomething.org. Northstar is free software, and may be redistributed under the terms specified
+&copy;2019 DoSomething.org. Northstar is free software, and may be redistributed under the terms specified
 in the [LICENSE](https://github.com/DoSomething/northstar/blob/dev/LICENSE) file. The name and logo for
 DoSomething.org are trademarks of Do Something, Inc and may not be used without permission.
