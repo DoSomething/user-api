@@ -4,7 +4,7 @@ The `write` scope is required for the create endpoint.
 
 ## Send a Password Reset Email
 
-Generates a valid password reset URL for the provided user ID, and sends it to user by posting a [`call_to_action_email` event to Customer.io](http://docs.dosomething.org/customer-io#call-to-action-email) with the provided reset `type`. This requires admin privileges.
+Generates a valid password reset URL for the provided user ID, and emails it to user via [Customer.io](http://docs.dosomething.org/customer-io#call-to-action-email). This requires admin privileges.
 
 ```
 POST /v2/resets
@@ -18,6 +18,7 @@ POST /v2/resets
   id: String
 
   /* The type of password reset email to send.
+   *
    * Valid types:
    * - 'forgot-password'
    * - 'rock-the-vote-activate-account' 
@@ -25,6 +26,7 @@ POST /v2/resets
   type: String
 }
 ```
+Looking to send a new type of password reset email? Check out http://docs.dosomething.org/non-traditional-member-activation#create-new-type.
 
 <details>
 <summary><strong>Example Request</strong></summary>
@@ -52,4 +54,3 @@ curl -X POST \
 }
 ```
 </details>
-

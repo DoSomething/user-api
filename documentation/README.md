@@ -54,7 +54,7 @@ Endpoint                                     | Functionality                    
 #### Resets
 Endpoint                                     | Functionality                                            | Required Scope
 -------------------------------------------- | -------------------------------------------------------- | --------------
-`POST v2/resets`                             | [Send a Password Reset Link](endpoints/resets.md) | `role:admin` or `admin`
+`POST v2/resets`                             | [Send a Password Reset Email](endpoints/resets.md) | `role:admin` or `admin`
 
 #### Clients
 Endpoint                                     | Functionality                                                       | Required Scope
