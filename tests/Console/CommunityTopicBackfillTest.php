@@ -39,7 +39,7 @@ class CommunityTopicBackfillTest extends BrowserKitTestCase
     /** @test */
     public function it_should_add_community_to_subscribed_users()
     {
-        $user = factory(User::class)->create(['email_subscription_status' => true]);
+        $user = factory(User::class)->create(['email_subscription_status' => true, 'email_subscription_topics' => []]);
 
         // Run the community backfill command.
         $this->artisan('northstar:community');
