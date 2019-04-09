@@ -66,7 +66,7 @@ class CommunityTopicBackfillTest extends BrowserKitTestCase
         $this->seeInDatabase('users', [
             '_id' => $user1->id,
             'email_subscription_status' => true,
-            'email_subscription_topics' => ['news','community'],
+            'email_subscription_topics' => ['news', 'community'],
         ]);
 
         $this->seeInDatabase('users', [
