@@ -94,19 +94,7 @@ class UpdateUserFieldsCommand extends Command
                 if (! empty($userToUpdate[$field])) {
                     // Special instructions when working with array field
                     if ($field === 'email_subscription_topics') {
-                        // Get current email topics
-                        $topics = $user->email_subscription_topics ? $user->email_subscription_topics : [];
-
-                        // Don't add topic if it is already there
-                        if (in_array($userToUpdate[$field], $topics)) {
-                            continue;
-                        }
-
-                        // Add the new topic to our array
-                        array_push($topics, $userToUpdate[$field]);
-
-                        // Add the full array of topics to the user
-                        $user->email_subscription_topics = $topics;
+                        $user->addEmailSubscriptionTopic($userToUpdate[$field]);
                     } else {
                         $user->{$field} = $userToUpdate[$field];
                     }
