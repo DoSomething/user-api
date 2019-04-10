@@ -555,4 +555,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         // Add the full array of topics to the user
         $this->email_subscription_topics = $topics;
     }
+
+    /**
+     * Mutator to ensure no duplicates in the email topics array.
+     *
+     * @param array $value
+     */
+    public function setEmailSubscriptionTopicsAttribute($value)
+    {
+        // De-dupe given array
+        $topics = array_unique($value);
+
+        // Set de-duped array as email_subscription_topics
+        $this->attributes['email_subscription_topics'] = $topics;
+    }
 }
