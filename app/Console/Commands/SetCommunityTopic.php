@@ -46,6 +46,9 @@ class SetCommunityTopic extends Command
      */
     public function handle()
     {
+        // Use low priority queue for these updates
+        config(['queue.jobs.users' => 'low']);
+
         // Grab users who have email addresses
         $query = (new User)->newQuery();
         $query = $query->where('email_subscription_status', true);
