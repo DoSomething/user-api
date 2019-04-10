@@ -773,5 +773,4 @@ class UserTest extends BrowserKitTestCase
             'email_subscription_topics' => ['news'],
         ]);
     }
-
 }
