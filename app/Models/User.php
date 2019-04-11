@@ -542,7 +542,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function addEmailSubscriptionTopic($topic)
     {
         // Add the new topic to the existing array of topics
-        $this->email_subscription_topics = array_merge($this->email_subscription_topics, [$topic]);
+        $this->email_subscription_topics = array_merge($this->email_subscription_topics ?: [], [$topic]);
     }
 
     /**
