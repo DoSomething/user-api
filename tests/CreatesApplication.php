@@ -16,6 +16,13 @@ trait CreatesApplication
     protected $blinkMock;
 
     /**
+     * The Customer.io API client mock.
+     *
+     * @var \Mockery\MockInterface
+     */
+    protected $customerIoMock;
+
+    /**
      * The Faker generator, for creating test data.
      *
      * @var \Faker\Generator
@@ -37,6 +44,10 @@ trait CreatesApplication
         $this->blinkMock = $this->mock(Blink::class);
         $this->blinkMock->shouldReceive('userCreate')->andReturn(true);
         $this->blinkMock->shouldReceive('userCallToActionEmail')->andReturn(true);
+
+        // Configure a mock for any Customer.io API calls.
+        $this->customerIoMock = $this->mock(\Northstar\Services\CustomerIo::class);
+        $this->customerIoMock->shouldReceive('trackEvent');
 
         return $app;
     }
