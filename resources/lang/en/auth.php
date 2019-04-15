@@ -30,7 +30,8 @@ return [
             'password_length' => 'Must be 6+ characters',
         ],
         'placeholder' => [
-            'call_you' => 'What do we call you?',
+            'first_name' => 'First Name',
+            'last_name' => 'Last Name',
             'birthday' => 'MM/DD/YYYY',
             'password' => '6+ characters... make it tricky!',
             'double_checking' => 'Just double checking!',
@@ -41,6 +42,7 @@ return [
         'mobile' => 'Cell Number',
         'email_or_mobile' => 'Email address or cell number',
         'first_name' => 'First Name',
+        'last_name' => 'Last Name',
         'birthday' => 'Birthday',
         'password' => 'Password',
         'confirm_password' => 'Confirm Password',

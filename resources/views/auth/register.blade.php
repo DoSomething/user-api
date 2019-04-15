@@ -34,13 +34,20 @@
             <div>
                 <div class="form-item -reduced">
                     <label for="first_name" class="field-label">{{ trans('auth.fields.first_name') }}</label>
-                    <input name="first_name" type="text" id="first_name" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.call_you') }}" value="{{ old('first_name') }}" autofocus data-validate="first_name" data-validate-required />
+                    <input name="first_name" type="text" id="first_name" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.first_name') }}" value="{{ old('first_name') }}" autofocus data-validate="first_name" data-validate-required />
                 </div>
 
                 <div class="form-item -reduced">
-                    <label for="birthdate" class="field-label">{{ trans('auth.fields.birthday') }}</label>
-                    <input name="birthdate" type="text" id="birthdate" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.birthday') }}" value="{{ old('birthdate') }}" data-validate="birthday" data-validate-required />
+                    <label for="last_name" class="field-label">{{ trans('auth.fields.last_name') }}</label>
+                    <input name="last_name" type="text" id="last_name" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.last_name') }}" value="{{ old('last_name') }}" autofocus data-validate="last_name" data-validate-required />
                 </div>
+
+
+            </div>
+
+            <div class="form-item">
+                <label for="birthdate" class="field-label">{{ trans('auth.fields.birthday') }}</label>
+                <input name="birthdate" type="text" id="birthdate" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.birthday') }}" value="{{ old('birthdate') }}" data-validate="birthday" data-validate-required />
             </div>
 
             <div class="form-item">

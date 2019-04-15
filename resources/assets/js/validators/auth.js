@@ -54,6 +54,15 @@ Validation.registerValidationFunction('first_name', function(string, done) {
   );
 });
 
+// ## Last Name
+// Makes sure the user submits a last name.
+Validation.registerValidationFunction('last_name', function(string, done) {
+  validateNotBlank(string, done,
+    'Last Name',
+    'We need your last name.'
+  );
+});
+
 // ## Birthday
 // Validates correct date input, reasonable birthdate, and says a nice message.
 Validation.registerValidationFunction('birthday', function(string, done) {
