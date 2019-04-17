@@ -104,6 +104,8 @@ class FacebookTest extends BrowserKitTestCase
         $this->assertEquals($user->email, 'test@dosomething.org');
         $this->assertEquals($user->source, 'northstar');
         $this->assertEquals($user->source_detail, 'facebook');
+        $this->assertEquals($user->email_subscription_status, true);
+        $this->assertEquals($user->email_subscription_topics, ['community']);
     }
 
     /**
@@ -122,6 +124,8 @@ class FacebookTest extends BrowserKitTestCase
         $this->assertEquals($user->first_name, 'Puppet');
         $this->assertEquals($user->last_name, 'Sloth');
         $this->assertEquals($user->facebook_id, '12345');
+        $this->assertEquals($user->email_subscription_status, true);
+        $this->assertEquals($user->email_subscription_topics, ['community']);
     }
 
     /**

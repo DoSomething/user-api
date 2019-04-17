@@ -99,6 +99,10 @@ class FacebookController extends Controller
             $fields['country'] = country_code();
             $fields['language'] = app()->getLocale();
 
+            // Add same email settings as traditional new members
+            $fields['email_subscription_status'] = true;
+            $fields['email_subscription_topics'] = ['community'];
+
             $northstarUser = $this->registrar->register($fields, null, function (User $user) {
                 $user->setSource(null, 'facebook');
             });
