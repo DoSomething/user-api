@@ -537,22 +537,22 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     /**
      * Add the given topic to the user's array of topics if it is not already there.
      *
-     * @param string $status
+     * @param string $topic
      */
     public function addEmailSubscriptionTopic($topic)
     {
-        // Get current email topics
-        $topics = $this->email_subscription_topics ?: [];
+        // Add the new topic to the existing array of topics
+        $this->email_subscription_topics = array_merge($this->email_subscription_topics ?: [], [$topic]);
+    }
 
-        // Don't add topic if it is already there
-        if (in_array($topic, $topics)) {
-            return;
-        }
-
-        // Add the new topic to our array
-        array_push($topics, $topic);
-
-        // Add the full array of topics to the user
-        $this->email_subscription_topics = $topics;
+    /**
+     * Mutator to ensure no duplicates in the email topics array.
+     *
+     * @param array $value
+     */
+    public function setEmailSubscriptionTopicsAttribute($value)
+    {
+        // Set de-duped array as email_subscription_topics
+        $this->attributes['email_subscription_topics'] = array_values(array_unique($value));
     }
 }

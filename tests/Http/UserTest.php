@@ -750,4 +750,27 @@ class UserTest extends BrowserKitTestCase
 
         $this->assertResponseStatus(200);
     }
+
+    /**
+     * Test that an admin cannot add duplicates to email_subscription_topics.
+     * PUT /v2/users/:id
+     *
+     * @return void
+     */
+    public function testV2UpdateEmailSubscriptionTopicsWithNoDupesAsAdmin()
+    {
+        $user = factory(User::class)->create();
+
+        $this->asAdminUser()->json('PUT', 'v2/users/'.$user->id, [
+            'email_subscription_topics' => ['news', 'news'],
+        ]);
+
+        $this->assertResponseStatus(200);
+
+        // The email_subscription_topics should be updated with no duplicates
+        $this->seeInDatabase('users', [
+            '_id' => $user->id,
+            'email_subscription_topics' => ['news'],
+        ]);
+    }
 }
