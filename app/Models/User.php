@@ -552,10 +552,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function setEmailSubscriptionTopicsAttribute($value)
     {
-        // De-dupe given array
-        $topics = array_values(array_unique($value));
-
         // Set de-duped array as email_subscription_topics
-        $this->attributes['email_subscription_topics'] = $topics;
+        $this->attributes['email_subscription_topics'] = array_values(array_unique($value));
     }
 }
