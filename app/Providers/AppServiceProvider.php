@@ -36,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
 
         User::updating(function (User $user) {
             // Write profile changes to the log, with redacted values for hidden fields.
-            $changed = array_replace_keys($user->getDirty(), $user->getHidden(), '*****');
+            $changed = $user->getChanged();
 
             if (! app()->runningInConsole()) {
                 logger('updated user', ['id' => $user->id, 'changed' => $changed]);

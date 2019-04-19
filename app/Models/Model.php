@@ -113,4 +113,16 @@ class Model extends BaseModel
 
         return true;
     }
+
+    /**
+     * Get the attributes that have been changed.
+     *
+     * @return array
+     */
+    public function getChanged()
+    {
+        $changed = array_replace_keys($this->getDirty(), $this->getHidden(), '*****');
+
+        return $changed;
+    }
 }
