@@ -60,33 +60,16 @@ class UserModelTest extends BrowserKitTestCase
     }
 
     /** @test */
-    public function it_should_log_changes()
+    public function it_should_sanitize_changes()
     {
-        $logger = $this->spy('log');
         $user = User::create();
 
         $user->first_name = 'Caroline';
         $user->password = 'secret';
 
-        // Freeze time for testing audit info.
-        $time = $this->mockTime();
+        $changes = $user->getChanged();
 
-        $user->save();
-
-        // Setting up audit mock example for DRYness.
-        $auditMock = [
-            'source' => 'northstar',
-            'updated_at' => $time,
-        ];
-
-        $logger->shouldHaveReceived('debug')->once()->with('updated user', [
-            'id' => $user->id,
-            'changed' => [
-                'first_name' => 'Caroline',
-                'password' => '*****',
-                'audit' => '*****',
-            ],
-        ]);
+        $this->assertEquals(['first_name' => 'Caroline', 'password' => '*****', 'audit' => '*****'], $changes);
     }
 
     /** @test */
