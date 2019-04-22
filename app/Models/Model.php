@@ -115,7 +115,7 @@ class Model extends BaseModel
     }
 
     /**
-     * Get the attributes that have been changed.
+     * Get the attributes that have been changed, but redact any hidden fields.
      *
      * @return array
      */
