@@ -168,12 +168,13 @@ class UserController extends Controller
             throw new AuthenticationException('This action is unauthorized.');
         }
 
+        // Debug level log to show the payload received
+        Log::debug('received update user payload', $request->all());
+
         // Normalize input and validate the request
         $request = normalize('credentials', $request);
         $this->registrar->validate($request, $user);
 
-        // Debug level log to show the payload received
-        Log::debug('received update user payload', $request->all());
 
         // Only admins can change the role field.
         if ($request->has('role') && $request->input('role') !== 'user') {
