@@ -3,7 +3,7 @@
 use Carbon\Carbon;
 use Northstar\Models\User;
 
-class StandardizeBirthdatesTest extends TestCase
+class RemoveOldBirthdatesTest extends TestCase
 {
     /** @test */
     public function it_should_fix_birthdates()

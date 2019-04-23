@@ -2,7 +2,6 @@
 
 namespace Northstar\Console\Commands;
 
-use Carbon\Carbon;
 use Northstar\Models\User;
 use MongoDB\BSON\UTCDateTime;
 use Illuminate\Console\Command;
