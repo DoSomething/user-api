@@ -30,10 +30,12 @@ class RemoveOldBirthdates extends Command
      */
     public function handle()
     {
-        // Get any users where 'birthdate' is before 1900... a.k.a way too old:
+        // Get any users where 'birthdate' is before 1900. Note that strtotime gives
+        // us a traditional UNIX timestamp (in seconds), but UTCDateTime wants a
+        // JavaScript-style timestamp (in milliseconds).
         $query = User::whereRaw([
             'birthdate' => [
-                '$lt' => new UTCDateTime(strtotime('1900-01-01 00:00:00')),
+                '$lt' => new UTCDateTime(strtotime('1900-01-01 00:00:00') * 1000),
             ],
         ]);
 
