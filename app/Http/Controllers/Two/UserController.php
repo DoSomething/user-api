@@ -175,7 +175,6 @@ class UserController extends Controller
         $request = normalize('credentials', $request);
         $this->registrar->validate($request, $user);
 
-
         // Only admins can change the role field.
         if ($request->has('role') && $request->input('role') !== 'user') {
             Role::gate(['admin']);
