@@ -58,8 +58,8 @@ class FixDrupalFields extends Command
                 info('Sanitized object field.', [
                     'id' => $user->id,
                     'field' => $field,
-                    'is_array' => is_array($value),
-                    'parsable' => ! is_null($value),
+                    'before' => $value,
+                    'after' => $user->{$field},
                 ]);
             }
         });
