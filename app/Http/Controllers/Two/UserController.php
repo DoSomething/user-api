@@ -8,6 +8,7 @@ use Northstar\Auth\Scope;
 use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Gate;
 use Northstar\Http\Controllers\Controller;
 use Illuminate\Auth\AuthenticationException;
@@ -170,6 +171,9 @@ class UserController extends Controller
         // Normalize input and validate the request
         $request = normalize('credentials', $request);
         $this->registrar->validate($request, $user);
+
+        // Debug level log to show the payload received
+        Log::debug('received update user payload', $request->all());
 
         // Only admins can change the role field.
         if ($request->has('role') && $request->input('role') !== 'user') {
