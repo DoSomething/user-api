@@ -9,7 +9,7 @@ class RemoveOldBirthdatesTest extends TestCase
     public function it_should_fix_birthdates()
     {
         // Create some normal and *really* old users:
-        $normalUsers = factory(User::class, 5)->create();
+        $normalUsers = factory(User::class, 5)->create(['birthdate' => $this->faker->dateTimeBetween('1/1/1901', 'now')]);
         $ancientOnes = factory(User::class, 3)->create(['birthdate' => new Carbon('0001-01-01 00:00:00')]);
 
         // Run the script!
