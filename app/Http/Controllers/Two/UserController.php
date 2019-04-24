@@ -169,7 +169,7 @@ class UserController extends Controller
         }
 
         // Debug level log to show the payload received
-        Log::debug('received update user payload', $request->all());
+        Log::debug('received update user payload for user '.$user->id, $request->all());
 
         // Normalize input and validate the request
         $request = normalize('credentials', $request);
