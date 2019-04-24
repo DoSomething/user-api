@@ -8,6 +8,7 @@ use Northstar\Auth\Scope;
 use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Gate;
 use Northstar\Http\Controllers\Controller;
 use Illuminate\Auth\AuthenticationException;
@@ -166,6 +167,9 @@ class UserController extends Controller
         if (! (Scope::allows('admin') || Gate::allows('edit-profile', $user))) {
             throw new AuthenticationException('This action is unauthorized.');
         }
+
+        // Debug level log to show the payload received
+        Log::debug('received update user payload for user '.$user->id, $request->all());
 
         // Normalize input and validate the request
         $request = normalize('credentials', $request);
