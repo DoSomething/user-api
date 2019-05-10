@@ -18,4 +18,6 @@ return [
 
     'rate-limiting' => env('DS_ENABLE_RATE_LIMITING'),
 
+    'badges' => env('DS_BADGES_TEST', false),
+
 ];
