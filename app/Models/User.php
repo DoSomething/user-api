@@ -67,6 +67,9 @@ use Northstar\Jobs\SendPasswordResetToCustomerIo;
  * @property Carbon $last_messaged_at - The timestamp of the last message this user sent
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ *
+ * The feature flags this user has
+ * @property Object $feature_flags
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract, ResetPasswordContract
 {
@@ -102,6 +105,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
         // Voting Plan:
         'voting_plan_status', 'voting_plan_method_of_transport', 'voting_plan_time_of_day', 'voting_plan_attending_with',
+
+        // Feature flags:
+        'feature_flags'
     ];
 
     /**
@@ -113,7 +119,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public static $internal = [
         'drupal_id', 'role', 'facebook_id',
         'mobilecommons_id', 'mobilecommons_status', 'sms_status', 'sms_paused',
-        'last_messaged_at',
+        'last_messaged_at', 'feature_flags'
     ];
 
     /**
