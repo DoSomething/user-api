@@ -213,7 +213,6 @@ class WebAuthenticationTest extends BrowserKitTestCase
         $this->assertEquals(true, array_key_exists('badges', $user->feature_flags));
     }
 
-
     /**
      * Test that users do not get feature flags set when the badges test is off.
      */

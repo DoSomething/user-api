@@ -69,7 +69,7 @@ use Northstar\Jobs\SendPasswordResetToCustomerIo;
  * @property Carbon $updated_at
  *
  * The feature flags this user has
- * @property Object $feature_flags
+ * @property object $feature_flags
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract, ResetPasswordContract
 {
@@ -107,7 +107,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'voting_plan_status', 'voting_plan_method_of_transport', 'voting_plan_time_of_day', 'voting_plan_attending_with',
 
         // Feature flags:
-        'feature_flags'
+        'feature_flags',
     ];
 
     /**
@@ -119,7 +119,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public static $internal = [
         'drupal_id', 'role', 'facebook_id',
         'mobilecommons_id', 'mobilecommons_status', 'sms_status', 'sms_paused',
-        'last_messaged_at', 'feature_flags'
+        'last_messaged_at', 'feature_flags',
     ];
 
     /**
