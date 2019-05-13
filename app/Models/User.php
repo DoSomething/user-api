@@ -434,6 +434,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             $payload['unsubscribed'] = (! $this->email_subscription_status);
         }
 
+        if (isset($this->feature_flags)) {
+            if (array_key_exists('badges', $this->feature_flags)) {
+                $payload['badges'] = $this->feature_flags['badges'];
+            }
+        }
+
         return $payload;
     }
 
