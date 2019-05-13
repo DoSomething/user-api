@@ -194,6 +194,50 @@ class WebAuthenticationTest extends BrowserKitTestCase
     }
 
     /**
+     * Test that users get a feature_flags 'badges' value when the test is on.
+     */
+    public function testRegisterWithBadgeTest()
+    {
+        // Turn on the badge test feature flag
+        config(['features.badges' => true]);
+
+        $this->withHeader('X-Fastly-Country-Code', 'US')
+            ->register();
+
+        $this->seeIsAuthenticated('web');
+
+        /** @var User $user */
+        $user = auth()->user();
+
+        // The user should have a value set for 'badges'
+        $this->assertEquals(true, array_key_exists('badges', $user->feature_flags));
+    }
+
+
+    /**
+     * Test that users do not get feature flags set when the badges test is off.
+     */
+    public function testRegisterWithoutBadgeTest()
+    {
+        // Turn off the badge test feature flag
+        config(['features.badges' => false]);
+
+        $this->withHeader('X-Fastly-Country-Code', 'US')
+            ->register();
+
+        $this->seeIsAuthenticated('web');
+
+        /** @var User $user */
+        $user = auth()->user();
+
+        $this->assertEquals('US', $user->country);
+        $this->assertEquals('en', $user->language);
+
+        // The user should not have any `feature_flags`.
+        $this->assertEquals(true, is_null($user->feature_flags));
+    }
+
+    /**
      * Test that users can't enter invalid profile info.
      */
     public function testRegisterInvalid()
