@@ -210,6 +210,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
 
         $this->see('The first name may not be greater than 50 characters');
         $this->see('The birthdate must be a date before now');
+        $this->see('The voter registration status field is required');
 
         $this->dontSeeIsAuthenticated('web');
     }
