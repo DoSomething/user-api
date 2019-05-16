@@ -1,5 +1,6 @@
 # Compiled assets
 /public/dist
+stats.json
 
 # Cache directories
 /storage/cache

@@ -7,6 +7,8 @@
     "build": "NODE_ENV=production webpack && npm run modernizr",
     "build:dev": "NODE_ENV=development webpack && npm run modernizr",
     "modernizr": "modernizr -c modernizr.json -d public/dist/modernizr.js",
+    "stat": "webpack --env=production --profile --json > stats.json",
+    "analyze": "npm run stat && webpack-bundle-analyzer stats.json public/dist",
     "test": "echo \"Error: no test specified\" && exit 1",
     "heroku-postbuild": "npm run build"
   },
@@ -41,6 +43,7 @@
     "@dosomething/webpack-config": "^5.0.0",
     "modernizr": "^3.7.1",
     "webpack": "~4.28.0",
+    "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.3.1"
   }
 }
