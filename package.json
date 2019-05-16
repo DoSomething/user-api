@@ -1,6 +1,5 @@
 {
-  "name": "northstar",
-  "version": "1.0.0",
+  "private": true,
   "description": "The DoSomething.org user & identity API.",
   "main": "index.js",
   "scripts": {
