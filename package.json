@@ -1,6 +1,5 @@
 {
-  "name": "northstar",
-  "version": "1.0.0",
+  "private": true,
   "description": "The DoSomething.org user & identity API.",
   "main": "index.js",
   "scripts": {
@@ -8,12 +7,14 @@
     "build": "NODE_ENV=production webpack && npm run modernizr",
     "build:dev": "NODE_ENV=development webpack && npm run modernizr",
     "modernizr": "modernizr -c modernizr.json -d public/dist/modernizr.js",
+    "stat": "webpack --env=production --profile --json > stats.json",
+    "analyze": "npm run stat && webpack-bundle-analyzer stats.json public/dist",
     "test": "echo \"Error: no test specified\" && exit 1",
     "heroku-postbuild": "npm run build"
   },
   "babel": {
     "presets": [
-      "@dosomething/babel-config"
+      "@dosomething"
     ]
   },
   "repository": {
@@ -23,20 +24,26 @@
   "author": "David Furnes <dfurnes@dosomething.org>",
   "license": "MIT",
   "dependencies": {
+    "@babel/runtime": "^7.4.4",
     "@dosomething/analytics": "^1.0.2",
-    "@dosomething/forge": "^6.7.4",
-    "@dosomething/puck-client": "^1.5.1",
+    "@dosomething/forge": "^6.9.0",
+    "@dosomething/puck-client": "^1.6.0",
+    "core-js": "^3.0.1",
     "dosomething-validation": "^0.2.4",
-    "environment-badge": "^1.0.1",
-    "jquery": "^3.1.1",
+    "environment-badge": "^1.1.1",
+    "graphql": "^14.3.0",
+    "graphql-tag": "^2.10.1",
+    "jquery": "^3.4.0",
     "lodash": "^4.17.4",
     "mailcheck": "^1.1.1"
   },
   "devDependencies": {
-    "@dosomething/babel-config": "^2.2.0",
-    "@dosomething/webpack-config": "^4.1.1",
-    "modernizr": "^3.3.1",
-    "webpack": "^4.16.2",
-    "webpack-cli": "^3.1.2"
+    "@babel/core": "^7.4.4",
+    "@dosomething/babel-preset": "^3.1.0",
+    "@dosomething/webpack-config": "^5.0.0",
+    "modernizr": "^3.7.1",
+    "webpack": "~4.28.0",
+    "webpack-bundle-analyzer": "^3.3.2",
+    "webpack-cli": "^3.3.1"
   }
 }
