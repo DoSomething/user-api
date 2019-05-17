@@ -210,7 +210,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
         $user = auth()->user();
 
         // The user should have a value set for 'badges'
-        $this->assertEquals(true, array_key_exists('badges', $user->feature_flags));
+        $this->assertArrayHasKey('badges', $user->feature_flags);
     }
 
     /**
