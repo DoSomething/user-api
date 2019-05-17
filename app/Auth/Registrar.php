@@ -198,19 +198,6 @@ class Registrar
             $customizer($user);
         }
 
-        // If the badges test is running, put half of users in badges group and half in control group
-        if (config('features.badges')) {
-            $feature_flags = $user->feature_flags;
-
-            if (rand(0, 1) === 1) {
-                $feature_flags['badges'] = true;
-            } else {
-                $feature_flags['badges'] = false;
-            }
-
-            $user->feature_flags = $feature_flags;
-        }
-
         $user->save();
 
         return $user;
