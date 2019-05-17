@@ -436,7 +436,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
         if (isset($this->feature_flags)) {
             if (array_key_exists('badges', $this->feature_flags)) {
-                $payload['badges'] = $this->feature_flags['badges'];
+                $payload['badges_feature_flag'] = $this->feature_flags['badges'];
             }
         }
 
