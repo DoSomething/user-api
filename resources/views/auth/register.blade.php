@@ -77,21 +77,21 @@
                 <label for="voter_registration_status" class="field-label height-auto">{{ "Are you registered to vote at your current address?"}}</label>
                 <div class="form-item -reduced">
                     <label class="option -radio">
-                      <input type="radio" name="voter_registration_status" value="confirmed">
+                      <input type="radio" name="voter_registration_status" value="confirmed" {{ old('voter_registration_status') === 'confirmed' ? 'checked' : '' }}>
                       <span class="option__indicator"></span>
                       <span>Yes</span>
                     </label>
                 </div>
                 <div class="form-item -reduced">
                     <label class="option -radio">
-                      <input type="radio" name="voter_registration_status" value="unregistered">
+                      <input type="radio" name="voter_registration_status" value="unregistered" {{ old('voter_registration_status') === 'unregistered' ? 'checked' : '' }}>
                       <span class="option__indicator"></span>
                       <span>No</span>
                     </label>
                 </div>
                 <div class="form-item -reduced">
                     <label class="option -radio">
-                      <input type="radio" name="voter_registration_status" value="uncertain">
+                      <input type="radio" name="voter_registration_status" value="uncertain" {{ old('voter_registration_status') === 'uncertain' ? 'checked' : '' }}>
                       <span class="option__indicator"></span>
                       <span>I'm not sure</span>
                     </label>
