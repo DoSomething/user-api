@@ -242,8 +242,6 @@ class UserTest extends BrowserKitTestCase
         // Should not see the badges feature flag.
         $user->refresh();
         $this->assertNull($user->feature_flags);
-
-
     }
 
     /**
