@@ -221,6 +221,15 @@ class AuthController extends BaseController
             }
         });
 
+        // If the badges test is running, put half of users in badges group and half in control group
+        if (config('features.badges')) {
+            $feature_flags = $user->feature_flags;
+
+            $feature_flags['badges'] = (bool) rand(0, 1);
+
+            $user->feature_flags = $feature_flags;
+        }
+
         $this->auth->guard('web')->login($user, true);
 
         return redirect()->intended('/');

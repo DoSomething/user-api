@@ -204,7 +204,7 @@ class UserTest extends BrowserKitTestCase
     {
         $user = factory(User::class)->create();
 
-        $this->asUser($user, ['user', 'role:staff', 'write'])->json('PUT', 'v2/users/'.$user->id, [
+        $this->asUser($user, ['user', 'write'])->json('PUT', 'v2/users/'.$user->id, [
             'first_name' => 'Pepper',
             'last_name' => 'Puppy',
         ]);
@@ -217,6 +217,31 @@ class UserTest extends BrowserKitTestCase
             'last_name' => 'Puppy',
             '_id' => $user->id,
         ]);
+    }
+
+    /**
+     * Test that an update does not add the "badges" feature flag.
+     * PUT /v2/users/:id
+     *
+     * @return void
+     */
+    public function testV2UpdateShouldNotAddBadgesFlag()
+    {
+        // Turn on the badge test feature flag
+        config(['features.badges' => true]);
+
+        $user = factory(User::class)->create();
+
+        $this->asUser($user, ['user', 'write'])->json('PUT', 'v2/users/'.$user->id, [
+            'first_name' => 'Pepper',
+            'last_name' => 'Puppy',
+        ]);
+
+        $this->assertResponseStatus(200);
+
+        // Should not see the badges feature flag.
+        $user->refresh();
+        $this->assertNull($user->feature_flags);
     }
 
     /**
