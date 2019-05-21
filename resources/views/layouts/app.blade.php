@@ -39,6 +39,7 @@
     {{ scriptify($errors->messages(), 'ERRORS') }}
     <script src="{{ elixir('app.js', 'dist') }}"></script>
     @include('layouts.google_analytics')
+    @include('layouts.google_tag_manager')
 </body>
 
 </html>
