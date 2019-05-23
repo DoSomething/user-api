@@ -36,6 +36,9 @@ function trackEvent(puck, event) {
   if (puck) {
     puck.trackEvent(eventName, data);
   }
+  // Push event to Google Tag Manager's data layer.
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: eventName });
 }
 
 function init() {
