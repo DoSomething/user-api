@@ -1,5 +1,5 @@
 const $ = require('jquery');
-const { flattenDeep } = require('lodash');
+const { flattenDeep, snakeCase, startCase } = require('lodash');
 const Analytics = require('@dosomething/analytics');
 const Validation = require('dosomething-validation');
 const { Engine } = require('@dosomething/puck-client');
@@ -7,94 +7,235 @@ const { Engine } = require('@dosomething/puck-client');
 // App name prefix used for analytics event naming.
 const APP_PREFIX = 'northstar';
 
+// Variable that stores the instance of PuckClient.
+let puckClient = null;
+
+/**
+ * Parse analytics event name parameters into a snake cased string.
+ *
+ * @param  {String}      verb
+ * @param  {String}      noun
+ * @param  {String|Null} [adjective=null]
+ * @return {void}
+ */
+const formatEventName = (verb, noun, adjective = null) => {
+  let eventName = `${APP_PREFIX}_${snakeCase(verb)}_${snakeCase(noun)}`;
+  // Append adjective if defined.
+  eventName += adjective ? `_${snakeCase(adjective)}` : '';
+
+  return eventName;
+};
+
+/**
+ * Return an instantiated Puck Client (Engine).
+ *
+ * @return {Object}
+ */
+const puckClientInit = () => (
+  new Engine({
+    source: 'northstar',
+    puckUrl: window.ENV.PUCK_URL,
+    getUser: () => window.NORTHSTAR_ID,
+  })
+);
+
+/**
+ * Send event to analyze with Puck.
+ *
+ * @param  {String} name
+ * @param  {Object} data
+ * @return {void}
+ */
+export function analyzeWithPuck(name, data) {
+  if (!puckClient) {
+    puckClient = puckClientInit();
+  }
+
+  puckClient.trackEvent(name, data);
+}
+
+/**
+ * Send event to analyze with Google Analytics.
+ *
+ * @param  {String} category
+ * @param  {String} action
+ * @param  {String} label
+ * @param  {Object} data
+ * @return {void}
+ */
+export function analyzeWithGoogleAnalytics(
+  name,
+  category,
+  action,
+  label,
+  data,
+) {
+  if (!category || !action) {
+    console.error('The Category or Action is missing!');
+    return;
+  }
+
+  Analytics.analyze(category, action, label);
+
+  // Push event action to Google Tag Manager's data layer.
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: name,
+    eventAction: startCase(action),
+    eventCategory: startCase(category),
+    eventLabel: startCase(label),
+    eventContext: data,
+  });
+}
+
+/**
+ * Dispatch analytics event to specified service, or all services by default.
+ *
+ * @param  {String}      category
+ * @param  {String}      name
+ * @param  {Object|Null} [data]
+ * @param  {String|Null} [service]
+ * @return {void}
+ */
+const sendToServices = (name, category, action, label, data, service) => {
+  switch (service) {
+    case 'ga':
+      analyzeWithGoogleAnalytics(name, category, action, label, data);
+      break;
+
+    case 'puck':
+      analyzeWithPuck(name, data);
+      break;
+
+    default:
+      analyzeWithGoogleAnalytics(name, category, action, label, data);
+      analyzeWithPuck(name, data);
+  }
+};
+
+/**
+ * Track an analytics event with a specified service.
+ * (Defaults to tracking with all services.)
+ *
+ * @param  {Object} options
+ * @param  {Object} options.metadata
+ * @param  {Object} options.context
+ * @param  {String} options.service
+ * @return {void}
+ */
+export function trackAnalyticsEvent({ metadata, context = {}, service }) {
+  if (!metadata) {
+    console.error('The metadata object is missing!');
+    return;
+  }
+
+  const { adjective, category, target, noun, verb } = metadata;
+  const label = metadata.label || noun;
+
+  const name = formatEventName(verb, noun, adjective);
+
+  const action = snakeCase(`${target}_${verb}`);
+
+  sendToServices(name, category, action, label, context, service);
+}
+
 // Helper method to track field focus analytics events.
-function trackInputFocus(puck, inputName) {
+function trackInputFocus(inputName) {
   if (!inputName) {
     return;
   }
 
-  trackEvent(puck, {
-    verb: 'focused',
-    noun: 'field',
-    adjective: inputName,
+  trackAnalyticsEvent({
+    metadata: {
+      adjective: inputName,
+      category: 'focused_field',
+      label: inputName,
+      noun: 'field',
+      target: 'field',
+      verb: 'focused',
+    },
   });
-}
-
-// Formats event naming and tracks event to Puck and GA.
-function trackEvent(puck, event) {
-  const { verb, noun, adjective, data } = event;
-
-  let eventName = `${APP_PREFIX}_${verb}_${noun}`;
-  if (adjective) {
-    eventName += `_${adjective}`;
-  }
-
-  const category = `${APP_PREFIX}_${noun}`;
-  const label = window.location.pathname;
-
-  Analytics.analyze(category, eventName, label);
-  if (puck) {
-    puck.trackEvent(eventName, data);
-  }
-  // Push event to Google Tag Manager's data layer.
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ category, event: eventName, label });
 }
 
 function init() {
   Analytics.init();
 
-  const puck = new Engine({
-    source: 'northstar',
-    puckUrl: window.ENV.PUCK_URL,
-    getUser: () => window.NORTHSTAR_ID,
-  });
+  if (!puckClient) {
+    puckClient = puckClientInit();
+  }
 
   // Validation Events for the Register form.
   Validation.Events.subscribe('Validation:InlineError', (topic, args) => {
     // Tracks each individual inline error.
-    trackEvent(puck, {
-      verb: 'triggered',
-      noun: 'error',
-      adjective: `field_${args}`,
+    trackAnalyticsEvent({
+      metadata: {
+        adjective: `field_${args}`,
+        category: 'authentication',
+        label: args,
+        noun: 'error',
+        target: 'error',
+        verb: 'triggered',
+      },
     });
   });
 
   Validation.Events.subscribe('Validation:Suggestion', (topic, args) => {
     // Tracks email fix suggestion.
-    trackEvent(puck, {
-      verb: 'triggered',
-      noun: 'suggestion',
-      adjective: 'field_email',
-      data: {
+    trackAnalyticsEvent({
+      context: {
         suggestion: args,
-      }
+      },
+      metadata: {
+        adjective: 'field_email',
+        category: 'authentication',
+        label: 'email_suggestion',
+        noun: 'suggestion',
+        target: 'suggestion',
+        verb: 'triggered',
+      },
     });
   });
 
   Validation.Events.subscribe('Validation:SuggestionUsed', (topic, args) => {
     // Tracks when email fix suggestion is used.
-    trackEvent(puck, {
-      verb: 'used',
-      noun: 'suggestion',
-      adjective: 'field_email',
+    trackAnalyticsEvent({
+      metadata: {
+        adjective: 'field_email',
+        category: 'authentication',
+        label: 'email_suggestion',
+        noun: 'suggestion',
+        target: 'suggestion',
+        verb: 'used',
+      },
     });
   });
 
   Validation.Events.subscribe('Validation:Submitted', (topic, args) => {
     // Tracks when an inline validation error free submission is made.
-    trackEvent(puck, {
-      verb: 'submitted',
-      noun: 'register',
+    trackAnalyticsEvent({
+      context: {
+        suggestion: args,
+      },
+      metadata: {
+        category: 'authentication',
+        noun: 'register',
+        target: 'form',
+        verb: 'submitted',
+      },
     });
   });
 
   Validation.Events.subscribe('Validation:SubmitError', (topic, args) => {
     // Tracks when a submission is prevented due to inline validation errors.
-    trackEvent(puck, {
-      verb: 'triggered',
-      noun: 'error',
-      adjective: 'submit_register',
+    trackAnalyticsEvent({
+      metadata: {
+        adjective: 'submit_register',
+        category: 'authentication',
+        label: 'submit_register',
+        noun: 'error',
+        target: 'error',
+        verb: 'triggered',
+      },
     });
   });
 
@@ -104,76 +245,109 @@ function init() {
     const focusedElement = $('input:focus');
     if (focusedElement.length) {
       const inputName = focusedElement.attr('name');
-      trackInputFocus(puck, inputName);
+      trackInputFocus(inputName);
     }
 
     // Tracks when user focuses on form field.
     $('input').on('focus', (element) => {
       const inputName = element.target.name;
-      trackInputFocus(puck, inputName);
+      trackInputFocus(inputName);
     })
 
     $('#profile-login-form').on('submit', () => {
       // Tracks login form submissions.
-      trackEvent(puck, {
-        verb: 'submitted',
-        noun: 'login',
+      trackAnalyticsEvent({
+        metadata: {
+          category: 'authentication',
+          noun: 'login',
+          target: 'form',
+          verb: 'submitted',
+        },
       });
     });
 
     $('#profile-edit-form').on('submit', () => {
       // Tracks profile edit form submissions.
-      trackEvent(puck, {
-        verb: 'submitted',
-        noun: 'edit_profile',
+      trackAnalyticsEvent({
+        metadata: {
+          category: 'account_edit',
+          noun: 'edit_profile',
+          target: 'form',
+          verb: 'submitted',
+        },
       });
     });
 
     $('#forgot-password-form').on('submit', () => {
       // Tracks forgot password email form submissions.
-      trackEvent(puck, {
-        verb: 'submitted',
-        noun: 'forgot_password',
+      trackAnalyticsEvent({
+        metadata: {
+          category: 'account_edit',
+          noun: 'forgot_password',
+          target: 'form',
+          verb: 'submitted',
+        },
       });
     })
 
     $('#password-reset-form').on('submit', () => {
       // Tracks password reset form submissions.
-      trackEvent(puck, {
-        verb: 'submitted',
-        noun: 'reset_password',
+      trackAnalyticsEvent({
+        metadata: {
+          category: 'account_edit',
+          noun: 'reset_password',
+          target: 'form',
+          verb: 'submitted',
+        },
       });
     })
 
     $('.facebook-login').on('click', () => {
       // Tracks clicking on the Login With Facebook button.
-      trackEvent(puck, {
-        verb: 'clicked',
-        noun: 'login_facebook',
+      trackAnalyticsEvent({
+        metadata: {
+          category: 'login_facebook',
+          label: 'authentication',
+          noun: 'login_facebook',
+          target: 'button',
+          verb: 'clicked',
+        },
       });
     });
 
     $('.login-link').on('click', () => {
       // Tracks clicking on any of the 'Log in' buttons and links.
-      trackEvent(puck, {
-        verb: 'clicked',
-        noun: 'login',
+      trackAnalyticsEvent({
+        metadata: {
+          category: 'authentication',
+          noun: 'login',
+          target: 'button',
+          verb: 'clicked',
+        },
       });
     })
 
     $('.register-link').on('click', () => {
       // Tracks clicking on any of the 'Register' or 'Create account' buttons and links.
-      trackEvent(puck, {
-        verb: 'clicked',
-        noun: 'register',
+      trackAnalyticsEvent({
+        metadata: {
+          category: 'authentication',
+          noun: 'register',
+          target: 'button',
+          verb: 'clicked',
+        },
       });
     })
 
     $('.forgot-password-link').on('click', () => {
       // Tracks clicking on the 'Forgot Password' link.
-      trackEvent(puck, {
-        verb:'clicked',
-        noun: 'forgot_password',
+      trackAnalyticsEvent({
+        metadata: {
+          category: 'account_edit',
+          noun: 'forgot_password',
+          target: 'button',
+          verb: 'clicked',
+        },
       });
     })
 
@@ -185,12 +359,17 @@ function init() {
 
       const validationMessages = flattenDeep(Object.values(errors));
 
-      trackEvent(puck, {
-        verb: 'failed',
-        noun: 'validation',
-        data: {
+      trackAnalyticsEvent({
+        context: {
           invalidFields,
           validationMessages,
+        },
+        metadata: {
+          category: 'authentication',
+          label: 'validation_error',
+          noun: 'validation',
+          target: 'validation',
+          verb: 'failed',
         },
       });
     }
