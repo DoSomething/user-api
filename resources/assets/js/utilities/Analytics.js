@@ -218,7 +218,6 @@ function init() {
       },
       metadata: {
         category: 'authentication',
-        label: 'register',
         noun: 'register',
         target: 'form',
         verb: 'submitted',
@@ -260,7 +259,6 @@ function init() {
       trackAnalyticsEvent({
         metadata: {
           category: 'authentication',
-          label: 'login',
           noun: 'login',
           target: 'form',
           verb: 'submitted',
@@ -273,7 +271,6 @@ function init() {
       trackAnalyticsEvent({
         metadata: {
           category: 'account_edit',
-          label: 'edit_profile',
           noun: 'edit_profile',
           target: 'form',
           verb: 'submitted',
@@ -286,7 +283,6 @@ function init() {
       trackAnalyticsEvent({
         metadata: {
           category: 'account_edit',
-          label: 'forgot_password',
           noun: 'forgot_password',
           target: 'form',
           verb: 'submitted',
@@ -299,7 +295,6 @@ function init() {
       trackAnalyticsEvent({
         metadata: {
           category: 'account_edit',
-          label: 'reset_password',
           noun: 'reset_password',
           target: 'form',
           verb: 'submitted',
@@ -325,7 +320,6 @@ function init() {
       trackAnalyticsEvent({
         metadata: {
           category: 'authentication',
-          label: 'login',
           noun: 'login',
           target: 'button',
           verb: 'clicked',
@@ -338,7 +332,6 @@ function init() {
       trackAnalyticsEvent({
         metadata: {
           category: 'authentication',
-          label: 'register',
           noun: 'register',
           target: 'button',
           verb: 'clicked',
@@ -351,7 +344,6 @@ function init() {
       trackAnalyticsEvent({
         metadata: {
           category: 'account_edit',
-          label: 'forgot_password',
           noun: 'forgot_password',
           target: 'button',
           verb: 'clicked',
