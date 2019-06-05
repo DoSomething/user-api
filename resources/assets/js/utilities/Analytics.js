@@ -140,7 +140,7 @@ export function trackAnalyticsEvent({ metadata, context = {}, service }) {
 }
 
 // Helper method to track field focus analytics events.
-function trackInputFocus(puck, inputName) {
+function trackInputFocus(inputName) {
   if (!inputName) {
     return;
   }
@@ -159,7 +159,6 @@ function trackInputFocus(puck, inputName) {
 
 function init() {
   Analytics.init();
-  const puck = 'hi';
 
   if (!puckClient) {
     puckClient = puckClientInit();
@@ -247,13 +246,13 @@ function init() {
     const focusedElement = $('input:focus');
     if (focusedElement.length) {
       const inputName = focusedElement.attr('name');
-      trackInputFocus(puck, inputName);
+      trackInputFocus(inputName);
     }
 
     // Tracks when user focuses on form field.
     $('input').on('focus', (element) => {
       const inputName = element.target.name;
-      trackInputFocus(puck, inputName);
+      trackInputFocus(inputName);
     })
 
     $('#profile-login-form').on('submit', () => {
