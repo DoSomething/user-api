@@ -293,24 +293,13 @@ function convert($experiment)
 }
 
 /**
- * Create a formatted source_detail string using session values.
+ * Create a formatted key-value string, like for source_detail.
  *
+ * @param object $object
  * @return string
  */
-function get_source_detail()
+function stringify_object($object)
 {
-    $trafficSource = session()->pull('trafficSource');
-    $referrerId = session()->pull('referrerId');
-
-    $sourceDetail = [];
-
-    if ($trafficSource) {
-        array_push($sourceDetail, 'utm_medium:'.$trafficSource);
-    }
-
-    if ($referrerId) {
-        array_push($sourceDetail, 'referrer_id:'.$referrerId);
-    }
-
-    return implode($sourceDetail, ',');
+    // e.g. utm_source:test,utm_medium:internet,utm_campaign:uconn_lady_huskies
+    return str_replace('=', ':', http_build_query($object, '', ','));
 }
