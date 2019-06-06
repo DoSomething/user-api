@@ -84,8 +84,12 @@ class AuthController extends BaseController
                 'title' => request()->query('title', trans('auth.get_started.create_account')),
                 'callToAction' => request()->query('callToAction', trans('auth.get_started.call_to_action')),
                 'coverImage' => request()->query('coverImage', asset('members.jpg')),
-                'trafficSource' => request()->query('trafficSource'),
-                'referrerId' => request()->query('referrerId'),
+                'source_detail' => array_filter([
+                    'contentful_id' => request()->query('contentful_id'),
+                    'utm_source' => request()->query('utm_source'),
+                    'utm_medium' => request()->query('utm_medium'),
+                    'utm_campaign' => request()->query('utm_campaign'),
+                ]),
             ]);
 
             return redirect()->guest($authorizationRoute);
@@ -215,9 +219,9 @@ class AuthController extends BaseController
             }
 
             // Set source_detail, if applicable.
-            $sourceDetail = get_source_detail();
+            $sourceDetail = session('source_detail');
             if ($sourceDetail) {
-                $user->source_detail = $sourceDetail;
+                $user->source_detail = stringify_object($sourceDetail);
             }
         });
 
