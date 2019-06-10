@@ -39,8 +39,28 @@ class ImportSubStatusFromCio extends Command
   public function handle()
   {
     // If given a CSV, only import emails from CSV.
-    if ($this->argument('path')) {
+    if ($this->option('path')) {
+      // Make a local copy of the CSV
+      $path = $this->option('path');
+      $this->line('Loading in csv from '.$path);
 
+      $temp = tempnam(sys_get_temp_dir(), 'command_csv');
+      file_put_contents($temp, fopen($this->option('path'), 'r'));
+
+      // Load the users from the CSV
+      $user_ids_csv = Reader::createFromPath($temp, 'r');
+      $user_ids_csv->setHeaderOffset(0);
+      $user_ids = $user_ids_csv->getRecords();
+        dd($user_ids);
+      foreach ($user_ids as $user_id) {
+      dd($user_id);
+        $user = User::find($user_id['id']);
+      }
+
+      // Logging to track progress
+      $totalCount = count($user_ids_csv);
+      $percentDone = ($this->currentCount / $totalCount) * 100;
+      $this->line('northstar:importsub - '.$this->currentCount.'/'.$totalCount.' - '.$percentDone.'% done');
     } else {
       // Grab users who have email addresses
       $query = (new User)->newQuery();
@@ -60,8 +80,8 @@ class ImportSubStatusFromCio extends Command
           $percentDone = ($this->currentCount / $totalCount) * 100;
           $this->line('northstar:importsub - '.$this->currentCount.'/'.$totalCount.' - '.$percentDone.'% done');
       });
-
-      $this->line('northstar:importsub - Queued up a job to grab email status for each user!');
     }
+
+    $this->line('northstar:importsub - Queued up a job to grab email status for each user!');
   }
 }
