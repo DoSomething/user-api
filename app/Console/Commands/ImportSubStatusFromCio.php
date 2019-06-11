@@ -59,10 +59,10 @@ class ImportSubStatusFromCio extends Command
         dispatch(new GetEmailSubStatusFromCustomerIo($user))->onQueue(config('queue.names.low'));
 
         // Logging to track progress
-        $this->logProgress($this->currentCount, $totalCount, 1);
-        // $this->currentCount += 1;
-        // $percentDone = ($this->currentCount / $totalCount) * 100;
-        // $this->line('northstar:importsub - '.$this->currentCount.'/'.$totalCount.' - '.$percentDone.'% done');
+        // $this->logProgress($this->currentCount, $totalCount, 1);
+        $this->currentCount += 1;
+        $percentDone = ($this->currentCount / $totalCount) * 100;
+        $this->line('northstar:importsub - '.$this->currentCount.'/'.$totalCount.' - '.$percentDone.'% done');
       }
     } else {
       // Grab users who have email addresses
@@ -86,9 +86,9 @@ class ImportSubStatusFromCio extends Command
     $this->line('northstar:importsub - Queued up a job to grab email status for each user!');
   }
 
-  private function logProgress($currentCount, $totalCount, $increment) {
-    $currentCount += $increment;
-    $percentDone = ($currentCount / $totalCount) * 100;
-    $this->line('northstar:importsub - '.$currentCount.'/'.$totalCount.' - '.$percentDone.'% done');
-  }
+  // private function logProgress($currentCount, $totalCount, $increment) {
+  //   $currentCount += $increment;
+  //   $percentDone = ($currentCount / $totalCount) * 100;
+  //   $this->line('northstar:importsub - '.$currentCount.'/'.$totalCount.' - '.$percentDone.'% done');
+  // }
 }
