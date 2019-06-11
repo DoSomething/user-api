@@ -48,19 +48,21 @@ class ImportSubStatusFromCio extends Command
       file_put_contents($temp, fopen($this->option('path'), 'r'));
 
       // Load the users from the CSV
-      $user_ids_csv = Reader::createFromPath($temp, 'r');
-      $user_ids_csv->setHeaderOffset(0);
-      $user_ids = $user_ids_csv->getRecords();
-        dd($user_ids);
-      foreach ($user_ids as $user_id) {
-      dd($user_id);
-        $user = User::find($user_id['id']);
-      }
+      $usersCsv = Reader::createFromPath($temp, 'r');
+      $usersCsv->setHeaderOffset(0);
+      $usersToUpdate = $usersCsv->getRecords();
 
-      // Logging to track progress
-      $totalCount = count($user_ids_csv);
-      $percentDone = ($this->currentCount / $totalCount) * 100;
-      $this->line('northstar:importsub - '.$this->currentCount.'/'.$totalCount.' - '.$percentDone.'% done');
+      $totalCount = count($usersCsv);
+      $queue = config('queue.names.low');
+
+      foreach ($usersToUpdate as $user) {
+        $user = User::find($user['id']);
+        dispatch(new GetEmailSubStatusFromCustomerIo($user))->onQueue($queue);
+
+        // Logging to track progress
+        $percentDone = ($this->currentCount / $totalCount) * 100;
+        $this->line('northstar:importsub - '.$this->currentCount.'/'.$totalCount.' - '.$percentDone.'% done');
+      }
     } else {
       // Grab users who have email addresses
       $query = (new User)->newQuery();

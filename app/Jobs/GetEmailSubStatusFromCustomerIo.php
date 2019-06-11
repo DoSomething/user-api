@@ -41,7 +41,6 @@ class GetEmailSubStatusFromCustomerIo implements ShouldQueue
         Redis::throttle('customerioemailsubstatus')->allow(10)->every(1)->then(function () {
             // Customer.io authentication
             $auth = [config('services.customerio.username'), config('services.customerio.password')];
-
             // Create a Guzzle Client to use with the Customer.io Beta API
             $client = new \GuzzleHttp\Client([
                 'base_uri' => 'https://beta-api.customer.io',
