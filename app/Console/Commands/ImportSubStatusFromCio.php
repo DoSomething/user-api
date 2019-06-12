@@ -58,10 +58,12 @@ class ImportSubStatusFromCio extends Command
                 $user = User::find($user['id']);
                 dispatch(new GetEmailSubStatusFromCustomerIo($user))->onQueue(config('queue.names.low'));
 
-                // Logging to track progress
-                $this->currentCount += 1;
-                $percentDone = ($this->currentCount / $totalCount) * 100;
-                $this->line('northstar:importsub - '.$this->currentCount.'/'.$totalCount.' - '.$percentDone.'% done');
+                // Logging to track progress every 20%
+                $current = $this->currentCount += 1;
+                if ($current % 20 == 0) {
+                    $percentDone = ($this->currentCount / $totalCount) * 100;
+                    $this->line('northstar:importsub - '.$this->currentCount.'/'.$totalCount.' - '.$percentDone.'% done');
+                }
             }
         } else {
             // Grab users who have email addresses
