@@ -50,9 +50,7 @@ class GetEmailSubStatusFromCustomerIo implements ShouldQueue
 
             // Make request to c.io to get that user's subscription status
             $response = $client->get('/v1/api/customers/'.$this->user->id.'/attributes');
-            $body = $response->getBody();
-            print_r($body);
-
+            $body = json_decode($response->getBody());
             $unsubscribed = $body->customer->attributes->unsubscribed;
             info('[GetEmailSubStatusFromCustomerIo] For user '.$this->user->id.' got unsubscribed='.$unsubscribed);
 
