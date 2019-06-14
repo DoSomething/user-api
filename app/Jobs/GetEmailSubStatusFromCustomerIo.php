@@ -40,7 +40,7 @@ class GetEmailSubStatusFromCustomerIo implements ShouldQueue
     {
         Redis::throttle('customerioemailsubstatus')->allow(10)->every(1)->then(function () {
             // Customer.io authentication
-            $auth = [config('services.customerio.username'):config('services.customerio.password')];
+            $auth = [config('services.customerio.username'), config('services.customerio.password')];
 
             // Create a Guzzle Client to use with the Customer.io Beta API
             $client = new \GuzzleHttp\Client([
@@ -51,7 +51,7 @@ class GetEmailSubStatusFromCustomerIo implements ShouldQueue
             // Make request to c.io to get that user's subscription status
             $response = $client->get('/v1/api/customers/'.$this->user->id.'/attributes');
             $body = json_decode($response->getBody());
-            $unsubscribed = $body->customer->unsubscribed;
+            $unsubscribed = $body->customer->attributes->unsubscribed;
             info('[GetEmailSubStatusFromCustomerIo] For user '.$this->user->id.' got unsubscribed='.$unsubscribed);
 
             // Update subscription status on user
