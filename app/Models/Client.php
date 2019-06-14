@@ -65,7 +65,7 @@ class Client extends Model
 
         // Automatically set random client secret. This field *may* be manually
         // set when seeding the database, so we first check if empty.
-        static::creating(function (Client $client) {
+        static::creating(function (self $client) {
             if (empty($client->client_secret)) {
                 $client->client_secret = str_random(32);
             }
