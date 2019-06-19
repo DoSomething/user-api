@@ -1,6 +1,5 @@
 const $ = require('jquery');
 const queryString = require('query-string');
-const Analytics = require('@dosomething/analytics');
 const Validation = require('dosomething-validation');
 const { Engine } = require('@dosomething/puck-client');
 const {
@@ -141,9 +140,6 @@ export function analyzeWithGoogle(name, category, action, label, data) {
     return;
   }
 
-  // @DEPRECATE
-  Analytics.analyze(category, action, label);
-
   const flattenedData = stringifyNestedObjects(data);
 
   if (window.NORTHSTAR_ID) {
@@ -264,8 +260,6 @@ function trackInputFocus(inputName) {
 }
 
 function init() {
-  Analytics.init();
-
   if (!puckClient) {
     puckClient = puckClientInit();
   }
