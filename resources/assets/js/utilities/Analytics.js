@@ -5,7 +5,7 @@ const Validation = require('dosomething-validation');
 const { Engine } = require('@dosomething/puck-client');
 const {
   flattenDeep,
-  isNul,
+  isNil,
   isObjectLike,
   mapValues,
   omitBy,
