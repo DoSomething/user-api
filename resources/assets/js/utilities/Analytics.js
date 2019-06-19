@@ -196,7 +196,13 @@ export function trackAnalyticsEvent({ metadata, context = {}, service }) {
 
   const name = formatEventName(verb, noun, adjective);
 
-  const data = withoutValueless(context);
+  const data = withoutValueless({
+    ...context,
+    utmSource: query('utm_source'),
+    utmMedium: query('utm_medium'),
+    utmCampaign: query('utm_campaign'),
+  });
+
   const action = snakeCase(`${target}_${verb}`);
 
   sendToServices(name, category, action, label, data, service);
