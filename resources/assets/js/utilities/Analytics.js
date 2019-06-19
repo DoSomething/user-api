@@ -116,15 +116,19 @@ export function analyzeWithGoogle(name, category, action, label, data) {
   // @DEPRECATE
   Analytics.analyze(category, action, label);
 
-  // Push event action to Google Tag Manager's data layer.
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({
+  const flattenedData = stringifyNestedObjects(data);
+
+  const analyticsEvent = {
     event: name,
     eventAction: startCase(action),
     eventCategory: startCase(category),
     eventLabel: startCase(label),
-    eventContext: data,
-  });
+    ...flattenedData,
+  }
+
+  // Push event action to Google Tag Manager's data layer.
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push(analyticsEvent);
 }
 
 /**
