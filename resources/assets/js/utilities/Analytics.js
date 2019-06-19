@@ -270,6 +270,11 @@ function init() {
     puckClient = puckClientInit();
   }
 
+  // If available, set User ID for Snowplow analytics.
+  if (typeof window.snowplow === 'function' && window.NORTHSTAR_ID) {
+    window.snowplow('setUserId', window.NORTHSTAR_ID);
+  }
+
   // Validation Events for the Register form.
   Validation.Events.subscribe('Validation:InlineError', (topic, args) => {
     // Tracks each individual inline error.
