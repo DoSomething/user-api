@@ -118,6 +118,10 @@ export function analyzeWithGoogle(name, category, action, label, data) {
 
   const flattenedData = stringifyNestedObjects(data);
 
+  if (window.NORTHSTAR_ID) {
+    flattenedData.userId = window.NORTHSTAR_ID;
+  }
+
   const analyticsEvent = {
     event: name,
     eventAction: startCase(action),
