@@ -1,4 +1,5 @@
 const $ = require('jquery');
+const queryString = require('query-string');
 const Analytics = require('@dosomething/analytics');
 const Validation = require('dosomething-validation');
 const { Engine } = require('@dosomething/puck-client');
@@ -17,6 +18,20 @@ const APP_PREFIX = 'northstar';
 
 // Variable that stores the instance of PuckClient.
 let puckClient = null;
+
+/**
+ * Get the query-string value at the given key.
+ *
+ * @param  {String}   key
+ * @param  {URL|Location}   url
+ * @return {String|Undefined}
+ */
+export function query(key, url = window.location) {
+  // Ensure we have a URL object from the location.
+  const search = queryString.parse(url.search);
+
+  return search[key];
+}
 
 /**
  * Stringify all properties on an object whose value is object with properties.
