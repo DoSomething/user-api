@@ -1,14 +1,58 @@
 const $ = require('jquery');
-const { flattenDeep, snakeCase, startCase } = require('lodash');
 const Analytics = require('@dosomething/analytics');
 const Validation = require('dosomething-validation');
 const { Engine } = require('@dosomething/puck-client');
+const {
+  flattenDeep,
+  isNul,
+  isObjectLike,
+  mapValues,
+  omitBy,
+  snakeCase,
+  startCase,
+} = require("lodash");
 
 // App name prefix used for analytics event naming.
 const APP_PREFIX = 'northstar';
 
 // Variable that stores the instance of PuckClient.
 let puckClient = null;
+
+/**
+ * Stringify all properties on an object whose value is object with properties.
+ *
+ * @param  {Object} data
+ * @return {Object}
+ */
+export function stringifyNestedObjects(data) {
+  return mapValues(data, value => {
+    if (isObjectLike(value)) {
+      return JSON.stringify(value);
+    }
+
+    return value;
+  });
+}
+
+/**
+ * Return a boolean indicating whether the provided argument is a string.
+ *
+ * @param  {Mixed}  string
+ * @return {Boolean}
+ */
+export function isEmptyString(string) {
+  return string === '';
+}
+
+/**
+ * Remove items from object with null, undefined, or empty string values.
+ *
+ * @param  {Object} data
+ * @return {Object}
+ */
+export function withoutValueless(data) {
+  return omitBy(omitBy(data, isNil), isEmptyString);
+}
 
 /**
  * Parse analytics event name parameters into a snake cased string.
