@@ -181,9 +181,10 @@ export function trackAnalyticsEvent({ metadata, context = {}, service }) {
 
   const name = formatEventName(verb, noun, adjective);
 
+  const data = withoutValueless(context);
   const action = snakeCase(`${target}_${verb}`);
 
-  sendToServices(name, category, action, label, context, service);
+  sendToServices(name, category, action, label, data, service);
 }
 
 // Helper method to track field focus analytics events.
