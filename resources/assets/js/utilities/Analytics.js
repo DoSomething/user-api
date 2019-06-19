@@ -70,6 +70,19 @@ export function withoutValueless(data) {
 }
 
 /**
+ * Get additional context data.
+ *
+ * @return {Object}
+ */
+export function getAdditionalContext() {
+  return {
+    utmSource: query('utm_source'),
+    utmMedium: query('utm_medium'),
+    utmCampaign: query('utm_campaign'),
+  };
+}
+
+/**
  * Parse analytics event name parameters into a snake cased string.
  *
  * @param  {String}      verb
@@ -198,9 +211,7 @@ export function trackAnalyticsEvent({ metadata, context = {}, service }) {
 
   const data = withoutValueless({
     ...context,
-    utmSource: query('utm_source'),
-    utmMedium: query('utm_medium'),
-    utmCampaign: query('utm_campaign'),
+    ...getAdditionalContext(),
   });
 
   const action = snakeCase(`${target}_${verb}`);
