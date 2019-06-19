@@ -270,9 +270,21 @@ function init() {
     puckClient = puckClientInit();
   }
 
-  // If available, set User ID for Snowplow analytics.
-  if (typeof window.snowplow === 'function' && window.NORTHSTAR_ID) {
-    window.snowplow('setUserId', window.NORTHSTAR_ID);
+  if (typeof window.snowplow === 'function') {
+    // If available, set User ID for Snowplow analytics.
+    if (window.NORTHSTAR_ID) {
+      window.snowplow('setUserId', window.NORTHSTAR_ID);
+    }
+
+    // Track page view to Snowplow analytics.
+    window.snowplow('trackPageView', null, [
+      {
+        schema: `${window.ENV.PHOENIX_URL}/snowplow_schema.json`,
+        data: {
+          payload: JSON.stringify(withoutValueless(getAdditionalContext())),
+        },
+      },
+    ]);
   }
 
   // Validation Events for the Register form.
