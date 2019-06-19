@@ -25,7 +25,6 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.4.5",
-    "@dosomething/analytics": "^1.0.2",
     "@dosomething/forge": "^6.9.1",
     "@dosomething/puck-client": "^1.6.0",
     "core-js": "^3.1.3",
