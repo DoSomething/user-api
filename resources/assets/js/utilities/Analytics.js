@@ -63,18 +63,13 @@ export function analyzeWithPuck(name, data) {
  * @param  {Object} data
  * @return {void}
  */
-export function analyzeWithGoogleAnalytics(
-  name,
-  category,
-  action,
-  label,
-  data,
-) {
+export function analyzeWithGoogle(name, category, action, label, data) {
   if (!category || !action) {
     console.error('The Category or Action is missing!');
     return;
   }
 
+  // @DEPRECATE
   Analytics.analyze(category, action, label);
 
   // Push event action to Google Tag Manager's data layer.
@@ -100,7 +95,7 @@ export function analyzeWithGoogleAnalytics(
 const sendToServices = (name, category, action, label, data, service) => {
   switch (service) {
     case 'ga':
-      analyzeWithGoogleAnalytics(name, category, action, label, data);
+      analyzeWithGoogle(name, category, action, label, data);
       break;
 
     case 'puck':
@@ -108,7 +103,7 @@ const sendToServices = (name, category, action, label, data, service) => {
       break;
 
     default:
-      analyzeWithGoogleAnalytics(name, category, action, label, data);
+      analyzeWithGoogle(name, category, action, label, data);
       analyzeWithPuck(name, data);
   }
 };
