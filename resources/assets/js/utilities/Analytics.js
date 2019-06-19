@@ -10,7 +10,7 @@ const {
   omitBy,
   snakeCase,
   startCase,
-} = require("lodash");
+} = require('lodash');
 
 // App name prefix used for analytics event naming.
 const APP_PREFIX = 'northstar';
