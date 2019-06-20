@@ -135,8 +135,8 @@ export function analyzeWithPuck(name, data) {
  * @return {void}
  */
 export function analyzeWithGoogle(name, category, action, label, data) {
-  if (!category || !action) {
-    console.error('The Category or Action is missing!');
+  if (!name || !category || !action || !label) {
+    console.error('Some expected data is missing!');
     return;
   }
 
