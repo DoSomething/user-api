@@ -1,14 +1,85 @@
 const $ = require('jquery');
-const { flattenDeep, snakeCase, startCase } = require('lodash');
-const Analytics = require('@dosomething/analytics');
+const queryString = require('query-string');
 const Validation = require('dosomething-validation');
 const { Engine } = require('@dosomething/puck-client');
+const {
+  flattenDeep,
+  isNil,
+  isObjectLike,
+  mapValues,
+  omitBy,
+  snakeCase,
+  startCase,
+} = require('lodash');
 
 // App name prefix used for analytics event naming.
 const APP_PREFIX = 'northstar';
 
 // Variable that stores the instance of PuckClient.
 let puckClient = null;
+
+/**
+ * Get the query-string value at the given key.
+ *
+ * @param  {String}   key
+ * @param  {URL|Location}   url
+ * @return {String|Undefined}
+ */
+export function query(key, url = window.location) {
+  // Ensure we have a URL object from the location.
+  const search = queryString.parse(url.search);
+
+  return search[key];
+}
+
+/**
+ * Stringify all properties on an object whose value is object with properties.
+ *
+ * @param  {Object} data
+ * @return {Object}
+ */
+export function stringifyNestedObjects(data) {
+  return mapValues(data, value => {
+    if (isObjectLike(value)) {
+      return JSON.stringify(value);
+    }
+
+    return value;
+  });
+}
+
+/**
+ * Return a boolean indicating whether the provided argument is a string.
+ *
+ * @param  {Mixed}  string
+ * @return {Boolean}
+ */
+export function isEmptyString(string) {
+  return string === '';
+}
+
+/**
+ * Remove items from object with null, undefined, or empty string values.
+ *
+ * @param  {Object} data
+ * @return {Object}
+ */
+export function withoutValueless(data) {
+  return omitBy(omitBy(data, isNil), isEmptyString);
+}
+
+/**
+ * Get additional context data.
+ *
+ * @return {Object}
+ */
+export function getAdditionalContext() {
+  return {
+    utmSource: query('utm_source'),
+    utmMedium: query('utm_medium'),
+    utmCampaign: query('utm_campaign'),
+  };
+}
 
 /**
  * Parse analytics event name parameters into a snake cased string.
@@ -63,29 +134,54 @@ export function analyzeWithPuck(name, data) {
  * @param  {Object} data
  * @return {void}
  */
-export function analyzeWithGoogleAnalytics(
-  name,
-  category,
-  action,
-  label,
-  data,
-) {
-  if (!category || !action) {
-    console.error('The Category or Action is missing!');
+export function analyzeWithGoogle(name, category, action, label, data) {
+  if (!name || !category || !action || !label) {
+    console.error('Some expected data is missing!');
     return;
   }
 
-  Analytics.analyze(category, action, label);
+  const flattenedData = stringifyNestedObjects(data);
 
-  // Push event action to Google Tag Manager's data layer.
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({
+  if (window.NORTHSTAR_ID) {
+    flattenedData.userId = window.NORTHSTAR_ID;
+  }
+
+  const analyticsEvent = {
     event: name,
     eventAction: startCase(action),
     eventCategory: startCase(category),
     eventLabel: startCase(label),
-    eventContext: data,
-  });
+    ...flattenedData,
+  }
+
+  // Push event action to Google Tag Manager's data layer.
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push(analyticsEvent);
+}
+
+/**
+ * Send event to analyze with Snowplow.
+ *
+ * @param  {String} name
+ * @param  {String} category
+ * @param  {String} action
+ * @param  {String} label
+ * @param  {Object} data
+ * @return {void}
+ */
+export function analyzeWithSnowplow(name, category, action, label, data) {
+  if (!window.snowplow) {
+    return;
+  }
+
+  window.snowplow('trackStructEvent', category, action, label, name, null, [
+    {
+      schema: `${window.ENV.PHOENIX_URL}/snowplow_schema.json`,
+      data: {
+        payload: JSON.stringify(data),
+      },
+    },
+  ]);
 }
 
 /**
@@ -100,7 +196,7 @@ export function analyzeWithGoogleAnalytics(
 const sendToServices = (name, category, action, label, data, service) => {
   switch (service) {
     case 'ga':
-      analyzeWithGoogleAnalytics(name, category, action, label, data);
+      analyzeWithGoogle(name, category, action, label, data);
       break;
 
     case 'puck':
@@ -108,8 +204,9 @@ const sendToServices = (name, category, action, label, data, service) => {
       break;
 
     default:
-      analyzeWithGoogleAnalytics(name, category, action, label, data);
+      analyzeWithGoogle(name, category, action, label, data);
       analyzeWithPuck(name, data);
+      analyzeWithSnowplow(name, category, action, label, data);
   }
 };
 
@@ -134,9 +231,14 @@ export function trackAnalyticsEvent({ metadata, context = {}, service }) {
 
   const name = formatEventName(verb, noun, adjective);
 
+  const data = withoutValueless({
+    ...context,
+    ...getAdditionalContext(),
+  });
+
   const action = snakeCase(`${target}_${verb}`);
 
-  sendToServices(name, category, action, label, context, service);
+  sendToServices(name, category, action, label, data, service);
 }
 
 // Helper method to track field focus analytics events.
@@ -158,10 +260,25 @@ function trackInputFocus(inputName) {
 }
 
 function init() {
-  Analytics.init();
-
   if (!puckClient) {
     puckClient = puckClientInit();
+  }
+
+  if (typeof window.snowplow === 'function') {
+    // If available, set User ID for Snowplow analytics.
+    if (window.NORTHSTAR_ID) {
+      window.snowplow('setUserId', window.NORTHSTAR_ID);
+    }
+
+    // Track page view to Snowplow analytics.
+    window.snowplow('trackPageView', null, [
+      {
+        schema: `${window.ENV.PHOENIX_URL}/snowplow_schema.json`,
+        data: {
+          payload: JSON.stringify(withoutValueless(getAdditionalContext())),
+        },
+      },
+    ]);
   }
 
   // Validation Events for the Register form.

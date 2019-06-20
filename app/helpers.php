@@ -254,6 +254,7 @@ function get_client_environment_vars()
 {
     return [
         'PUCK_URL' => config('services.puck.url'),
+        'PHOENIX_URL' => config('services.phoenix.url'),
     ];
 }
 
