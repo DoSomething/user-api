@@ -230,7 +230,7 @@ class AuthController extends BaseController
             $feature_flags = $user->feature_flags;
 
             // Give 70% users the badges flag (1-7), 30% in control (8-10)
-            $feature_flags['badges'] = ( rand(1, 10) < 8);
+            $feature_flags['badges'] = (rand(1, 10) < 8);
 
             $user->feature_flags = $feature_flags;
         }
