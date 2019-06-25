@@ -7,8 +7,7 @@
 
           window.snowplow('newTracker', 'cf', '{{config('services.analytics.snowplow_url')}}', {
             appId: 'northstar',
-            cookieDomain: null,
-            discoverRootDomain: true
+            cookieDomain: '.dosomething.org'
         });
     </script>
 @else
