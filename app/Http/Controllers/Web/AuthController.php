@@ -225,11 +225,12 @@ class AuthController extends BaseController
             }
         });
 
-        // If the badges test is running, put half of users in badges group and half in control group
+        // If the badges test is running, sort users into badges group control group
         if (config('features.badges')) {
             $feature_flags = $user->feature_flags;
 
-            $feature_flags['badges'] = (bool) rand(0, 1);
+            // Give 70% users the badges flag (1-7), 30% in control (8-10)
+            $feature_flags['badges'] = (rand(1, 10) < 8);
 
             $user->feature_flags = $feature_flags;
         }
