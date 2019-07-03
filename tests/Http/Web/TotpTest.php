@@ -2,7 +2,7 @@
 
 use Northstar\Models\User;
 
-class WebAuthenticationTest extends BrowserKitTestCase
+class TotpTest extends BrowserKitTestCase
 {
     /**
      * Default headers for this test case.
