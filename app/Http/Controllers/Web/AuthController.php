@@ -148,7 +148,8 @@ class AuthController extends BaseController
         // If we had stored a destination name, reset it.
         session()->pull('destination');
 
-        // If the user has 2FA enabled, prompt for a code:
+        // If the user has 2FA enabled, redirect them to the code
+        // verification form to complete their authentication:
         if ($user->totp) {
             $this->auth->guard('web')->logout();
             session(['totp.user' => $user->id]);
