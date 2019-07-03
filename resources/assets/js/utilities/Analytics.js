@@ -264,6 +264,23 @@ function init() {
     puckClient = puckClientInit();
   }
 
+  if (typeof window.snowplow === 'function') {
+    // If available, set User ID for Snowplow analytics.
+    if (window.NORTHSTAR_ID) {
+      window.snowplow('setUserId', window.NORTHSTAR_ID);
+    }
+
+    // Track page view to Snowplow analytics.
+    window.snowplow('trackPageView', null, [
+      {
+        schema: `${window.ENV.PHOENIX_URL}/snowplow_schema.json`,
+        data: {
+          payload: JSON.stringify(withoutValueless(getAdditionalContext())),
+        },
+      },
+    ]);
+  }
+
   // Validation Events for the Register form.
   Validation.Events.subscribe('Validation:InlineError', (topic, args) => {
     // Tracks each individual inline error.
@@ -339,26 +356,8 @@ function init() {
     });
   });
 
+  // Custom tracking events.
   $(document).ready(() => {
-    if (typeof window.snowplow === 'function') {
-      // If available, set User ID for Snowplow analytics.
-      if (window.NORTHSTAR_ID) {
-        window.snowplow('setUserId', window.NORTHSTAR_ID);
-      }
-
-      // Track page view to Snowplow analytics.
-      window.snowplow('trackPageView', null, [
-        {
-          schema: `${window.ENV.PHOENIX_URL}/snowplow_schema.json`,
-          data: {
-            payload: JSON.stringify(withoutValueless(getAdditionalContext())),
-          },
-        },
-      ]);
-    }
-
-    // Custom tracking events:
-
     // Tracks an auto focused form field (which will already be focused upon page load).
     const focusedElement = $('input:focus');
     if (focusedElement.length) {
