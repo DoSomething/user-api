@@ -14,6 +14,12 @@
         </figure>
     </div>
 
+    @if(in_array($user->role, ['staff', 'admin']) && !$user->totp)
+        <div class="container__block -centered">
+            <mark class="footnote alert">Add <a href="/totp/configure">two-factor authentication</a> to your account for extra security!</mark>
+        </div>
+    @endif
+
     <div class="container__block">
         <div class="key-value">
             {{-- @TODO: Might want to handle null values a little better so empty <dd>'s and <p>'s don't output  --}}
