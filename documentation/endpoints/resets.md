@@ -21,6 +21,7 @@ POST /v2/resets
    *
    * Valid types:
    * - 'forgot-password'
+   * - 'breakdown-activate-account'
    * - 'rock-the-vote-activate-account' 
    */
   type: String
