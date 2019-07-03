@@ -17,7 +17,6 @@ class TotpController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('throttle', ['only' => ['verify']]);
         $this->middleware('auth:web', ['only' => ['create', 'store']]);
     }
 
@@ -39,27 +38,26 @@ class TotpController extends Controller
      */
     public function verify(Request $request)
     {
-        $id = session('totp.user');
-
         $this->validate($request, [
             'code' => 'required|numeric',
         ]);
 
+        $id = session()->pull('totp.user');
+
         // If we aren't fulfilling a login prompt, then no code will be valid:
         if (! $id) {
-            return back()->with('status', 'That code isn\'t valid. Try again!');
+            return redirect('/login')->with('status', 'That wasn\'t a valid two-factor code. Try again!');
         }
 
         // Verify provided TOTP code for the user:
         $user = User::find($id);
         $totp = Factory::loadFromProvisioningUri($user->totp);
         if (! $totp->verify($request->code)) {
-            return back()->with('status', 'That code isn\'t valid. Try again!');
+            return redirect('/login')->with('status', 'That wasn\'t a valid two-factor code. Try again!');
         }
 
         // Authenticate the user & redirect to intended location:
         Auth::login($user, true);
-        session()->forget('totp.user');
 
         return redirect()->intended('/');
     }

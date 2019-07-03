@@ -60,7 +60,7 @@ class TotpTest extends BrowserKitTestCase
         $this->type('000000', 'code')
             ->press('Verify');
 
-        $this->see('That code isn\'t valid. Try again!');
+        $this->see('That wasn\'t a valid two-factor code. Try again!');
         $this->dontSeeIsAuthenticated('web');
     }
 }
