@@ -148,6 +148,14 @@ class AuthController extends BaseController
         // If we had stored a destination name, reset it.
         session()->pull('destination');
 
+        // If the user has 2FA enabled, prompt for a code:
+        if ($user->totp) {
+            $this->auth->guard('web')->logout();
+            session(['totp.user' => $user->id]);
+
+            return redirect('/totp');
+        }
+
         return redirect()->intended('/');
     }
 
