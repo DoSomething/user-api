@@ -15,7 +15,7 @@ return [
     'get_started' => [
         'log_in' => 'Log in to get started!',
         'create_account' => 'Create a DoSomething.org account to get started!',
-        'call_to_action' => 'Join 6 million young people taking action.',
+        'call_to_action' => 'Join millions of young people taking action.',
     ],
     'validation' => [
         'issues' => 'Hmm, there were some issues with that submission:',

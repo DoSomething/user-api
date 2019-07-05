@@ -423,8 +423,7 @@ function init() {
       // Tracks clicking on the Login With Facebook button.
       trackAnalyticsEvent({
         metadata: {
-          category: 'login_facebook',
-          label: 'authentication',
+          category: 'authentication',
           noun: 'login_facebook',
           target: 'button',
           verb: 'clicked',
