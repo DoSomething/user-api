@@ -70,7 +70,7 @@ class TotpController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function configure()
     {
         $user = Auth::user();
 
@@ -86,7 +86,7 @@ class TotpController extends Controller
         $uri = $totp->getProvisioningUri();
         $qr = new QrCode($uri);
 
-        return view('totp.create', ['user' => $user, 'uri' => $uri, 'qr' => $qr]);
+        return view('totp.configure', ['user' => $user, 'uri' => $uri, 'qr' => $qr]);
     }
 
     /**

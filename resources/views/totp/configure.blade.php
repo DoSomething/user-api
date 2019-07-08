@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Add Two-Factor Code | DoSomething.org')
+@section('title', 'Add Two-Factor Device | DoSomething.org')
 
 @section('content')
     <div class="container__block -centered">
