@@ -146,8 +146,7 @@ class AuthController extends BaseController
                 ]);
         }
 
-        // If we had stored a destination name, reset it.
-        session()->pull('destination');
+        $this->cleanupSession();
 
         // Finally, if the user has 2FA enabled, redirect them to the code verification
         // form (see TotpController@verify) to complete their authentication:
@@ -248,6 +247,8 @@ class AuthController extends BaseController
             $user->feature_flags = $feature_flags;
         }
 
+        $this->cleanupSession();
+
         $this->auth->guard('web')->login($user, true);
 
         return redirect()->intended('/');
@@ -274,5 +275,15 @@ class AuthController extends BaseController
     public function loginUsername()
     {
         return 'username';
+    }
+
+    /**
+     * Clean up any context we'd stored in the session during the auth flow.
+     *
+     * @return string
+     */
+    public function cleanupSession()
+    {
+        session()->forget('destination', 'title', 'callToAction', 'coverImage', 'source_detail');
     }
 }
