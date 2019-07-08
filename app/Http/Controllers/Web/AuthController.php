@@ -10,7 +10,6 @@ use Psr\Http\Message\ResponseInterface;
 use Northstar\Auth\Entities\UserEntity;
 use Psr\Http\Message\ServerRequestInterface;
 use League\OAuth2\Server\AuthorizationServer;
-use Northstar\Exceptions\NorthstarValidationException;
 
 class AuthController extends Controller
 {
@@ -184,7 +183,7 @@ class AuthController extends Controller
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
-     * @throws NorthstarValidationException
+     * @throws \Northstar\Exceptions\NorthstarValidationException
      */
     public function postRegister(Request $request)
     {
