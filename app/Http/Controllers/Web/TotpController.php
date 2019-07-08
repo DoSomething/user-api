@@ -81,7 +81,11 @@ class TotpController extends Controller
 
         // Create a TOTP provisioning URI:
         $totp = TOTP::create();
-        $totp->setLabel(Auth::id());
+
+        // We'll include some metadata so apps like Google Authenticator
+        // can properly label the code for the user:
+        $totp->setIssuer(config('app.name'));
+        $totp->setLabel($user->email ?: $user->mobile);
 
         $uri = $totp->getProvisioningUri();
         $qr = new QrCode($uri);
