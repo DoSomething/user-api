@@ -12,6 +12,13 @@ class PasswordResetType
     public static $forgotPassword = 'forgot-password';
 
     /**
+     * A Breakdown Subscriber Activate Account type.
+     *
+     * @var string
+     */
+    public static $breakdownActivateAccount = 'breakdown-activate-account';
+
+    /**
      * A Rock The Vote Activate Account type.
      *
      * @var string
@@ -25,6 +32,10 @@ class PasswordResetType
      */
     public static function all()
     {
-        return [self::$forgotPassword, self::$rockTheVoteActivateAccount];
+        return [
+            self::$forgotPassword,
+            self::$breakdownActivateAccount,
+            self::$rockTheVoteActivateAccount,
+        ];
     }
 }
