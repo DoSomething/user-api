@@ -137,7 +137,8 @@ class AuthController extends BaseController
 
         // Attempt to log in the user to Northstar!
         $credentials = $request->only('username', 'password');
-        if (! $this->auth->guard('web')->attempt($credentials, true)) {
+        $validCredentials = $this->auth->guard('web')->validate($credentials);
+        if (! $validCredentials) {
             return redirect()->back()
                 ->withInput($request->only('username'))
                 ->withErrors([
@@ -148,14 +149,17 @@ class AuthController extends BaseController
         // If we had stored a destination name, reset it.
         session()->pull('destination');
 
-        // If the user has 2FA enabled, redirect them to the code
-        // verification form to complete their authentication:
+        // Finally, if the user has 2FA enabled, redirect them to the code verification
+        // form (see TotpController@verify) to complete their authentication:
         if ($user->totp) {
-            $this->auth->guard('web')->logout();
             session(['totp.user' => $user->id]);
 
             return redirect('/totp');
         }
+
+        // We've made it! Log in the user, with a "remember token", and
+        // send them along to their intended destination:
+        $this->auth->guard('web')->login($user, true);
 
         return redirect()->intended('/');
     }

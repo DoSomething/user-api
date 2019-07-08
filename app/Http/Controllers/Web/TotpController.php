@@ -43,7 +43,7 @@ class TotpController extends Controller
         ]);
 
         // The 2FA verification flow is initiated by redirecting a successfully
-        // authenticated user from `AuthController@postLogin`. The to-be-authenticated
+        // authenticated user from AuthController@postLogin. The to-be-authenticated
         // user ID is stored in the backend session:
         $id = session()->pull('totp.user');
 
