@@ -56,17 +56,20 @@ class AuthController extends Controller
         $authRequest = $this->oauth->validateAuthorizationRequest($request);
         $client = $authRequest->getClient();
 
-        // Store the Client ID so we can set user source on registrations.
-        session(['authorize_client_id' => request()->query('client_id')]);
-
         if (! Auth::check()) {
             $authorizationRoute = request()->query('mode') === 'login' ? 'login' : 'register';
 
+            // Store any context we'll need for login or registration in the session.
+            // NOTE: Be sure to clear these in AuthController@cleanupSession afterwards!
             session([
+                // Store the Client ID so we can set user's source field on registrations:
+                'authorize_client_id' => $client->getIdentifier(),
+                // Store destination & content fields so we can customize registration page:
                 'destination' => request()->query('destination', $client->getName()),
                 'title' => request()->query('title', trans('auth.get_started.create_account')),
                 'callToAction' => request()->query('callToAction', trans('auth.get_started.call_to_action')),
                 'coverImage' => request()->query('coverImage', asset('members.jpg')),
+                // Store any provided UTMs or Contentful ID for user's source_detail:
                 'source_detail' => array_filter([
                     'contentful_id' => request()->query('contentful_id'),
                     'utm_source' => request()->query('utm_source'),
