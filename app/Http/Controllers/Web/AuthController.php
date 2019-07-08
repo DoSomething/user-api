@@ -137,16 +137,26 @@ class AuthController extends BaseController
 
         // Attempt to log in the user to Northstar!
         $credentials = $request->only('username', 'password');
-        if (! $this->auth->guard('web')->attempt($credentials, true)) {
+        $validCredentials = $this->auth->guard('web')->validate($credentials);
+        if (! $validCredentials) {
             return redirect()->back()
                 ->withInput($request->only('username'))
-                ->withErrors([
-                    $this->loginUsername() => 'These credentials do not match our records.',
-                ]);
+                ->withErrors(['username' => 'These credentials do not match our records.']);
         }
 
-        // If we had stored a destination name, reset it.
-        session()->pull('destination');
+        $this->cleanupSession();
+
+        // Finally, if the user has 2FA enabled, redirect them to the code verification
+        // form (see TotpController@verify) to complete their authentication:
+        if ($user->totp) {
+            session(['totp.user' => $user->id]);
+
+            return redirect('/totp');
+        }
+
+        // We've made it! Log in the user, with a "remember token", and
+        // send them along to their intended destination:
+        $this->auth->guard('web')->login($user, true);
 
         return redirect()->intended('/');
     }
@@ -235,6 +245,8 @@ class AuthController extends BaseController
             $user->feature_flags = $feature_flags;
         }
 
+        $this->cleanupSession();
+
         $this->auth->guard('web')->login($user, true);
 
         return redirect()->intended('/');
@@ -254,12 +266,12 @@ class AuthController extends BaseController
     }
 
     /**
-     * Get the login username to be used by the controller.
+     * Clean up any context we'd stored in the session during the auth flow.
      *
      * @return string
      */
-    public function loginUsername()
+    public function cleanupSession()
     {
-        return 'username';
+        session()->forget('destination', 'title', 'callToAction', 'coverImage', 'source_detail');
     }
 }

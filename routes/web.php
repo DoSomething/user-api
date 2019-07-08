@@ -24,6 +24,12 @@ $router->get('login', 'AuthController@getLogin');
 $router->post('login', 'AuthController@postLogin');
 $router->get('logout', 'AuthController@getLogout');
 
+// Two-Factor Authentication
+$router->get('totp', 'TotpController@prompt');
+$router->post('totp', 'TotpController@verify');
+$router->get('totp/configure', 'TotpController@configure');
+$router->post('totp/configure', 'TotpController@store');
+
 // Facebook Continue
 $router->get('facebook/continue', 'FacebookController@redirectToProvider');
 $router->get('facebook/verify', 'FacebookController@handleProviderCallback');

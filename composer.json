@@ -17,6 +17,7 @@
     "dfurnes/environmentalist": "0.0.2",
     "dosomething/gateway": "^1.16",
     "dosomething/stathat": "^2.0.0",
+    "endroid/qr-code": "^3.6",
     "fideloper/proxy": "^3.3",
     "giggsey/libphonenumber-for-php": "^7.0",
     "gree/jose": "^2.2",
@@ -34,6 +35,7 @@
     "mongodb/mongodb": "~1.2.0",
     "predis/predis": "^1.1",
     "seatgeek/sixpack-php": "^2.1",
+    "spomky-labs/otphp": "^10.0",
     "symfony/psr-http-message-bridge": "^1.0.0",
     "zendframework/zend-diactoros": "^1.3"
   },

@@ -119,7 +119,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public static $internal = [
         'drupal_id', 'role', 'facebook_id',
         'mobilecommons_id', 'mobilecommons_status', 'sms_status', 'sms_paused',
-        'last_messaged_at', 'feature_flags',
+        'last_messaged_at', 'feature_flags', 'totp',
     ];
 
     /**
@@ -151,7 +151,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var array
      */
-    protected $hidden = ['drupal_password', 'password', 'audit'];
+    protected $hidden = ['drupal_password', 'password', 'audit', 'totp'];
 
     /**
      * The attributes that should be mutated to dates.
