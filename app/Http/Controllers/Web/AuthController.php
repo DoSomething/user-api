@@ -52,13 +52,10 @@ class AuthController extends Controller
      */
     public function getAuthorize(ServerRequestInterface $request, ResponseInterface $response)
     {
-        // Validate the HTTP request and return an AuthorizationRequest.
         $authRequest = $this->oauth->validateAuthorizationRequest($request);
         $client = $authRequest->getClient();
 
         if (! Auth::check()) {
-            $authorizationRoute = request()->query('mode') === 'login' ? 'login' : 'register';
-
             // Store any context we'll need for login or registration in the session.
             // NOTE: Be sure to clear these in AuthController@cleanupSession afterwards!
             session([
@@ -78,17 +75,19 @@ class AuthController extends Controller
                 ]),
             ]);
 
+            // Optionally, we can override the default authorization page using `?mode=login`.
+            $authorizationRoute = request()->query('mode') === 'login' ? 'login' : 'register';
+
             return redirect()->guest($authorizationRoute);
         }
 
         $user = UserEntity::fromModel(Auth::user());
         $authRequest->setUser($user);
 
-        // Clients are all our own at the moment, so they will always be approved.
-        // @TODO: Add an explicit "DoSomething.org app" boolean to the Client model.
+        // Our applications are all first-party, so they will always be approved. If we were to allow
+        // third-party apps one day, we'd want to prompt the user to approve them here.
         $authRequest->setAuthorizationApproved(true);
 
-        // Return the HTTP redirect response.
         return $this->oauth->completeAuthorizationRequest($authRequest, $response);
     }
 
