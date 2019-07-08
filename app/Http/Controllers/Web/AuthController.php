@@ -50,7 +50,7 @@ class AuthController extends Controller
      * @param ResponseInterface $response
      * @return ResponseInterface|\Illuminate\Http\RedirectResponse
      */
-    public function authorize(ServerRequestInterface $request, ResponseInterface $response)
+    public function getAuthorize(ServerRequestInterface $request, ResponseInterface $response)
     {
         // Validate the HTTP request and return an AuthorizationRequest.
         $authRequest = $this->oauth->validateAuthorizationRequest($request);
@@ -241,7 +241,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function callback()
+    public function getCallback()
     {
         $user = Auth::user();
 
