@@ -59,9 +59,6 @@ class AuthController extends Controller
         // Store the Client ID so we can set user source on registrations.
         session(['authorize_client_id' => request()->query('client_id')]);
 
-        // Store the referrer URI so we can redirect back to it if necessary.
-        session(['referrer_uri' => request()->query('referrer_uri')]);
-
         if (! Auth::check()) {
             $authorizationRoute = request()->query('mode') === 'login' ? 'login' : 'register';
 
