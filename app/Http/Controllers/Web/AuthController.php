@@ -141,9 +141,7 @@ class AuthController extends BaseController
         if (! $validCredentials) {
             return redirect()->back()
                 ->withInput($request->only('username'))
-                ->withErrors([
-                    $this->loginUsername() => 'These credentials do not match our records.',
-                ]);
+                ->withErrors(['username' => 'These credentials do not match our records.']);
         }
 
         $this->cleanupSession();
@@ -265,16 +263,6 @@ class AuthController extends BaseController
         $user = $this->auth->guard('web')->user();
 
         return view('auth.callback', compact('user'));
-    }
-
-    /**
-     * Get the login username to be used by the controller.
-     *
-     * @return string
-     */
-    public function loginUsername()
-    {
-        return 'username';
     }
 
     /**
