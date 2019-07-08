@@ -7,9 +7,7 @@
         <h2 class="heading -alpha">🔐</h2>
     </div>
     <div class="container__block -centered">
-        <p><strong>This account is protected by two-factor authentication.</strong> To continue, use your authenticator app
-        (such as <a href="https://support.google.com/accounts/answer/1066447">Google Authenticator</a>)
-        to generate a code & enter it below.</p>
+        <p><strong>This account is protected by two-factor authentication.</strong> To continue, use your authenticator app to generate a code:</p>
     </div>
 
     @if (count($errors) > 0)
