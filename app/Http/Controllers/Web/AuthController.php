@@ -109,19 +109,18 @@ class AuthController extends Controller
      */
     public function postLogin(Request $request)
     {
-        $this->validate($request, [
+        $credentials = $this->validate($request, [
             'username' => 'required',
             'password' => 'required',
         ]);
 
-        // Check if that user needs to reset their password in order to log in.
+        // Check if the user needs to reset their password in order to log in:
         $user = $this->registrar->resolve(['username' => $request['username']]);
         if ($user && ! $user->hasPassword()) {
             return back()->withInput()->with('request_reset', true);
         }
 
-        // Attempt to log in the user to Northstar!
-        $credentials = $request->only('username', 'password');
+        // Are the given credentials valid?
         if (! Auth::validate($credentials)) {
             return back()->withInput()->withErrors(['username' => 'These credentials do not match our records.']);
         }
@@ -152,9 +151,9 @@ class AuthController extends Controller
      */
     public function getLogout(Request $request)
     {
-        // A custom post-logout redirect can be specified with `/logout?redirect=`
+        // A custom post-logout redirect can be specified with `/logout?redirect=`.
+        // If not provided (or not for a "safe" domain), redirect to the login form.
         $redirect = $request->query('redirect');
-
         if (! $redirect || ! is_dosomething_domain($redirect)) {
             $redirect = 'login';
         }
@@ -242,9 +241,7 @@ class AuthController extends Controller
      */
     public function getCallback()
     {
-        $user = Auth::user();
-
-        return view('auth.callback', compact('user'));
+        return view('auth.callback', ['user' => Auth::user()]);
     }
 
     /**
@@ -252,7 +249,7 @@ class AuthController extends Controller
      *
      * @return string
      */
-    public function cleanupSession()
+    protected function cleanupSession()
     {
         session()->forget('destination', 'title', 'callToAction', 'coverImage', 'source_detail');
     }
