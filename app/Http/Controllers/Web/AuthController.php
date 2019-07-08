@@ -10,14 +10,10 @@ use Northstar\Auth\Entities\UserEntity;
 use Psr\Http\Message\ServerRequestInterface;
 use League\OAuth2\Server\AuthorizationServer;
 use Illuminate\Contracts\Auth\Factory as Auth;
-use Illuminate\Routing\Controller as BaseController;
 use Northstar\Exceptions\NorthstarValidationException;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 
-class AuthController extends BaseController
+class AuthController extends Controller
 {
-    use ValidatesRequests;
-
     /**
      * The OAuth authorization server.
      *
