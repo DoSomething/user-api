@@ -118,14 +118,14 @@ class AuthController extends Controller
         // Check if that user needs to reset their password in order to log in.
         $user = $this->registrar->resolve(['username' => $request['username']]);
         if ($user && ! $user->hasPassword()) {
-            return redirect()->back()->withInput($request->only('username'))->with('request_reset', true);
+            return back()->withInput($request->only('username'))->with('request_reset', true);
         }
 
         // Attempt to log in the user to Northstar!
         $credentials = $request->only('username', 'password');
         $validCredentials = Auth::validate($credentials);
         if (! $validCredentials) {
-            return redirect()->back()
+            return back()
                 ->withInput($request->only('username'))
                 ->withErrors(['username' => 'These credentials do not match our records.']);
         }
