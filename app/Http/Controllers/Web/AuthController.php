@@ -5,11 +5,11 @@ namespace Northstar\Http\Controllers\Web;
 use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
+use Illuminate\Support\Facades\Auth;
 use Psr\Http\Message\ResponseInterface;
 use Northstar\Auth\Entities\UserEntity;
 use Psr\Http\Message\ServerRequestInterface;
 use League\OAuth2\Server\AuthorizationServer;
-use Illuminate\Contracts\Auth\Factory as Auth;
 use Northstar\Exceptions\NorthstarValidationException;
 
 class AuthController extends Controller
@@ -22,13 +22,6 @@ class AuthController extends Controller
     protected $oauth;
 
     /**
-     * The authentication factory.
-     *
-     * @var \Illuminate\Contracts\Auth\Factory
-     */
-    protected $auth;
-
-    /**
      * The registrar.
      *
      * @var Registrar
@@ -39,13 +32,11 @@ class AuthController extends Controller
      * Make a new WebController, inject dependencies,
      * and set middleware for this controller's methods.
      *
-     * @param Auth $auth
      * @param Registrar $registrar
      * @param AuthorizationServer $oauth
      */
-    public function __construct(Auth $auth, Registrar $registrar, AuthorizationServer $oauth)
+    public function __construct(Registrar $registrar, AuthorizationServer $oauth)
     {
-        $this->auth = $auth;
         $this->registrar = $registrar;
         $this->oauth = $oauth;
 
@@ -72,7 +63,7 @@ class AuthController extends Controller
         // Store the referrer URI so we can redirect back to it if necessary.
         session(['referrer_uri' => request()->query('referrer_uri')]);
 
-        if (! $this->auth->guard('web')->check()) {
+        if (! Auth::check()) {
             $authorizationRoute = request()->query('mode') === 'login' ? 'login' : 'register';
 
             session([
@@ -91,7 +82,7 @@ class AuthController extends Controller
             return redirect()->guest($authorizationRoute);
         }
 
-        $user = UserEntity::fromModel($this->auth->guard('web')->user());
+        $user = UserEntity::fromModel(Auth::user());
         $authRequest->setUser($user);
 
         // Clients are all our own at the moment, so they will always be approved.
@@ -133,7 +124,7 @@ class AuthController extends Controller
 
         // Attempt to log in the user to Northstar!
         $credentials = $request->only('username', 'password');
-        $validCredentials = $this->auth->guard('web')->validate($credentials);
+        $validCredentials = Auth::validate($credentials);
         if (! $validCredentials) {
             return redirect()->back()
                 ->withInput($request->only('username'))
@@ -152,7 +143,7 @@ class AuthController extends Controller
 
         // We've made it! Log in the user, with a "remember token", and
         // send them along to their intended destination:
-        $this->auth->guard('web')->login($user, true);
+        Auth::login($user, true);
 
         return redirect()->intended('/');
     }
@@ -173,7 +164,7 @@ class AuthController extends Controller
             $redirect = 'login';
         }
 
-        $this->auth->guard('web')->logout();
+        Auth::logout();
 
         return redirect($redirect);
     }
@@ -243,7 +234,7 @@ class AuthController extends Controller
 
         $this->cleanupSession();
 
-        $this->auth->guard('web')->login($user, true);
+        Auth::login($user, true);
 
         return redirect()->intended('/');
     }
@@ -256,7 +247,7 @@ class AuthController extends Controller
      */
     public function callback()
     {
-        $user = $this->auth->guard('web')->user();
+        $user = Auth::user();
 
         return view('auth.callback', compact('user'));
     }
