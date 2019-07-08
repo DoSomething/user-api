@@ -226,7 +226,6 @@ class AuthController extends Controller
             }
         });
 
-
         $this->cleanupSession();
 
         Auth::login($user, true);
