@@ -18,11 +18,11 @@ $router->group(['prefix' => 'v2', 'as' => 'v2.'], function () {
     $this->get('userinfo', 'UserInfoController@show');
 
     // Users
-    $this->resource('users', 'Two\UserController');
-    // Get user by mobile #
-    $this->get('mobile/{mobile}', 'Two\MobileController@show');
-    // Get user by email
-    $this->get('email/{email}', 'Two\EmailController@show');
+    $this->resource('users', 'UserController');
+
+    // User (by email or mobile number)
+    $this->get('mobile/{mobile}', 'MobileController@show');
+    $this->get('email/{email}', 'EmailController@show');
 
     // Profile
     // ...
@@ -43,14 +43,14 @@ $router->group(['prefix' => 'v2', 'as' => 'v2.'], function () {
 // https://profile.dosomething.org/v1/
 $router->group(['prefix' => 'v1', 'as' => 'v1.'], function () {
     // Users
-    $this->resource('users', 'UserController', ['except' => ['show', 'update']]);
-    $this->get('users/{term}/{id}', 'UserController@show');
-    $this->put('users/{term}/{id}', 'UserController@update');
-    $this->post('users/{id}/merge', 'MergeController@store');
+    $this->resource('users', 'Legacy\UserController', ['except' => ['show', 'update']]);
+    $this->get('users/{term}/{id}', 'Legacy\UserController@show');
+    $this->put('users/{term}/{id}', 'Legacy\UserController@update');
+    $this->post('users/{id}/merge', 'Legacy\MergeController@store');
 
     // Profile (the currently authenticated user)
-    $this->get('profile', 'ProfileController@show');
-    $this->post('profile', 'ProfileController@update');
+    $this->get('profile', 'Legacy\ProfileController@show');
+    $this->post('profile', 'Legacy\ProfileController@update');
 });
 
 // Discovery

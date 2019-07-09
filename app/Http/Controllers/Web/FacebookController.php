@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
+use Northstar\Http\Controllers\Controller;
 use Laravel\Socialite\Two\InvalidStateException;
 use Northstar\Auth\Registrar;
 use Northstar\Models\User;

@@ -4,9 +4,13 @@ namespace Northstar\Http\Controllers;
 
 use Auth;
 use Northstar\Auth\Role;
+use Northstar\Auth\Scope;
 use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\AuthenticationException;
 use Northstar\Http\Transformers\UserTransformer;
 use Northstar\Exceptions\NorthstarValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -38,7 +42,7 @@ class UserController extends Controller
         $this->registrar = $registrar;
         $this->transformer = $transformer;
 
-        $this->middleware('role:admin,staff', ['except' => ['show']]);
+        $this->middleware('role:admin,staff', ['except' => ['show', 'update']]);
         $this->middleware('scope:user');
         $this->middleware('scope:write', ['only' => ['store', 'update', 'destroy']]);
     }
@@ -86,12 +90,10 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // This endpoint will upsert by default (so it will either create a new user, or
-        // update a user if one with a matching index field is found).
         $existingUser = $this->registrar->resolve($request->only('id', 'email', 'mobile', 'drupal_id', 'facebook_id'));
 
-        // If `?upsert=false` and a record already exists, return a custom validation error.
-        if (! filter_var($request->query('upsert', 'true'), FILTER_VALIDATE_BOOLEAN) && $existingUser) {
+        // If there is an existing user, throw an error.
+        if ($existingUser && ! $request->query('upsert')) {
             throw new NorthstarValidationException(['id' => ['A record matching one of the given indexes already exists.']], $existingUser);
         }
 
@@ -99,27 +101,25 @@ class UserController extends Controller
         $request = normalize('credentials', $request);
         $this->registrar->validate($request, $existingUser);
 
-        // Makes sure we can't "upsert" a record to have a changed index if already set.
-        // @TODO: There must be a better way to do this...
-        foreach (User::$uniqueIndexes as $index) {
-            if ($request->has($index) && ! empty($existingUser->{$index}) && $request->input($index) !== $existingUser->{$index}) {
-                app('stathat')->ezCount('upsert conflict');
-                logger('attempted to upsert an existing index', [
-                    'index' => $index,
-                    'new' => $request->input($index),
-                    'existing' => $existingUser->{$index},
-                ]);
+        // If `?upsert=true` and a record already exists, update a user with the $request fields.
+        if ($request->query('upsert') && $existingUser) {
+            // Makes sure we can't "upsert" a record to have a changed index if already set.
+            // @TODO: There must be a better way to do this...
+            foreach (User::$uniqueIndexes as $index) {
+                if ($request->has($index) && ! empty($existingUser->{$index}) && $request->input($index) !== $existingUser->{$index}) {
+                    app('stathat')->ezCount('upsert conflict');
+                    logger('attempted to upsert an existing index', [
+                        'index' => $index,
+                        'new' => $request->input($index),
+                        'existing' => $existingUser->{$index},
+                    ]);
 
-                throw new NorthstarValidationException([$index => ['Cannot upsert an existing index.']], $existingUser);
+                    throw new NorthstarValidationException([$index => ['Cannot upsert an existing index.']], $user);
+                }
             }
         }
 
-        $user = $this->registrar->register($request->except('role'), $existingUser, function (User $user) use ($request, $existingUser) {
-            // Only save a source if not upserting a user.
-            if ($request->has('source') && ! $existingUser) {
-                $user->setSource($request->input('source'), $request->input('source_detail'));
-            }
-        });
+        $user = $this->registrar->register($request->except('role'), $existingUser);
 
         $code = ! is_null($existingUser) ? 200 : 201;
 
@@ -128,22 +128,16 @@ class UserController extends Controller
 
     /**
      * Display the specified resource.
-     * GET /users/:term/:id
+     * GET /users/:id
      *
-     * @param string $term - term to search by (eg. mobile, drupal_id, id, email, etc)
      * @param string $id - the actual value to search for
      *
      * @return \Illuminate\Http\Response
      * @throws NotFoundHttpException
      */
-    public function show($term, $id)
+    public function show($id)
     {
-        // Restrict username/email/mobile/facebook_id profile lookup to admin or staff.
-        if (in_array($term, ['username', 'email', 'mobile', 'facebook_id'])) {
-            Role::gate(['admin', 'staff']);
-        }
-
-        $user = $this->registrar->resolveOrFail([$term => $id]);
+        $user = User::findOrFail($id);
 
         $response = $this->item($user);
 
@@ -158,17 +152,23 @@ class UserController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * PUT /users/:term/:id
+     * PUT /users/:id
      *
-     * @param string $term - term to search by (eg. mobile, drupal_id, id, email, etc)
      * @param string $id - the actual value to search for
      * @param Request $request
      *
      * @return \Illuminate\Http\Response
      */
-    public function update($term, $id, Request $request)
+    public function update($id, Request $request)
     {
-        $user = $this->registrar->resolveOrFail([$term => $id]);
+        $user = User::findOrFail($id);
+
+        if (! (Scope::allows('admin') || Gate::allows('edit-profile', $user))) {
+            throw new AuthenticationException('This action is unauthorized.');
+        }
+
+        // Debug level log to show the payload received
+        Log::debug('received update user payload for user '.$user->id, $request->all());
 
         // Normalize input and validate the request
         $request = normalize('credentials', $request);

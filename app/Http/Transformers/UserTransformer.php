@@ -17,8 +17,6 @@ class UserTransformer extends TransformerAbstract
     {
         $response = [
             'id' => $user->_id,
-            '_id' => $user->_id, // @DEPRECATED: Will be removed.
-
             'first_name' => $user->first_name,
         ];
 
@@ -43,18 +41,12 @@ class UserTransformer extends TransformerAbstract
             $response['addr_state'] = $user->addr_state;
             $response['addr_zip'] = $user->addr_zip;
 
-            // Source for the address fields (e.g. 'sms')
-            $response['addr_source'] = $user->addr_source;
-
-            // Signup source (e.g. drupal, cgg, mobile...)
+            // Signup source (e.g. cgg, mobile...)
             $response['source'] = $user->source;
             $response['source_detail'] = $user->source_detail;
 
             // Internal & third-party service IDs:
             $response['slack_id'] = null;
-            $response['mobilecommons_id'] = $user->mobilecommons_id;
-            $response['mobilecommons_status'] = $user->sms_status; // @DEPRECATED: Will be removed.
-            $response['parse_installation_ids'] = $user->parse_installation_ids;
 
             // Email subscription statuses
             $response['email_subscription_status'] = (bool) $user->email_subscription_status;
@@ -65,23 +57,23 @@ class UserTransformer extends TransformerAbstract
 
             // Voting Plan Status
             $response['voting_plan_status'] = $user->voting_plan_status;
+
+            // Feature Flags
+            $response['feature_flags'] = $user->feature_flags;
         }
 
         // Make a Voting Plan fields to be rendered in messaging
         $response['voting_plan_method_of_transport'] = $user->voting_plan_method_of_transport;
         $response['voting_plan_time_of_day'] = $user->voting_plan_time_of_day;
         $response['voting_plan_attending_with'] = $user->voting_plan_attending_with;
-
         $response['language'] = $user->language;
         $response['country'] = $user->country;
-
-        // Drupal ID for this user. Used in the mobile app.
-        $response['drupal_id'] = $user->drupal_id;
-        $response['role'] = $user->role;
 
         // SMS subscription status
         $response['sms_status'] = $user->sms_status;
         $response['sms_paused'] = (bool) $user->sms_paused;
+
+        $response['role'] = $user->role;
 
         if (Scope::allows('admin') || Gate::allows('view-full-profile', $user)) {
             $response['last_accessed_at'] = iso8601($user->last_accessed_at);

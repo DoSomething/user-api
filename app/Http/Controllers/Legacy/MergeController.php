@@ -1,11 +1,12 @@
 <?php
 
-namespace Northstar\Http\Controllers;
+namespace Northstar\Http\Controllers\Legacy;
 
 use Northstar\Models\User;
 use Northstar\Merge\Merger;
 use Illuminate\Http\Request;
-use Northstar\Http\Transformers\UserTransformer;
+use Northstar\Http\Controllers\Controller;
+use Northstar\Http\Transformers\Legacy\UserTransformer;
 
 class MergeController extends Controller
 {
