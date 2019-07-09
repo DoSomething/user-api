@@ -1,10 +1,11 @@
 <?php
 
-namespace Northstar\Http\Controllers;
+namespace Northstar\Http\Controllers\Legacy;
 
 use Illuminate\Contracts\Auth\Guard as Auth;
 use Northstar\Auth\Registrar;
-use Northstar\Http\Transformers\UserTransformer;
+use Northstar\Http\Controllers\Controller;
+use Northstar\Http\Transformers\Legacy\UserTransformer;
 use Illuminate\Http\Request;
 use Northstar\Models\User;
 

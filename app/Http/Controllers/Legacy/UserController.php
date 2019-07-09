@@ -1,13 +1,14 @@
 <?php
 
-namespace Northstar\Http\Controllers;
+namespace Northstar\Http\Controllers\Legacy;
 
 use Auth;
 use Northstar\Auth\Role;
 use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
-use Northstar\Http\Transformers\UserTransformer;
+use Northstar\Http\Controllers\Controller;
+use Northstar\Http\Transformers\Legacy\UserTransformer;
 use Northstar\Exceptions\NorthstarValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
