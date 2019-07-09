@@ -255,6 +255,11 @@ class AuthController extends Controller
      */
     protected function cleanupSession()
     {
-        session()->forget('destination', 'title', 'callToAction', 'coverImage', 'source_detail');
+        $keys = [
+            'authorize_client_id', 'destination', 'title',
+            'callToAction', 'coverImage', 'source_detail'
+        ];
+
+        session()->forget($keys);
     }
 }
