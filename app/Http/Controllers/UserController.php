@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Http\Controllers\Two;
+namespace Northstar\Http\Controllers;
 
 use Auth;
 use Northstar\Auth\Role;
@@ -10,9 +10,8 @@ use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Gate;
-use Northstar\Http\Controllers\Controller;
 use Illuminate\Auth\AuthenticationException;
-use Northstar\Http\Transformers\Two\UserTransformer;
+use Northstar\Http\Transformers\UserTransformer;
 use Northstar\Exceptions\NorthstarValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

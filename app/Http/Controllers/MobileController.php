@@ -1,12 +1,11 @@
 <?php
 
-namespace Northstar\Http\Controllers\Two;
+namespace Northstar\Http\Controllers;
 
 use Northstar\Models\User;
-use Northstar\Http\Transformers\Two\UserTransformer;
-use Northstar\Http\Controllers\Controller;
+use Northstar\Http\Transformers\UserTransformer;
 
-class EmailController extends Controller
+class MobileController extends Controller
 {
     /**
      * @var UserTransformer
@@ -14,7 +13,7 @@ class EmailController extends Controller
     protected $transformer;
 
     /**
-     * Make a new EmailController, inject dependencies,
+     * Make a new MobileController, inject dependencies,
      * and set middleware for this controller's methods.
      *
      * @param UserTransformer $transformer
@@ -28,7 +27,7 @@ class EmailController extends Controller
 
     /**
      * Display the specified resource.
-     * GET /email/:id
+     * GET /mobile/:id
      *
      * @param object $user
      *

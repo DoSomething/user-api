@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Http\Transformers\Two;
+namespace Northstar\Http\Transformers;
 
 use Northstar\Auth\Scope;
 use Northstar\Models\User;
