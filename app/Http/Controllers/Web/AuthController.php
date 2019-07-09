@@ -257,7 +257,7 @@ class AuthController extends Controller
     {
         $keys = [
             'authorize_client_id', 'destination', 'title',
-            'callToAction', 'coverImage', 'source_detail'
+            'callToAction', 'coverImage', 'source_detail',
         ];
 
         session()->forget($keys);
