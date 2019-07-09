@@ -32,12 +32,6 @@ return [
         'url' => env('PHOENIX_URL'),
     ],
 
-    'parse' => [
-        'parse_app_id' => env('PARSE_APP_ID'),
-        'parse_api_key' => env('PARSE_API_KEY'),
-        'parse_master_key' => env('PARSE_MASTER_KEY'),
-    ],
-
     'stathat' => [
         'ez_key' => env('STATHAT_EZ_KEY'),
         'prefix' => env('STATHAT_APP_NAME', 'northstar').' - ',
