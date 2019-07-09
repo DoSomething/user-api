@@ -34,10 +34,6 @@ $router->post('totp/configure', 'TotpController@store');
 $router->get('facebook/continue', 'FacebookController@redirectToProvider');
 $router->get('facebook/verify', 'FacebookController@handleProviderCallback');
 
-// Unsubscribes
-$router->get('unsubscribe', 'UnsubscribeController@getSubscriptions');
-$router->post('unsubscribe', 'UnsubscribeController@postSubscriptions');
-
 // Registration
 $router->get('register', 'AuthController@getRegister');
 $router->post('register', 'AuthController@postRegister');

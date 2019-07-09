@@ -56,11 +56,6 @@ return [
         'password' => env('BLINK_PASSWORD'),
     ],
 
-    'gladiator' => [
-        'url' => env('GLADIATOR_URL'),
-        'gladiator_api_key' => env('GLADIATOR_API_KEY'),
-    ],
-
     'customerio' => [
         'url' => env('CUSTOMER_IO_URL'),
         'username' => env('CUSTOMER_IO_USERNAME'),
