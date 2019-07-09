@@ -7,6 +7,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Northstar\Events\PasswordUpdated;
 use Northstar\Auth\Registrar;
 use Northstar\Models\User;
+use Northstar\Http\Controllers\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class UserController extends BaseController

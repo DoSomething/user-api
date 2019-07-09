@@ -8,6 +8,7 @@ use Northstar\Auth\Registrar;
 use Illuminate\Support\Facades\Auth;
 use Psr\Http\Message\ResponseInterface;
 use Northstar\Auth\Entities\UserEntity;
+use Northstar\Http\Controllers\Controller;
 use Psr\Http\Message\ServerRequestInterface;
 use League\OAuth2\Server\AuthorizationServer;
 

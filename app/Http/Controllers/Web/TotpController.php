@@ -8,6 +8,7 @@ use Endroid\QrCode\QrCode;
 use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Northstar\Http\Controllers\Controller;
 
 class TotpController extends Controller
 {

@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\ResetsPasswords;
 use Northstar\Events\PasswordUpdated;
 use Northstar\PasswordResetType;
 use Illuminate\Support\Facades\Auth;
+use Northstar\Http\Controllers\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ResetPasswordController extends Controller
