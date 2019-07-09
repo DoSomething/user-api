@@ -5,32 +5,20 @@ namespace Northstar\Http\Controllers\Web;
 use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
+use Illuminate\Support\Facades\Auth;
 use Psr\Http\Message\ResponseInterface;
 use Northstar\Auth\Entities\UserEntity;
 use Psr\Http\Message\ServerRequestInterface;
 use League\OAuth2\Server\AuthorizationServer;
-use Illuminate\Contracts\Auth\Factory as Auth;
-use Illuminate\Routing\Controller as BaseController;
-use Northstar\Exceptions\NorthstarValidationException;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 
-class AuthController extends BaseController
+class AuthController extends Controller
 {
-    use ValidatesRequests;
-
     /**
      * The OAuth authorization server.
      *
      * @var AuthorizationServer
      */
     protected $oauth;
-
-    /**
-     * The authentication factory.
-     *
-     * @var \Illuminate\Contracts\Auth\Factory
-     */
-    protected $auth;
 
     /**
      * The registrar.
@@ -43,13 +31,11 @@ class AuthController extends BaseController
      * Make a new WebController, inject dependencies,
      * and set middleware for this controller's methods.
      *
-     * @param Auth $auth
      * @param Registrar $registrar
      * @param AuthorizationServer $oauth
      */
-    public function __construct(Auth $auth, Registrar $registrar, AuthorizationServer $oauth)
+    public function __construct(Registrar $registrar, AuthorizationServer $oauth)
     {
-        $this->auth = $auth;
         $this->registrar = $registrar;
         $this->oauth = $oauth;
 
@@ -64,26 +50,23 @@ class AuthController extends BaseController
      * @param ResponseInterface $response
      * @return ResponseInterface|\Illuminate\Http\RedirectResponse
      */
-    public function authorize(ServerRequestInterface $request, ResponseInterface $response)
+    public function getAuthorize(ServerRequestInterface $request, ResponseInterface $response)
     {
-        // Validate the HTTP request and return an AuthorizationRequest.
         $authRequest = $this->oauth->validateAuthorizationRequest($request);
         $client = $authRequest->getClient();
 
-        // Store the Client ID so we can set user source on registrations.
-        session(['authorize_client_id' => request()->query('client_id')]);
-
-        // Store the referrer URI so we can redirect back to it if necessary.
-        session(['referrer_uri' => request()->query('referrer_uri')]);
-
-        if (! $this->auth->guard('web')->check()) {
-            $authorizationRoute = request()->query('mode') === 'login' ? 'login' : 'register';
-
+        if (! Auth::check()) {
+            // Store any context we'll need for login or registration in the session.
+            // NOTE: Be sure to clear these in AuthController@cleanupSession afterwards!
             session([
+                // Store the Client ID so we can set user's source field on registrations:
+                'authorize_client_id' => $client->getIdentifier(),
+                // Store destination & content fields so we can customize registration page:
                 'destination' => request()->query('destination', $client->getName()),
                 'title' => request()->query('title', trans('auth.get_started.create_account')),
                 'callToAction' => request()->query('callToAction', trans('auth.get_started.call_to_action')),
                 'coverImage' => request()->query('coverImage', asset('members.jpg')),
+                // Store any provided UTMs or Contentful ID for user's source_detail:
                 'source_detail' => array_filter([
                     'contentful_id' => request()->query('contentful_id'),
                     'utm_source' => request()->query('utm_source'),
@@ -92,17 +75,19 @@ class AuthController extends BaseController
                 ]),
             ]);
 
+            // Optionally, we can override the default authorization page using `?mode=login`.
+            $authorizationRoute = request()->query('mode') === 'login' ? 'login' : 'register';
+
             return redirect()->guest($authorizationRoute);
         }
 
-        $user = UserEntity::fromModel($this->auth->guard('web')->user());
+        $user = UserEntity::fromModel(Auth::user());
         $authRequest->setUser($user);
 
-        // Clients are all our own at the moment, so they will always be approved.
-        // @TODO: Add an explicit "DoSomething.org app" boolean to the Client model.
+        // Our applications are all first-party, so they will always be approved. If we were to allow
+        // third-party apps one day, we'd want to prompt the user to approve them here.
         $authRequest->setAuthorizationApproved(true);
 
-        // Return the HTTP redirect response.
         return $this->oauth->completeAuthorizationRequest($authRequest, $response);
     }
 
@@ -124,22 +109,22 @@ class AuthController extends BaseController
      */
     public function postLogin(Request $request)
     {
-        $this->validate($request, [
+        $credentials = $this->validate($request, [
             'username' => 'required',
             'password' => 'required',
         ]);
 
-        // Check if that user needs to reset their password in order to log in.
+        // Check if the user needs to reset their password in order to log in:
         $user = $this->registrar->resolve(['username' => $request['username']]);
         if ($user && ! $user->hasPassword()) {
-            return redirect()->back()->withInput($request->only('username'))->with('request_reset', true);
+            return back()
+                ->withInput($request->only('username'))
+                ->with('request_reset', true);
         }
 
-        // Attempt to log in the user to Northstar!
-        $credentials = $request->only('username', 'password');
-        $validCredentials = $this->auth->guard('web')->validate($credentials);
-        if (! $validCredentials) {
-            return redirect()->back()
+        // Are the given credentials valid?
+        if (! Auth::validate($credentials)) {
+            return back()
                 ->withInput($request->only('username'))
                 ->withErrors(['username' => 'These credentials do not match our records.']);
         }
@@ -156,7 +141,7 @@ class AuthController extends BaseController
 
         // We've made it! Log in the user, with a "remember token", and
         // send them along to their intended destination:
-        $this->auth->guard('web')->login($user, true);
+        Auth::login($user, true);
 
         return redirect()->intended('/');
     }
@@ -170,14 +155,14 @@ class AuthController extends BaseController
      */
     public function getLogout(Request $request)
     {
-        // A custom post-logout redirect can be specified with `/logout?redirect=`
+        // A custom post-logout redirect can be specified with `/logout?redirect=`.
+        // If not provided (or not for a "safe" domain), redirect to the login form.
         $redirect = $request->query('redirect');
-
         if (! $redirect || ! is_dosomething_domain($redirect)) {
             $redirect = 'login';
         }
 
-        $this->auth->guard('web')->logout();
+        Auth::logout();
 
         return redirect($redirect);
     }
@@ -197,7 +182,7 @@ class AuthController extends BaseController
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
-     * @throws NorthstarValidationException
+     * @throws \Northstar\Exceptions\NorthstarValidationException
      */
     public function postRegister(Request $request)
     {
@@ -233,21 +218,21 @@ class AuthController extends BaseController
             if ($sourceDetail) {
                 $user->source_detail = stringify_object($sourceDetail);
             }
+
+            // If the badges test is running, sort users into badges group control group
+            if (config('features.badges')) {
+                $feature_flags = $user->feature_flags;
+
+                // Give 70% users the badges flag (1-7), 30% in control (8-10)
+                $feature_flags['badges'] = (rand(1, 10) < 8);
+
+                $user->feature_flags = $feature_flags;
+            }
         });
-
-        // If the badges test is running, sort users into badges group control group
-        if (config('features.badges')) {
-            $feature_flags = $user->feature_flags;
-
-            // Give 70% users the badges flag (1-7), 30% in control (8-10)
-            $feature_flags['badges'] = (rand(1, 10) < 8);
-
-            $user->feature_flags = $feature_flags;
-        }
 
         $this->cleanupSession();
 
-        $this->auth->guard('web')->login($user, true);
+        Auth::login($user, true);
 
         return redirect()->intended('/');
     }
@@ -258,11 +243,9 @@ class AuthController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function callback()
+    public function getCallback()
     {
-        $user = $this->auth->guard('web')->user();
-
-        return view('auth.callback', compact('user'));
+        return view('auth.callback', ['user' => Auth::user()]);
     }
 
     /**
@@ -270,8 +253,13 @@ class AuthController extends BaseController
      *
      * @return string
      */
-    public function cleanupSession()
+    protected function cleanupSession()
     {
-        session()->forget('destination', 'title', 'callToAction', 'coverImage', 'source_detail');
+        $keys = [
+            'authorize_client_id', 'destination', 'title',
+            'callToAction', 'coverImage', 'source_detail',
+        ];
+
+        session()->forget($keys);
     }
 }

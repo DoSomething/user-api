@@ -16,8 +16,8 @@ $router->get('/', 'UserController@home');
 $router->resource('users', 'UserController', ['except' => ['index', 'create', 'delete']]);
 
 // Authorization flow for the Auth Code OAuth grant.
-$router->get('authorize', 'AuthController@authorize');
-$router->get('callback', 'AuthController@callback');
+$router->get('authorize', 'AuthController@getAuthorize');
+$router->get('callback', 'AuthController@getCallback');
 
 // Login & Logout
 $router->get('login', 'AuthController@getLogin');

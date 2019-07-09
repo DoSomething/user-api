@@ -2,8 +2,8 @@
 
 namespace Northstar\Http\Controllers\Web;
 
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Contracts\Auth\Factory as Auth;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use Laravel\Socialite\Two\InvalidStateException;
@@ -12,13 +12,6 @@ use Northstar\Models\User;
 
 class FacebookController extends Controller
 {
-    /**
-     * The authentication factory.
-     *
-     * @var \Illuminate\Contracts\Auth\Factory
-     */
-    protected $auth;
-
     /**
      * The registrar.
      *
@@ -30,12 +23,10 @@ class FacebookController extends Controller
      * Make a new FacebookController, inject dependencies,
      * and set middleware for this controller's methods.
      *
-     * @param Auth $auth
      * @param Registrar $registrar
      */
-    public function __construct(Auth $auth, Registrar $registrar)
+    public function __construct(Registrar $registrar)
     {
-        $this->auth = $auth;
         $this->registrar = $registrar;
     }
 
@@ -108,7 +99,7 @@ class FacebookController extends Controller
             });
         }
 
-        $this->auth->guard('web')->login($northstarUser, true);
+        Auth::login($northstarUser, true);
         logger()->info('facebook_authentication');
 
         return redirect()->intended('/');
