@@ -40,19 +40,22 @@ class IdentifyUsersCommand extends Command
      */
     public function handle(Registrar $registrar)
     {
-        $column = $this->argument('column');
-        $output = Writer::createFromString();
-        $output->insertOne([$column, 'id']);
-
         $stdin = file_get_contents('php://stdin');
         $csv = Reader::createFromString($stdin);
         $csv->setHeaderOffset(0);
 
+        $column = $this->argument('column');
+        $output = Writer::createFromString();
+
+        // Set headers on outputted CSV.
+        $output->insertOne(array_merge(['id'], $csv->getHeader()));
+
         foreach ($csv->getRecords() as $record) {
             $user = $registrar->resolve([$column => $record[$column]]);
-            $id = $user ? $user->id : '-';
 
-            $output->insertOne([$record[$column], $id]);
+            $output->insertOne(array_merge([
+                'id' => $user ? $user->id : '-',
+            ], $record));
         }
 
         $this->line($output->getContent());
