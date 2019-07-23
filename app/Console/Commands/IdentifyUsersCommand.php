@@ -48,7 +48,6 @@ class IdentifyUsersCommand extends Command
         $csv = Reader::createFromString($stdin);
         $csv->setHeaderOffset(0);
 
-        $count = 0;
         foreach ($csv->getRecords() as $record) {
             $user = $registrar->resolve([$column => $record[$column]]);
             $id = $user ? $user->id : '-';
