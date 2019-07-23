@@ -14,7 +14,7 @@ class IdentifyUsersCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'northstar:id {column=email}';
+    protected $signature = 'northstar:id {column=email} {--database_column=}';
 
     /**
      * The console command description.
@@ -51,7 +51,8 @@ class IdentifyUsersCommand extends Command
         $output->insertOne(array_merge(['id'], $csv->getHeader()));
 
         foreach ($csv->getRecords() as $record) {
-            $user = $registrar->resolve([$column => $record[$column]]);
+            $databaseColumn = $this->option('database_column') ?: $column;
+            $user = $registrar->resolve([$databaseColumn => $record[$column]]);
 
             $output->insertOne(array_merge([
                 'id' => $user ? $user->id : '-',
