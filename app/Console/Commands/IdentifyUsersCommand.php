@@ -14,7 +14,7 @@ class IdentifyUsersCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'northstar:id {column=email} {--database_column=}';
+    protected $signature = 'northstar:id {input=php://stdin} {output=php://stdout} {--csv_column=email} {--database_column=email}';
 
     /**
      * The console command description.
@@ -40,25 +40,26 @@ class IdentifyUsersCommand extends Command
      */
     public function handle(Registrar $registrar)
     {
-        $stdin = file_get_contents('php://stdin');
-        $csv = Reader::createFromString($stdin);
+        $input = file_get_contents($this->argument('input'));
+        $csv = Reader::createFromString($input);
         $csv->setHeaderOffset(0);
 
-        $column = $this->argument('column');
+        $csvColumn = $this->option('csv_column');
         $output = Writer::createFromString();
 
         // Set headers on outputted CSV.
         $output->insertOne(array_merge(['id'], $csv->getHeader()));
 
         foreach ($csv->getRecords() as $record) {
-            $databaseColumn = $this->option('database_column') ?: $column;
-            $user = $registrar->resolve([$databaseColumn => $record[$column]]);
+            $databaseColumn = $this->option('database_column') ?: $csvColumn;
+            $user = $registrar->resolve([$databaseColumn => $record[$csvColumn]]);
 
             $output->insertOne(array_merge([
-                'id' => $user ? $user->id : '-',
+                'id' => $user ? $user->id : 'N/A',
             ], $record));
         }
 
-        $this->line($output->getContent());
+        // Write the combined CSV to the specified output.
+        file_put_contents($this->argument('output'), $output->getContent());
     }
 }
