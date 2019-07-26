@@ -15,7 +15,7 @@ class IdentifyUsersCommandTest extends TestCase
         User::forceCreate(['_id' => '5d3630a0fdce2742ff6c64d5', 'email' => 'haylee.buckridge@example.org']);
 
         // Run the 'northstar:id' command on the 'example-identify-input.csv' file:
-        $this->artisan('northstar:id', ['input' => $input, 'output' => $output, '--csv_column' => "Requester email address"]);
+        $this->artisan('northstar:id', ['input' => $input, 'output' => $output, '--csv_column' => 'Requester email address']);
 
         // The command should create a CSV matching our expected output:
         $this->assertFileEquals('tests/Console/example-identify-output.csv', $output);
