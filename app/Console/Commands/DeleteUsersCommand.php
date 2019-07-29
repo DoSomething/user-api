@@ -7,14 +7,14 @@ use Northstar\Models\User;
 use Illuminate\Console\Command;
 use Northstar\Models\RefreshToken;
 
-class AnonymizeUserCommand extends Command
+class DeleteUsersCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'northstar:anon {path}';
+    protected $signature = 'northstar:delete {path}';
 
     /**
      * The console command description.
