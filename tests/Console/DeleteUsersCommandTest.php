@@ -13,7 +13,7 @@ class DeleteUsersCommandTest extends TestCase
         $user1 = factory(User::class)->create(['_id' => '5d3630a0fdce2742ff6c64d4'])->first();
         $user2 = factory(User::class)->create(['_id' => '5d3630a0fdce2742ff6c64d5'])->first();
 
-        // Run the 'northstar:id' command on the 'example-identify-input.csv' file:
+        // Run the 'northstar:delete' command on the 'example-identify-output.csv' file:
         $this->artisan('northstar:delete', ['input' => $input]);
 
         // The command should remove
