@@ -14,24 +14,14 @@ class DeleteUsersCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'northstar:delete {path}';
+    protected $signature = 'northstar:delete {input=php://stdin} {--id_column=id}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Removes PII for users given in CSV.';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected $description = 'Delete (anonymize) users, given a CSV of IDs.';
 
     /**
      * Execute the console command.
@@ -40,44 +30,39 @@ class DeleteUsersCommand extends Command
      */
     public function handle()
     {
-        $fields_to_unset = ['last_name', 'email', 'mobile', 'addr_street1', 'addr_street2', 'mobilecommons_id', 'drupal_id', 'facebook_id'];
+        $input = file_get_contents($this->argument('input'));
+        $csv = Reader::createFromString($input);
+        $csv->setHeaderOffset(0);
 
-        // Make a local copy of the CSV
-        $path = $this->argument('path');
-        $this->line('Loading in csv from '.$path);
+        $this->line('Anonymized '.count($csv).' users...');
 
-        $temp = tempnam('temp', 'command_csv');
-        file_put_contents($temp, fopen($this->argument('path'), 'r'));
+        foreach ($csv->getRecords() as $record) {
+            $user = User::find($record[$this->option('id_column')]);
+            if (! $user) {
+                $this->warn('Skipping: '.$record[$this->option('id_column')]);
+                continue;
+            }
 
-        // Load the missing signups from the CSV
-        $users_csv = Reader::createFromPath($temp, 'r');
-        $users_csv->setHeaderOffset(0);
-        $users = $users_csv->getRecords();
-
-        $this->line('Anonymizing users...');
-        $bar = $this->output->createProgressBar(count($users_csv));
-
-        foreach ($users as $user) {
-            $user = User::find($user['Users Northstar ID']);
-
-            // Overwrites
-            $user->first_name = 'EU Member. Removed because of GDPR';
+            // Anonymize birthdate so we can see demographics of deleted users:
             if ($user->birthdate) {
                 $user->birthdate = $user->birthdate->year.'-01-01';
             }
 
-            // Removals
-            foreach ($fields_to_unset as $field) {
-                $user->unset($field);
-            }
-            $user->save();
+            // Remove all fields except some non-identifiable demographics:
+            $fields = array_keys(array_except($user->getAttributes(), [
+                '_id', 'birthdate', 'language', 'source', 'source_detail',
+                'addr_city', 'addr_state', 'addr_zip', 'country',
+                'created_at', 'updated_at',
+            ]));
 
-            // Delete refresh token
+            if ($fields) {
+                $user->drop($fields);
+            }
+
+            // Delete refresh tokens to end any active sessions:
             $token = RefreshToken::where('user_id', $user->id)->delete();
 
-            $bar->advance();
+            $this->info('Deleted: '.$user->id);
         }
-
-        $bar->finish();
     }
 }
