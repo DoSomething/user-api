@@ -59,6 +59,10 @@ class DeleteUsersCommand extends Command
                 $user->drop($fields);
             }
 
+            // Set a flag so we know this user was deleted:
+            $user->deleted_at = now();
+            $user->save();
+
             // Delete refresh tokens to end any active sessions:
             $token = RefreshToken::where('user_id', $user->id)->delete();
 

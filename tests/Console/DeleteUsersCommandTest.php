@@ -39,5 +39,8 @@ class DeleteUsersCommandTest extends TestCase
 
         // ...but we should still have some demographic fields:
         $this->assertArrayHasKey('addr_zip', $attributes);
+
+        // We should also have set a "deleted at" flag:
+        $this->assertArrayHasKey('deleted_at', $attributes);
     }
 }
