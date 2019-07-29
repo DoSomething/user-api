@@ -34,12 +34,14 @@ class DeleteUsersCommand extends Command
         $csv = Reader::createFromString($input);
         $csv->setHeaderOffset(0);
 
-        $this->line('Anonymized '.count($csv).' users...');
+        $this->line('Anonymizing '.count($csv).' users...');
 
         foreach ($csv->getRecords() as $record) {
-            $user = User::find($record[$this->option('id_column')]);
+            $id = $record[$this->option('id_column')];
+            $user = User::find($id);
+
             if (! $user) {
-                $this->warn('Skipping: '.$record[$this->option('id_column')]);
+                $this->warn('Skipping: '.$id);
                 continue;
             }
 
