@@ -1,6 +1,7 @@
 <?php
 
 use Northstar\Models\User;
+use Northstar\Services\CustomerIo;
 
 class DeleteUsersCommandTest extends TestCase
 {
@@ -12,6 +13,9 @@ class DeleteUsersCommandTest extends TestCase
         // Create the expected users we're going to destroy:
         $user1 = factory(User::class)->create(['_id' => '5d3630a0fdce2742ff6c64d4'])->first();
         $user2 = factory(User::class)->create(['_id' => '5d3630a0fdce2742ff6c64d5'])->first();
+
+        // Mock the Customer.io API & assert that we make two "delete" requests:
+        $this->mock(CustomerIo::class)->shouldReceive('deleteUser')->twice();
 
         // Run the 'northstar:delete' command on the 'example-identify-output.csv' file:
         $this->artisan('northstar:delete', ['input' => $input]);

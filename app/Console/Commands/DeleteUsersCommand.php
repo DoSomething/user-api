@@ -5,6 +5,7 @@ namespace Northstar\Console\Commands;
 use League\Csv\Reader;
 use Northstar\Models\User;
 use Illuminate\Console\Command;
+use Northstar\Services\CustomerIo;
 use Northstar\Models\RefreshToken;
 
 class DeleteUsersCommand extends Command
@@ -28,7 +29,7 @@ class DeleteUsersCommand extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(CustomerIo $customerIo)
     {
         $input = file_get_contents($this->argument('input'));
         $csv = Reader::createFromString($input);
@@ -63,10 +64,13 @@ class DeleteUsersCommand extends Command
 
             // Set a flag so we know this user was deleted:
             $user->deleted_at = now();
-            $user->save();
+            $user->saveQuietly();
 
             // Delete refresh tokens to end any active sessions:
             $token = RefreshToken::where('user_id', $user->id)->delete();
+
+            // And finally, delete the user's profile in Customer.io:
+            $customerIo->deleteUser($user);
 
             $this->info('Deleted: '.$user->id);
         }

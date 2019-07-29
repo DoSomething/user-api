@@ -2,6 +2,8 @@
 
 namespace Northstar\Services;
 
+use Northstar\Models\User;
+
 class CustomerIo
 {
     /**
@@ -43,5 +45,16 @@ class CustomerIo
         return $this->client->post('customers/'.$user->id.'/events', [
             'form_params' => $payload,
         ]);
+    }
+
+    /**
+     * Delete the given user's profile in Customer.io
+     * @see https://customer.io/docs/api/#apitrackcustomerscustomers_delete
+     *
+     * @param User $user
+     */
+    public function deleteUser(User $user)
+    {
+        return $this->client->delete('customers/'.$user->id);
     }
 }
