@@ -74,5 +74,7 @@ class DeleteUsersCommand extends Command
 
             $this->info('Deleted: '.$user->id);
         }
+
+        $this->info('Done!');
     }
 }
