@@ -28,11 +28,17 @@ class DeleteUsersCommandTest extends TestCase
     /**
      * Assert that the given model has been anonymized.
      *
-     * @param User $user
+     * @param User $before
      */
-    protected function assertAnonymized($user)
+    protected function assertAnonymized($before)
     {
-        $attributes = $user->fresh()->getAttributes();
+        $after = $before->fresh();
+        $attributes = $after->getAttributes();
+
+        // The birthdate should be set to January 1st of the same year:
+        $this->assertEquals($before->birthdate->year, $after->birthdate->year);
+        $this->assertEquals(1, $after->birthdate->month);
+        $this->assertEquals(1, $after->birthdate->day);
 
         // We should not see any fields with PII:
         $this->assertArrayNotHasKey('email', $attributes);
