@@ -125,4 +125,20 @@ class Model extends BaseModel
 
         return $changed;
     }
+
+    /**
+     * Save the model to the database, without model events.
+     * @see https://stackoverflow.com/a/51301753
+     *
+     * @param array $options
+     */
+    public function saveQuietly(array $options = [])
+    {
+        $dispatcher = self::getEventDispatcher();
+        self::unsetEventDispatcher();
+
+        $this->save($options);
+
+        self::setEventDispatcher($dispatcher);
+    }
 }
