@@ -35,14 +35,14 @@ class DeleteUsersCommand extends Command
         $csv = Reader::createFromString($input);
         $csv->setHeaderOffset(0);
 
-        $this->line('Anonymizing '.count($csv).' users...');
+        info('Anonymizing '.count($csv).' users...');
 
         foreach ($csv->getRecords() as $record) {
             $id = $record[$this->option('id_column')];
             $user = User::find($id);
 
             if (! $user) {
-                $this->warn('Skipping: '.$id);
+                info('Skipping: '.$id);
                 continue;
             }
 
@@ -72,9 +72,9 @@ class DeleteUsersCommand extends Command
             // And finally, delete the user's profile in Customer.io:
             $customerIo->deleteUser($user);
 
-            $this->info('Deleted: '.$user->id);
+            info('Deleted: '.$user->id);
         }
 
-        $this->info('Done!');
+        info('Done!');
     }
 }
