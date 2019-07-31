@@ -523,28 +523,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * Validates provided status based on current status and hierarchy
-     * returning the new status if valid, or the current status otherwise.
-     *
-     * @param string $status
-     */
-    public function validateHierarchicalVoterRegistrationStatus($status)
-    {
-        $statusHierarchy = [
-            'uncertain',
-            'ineligible',
-            'unregistered',
-            'confirmed',
-            'registration_complete',
-        ];
-
-        $indexOfCurrentStatus = array_search($this->voter_registration_status, $statusHierarchy);
-        $indexOfNewStatus = array_search($status, $statusHierarchy);
-
-        return $indexOfCurrentStatus > $indexOfNewStatus ? $this->voter_registration_status : $status;
-    }
-
-    /**
      * Add the given topic to the user's array of topics if it is not already there.
      *
      * @param string $topic
