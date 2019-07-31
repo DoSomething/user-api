@@ -523,11 +523,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * Set the voter_registration_status based on the hierarchy.
+     * Validates provided status based on current status and hierarchy
+     * returning the new status if valid, or the current status otherwise.
      *
      * @param string $status
      */
-    public function setVoterRegistrationStatusAttribute($status)
+    public function validateHierarchicalVoterRegistrationStatus($status)
     {
         $statusHierarchy = [
             'uncertain',
@@ -539,11 +540,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $indexOfCurrentStatus = array_search($this->voter_registration_status, $statusHierarchy);
         $indexOfNewStatus = array_search($status, $statusHierarchy);
 
-        if ($indexOfCurrentStatus > $indexOfNewStatus) {
-            return;
-        }
-
-        $this->attributes['voter_registration_status'] = $status;
+        return $indexOfCurrentStatus > $indexOfNewStatus ? $this->voter_registration_status : $status;
     }
 
     /**
