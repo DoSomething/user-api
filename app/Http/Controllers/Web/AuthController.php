@@ -194,7 +194,7 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'mobile' => 'mobile|nullable|unique:users',
             'password' => 'required|min:6|max:512',
-            'voter_registration_status' => 'required',
+            'voter_registration_status' => 'required|in:uncertain,unregistered,confirmed',
         ]);
 
         // Register and login the user.
