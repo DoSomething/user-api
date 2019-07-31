@@ -66,7 +66,7 @@ class Registrar
             'last_messaged_at' => 'date',
             'email_subscription_status' => 'boolean',
             'email_subscription_topics.*' => 'in:news,scholarships,lifestyle,community',
-            'voter_registration_status' => 'in:uncertain,ineligible,confirmed,registration_complete',
+            'voter_registration_status' => 'in:uncertain,ineligible,unregistered,confirmed,registration_complete',
         ];
 
         // If existing user is provided, merge indexes into the request so
