@@ -171,7 +171,6 @@ return [
         DoSomething\Gateway\Laravel\GatewayServiceProvider::class,
         DoSomething\StatHat\StatHatServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
-        Laravel\Tinker\TinkerServiceProvider::class,
 
         /*
          * Application Service Providers...
