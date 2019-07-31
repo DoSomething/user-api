@@ -533,6 +533,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $statusHierarchy = [
             'uncertain',
             'ineligible',
+            'unregistered',
             'confirmed',
             'registration_complete',
         ];
