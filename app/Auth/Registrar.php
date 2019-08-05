@@ -61,7 +61,7 @@ class Registrar
             'country' => 'nullable|country',
             'password' => 'nullable|min:6|max:512',
             'mobilecommons_status' => 'in:active,undeliverable,unknown', // for backwards compatibility.
-            'sms_status' => 'in:active,less,stop,undeliverable,unknown,pending',
+            'sms_status' => 'nullable|in:active,less,stop,undeliverable,unknown,pending',
             'sms_paused' => 'boolean',
             'last_messaged_at' => 'date',
             'email_subscription_status' => 'boolean',
