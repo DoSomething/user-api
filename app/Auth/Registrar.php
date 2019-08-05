@@ -61,12 +61,12 @@ class Registrar
             'country' => 'nullable|country',
             'password' => 'nullable|min:6|max:512',
             'mobilecommons_status' => 'in:active,undeliverable,unknown', // for backwards compatibility.
-            'sms_status' => 'in:active,less,stop,undeliverable,unknown,pending',
+            'sms_status' => 'nullable|in:active,less,stop,undeliverable,unknown,pending',
             'sms_paused' => 'boolean',
             'last_messaged_at' => 'date',
             'email_subscription_status' => 'boolean',
             'email_subscription_topics.*' => 'in:news,scholarships,lifestyle,community',
-            'voter_registration_status' => 'in:uncertain,ineligible,confirmed,registration_complete',
+            'voter_registration_status' => 'nullable|in:uncertain,ineligible,unregistered,confirmed,registration_complete',
         ];
 
         // If existing user is provided, merge indexes into the request so

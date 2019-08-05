@@ -523,30 +523,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * Set the voter_registration_status based on the hierarchy.
-     *
-     * @param string $status
-     */
-    public function setVoterRegistrationStatusAttribute($status)
-    {
-        $statusHierarchy = [
-            'uncertain',
-            'ineligible',
-            'confirmed',
-            'registration_complete',
-        ];
-
-        $indexOfCurrentStatus = array_search($this->voter_registration_status, $statusHierarchy);
-        $indexOfNewStatus = array_search($status, $statusHierarchy);
-
-        if ($indexOfCurrentStatus > $indexOfNewStatus) {
-            return;
-        }
-
-        $this->attributes['voter_registration_status'] = $status;
-    }
-
-    /**
      * Add the given topic to the user's array of topics if it is not already there.
      *
      * @param string $topic
