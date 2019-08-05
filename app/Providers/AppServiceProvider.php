@@ -3,10 +3,12 @@
 namespace Northstar\Providers;
 
 use Northstar\Models\User;
+use Northstar\Auth\CustomGate;
 use Illuminate\Support\Facades\Log;
 use Northstar\Observers\UserObserver;
 use Illuminate\Support\ServiceProvider;
 use Northstar\Database\MongoFailedJobProvider;
+use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -37,6 +39,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // Register custom Gate with anonymous authorization support:
+        $this->app->singleton(GateContract::class, function ($app) {
+            return new CustomGate($app, function () use ($app) {
+                return call_user_func($app['auth']->userResolver());
+            });
+        });
+
         // Configure Mongo 'failed_jobs' collection.
         $this->app->extend('queue.failer', function ($instance, $app) {
             return new MongoFailedJobProvider(
