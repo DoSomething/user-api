@@ -28,7 +28,7 @@
     "laravel/socialite": "^3.0.0",
     "league/csv": "^9.0",
     "league/flysystem-aws-s3-v3": "~1.0",
-    "league/fractal": "0.13.*",
+    "league/fractal": "0.18.*",
     "league/iso3166": "^1.0",
     "league/oauth2-server": "^7.3.2",
     "mongodb/mongodb": "~1.2.0",

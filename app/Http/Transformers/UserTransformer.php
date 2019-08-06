@@ -2,10 +2,9 @@
 
 namespace Northstar\Http\Transformers;
 
-use Northstar\Auth\Scope;
 use Northstar\Models\User;
+use Illuminate\Support\Facades\Gate;
 use League\Fractal\TransformerAbstract;
-use Gate;
 
 class UserTransformer extends TransformerAbstract
 {
@@ -20,14 +19,14 @@ class UserTransformer extends TransformerAbstract
             'first_name' => $user->first_name,
         ];
 
-        if (Scope::allows('admin') || Gate::allows('view-full-profile', $user)) {
+        if (Gate::allows('view-full-profile', $user)) {
             $response['last_name'] = $user->last_name;
         }
 
         $response['last_initial'] = $user->last_initial;
         $response['photo'] = null;
 
-        if (Scope::allows('admin') || Gate::allows('view-full-profile', $user)) {
+        if (Gate::allows('view-full-profile', $user)) {
             $response['email'] = $user->email;
             $response['mobile'] = format_legacy_mobile($user->mobile);
             $response['facebook_id'] = $user->facebook_id;
@@ -75,7 +74,7 @@ class UserTransformer extends TransformerAbstract
 
         $response['role'] = $user->role;
 
-        if (Scope::allows('admin') || Gate::allows('view-full-profile', $user)) {
+        if (Gate::allows('view-full-profile', $user)) {
             $response['last_accessed_at'] = iso8601($user->last_accessed_at);
             $response['last_authenticated_at'] = iso8601($user->last_authenticated_at);
             $response['last_messaged_at'] = iso8601($user->last_messaged_at);

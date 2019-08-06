@@ -27,7 +27,8 @@ trait TransformsResponses
      */
     public function transform($resource, $code)
     {
-        $manager = new Manager(new DataArraySerializer());
+        $manager = new Manager();
+        $manager->setSerializer(new DataArraySerializer());
         $response = $manager->createData($resource)->toArray();
 
         return response()->json($response, $code, [], JSON_UNESCAPED_SLASHES);

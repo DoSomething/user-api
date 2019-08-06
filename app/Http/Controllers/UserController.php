@@ -4,7 +4,6 @@ namespace Northstar\Http\Controllers;
 
 use Auth;
 use Northstar\Auth\Role;
-use Northstar\Auth\Scope;
 use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
@@ -163,7 +162,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        if (! (Scope::allows('admin') || Gate::allows('edit-profile', $user))) {
+        if (! Gate::allows('edit-profile', $user)) {
             throw new AuthenticationException('This action is unauthorized.');
         }
 

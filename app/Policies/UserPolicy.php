@@ -2,8 +2,9 @@
 
 namespace Northstar\Policies;
 
-use Illuminate\Auth\Access\HandlesAuthorization;
+use Northstar\Auth\Scope;
 use Northstar\Models\User;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
 {
@@ -17,8 +18,16 @@ class UserPolicy
      * @param User $profile
      * @return bool
      */
-    public function viewFullProfile(User $user, User $profile)
+    public function viewFullProfile(?User $user, User $profile)
     {
+        if (Scope::allows('admin')) {
+            return true;
+        }
+
+        if (! $user) {
+            return false;
+        }
+
         if (in_array($user->role, ['admin', 'staff'])) {
             return true;
         }
@@ -34,8 +43,16 @@ class UserPolicy
      * @param User $profile
      * @return bool
      */
-    public function editProfile(User $user, User $profile)
+    public function editProfile(?User $user, User $profile)
     {
+        if (Scope::allows('admin')) {
+            return true;
+        }
+
+        if (! $user) {
+            return false;
+        }
+
         if (in_array($user->role, ['admin', 'staff'])) {
             return true;
         }

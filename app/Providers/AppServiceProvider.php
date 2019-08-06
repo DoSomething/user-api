@@ -3,11 +3,12 @@
 namespace Northstar\Providers;
 
 use Northstar\Models\User;
-use Northstar\Services\Fastly;
+use Northstar\Auth\CustomGate;
 use Illuminate\Support\Facades\Log;
+use Northstar\Observers\UserObserver;
 use Illuminate\Support\ServiceProvider;
-use Northstar\Jobs\SendUserToCustomerIo;
 use Northstar\Database\MongoFailedJobProvider;
+use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,41 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        User::creating(function (User $user) {
-            // Set source automatically if not provided.
-            $user->source = $user->source ?: client_id();
-        });
-
-        User::created(function (User $user) {
-            // Send payload to Blink for Customer.io profile.
-            $queueLevel = config('queue.jobs.users');
-            $queue = config('queue.names.'.$queueLevel);
-            SendUserToCustomerIo::dispatch($user)->onQueue($queue);
-
-            // Send metrics to StatHat.
-            app('stathat')->ezCount('user created');
-            app('stathat')->ezCount('user created - '.$user->source);
-        });
-
-        User::updating(function (User $user) {
-            // Write profile changes to the log, with redacted values for hidden fields.
-            $changed = $user->getChanged();
-
-            if (! app()->runningInConsole()) {
-                logger('updated user', ['id' => $user->id, 'changed' => $changed]);
-            }
-        });
-
-        User::updated(function (User $user) {
-            // Send payload to Blink for Customer.io profile.
-            $queueLevel = config('queue.jobs.users');
-            $queue = config('queue.names.'.$queueLevel);
-            SendUserToCustomerIo::dispatch($user)->onQueue($queue);
-
-            // Purge Fastly cache of user
-            $fastly = new Fastly;
-            $fastly->purgeKey('user-'.$user->id);
-        });
+        // Attach model observer(s):
+        User::observe(UserObserver::class);
 
         // Attach the user & request ID to context for all log messages.
         Log::getMonolog()->pushProcessor(function ($record) {
@@ -71,6 +39,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // Register custom Gate with anonymous authorization support:
+        $this->app->singleton(GateContract::class, function ($app) {
+            return new CustomGate($app, function () use ($app) {
+                return call_user_func($app['auth']->userResolver());
+            });
+        });
+
         // Configure Mongo 'failed_jobs' collection.
         $this->app->extend('queue.failer', function ($instance, $app) {
             return new MongoFailedJobProvider(
