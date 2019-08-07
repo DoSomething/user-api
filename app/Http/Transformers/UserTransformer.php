@@ -4,10 +4,32 @@ namespace Northstar\Http\Transformers;
 
 use Northstar\Models\User;
 use Illuminate\Support\Facades\Gate;
-use League\Fractal\TransformerAbstract;
+use League\Fractal\Resource\Primitive;
 
-class UserTransformer extends TransformerAbstract
+class UserTransformer extends BaseTransformer
 {
+    /**
+     * The model this transformer is processing.
+     *
+     * @param User $user
+     */
+    protected static $model = User::class;
+
+    /**
+     * Is the viewer authorized to see the given optional field?
+     */
+    public function authorize(User $user, $attribute)
+    {
+        return Gate::allows('view-full-profile', $user);
+    }
+
+    /**
+     * ...
+     */
+    public function includeBirthdate(User $user) {
+        return $this->primitive(format_date($user->birthdate, 'Y-m-d'));
+    }
+
     /**
      * @param User $user
      * @return array
@@ -27,15 +49,10 @@ class UserTransformer extends TransformerAbstract
         $response['photo'] = null;
 
         if (Gate::allows('view-full-profile', $user)) {
-            $response['email'] = $user->email;
-            $response['mobile'] = format_legacy_mobile($user->mobile);
             $response['facebook_id'] = $user->facebook_id;
 
             $response['interests'] = [];
-            $response['birthdate'] = format_date($user->birthdate, 'Y-m-d');
 
-            $response['addr_street1'] = $user->addr_street1;
-            $response['addr_street2'] = $user->addr_street2;
             $response['addr_city'] = $user->addr_city;
             $response['addr_state'] = $user->addr_state;
             $response['addr_zip'] = $user->addr_zip;

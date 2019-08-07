@@ -147,6 +147,21 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
 
     /**
+     * Attributes that contain personally-indentifiable information. These
+     * can be requested via the API with the `?include=` query parameter.
+     *
+     * @var array
+     */
+    public static $sensitive = [
+        'email',
+        'mobile',
+        'last_name',
+        'addr_street1',
+        'addr_street2',
+        'birthdate',
+    ];
+
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
