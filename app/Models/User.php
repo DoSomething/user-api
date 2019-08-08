@@ -313,6 +313,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
+     * Computed age field.
+     *
+     * @return int
+     */
+    public function getAgeAttribute()
+    {
+        return optional($this->birthdate)->diffInYears(now());
+    }
+
+    /**
      * Mutator for setting the last_messaged_at field.
      *
      * @param string|Carbon $value

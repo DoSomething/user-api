@@ -67,6 +67,7 @@ class UserTransformer extends BaseTransformer
             $response['facebook_id'] = $user->facebook_id;
 
             $response['interests'] = [];
+            $response['age'] = $user->age;
 
             $response['addr_city'] = $user->addr_city;
             $response['addr_state'] = $user->addr_state;
