@@ -4,7 +4,6 @@ namespace Northstar\Http\Transformers;
 
 use Northstar\Models\User;
 use Illuminate\Support\Facades\Gate;
-use League\Fractal\Resource\Primitive;
 
 class UserTransformer extends BaseTransformer
 {
@@ -24,9 +23,12 @@ class UserTransformer extends BaseTransformer
     }
 
     /**
-     * ...
+     * Include the `birthdate` field.
+     *
+     * @return \League\Fractal\Resource\Primitive
      */
-    public function includeBirthdate(User $user) {
+    public function includeBirthdate(User $user)
+    {
         return $this->primitive(format_date($user->birthdate, 'Y-m-d'));
     }
 
@@ -39,14 +41,10 @@ class UserTransformer extends BaseTransformer
         $response = [
             'id' => $user->_id,
             'first_name' => $user->first_name,
+            'display_name' => $user->display_name,
+            'last_initial' => $user->last_initial,
+            'photo' => null,
         ];
-
-        if (Gate::allows('view-full-profile', $user)) {
-            $response['last_name'] = $user->last_name;
-        }
-
-        $response['last_initial'] = $user->last_initial;
-        $response['photo'] = null;
 
         if (Gate::allows('view-full-profile', $user)) {
             $response['facebook_id'] = $user->facebook_id;
@@ -82,6 +80,7 @@ class UserTransformer extends BaseTransformer
         $response['voting_plan_method_of_transport'] = $user->voting_plan_method_of_transport;
         $response['voting_plan_time_of_day'] = $user->voting_plan_time_of_day;
         $response['voting_plan_attending_with'] = $user->voting_plan_attending_with;
+
         $response['language'] = $user->language;
         $response['country'] = $user->country;
 

@@ -5,7 +5,6 @@ namespace Northstar\Http\Transformers;
 use League\Fractal\Scope;
 use Northstar\Models\User;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Gate;
 use League\Fractal\TransformerAbstract;
 
 class BaseTransformer extends TransformerAbstract
