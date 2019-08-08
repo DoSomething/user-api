@@ -4,6 +4,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Northstar\Models\Client;
 use Northstar\Auth\Normalizer;
+use libphonenumber\PhoneNumber;
 use Illuminate\Support\HtmlString;
 use libphonenumber\PhoneNumberUtil;
 use libphonenumber\PhoneNumberFormat;
@@ -303,4 +304,32 @@ function stringify_object($object)
 {
     // e.g. utm_source:test,utm_medium:internet,utm_campaign:uconn_lady_huskies
     return str_replace('=', ':', http_build_query($object, '', ','));
+}
+
+/**
+ * Parse a phone number into a PhoneNumber object.
+ *
+ * @param string $string
+ * @return PhoneNumber
+ */
+function parse_mobile($string): ?PhoneNumber
+{
+    try {
+        $parser = PhoneNumberUtil::getInstance();
+        $number = $parser->parse($string, 'US');
+
+        return $number;
+    } catch (\libphonenumber\NumberParseException $e) {
+        return null;
+    }
+}
+
+/**
+ * Format the given PhoneNumber as a string.
+ */
+function format_mobile(PhoneNumber $number, $format): string
+{
+    $parser = PhoneNumberUtil::getInstance();
+
+    return $parser->format($number, $format);
 }

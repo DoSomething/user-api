@@ -3,6 +3,7 @@
 namespace Northstar\Models;
 
 use Carbon\Carbon;
+use libphonenumber\PhoneNumberFormat;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -271,6 +272,24 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function setMobileAttribute($value)
     {
         $this->attributes['mobile'] = normalize('mobile', $value);
+    }
+
+    public function getMobilePreviewAttribute()
+    {
+        if (! $this->mobile) {
+            return null;
+        }
+
+        $mobile = parse_mobile($this->mobile);
+
+        if (! $mobile) {
+            return '(XXX) XXX-XXXX';
+        }
+
+        $formattedNumber = format_mobile($mobile, PhoneNumberFormat::NATIONAL);
+
+        // Redact the last four digits after formatting.
+        return substr($formattedNumber, 0, -4).'XXXX';
     }
 
     /**
