@@ -62,6 +62,7 @@ class UserTransformer extends BaseTransformer
         ];
 
         if (Gate::allows('view-full-profile', $user)) {
+            $response['email_preview'] = $user->email_preview;
             $response['facebook_id'] = $user->facebook_id;
 
             $response['interests'] = [];

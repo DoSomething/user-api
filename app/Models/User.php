@@ -231,6 +231,39 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
+     * Computed "email preview" field.
+     *
+     * @return string
+     */
+    public function getEmailPreviewAttribute()
+    {
+        if (! $this->email) {
+            return null;
+        }
+
+        $parsed = imap_rfc822_parse_adrlist($this->email, 'example.com');
+        if (! is_array($parsed) || count($parsed) < 1) {
+            return '???';
+        }
+
+        [ $email ] = $parsed;
+
+        $mailbox = str_limit($email->mailbox, 3);
+
+        // We'll show the user's email domain for common providers.
+        // See: https://dsdata.looker.com/sql/kkk4zqtkwffymv
+        $allowedDomains = [
+            'aim.com', 'aol.com', 'att.net', 'bellsouth.net', 'comcast.net', 'cox.net', 'dosomething.org',
+            'gmail.com', 'hotmail.com', 'icloud.com', 'live.com', 'me.com', 'msn.com', 'outlook.com',
+            'rocketmail.com', 'sbcglobal.net', 'verizon.net', 'yahoo.com', 'ymail.com',
+        ];
+
+        $host = in_array($email->host, $allowedDomains) ? $email->host : str_limit($email->host, 4);
+
+        return $mailbox.'@'.$host;
+    }
+
+    /**
      * Mutator to strip non-numeric characters from mobile numbers.
      *
      * @param string $value
