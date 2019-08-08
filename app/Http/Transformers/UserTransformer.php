@@ -54,6 +54,7 @@ class UserTransformer extends BaseTransformer
     {
         $response = [
             'id' => $user->_id,
+            'display_name' => $user->display_name,
             'first_name' => $user->first_name,
             'display_name' => $user->display_name,
             'last_initial' => $user->last_initial,

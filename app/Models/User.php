@@ -206,6 +206,21 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
+     * Computed "display name" field, for public profiles,
+     * e.g. "Puppet S." for "Puppet Sloth".
+     *
+     * @return string
+     */
+    public function getDisplayNameAttribute()
+    {
+        if ($this->last_initial) {
+            return $this->first_name.' '.$this->last_initial.'.';
+        }
+
+        return $this->first_name;
+    }
+
+    /**
      * Mutator to normalize email addresses to lowercase.
      *
      * @param string $value
