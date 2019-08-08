@@ -28,7 +28,7 @@ class BaseTransformer extends TransformerAbstract
     {
         // If we've enabled the "optional fields" feature flag, then any fields
         // containing sensitive information must be explicitly requested:
-        if (config('features.optional_fields')) {
+        if (config('features.optional-fields')) {
             return [];
         }
 
