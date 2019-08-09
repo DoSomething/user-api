@@ -169,7 +169,7 @@ class UserTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that staffers can request optional fields.
+     * Test that normal users can't request optional fields.
      * GET /v2/users/:id
      *
      * @return void
