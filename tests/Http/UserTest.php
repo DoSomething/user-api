@@ -169,6 +169,48 @@ class UserTest extends BrowserKitTestCase
     }
 
     /**
+     * Test that normal users can't request optional fields.
+     * GET /v2/users/:id
+     *
+     * @return void
+     */
+    public function testV2GetOptionalFieldsFromUserAsNormalUser()
+    {
+        config(['features.optional-fields' => true]);
+
+        $user = factory(User::class)->create();
+
+        // Normal users should not be able to query sensitive values for others:
+        $this->asNormalUser()->get('v2/users/'.$user->id.'?include=email,addr_street1');
+        $this->assertResponseOk()
+            ->dontSeeJsonField('data.email')
+            ->dontSeeJsonField('data.addr_street1');
+    }
+
+    /**
+     * Test that staffers can request optional fields.
+     * GET /v2/users/:id
+     *
+     * @return void
+     */
+    public function testV2GetOptionalFieldsFromUserAsAdmin()
+    {
+        config(['features.optional-fields' => true]);
+
+        $user = factory(User::class)->create();
+
+        // Check that sensitive fields are not included by default:
+        $this->asStaffUser()->get('v2/users/'.$user->id);
+        $this->assertResponseOk()->dontSeeJsonField('data.email');
+
+        // When we re-query with `?include=`, we should see them!
+        $this->asStaffUser()->get('v2/users/'.$user->id.'?include=email,addr_street1');
+        $this->assertResponseOk()
+            ->seeJsonField('data.email', $user->email)
+            ->seeJsonField('data.addr_street1', $user->addr_street1);
+    }
+
+    /**
      * Test that a staffer can update a user's profile.
      * PUT /v2/users/:id
      *

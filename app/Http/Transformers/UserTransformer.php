@@ -4,10 +4,48 @@ namespace Northstar\Http\Transformers;
 
 use Northstar\Models\User;
 use Illuminate\Support\Facades\Gate;
-use League\Fractal\TransformerAbstract;
 
-class UserTransformer extends TransformerAbstract
+class UserTransformer extends BaseTransformer
 {
+    /**
+     * Resources that can be included if requested.
+     *
+     * @return array
+     */
+    public function getAvailableIncludes()
+    {
+        return User::$sensitive;
+    }
+
+    /**
+     * Is the viewer authorized to see the given optional field?
+     */
+    public function authorize(User $user, $attribute)
+    {
+        return Gate::allows('view-full-profile', $user);
+    }
+
+    /**
+     * Include the `birthdate` field.
+     *
+     * @return \League\Fractal\Resource\Primitive
+     */
+    public function includeBirthdate(User $user)
+    {
+        return $this->primitive(format_date($user->birthdate, 'Y-m-d'));
+    }
+
+    /**
+     * Include the `mobile` field.
+     *
+     * @return \League\Fractal\Resource\Primitive
+     */
+    public function includeMobile(User $user)
+    {
+        // @TODO: These `v2/user` endpoints should return the standard E.164 format!
+        return $this->primitive(format_legacy_mobile($user->mobile));
+    }
+
     /**
      * @param User $user
      * @return array
@@ -17,25 +55,16 @@ class UserTransformer extends TransformerAbstract
         $response = [
             'id' => $user->_id,
             'first_name' => $user->first_name,
+            'display_name' => $user->display_name,
+            'last_initial' => $user->last_initial,
+            'photo' => null,
         ];
 
         if (Gate::allows('view-full-profile', $user)) {
-            $response['last_name'] = $user->last_name;
-        }
-
-        $response['last_initial'] = $user->last_initial;
-        $response['photo'] = null;
-
-        if (Gate::allows('view-full-profile', $user)) {
-            $response['email'] = $user->email;
-            $response['mobile'] = format_legacy_mobile($user->mobile);
             $response['facebook_id'] = $user->facebook_id;
 
             $response['interests'] = [];
-            $response['birthdate'] = format_date($user->birthdate, 'Y-m-d');
 
-            $response['addr_street1'] = $user->addr_street1;
-            $response['addr_street2'] = $user->addr_street2;
             $response['addr_city'] = $user->addr_city;
             $response['addr_state'] = $user->addr_state;
             $response['addr_zip'] = $user->addr_zip;
@@ -65,6 +94,7 @@ class UserTransformer extends TransformerAbstract
         $response['voting_plan_method_of_transport'] = $user->voting_plan_method_of_transport;
         $response['voting_plan_time_of_day'] = $user->voting_plan_time_of_day;
         $response['voting_plan_attending_with'] = $user->voting_plan_attending_with;
+
         $response['language'] = $user->language;
         $response['country'] = $user->country;
 

@@ -20,4 +20,6 @@ return [
 
     'badges' => env('DS_BADGES_TEST', false),
 
+    'optional-fields' => env('DS_OPTIONAL_FIELDS', false),
+
 ];

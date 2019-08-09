@@ -3,6 +3,7 @@
 use Tests\CreatesApplication;
 use Tests\WithMocks;
 use Tests\WithAuthentication;
+use PHPUnit\Framework\Assert;
 
 abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
 {
@@ -82,6 +83,46 @@ abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
     {
         $header = $this->transformHeadersToServerVars([$name => $value]);
         $this->serverVariables = array_merge($this->serverVariables, $header);
+
+        return $this;
+    }
+
+    /**
+     * Assert that the JSON response does not have the given field.
+     *
+     * @param  string|array  $key - The JSON path, in "dot notation".
+     * @return $this
+     */
+    public function dontSeeJsonField($key)
+    {
+        $responseData = $this->decodeResponseJson();
+
+        if (array_has($responseData, $key)) {
+            Assert::fail('Did not expect to find JSON response at '.$key);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Assert that the JSON response has the given field.
+     *
+     * @param  string|array  $key - The JSON path, in "dot notation".
+     * @param  mixed $expected - Optionally, the expected value to assert.
+     * @return $this
+     */
+    public function seeJsonField($key, $expected = null)
+    {
+        $responseData = $this->decodeResponseJson();
+
+        if (! array_has($responseData, $key)) {
+            Assert::fail('Expected to find JSON response at '.$key);
+        }
+
+        $actual = array_get($responseData, $key);
+        if ($expected !== null && $actual !== $expected) {
+            Assert::fail('Expected to find "'.$expected.'" in response at '.$key.', found: '.$actual);
+        }
 
         return $this;
     }

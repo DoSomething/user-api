@@ -28,6 +28,7 @@ trait TransformsResponses
     public function transform($resource, $code)
     {
         $manager = new Manager();
+        $manager->parseIncludes(request()->query('include', ''));
         $manager->setSerializer(new DataArraySerializer());
         $response = $manager->createData($resource)->toArray();
 
