@@ -56,8 +56,11 @@ class BaseTransformer extends TransformerAbstract
             return null;
         }
 
-        // @TODO: Log access to this optional field.
-        // ...
+        // Log access to this optional field:
+        if (config('features.optional-fields')) {
+            // @TODO: Can we batch up all the included fields in a single log message?
+            info('Sensitive field viewed for '.$resource->id, ['attribute' => $attribute]);
+        }
 
         // If we don't have a custom "include" method, try default resolver:
         if (! method_exists($this, 'include'.Str::studly($attribute))) {
