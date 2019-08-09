@@ -16,7 +16,7 @@ class BaseTransformer extends TransformerAbstract
      */
     public function getAvailableIncludes()
     {
-        return static::$model::$sensitive;
+        return [];
     }
 
     /**
@@ -51,15 +51,13 @@ class BaseTransformer extends TransformerAbstract
      */
     protected function callIncludeMethod(Scope $scope, $attribute, $resource)
     {
-        // Is this a sensitive attribute? If so, check authorization & log access:
-        if (in_array($attribute, static::$model::$sensitive)) {
-            if (! $this->authorize($resource, $attribute)) {
-                return null;
-            }
-
-            // @TODO: Log access to this optional field.
-            // ...
+        // Is the viewer authorized to see this include?
+        if (! $this->authorize($resource, $attribute)) {
+            return null;
         }
+
+        // @TODO: Log access to this optional field.
+        // ...
 
         // If we don't have a custom "include" method, try default resolver:
         if (! method_exists($this, 'include'.Str::studly($attribute))) {

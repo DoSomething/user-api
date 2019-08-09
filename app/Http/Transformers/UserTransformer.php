@@ -8,11 +8,14 @@ use Illuminate\Support\Facades\Gate;
 class UserTransformer extends BaseTransformer
 {
     /**
-     * The model this transformer is processing.
+     * Resources that can be included if requested.
      *
-     * @param User $user
+     * @return array
      */
-    protected static $model = User::class;
+    public function getAvailableIncludes()
+    {
+        return User::$sensitive;
+    }
 
     /**
      * Is the viewer authorized to see the given optional field?
