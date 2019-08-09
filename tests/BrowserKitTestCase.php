@@ -90,16 +90,15 @@ abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
     /**
      * Assert that the JSON response does not have the given field.
      *
-     * @param  array|null  $structure
-     * @param  array|null  $responseData
+     * @param  string|array  $key - The JSON path, in "dot notation".
      * @return $this
      */
-    public function dontSeeJsonField($path)
+    public function dontSeeJsonField($key)
     {
         $responseData = $this->decodeResponseJson();
 
-        if (array_has($responseData, $path)) {
-            Assert::fail('Did not expect to find JSON response at '.$path);
+        if (array_has($responseData, $key)) {
+            Assert::fail('Did not expect to find JSON response at '.$key);
         }
 
         return $this;
@@ -108,21 +107,21 @@ abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
     /**
      * Assert that the JSON response has the given field.
      *
-     * @param  array|null  $structure
-     * @param  array|null  $responseData
+     * @param  string|array  $key - The JSON path, in "dot notation".
+     * @param  mixed $expected - Optionally, the expected value to assert.
      * @return $this
      */
-    public function seeJsonField($path, $expected = null)
+    public function seeJsonField($key, $expected = null)
     {
         $responseData = $this->decodeResponseJson();
 
-        if (! array_has($responseData, $path)) {
-            Assert::fail('Expected to find JSON response at '.$path);
+        if (! array_has($responseData, $key)) {
+            Assert::fail('Expected to find JSON response at '.$key);
         }
 
-        $actual = array_get($responseData, $path);
+        $actual = array_get($responseData, $key);
         if ($expected !== null && $actual !== $expected) {
-            Assert::fail('Expected to find "'.$expected.'" in response at '.$path.', found: '.$actual);
+            Assert::fail('Expected to find "'.$expected.'" in response at '.$key.', found: '.$actual);
         }
 
         return $this;
