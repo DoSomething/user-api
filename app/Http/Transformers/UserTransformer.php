@@ -36,6 +36,17 @@ class UserTransformer extends BaseTransformer
     }
 
     /**
+     * Include the `mobile` field.
+     *
+     * @return \League\Fractal\Resource\Primitive
+     */
+    public function includeMobile(User $user)
+    {
+        // @TODO: These `v2/user` endpoints should return the standard E.164 format!
+        return $this->primitive(format_legacy_mobile($user->mobile));
+    }
+
+    /**
      * @param User $user
      * @return array
      */
