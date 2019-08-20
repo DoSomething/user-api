@@ -249,7 +249,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             return '???';
         }
 
-
         // We'll show the user's email domain for common providers.
         // See: https://dsdata.looker.com/sql/kkk4zqtkwffymv
         $allowedDomains = [
