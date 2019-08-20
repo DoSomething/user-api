@@ -3,6 +3,7 @@
 namespace Northstar\Models;
 
 use Carbon\Carbon;
+use Email\Parse as EmailParser;
 use libphonenumber\PhoneNumberFormat;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Auth\Authenticatable;
@@ -232,7 +233,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * Computed "email preview" field.
+     * Computed "email preview" field, e.g. "dfu...@gmail.com"
      *
      * @return string
      */
@@ -242,14 +243,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             return null;
         }
 
-        $parsed = imap_rfc822_parse_adrlist($this->email, 'example.com');
-        if (! is_array($parsed) || count($parsed) < 1) {
+        $email = EmailParser::getInstance()->parse($this->email, false);
+
+        if ($email['invalid']) {
             return '???';
         }
 
-        [ $email ] = $parsed;
-
-        $mailbox = str_limit($email->mailbox, 3);
 
         // We'll show the user's email domain for common providers.
         // See: https://dsdata.looker.com/sql/kkk4zqtkwffymv
@@ -259,9 +258,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'rocketmail.com', 'sbcglobal.net', 'verizon.net', 'yahoo.com', 'ymail.com',
         ];
 
-        $host = in_array($email->host, $allowedDomains) ? $email->host : str_limit($email->host, 4);
+        $domain = $email['domain'];
 
-        return $mailbox.'@'.$host;
+        $previewedMailbox = str_limit($email['local_part'], 3);
+        $previewedDomain = in_array($domain, $allowedDomains) ? $domain : str_limit($domain, 4);
+
+        return $previewedMailbox.'@'.$previewedDomain;
     }
 
     /**
@@ -274,6 +276,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $this->attributes['mobile'] = normalize('mobile', $value);
     }
 
+    /**
+     * Computed "mobile preview" field, e.g. "(212) 254-XXXX"
+     *
+     * @return string
+     */
     public function getMobilePreviewAttribute()
     {
         if (! $this->mobile) {
