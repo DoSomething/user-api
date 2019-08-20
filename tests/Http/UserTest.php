@@ -36,6 +36,7 @@ class UserTest extends BrowserKitTestCase
         factory(User::class, 5)->create();
 
         $this->asUser($staff, ['role:staff', 'user'])->get('v2/users');
+        $this->dump();
         $this->assertResponseStatus(200);
     }
 
