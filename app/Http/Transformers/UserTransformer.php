@@ -61,6 +61,11 @@ class UserTransformer extends BaseTransformer
             'photo' => null,
         ];
 
+        // We also allow authorized users to request additional fields (see `getAvailableIncludes` above)
+        // via the `?include=...` query parameter. These will automatically be read from the corresponding
+        // field on the user, or an `includeFieldName` method if defined in this transformer.
+        //
+        // NOTE: Optional fields are behind a feature flag & may be included by default!
         if (Gate::allows('view-full-profile', $user)) {
             $response['email_preview'] = $user->email_preview;
             $response['mobile_preview'] = $user->mobile_preview;
