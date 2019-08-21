@@ -3,6 +3,8 @@
 namespace Northstar\Models;
 
 use Carbon\Carbon;
+use Email\Parse as EmailParser;
+use libphonenumber\PhoneNumberFormat;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -206,6 +208,21 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
+     * Computed "display name" field, for public profiles,
+     * e.g. "Puppet S." for "Puppet Sloth".
+     *
+     * @return string
+     */
+    public function getDisplayNameAttribute()
+    {
+        if ($this->last_initial) {
+            return $this->first_name.' '.$this->last_initial.'.';
+        }
+
+        return $this->first_name;
+    }
+
+    /**
      * Mutator to normalize email addresses to lowercase.
      *
      * @param string $value
@@ -216,6 +233,39 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
+     * Computed "email preview" field, e.g. "dfu...@gmail.com"
+     *
+     * @return string
+     */
+    public function getEmailPreviewAttribute()
+    {
+        if (! $this->email) {
+            return null;
+        }
+
+        $email = EmailParser::getInstance()->parse($this->email, false);
+
+        if ($email['invalid']) {
+            return '???';
+        }
+
+        // We'll show the user's email domain for common providers.
+        // See: https://dsdata.looker.com/sql/kkk4zqtkwffymv
+        $allowedDomains = [
+            'aim.com', 'aol.com', 'att.net', 'bellsouth.net', 'comcast.net', 'cox.net', 'dosomething.org',
+            'gmail.com', 'hotmail.com', 'icloud.com', 'live.com', 'me.com', 'msn.com', 'outlook.com',
+            'rocketmail.com', 'sbcglobal.net', 'verizon.net', 'yahoo.com', 'ymail.com',
+        ];
+
+        $domain = $email['domain'];
+
+        $previewedMailbox = str_limit($email['local_part'], 3);
+        $previewedDomain = in_array($domain, $allowedDomains) ? $domain : str_limit($domain, 4);
+
+        return $previewedMailbox.'@'.$previewedDomain;
+    }
+
+    /**
      * Mutator to strip non-numeric characters from mobile numbers.
      *
      * @param string $value
@@ -223,6 +273,29 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function setMobileAttribute($value)
     {
         $this->attributes['mobile'] = normalize('mobile', $value);
+    }
+
+    /**
+     * Computed "mobile preview" field, e.g. "(212) 254-XXXX"
+     *
+     * @return string
+     */
+    public function getMobilePreviewAttribute()
+    {
+        if (! $this->mobile) {
+            return null;
+        }
+
+        $mobile = parse_mobile($this->mobile);
+
+        if (! $mobile) {
+            return '(XXX) XXX-XXXX';
+        }
+
+        $formattedNumber = format_mobile($mobile, PhoneNumberFormat::NATIONAL);
+
+        // Redact the last four digits after formatting.
+        return substr($formattedNumber, 0, -4).'XXXX';
     }
 
     /**
@@ -243,6 +316,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function setBirthdateAttribute($value)
     {
         $this->setArbitraryDateString('birthdate', $value);
+    }
+
+    /**
+     * Computed age field.
+     *
+     * @return int
+     */
+    public function getAgeAttribute()
+    {
+        return optional($this->birthdate)->diffInYears(now());
     }
 
     /**

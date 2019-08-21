@@ -31,6 +31,7 @@
     "league/fractal": "0.18.*",
     "league/iso3166": "^1.0",
     "league/oauth2-server": "^7.3.2",
+    "mmucklo/email-parse": "^2.0",
     "mongodb/mongodb": "~1.2.0",
     "predis/predis": "^1.1",
     "seatgeek/sixpack-php": "^2.1",

@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Carbon\Carbon;
 use FakerPhoneNumber;
 use DoSomething\Gateway\Blink;
 use Illuminate\Contracts\Console\Kernel;
@@ -67,6 +68,9 @@ trait CreatesApplication
         // Get a new Faker generator from Laravel.
         $this->faker = app(\Faker\Generator::class);
         $this->faker->addProvider(new FakerPhoneNumber($this->faker));
+
+        // Reset to the current time, if mocked.
+        Carbon::setTestNow(null);
 
         // Reset the testing database & run migrations.
         app()->make('db')->getMongoDB()->drop();

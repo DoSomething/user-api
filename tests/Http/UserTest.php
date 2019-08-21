@@ -108,20 +108,24 @@ class UserTest extends BrowserKitTestCase
      */
     public function testV2GetPublicDataAsAuthenticatedUser()
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create([
+            'first_name' => 'Puppet',
+            'last_name' => 'Sloth',
+        ]);
         $viewer = factory(User::class)->create();
 
         // Test that we can view public profile as another user.
         $this->asUser($viewer, ['user', 'user:admin'])->get('v2/users/'.$user->id);
         $this->assertResponseStatus(200);
+        $this->seeJsonField('data.first_name', 'Puppet');
+        $this->seeJsonField('data.display_name', 'Puppet S.');
 
         // And test that private profile fields are hidden for the other user.
-        $data = $this->decodeResponseJson()['data'];
-        $this->assertArrayHasKey('first_name', $data);
-        $this->assertArrayNotHasKey('last_name', $data);
-        $this->assertArrayNotHasKey('email', $data);
-        $this->assertArrayNotHasKey('mobile', $data);
-        $this->assertArrayNotHasKey('facebook_id', $data);
+        $this->dontSeeJsonField('data.last_name');
+        $this->dontSeeJsonField('data.age');
+        $this->dontSeeJsonField('data.email');
+        $this->dontSeeJsonField('data.mobile');
+        $this->dontSeeJsonField('data.facebook_id');
     }
 
     /**
@@ -132,18 +136,27 @@ class UserTest extends BrowserKitTestCase
      */
     public function testV2GetAllDataFromUserAsStaff()
     {
-        $user = factory(User::class)->create();
-        $admin = factory(User::class, 'staff')->create();
+        $this->mockTime('08/08/2019'); // ...so we can assert age!
 
-        $this->asUser($admin, ['user', 'user:admin'])->get('v2/users/'.$user->id);
+        $user = factory(User::class)->create([
+            'first_name' => 'Puppet',
+            'last_name' => 'Sloth',
+            'email' => 'puppet.sloth@dosomething.org',
+            'mobile' => '+18602035512',
+            'birthdate' => '01/01/1993',
+        ]);
+
+        $this->asStaffUser()->get('v2/users/'.$user->id);
         $this->assertResponseStatus(200);
 
         // Check that public & private profile fields are visible
-        $this->seeJsonStructure([
-            'data' => [
-                'id', 'email', 'first_name', 'last_name', 'facebook_id',
-            ],
-        ]);
+        $this->seeJsonField('data.first_name', 'Puppet');
+        $this->seeJsonField('data.display_name', 'Puppet S.');
+        $this->seeJsonField('data.last_name', 'Sloth');
+        $this->seeJsonField('data.email', 'puppet.sloth@dosomething.org');
+        $this->seeJsonField('data.email_preview', 'pup...@dosomething.org');
+        $this->seeJsonField('data.mobile', '8602035512'); // @TODO: This should be E.164!
+        $this->seeJsonField('data.mobile_preview', '(860) 203-XXXX');
     }
 
     /**

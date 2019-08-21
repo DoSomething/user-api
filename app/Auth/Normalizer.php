@@ -3,7 +3,6 @@
 namespace Northstar\Auth;
 
 use Carbon\Carbon;
-use libphonenumber\PhoneNumberUtil;
 use libphonenumber\PhoneNumberFormat;
 
 class Normalizer
@@ -75,14 +74,13 @@ class Normalizer
             $mobile = '+'.$mobile;
         }
 
-        try {
-            $parser = PhoneNumberUtil::getInstance();
-            $number = $parser->parse($mobile, 'US');
+        $number = parse_mobile($mobile);
 
-            return $parser->format($number, PhoneNumberFormat::E164);
-        } catch (\libphonenumber\NumberParseException $e) {
+        if (! $number) {
             return '';
         }
+
+        return format_mobile($number, PhoneNumberFormat::E164);
     }
 
     /**

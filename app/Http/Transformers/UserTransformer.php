@@ -54,16 +54,25 @@ class UserTransformer extends BaseTransformer
     {
         $response = [
             'id' => $user->_id,
+            'display_name' => $user->display_name,
             'first_name' => $user->first_name,
             'display_name' => $user->display_name,
             'last_initial' => $user->last_initial,
             'photo' => null,
         ];
 
+        // We also allow authorized users to request additional fields (see `getAvailableIncludes` above)
+        // via the `?include=...` query parameter. These will automatically be read from the corresponding
+        // field on the user, or an `includeFieldName` method if defined in this transformer.
+        //
+        // NOTE: Optional fields are behind a feature flag & may be included by default!
         if (Gate::allows('view-full-profile', $user)) {
+            $response['email_preview'] = $user->email_preview;
+            $response['mobile_preview'] = $user->mobile_preview;
             $response['facebook_id'] = $user->facebook_id;
 
             $response['interests'] = [];
+            $response['age'] = $user->age;
 
             $response['addr_city'] = $user->addr_city;
             $response['addr_state'] = $user->addr_state;
