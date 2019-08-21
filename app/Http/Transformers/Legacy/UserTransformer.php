@@ -64,6 +64,9 @@ class UserTransformer extends TransformerAbstract
 
             // Voting Plan Status
             $response['voting_plan_status'] = $user->voting_plan_status;
+
+            // Feature Flags
+            $response['feature_flags'] = $user->feature_flags;
         }
 
         // Make a Voting Plan fields to be rendered in messaging
