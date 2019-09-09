@@ -214,6 +214,31 @@ class WebAuthenticationTest extends BrowserKitTestCase
     }
 
     /**
+     * Test that club referrals do not get feature flags set when the badges test is on.
+     */
+    public function testRegisterFromClubsWithoutBadgeTest()
+    {
+        // Turn on the badge test feature flag
+        config(['features.badges' => true]);
+
+        // Mock a session for the user with a ?utm_source=clubs param, indicating a clubs referral
+        $this->withSession(['source_detail' => ['utm_source' => 'clubs']])
+            ->withHeader('X-Fastly-Country-Code', 'US')
+            ->register();
+
+        $this->seeIsAuthenticated('web');
+
+        /** @var User $user */
+        $user = auth()->user();
+
+        $this->assertEquals('US', $user->country);
+        $this->assertEquals('en', $user->language);
+
+        // The user should not have any `feature_flags`.
+        $this->assertEquals(true, is_null($user->feature_flags));
+    }
+
+    /**
      * Test that users do not get feature flags set when the badges test is off.
      */
     public function testRegisterWithoutBadgeTest()

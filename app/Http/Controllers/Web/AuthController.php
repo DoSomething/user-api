@@ -222,7 +222,8 @@ class AuthController extends Controller
             }
 
             // If the badges test is running, sort users into badges group control group
-            if (config('features.badges')) {
+            // (while ensuring that we completely exclude any 'club' referrals).
+            if (config('features.badges') && $sourceDetail['utm_source'] !== 'clubs') {
                 $feature_flags = $user->feature_flags;
 
                 // Give 70% users the badges flag (1-7), 30% in control (8-10)
