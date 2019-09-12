@@ -59,7 +59,7 @@ use Northstar\Jobs\SendPasswordResetToCustomerIo;
  *
  * 
  * Causes and Interests
- * @property array $user_causes_and_interests
+ * @property array $causes
  *
  * Fields for Make a Voting Plan
  * @property string $voting_plan_status
@@ -98,7 +98,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'email', 'mobile', 'password', 'role',
 
         // Profile:
-        'first_name', 'last_name', 'birthdate', 'voter_registration_status',
+        'first_name', 'last_name', 'birthdate', 'voter_registration_status', 'causes',
 
         // Address:
         'addr_street1', 'addr_street2', 'addr_city', 'addr_state', 'addr_zip',
@@ -196,6 +196,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'birthdate' => 'date',
         'sms_paused' => 'boolean',
         'email_subscription_status' => 'boolean',
+        'causes' => 'array',
     ];
 
     /**
@@ -494,7 +495,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     /**
      * Transform the user model for Blink.
-     * WARNING: THIS PAYLOAD CAN ONLY INCLUDE 30 ATTRIBUTES!!
+     * WARNING: THIS PAYLOAD CAN ONLY INCLUDE 3 ATTRIBUTES!!
      *
      * @return array
      */
@@ -527,6 +528,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'lifestyle_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('lifestyle', $this->email_subscription_topics) : false,
             'community_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('community', $this->email_subscription_topics) : false,
             'scholarship_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('scholarships', $this->email_subscription_topics) : false,
+            'animal_welfare_cause' => in_array('animal_welfare_cause', $this->causes) ? true : false,
         ];
 
         // Only include email subscription status if we have that information.
@@ -644,4 +646,22 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         // Set de-duped array as email_subscription_topics
         $this->attributes['email_subscription_topics'] = array_values(array_unique($value));
     }
+
+    public function getCausesAttribute($value)
+    {
+        echo $value;
+        return ! empty($value) ? $value : [];
+    }
+
+    // public function addUserInterest($interest)
+    // {
+    //     // Add new interest to the existing array of interests
+    //     $this->causes = array_merge($this->causes ?: [], [$interest]);
+    // }
+
+    // public function setUserInterestAttribute($value)
+    // {
+    //     // Set de-duped array as causes
+    //     $this->attributes['causes'] = array_values(array_unique($value));
+    // }
 }
