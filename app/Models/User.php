@@ -57,6 +57,9 @@ use Northstar\Jobs\SendPasswordResetToCustomerIo;
  * @property bool $email_subscription_status
  * @property array $email_subscription_topics
  *
+ * 
+ * Causes and Interests
+ * @property array $user_causes_and_interests
  *
  * Fields for Make a Voting Plan
  * @property string $voting_plan_status
