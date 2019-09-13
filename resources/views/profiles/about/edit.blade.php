@@ -1,6 +1,6 @@
 @extends('layouts.profile_edit')
 
-{{-- @section('title', 'Edit Profile | DoSomething.org') --}}
+@section('title', 'Edit Profile | DoSomething.org')
 
 @section('profile-form-image')
     <img src="https://picsum.photos/200/300"/>
