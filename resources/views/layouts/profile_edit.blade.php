@@ -1,5 +1,4 @@
-@extends('layouts.app')
-
+@extends('layouts.app', ['extended' => true])
 
 @section('content')
     <div>
@@ -12,3 +11,4 @@
             @yield('profile-form')
         </div>
     </div>
+@endsection
