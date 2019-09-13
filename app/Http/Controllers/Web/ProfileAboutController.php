@@ -2,24 +2,26 @@
 
 namespace Northstar\Http\Controllers\Web;
 
-use Illuminate\Http\Request;
-use Northstar\Models\User;
+// use Northstar\Models\User;
+// use Illuminate\Http\Request;
 use Northstar\Http\Controllers\Controller;
-
 
 class ProfileAboutController extends Controller
 {
-    public function __construct() 
+    // @TODO: Add DocBlock.
+    public function __construct()
     {
         $this->middleware('auth:web');
         $this->middleware('role:admin,staff');
     }
-    //
-    public function edit() 
+
+    // @TODO: Add DocBlock.
+    public function edit()
     {
         return view('profiles.about.edit', ['user' => auth()->guard('web')->user()]);
     }
 
+    // @TODO: Add DocBlock.
     public function store()
     {
         //store stuff
