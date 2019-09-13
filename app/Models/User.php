@@ -196,7 +196,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'birthdate' => 'date',
         'sms_paused' => 'boolean',
         'email_subscription_status' => 'boolean',
-        'causes' => 'array',
     ];
 
     /**
@@ -495,7 +494,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     /**
      * Transform the user model for Blink.
-     * WARNING: THIS PAYLOAD CAN ONLY INCLUDE 3 ATTRIBUTES!!
+     * WARNING: THIS PAYLOAD CAN ONLY INCLUDE 300 ATTRIBUTES!!
      *
      * @return array
      */
