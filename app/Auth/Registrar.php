@@ -67,6 +67,7 @@ class Registrar
             'email_subscription_status' => 'boolean',
             'email_subscription_topics.*' => 'in:news,scholarships,lifestyle,community',
             'voter_registration_status' => 'nullable|in:uncertain,ineligible,unregistered,confirmed,registration_complete',
+            'causes.*' => 'in:animal_welfare,bullying,education,environment,gender_rights_equality,homelessness_poverty,immigration_refugees,lgbtq_rights_equality,mental_health,physical_health,racial_justice_equity,sexual_harassment_assault',
         ];
 
         // If existing user is provided, merge indexes into the request so
