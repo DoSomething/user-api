@@ -12,6 +12,7 @@ class UserModelTest extends BrowserKitTestCase
         /** @var User $user */
         $user = factory(User::class)->create([
             'birthdate' => '1/2/1990',
+            'causes' => ['animal_welfare', 'education', 'lgbtq_rights_equality', 'sexual_harassment_assault'],
         ]);
 
         // We should have made one "create" request to Blink.
@@ -42,18 +43,18 @@ class UserModelTest extends BrowserKitTestCase
             'lifestyle_email_subscription_status' => isset($user->email_subscription_topics) ? in_array('lifestyle', $user->email_subscription_topics) : false,
             'community_email_subscription_status' => isset($user->email_subscription_topics) ? in_array('community', $user->email_subscription_topics) : false,
             'scholarship_email_subscription_status' => isset($user->email_subscription_topics) ? in_array('scholarships', $user->email_subscription_topics) : false,
-            'animal_welfare' => in_array('animal_welfare', $this->causes) ? true : false,
-            'bullying' => in_array('bullying', $this->causes) ? true : false,
-            'education' => in_array('education', $this->causes) ? true : false,
-            'environment' => in_array('environment', $this->causes) ? true : false,
-            'gender_rights_equality' => in_array('gender_rights_equality', $this->causes) ? true : false,
-            'homelessness_poverty' => in_array('homelessness_poverty', $this->causes) ? true : false,
-            'immigration_refugees' => in_array('immigration_refugees', $this->causes) ? true : false,
-            'lgbtq_rights_equality' => in_array('lgbtq_rights_equality', $this->causes) ? true : false,
-            'mental_health' => in_array('mental_health', $this->causes) ? true : false,
-            'physical_health' => in_array('physical_health', $this->causes) ? true : false,
-            'racial_justice_equity' => in_array('racial_justice_equity', $this->causes) ? true : false,
-            'sexual_harassment_assault' => in_array('sexual_harassment_assault', $this->causes) ? true : false,
+            'animal_welfare' => true,
+            'bullying' => false,
+            'education' => true,
+            'environment' => false,
+            'gender_rights_equality' => false,
+            'homelessness_poverty' => false,
+            'immigration_refugees' => false,
+            'lgbtq_rights_equality' => true,
+            'mental_health' => false,
+            'physical_health' => false,
+            'racial_justice_equity' => false,
+            'sexual_harassment_assault' => true,
         ]);
     }
 
