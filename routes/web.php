@@ -40,7 +40,6 @@ $router->post('register', 'AuthController@postRegister');
 
 //Profile routes here
 
-
 // Password Reset
 $router->get('password/reset', 'ForgotPasswordController@showLinkRequestForm');
 $router->post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
