@@ -12,6 +12,7 @@ class UserModelTest extends BrowserKitTestCase
         /** @var User $user */
         $user = factory(User::class)->create([
             'birthdate' => '1/2/1990',
+            'causes' => ['animal_welfare', 'education', 'lgbtq_rights_equality', 'sexual_harassment_assault'],
         ]);
 
         // We should have made one "create" request to Blink.
@@ -42,6 +43,18 @@ class UserModelTest extends BrowserKitTestCase
             'lifestyle_email_subscription_status' => isset($user->email_subscription_topics) ? in_array('lifestyle', $user->email_subscription_topics) : false,
             'community_email_subscription_status' => isset($user->email_subscription_topics) ? in_array('community', $user->email_subscription_topics) : false,
             'scholarship_email_subscription_status' => isset($user->email_subscription_topics) ? in_array('scholarships', $user->email_subscription_topics) : false,
+            'animal_welfare' => true,
+            'bullying' => false,
+            'education' => true,
+            'environment' => false,
+            'gender_rights_equality' => false,
+            'homelessness_poverty' => false,
+            'immigration_refugees' => false,
+            'lgbtq_rights_equality' => true,
+            'mental_health' => false,
+            'physical_health' => false,
+            'racial_justice_equity' => false,
+            'sexual_harassment_assault' => true,
         ]);
     }
 

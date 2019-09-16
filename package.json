@@ -40,8 +40,11 @@
   "devDependencies": {
     "@babel/core": "^7.5.4",
     "@dosomething/babel-preset": "^3.2.0",
-    "@dosomething/webpack-config": "^5.1.0",
+    "@dosomething/webpack-config": "^6.0.0",
+    "autoprefixer": "^9.6.1",
     "modernizr": "^3.7.1",
+    "postcss-loader": "^3.0.0",
+    "tailwindcss": "^1.1.2",
     "webpack": "~4.28.0",
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.3.6"
