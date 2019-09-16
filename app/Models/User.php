@@ -57,7 +57,6 @@ use Northstar\Jobs\SendPasswordResetToCustomerIo;
  * @property bool $email_subscription_status
  * @property array $email_subscription_topics
  *
- * 
  * Causes and Interests
  * @property array $causes
  *
