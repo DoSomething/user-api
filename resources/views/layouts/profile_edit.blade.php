@@ -2,9 +2,10 @@
 
 @section('content')
     <div>
-        <div>
+        {{-- wondering whether we can just use the cover image template we already have and adjust for the new reg design? --}}
+        {{-- <div>
             @yield('profile-form-image')
-        </div>
+        </div> --}}
         <div>
             @yield('profile-title')
             @yield('profile-subtitle')
