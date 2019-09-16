@@ -666,5 +666,4 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return ! empty($value) ? $value : [];
     }
-
 }
