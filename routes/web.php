@@ -38,6 +38,8 @@ $router->get('facebook/verify', 'FacebookController@handleProviderCallback');
 $router->get('register', 'AuthController@getRegister');
 $router->post('register', 'AuthController@postRegister');
 
+//Profile routes here
+
 // Password Reset
 $router->get('password/reset', 'ForgotPasswordController@showLinkRequestForm');
 $router->post('password/email', 'ForgotPasswordController@sendResetLinkEmail');

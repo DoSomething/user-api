@@ -57,6 +57,8 @@ use Northstar\Jobs\SendPasswordResetToCustomerIo;
  * @property bool $email_subscription_status
  * @property array $email_subscription_topics
  *
+ * Causes and Interests
+ * @property array $causes
  *
  * Fields for Make a Voting Plan
  * @property string $voting_plan_status
@@ -95,7 +97,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'email', 'mobile', 'password', 'role',
 
         // Profile:
-        'first_name', 'last_name', 'birthdate', 'voter_registration_status',
+        'first_name', 'last_name', 'birthdate', 'voter_registration_status', 'causes',
 
         // Address:
         'addr_street1', 'addr_street2', 'addr_city', 'addr_state', 'addr_zip',
@@ -491,7 +493,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     /**
      * Transform the user model for Blink.
-     * WARNING: THIS PAYLOAD CAN ONLY INCLUDE 30 ATTRIBUTES!!
+     * WARNING: THIS PAYLOAD CAN ONLY INCLUDE 300 ATTRIBUTES!!
      *
      * @return array
      */
@@ -524,6 +526,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'lifestyle_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('lifestyle', $this->email_subscription_topics) : false,
             'community_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('community', $this->email_subscription_topics) : false,
             'scholarship_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('scholarships', $this->email_subscription_topics) : false,
+            'animal_welfare' => in_array('animal_welfare', $this->causes) ? true : false,
+            'bullying' => in_array('bullying', $this->causes) ? true : false,
+            'education' => in_array('education', $this->causes) ? true : false,
+            'environment' => in_array('environment', $this->causes) ? true : false,
+            'gender_rights_equality' => in_array('gender_rights_equality', $this->causes) ? true : false,
+            'homelessness_poverty' => in_array('homelessness_poverty', $this->causes) ? true : false,
+            'immigration_refugees' => in_array('immigration_refugees', $this->causes) ? true : false,
+            'lgbtq_rights_equality' => in_array('lgbtq_rights_equality', $this->causes) ? true : false,
+            'mental_health' => in_array('mental_health', $this->causes) ? true : false,
+            'physical_health' => in_array('physical_health', $this->causes) ? true : false,
+            'racial_justice_equity' => in_array('racial_justice_equity', $this->causes) ? true : false,
+            'sexual_harassment_assault' => in_array('sexual_harassment_assault', $this->causes) ? true : false,
         ];
 
         // Only include email subscription status if we have that information.
@@ -640,5 +654,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         // Set de-duped array as email_subscription_topics
         $this->attributes['email_subscription_topics'] = array_values(array_unique($value));
+    }
+
+    /**
+     * Accessor for the `causes` attribute.
+     *
+     * @param  mixed value
+     * @return array
+     */
+    public function getCausesAttribute($value)
+    {
+        return ! empty($value) ? $value : [];
     }
 }
