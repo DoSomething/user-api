@@ -28,7 +28,7 @@ $factory->define(Northstar\Models\User::class, function (Faker\Generator $faker)
         'language' => $faker->languageCode,
         'source' => 'factory',
         'email_subscription_topics' => $faker->randomElements(['news', 'lifestyle', 'actions', 'scholarships'], $faker->numberBetween(0, 4)),
-        'causes' => $faker->randomElements(['animal_welfare', 'bullying', 'education', 'environment', 'gender_rights_equality', 'homelessness_poverty', 'immigration_refugees', 'lgbtq_rights_equality', 'mental_health', 'physical_health', 'racial_justice_equity', 'sexual_harassment_assault'], $faker->numberBetween(0,6)),
+        'causes' => $faker->randomElements(['animal_welfare', 'bullying', 'education', 'environment', 'gender_rights_equality', 'homelessness_poverty', 'immigration_refugees', 'lgbtq_rights_equality', 'mental_health', 'physical_health', 'racial_justice_equity', 'sexual_harassment_assault'], $faker->numberBetween(0, 6)),
     ];
 });
 
