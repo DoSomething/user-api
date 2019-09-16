@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = configure({
   entry: {
-    app: './resources/assets/js/app.js'
+    app: './resources/assets/js/app.js',
   },
   output: {
     // Override output path for Laravel's "public" directory.

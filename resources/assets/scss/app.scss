@@ -1,31 +1,36 @@
+// Tailwind CSS
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 // Custom Variables
-@import "_utilities/_variables";
+@import '_utilities/_variables';
 
 // Import DoSomething.org modules
-@import "~@dosomething/forge/scss/forge.scss";
-@import "~dosomething-validation/src/validation.scss";
+@import '~@dosomething/forge/scss/forge.scss';
+@import '~dosomething-validation/src/validation.scss';
 
 // @TODO: move some of the patterns below into Forge!
 
 // Toolkit
-@import "_utilities/_accoutrements";
-@import "_base/_elements";
+@import '_utilities/_accoutrements';
+@import '_base/_elements';
 
 // Components - basic non-divisible building blocks
-@import "_components/_alert";
-@import "_components/_logo";
-@import "_components/_key-value";
-@import "_components/_forms";
-@import "_components/_validation-error";
-@import "_components/_messages";
-@import "_components/_facebook-login";
-@import "_components/_cover-image";
-@import "_components/_divider";
-@import "_components/_password-visibility";
-@import "_components/_text-field";
-@import "_components/_field-label";
+@import '_components/_alert';
+@import '_components/_logo';
+@import '_components/_key-value';
+@import '_components/_forms';
+@import '_components/_validation-error';
+@import '_components/_messages';
+@import '_components/_facebook-login';
+@import '_components/_cover-image';
+@import '_components/_divider';
+@import '_components/_password-visibility';
+@import '_components/_text-field';
+@import '_components/_field-label';
 
 // Regions - complete sections of an interface
-@import "_regions/_chrome";
-@import "_regions/_navigation";
-@import "_regions/_container";
+@import '_regions/_chrome';
+@import '_regions/_navigation';
+@import '_regions/_container';
