@@ -71,14 +71,14 @@ module.exports = {
       },
     },
     fontFamily: {
-      sourceSans: [
+      'source-sans': [
         '"Source Sans Pro"',
         '"Helvetica Neue"',
         'Helvetica',
         'Arial',
         'sans-serif',
       ],
-      leagueGothic: [
+      'league-gothic': [
         '"League Gothic"',
         'Impact',
         '"Franklin Gothic Bold"',
