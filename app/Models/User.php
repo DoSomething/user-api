@@ -656,20 +656,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $this->attributes['email_subscription_topics'] = array_values(array_unique($value));
     }
 
+    /**
+     * Accessor for the `causes` attribute.
+     *
+     * @param  mixed value
+     * @return array
+     */
     public function getCausesAttribute($value)
     {
         return ! empty($value) ? $value : [];
     }
 
-    // public function addUserInterest($interest)
-    // {
-    //     // Add new interest to the existing array of interests
-    //     $this->causes = array_merge($this->causes ?: [], [$interest]);
-    // }
-
-    // public function setUserInterestAttribute($value)
-    // {
-    //     // Set de-duped array as causes
-    //     $this->attributes['causes'] = array_values(array_unique($value));
-    // }
 }
