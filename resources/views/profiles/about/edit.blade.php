@@ -42,6 +42,15 @@
                     <span>I'm not sure</span>
                 </label>
             </div>
+            {{-- there should be two buttons inside this div, both that bring you to the next page (how do we differentiate this ie is it just a matter of storing their answers and extending them to the next page?) --}}
+            <div>
+                <div class="form-actions -padded -left">
+                    <input type="submit" id="register-submit" class="button" value="{{ trans('auth.log_in.submit') }}">
+                </div>
+                <div class="form-actions -padded -left">
+                    <input type="submit" id="register-submit" class="button" value="{{ trans('auth.log_in.submit') }}">
+                </div>
+            </div>
         </div>
     </form>
 @endsection
