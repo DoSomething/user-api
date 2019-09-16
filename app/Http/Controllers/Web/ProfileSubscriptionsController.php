@@ -6,7 +6,7 @@ namespace Northstar\Http\Controllers\Web;
 // use Illuminate\Http\Request;
 use Northstar\Http\Controllers\Controller;
 
-class ProfileAboutController extends Controller
+class ProfileSubscriptionsController extends Controller
 {
     // @TODO: Add DocBlock.
     public function __construct()
@@ -18,7 +18,7 @@ class ProfileAboutController extends Controller
     // @TODO: Add DocBlock.
     public function edit()
     {
-        return view('profiles.about.edit', ['user' => auth()->guard('web')->user()]);
+        return view('profiles.subscriptions.edit', ['user' => auth()->guard('web')->user()]);
     }
 
     // @TODO: Add DocBlock.

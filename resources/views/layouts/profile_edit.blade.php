@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('title', 'Edit Profile | DoSomething.org')
+@extends('layouts.app', ['extended' => true])
 
 @section('content')
     <div>
@@ -13,3 +11,4 @@
             @yield('profile-form')
         </div>
     </div>
+@endsection

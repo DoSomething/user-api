@@ -40,6 +40,7 @@ $router->post('register', 'AuthController@postRegister');
 
 //Profile routes here
 $router->get('profile/about', 'ProfileAboutController@edit');
+$router->get('profile/subscriptions', 'ProfileSubscriptionsController@edit');
 
 // Password Reset
 $router->get('password/reset', 'ForgotPasswordController@showLinkRequestForm');
