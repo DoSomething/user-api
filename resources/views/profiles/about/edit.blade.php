@@ -7,7 +7,7 @@
 @endsection
 
 @section('profile-title')
-    <h2>Complete Your Profile</h2>
+    <h2 class="text-black">Complete Your Profile</h2>
 @endsection
 @section('profile-subtitle')
     <p>We want to customize your DoSomething experience so it's perfect for you. Fill out the next few sections and we'll make it happen.<p>
@@ -44,12 +44,111 @@
             </div>
             {{-- there should be two buttons inside this div, both that bring you to the next page (how do we differentiate this ie is it just a matter of storing their answers and extending them to the next page?) --}}
         </div>
-         <div>
-            <div >
-                <input type="submit" id="register-submit" class="button" value="{{ trans('auth.log_in.submit') }}">
+        <div class="form-item">
+            <label class="field-label">{{"Causes Areas"}}</label>
+            <div class="form-item -reduced">
+                <label class="option">
+                {{-- @TODO: update to similarly add a check for whether they've chosen it in the past --}}
+                    <input type="checkbox" name="animal_welfare" value="animal_welfare" >
+                    <span class="option__indicator"></span>
+                    <span>Animal Welfare</span>
+                </label>
             </div>
-            <div >
-                <input type="submit" id="register-submit" class="button" value="{{ trans('auth.log_in.submit') }}">
+            <div class="form-item -reduced">
+                <label class="option">
+                {{-- @TODO: update to similarly add a check for whether they've chosen it in the past --}}
+                    <input type="checkbox" name="animal_welfare" value="animal_welfare" >
+                    <span class="option__indicator"></span>
+                    <span>Animal Welfare</span>
+                </label>
+            </div>
+            <div class="form-item -reduced">
+                <label class="option">
+                {{-- @TODO: update to similarly add a check for whether they've chosen it in the past --}}
+                    <input type="checkbox" name="animal_welfare" value="animal_welfare" >
+                    <span class="option__indicator"></span>
+                    <span>Animal Welfare</span>
+                </label>
+            </div>
+            <div class="form-item -reduced">
+                <label class="option">
+                {{-- @TODO: update to similarly add a check for whether they've chosen it in the past --}}
+                    <input type="checkbox" name="animal_welfare" value="animal_welfare" >
+                    <span class="option__indicator"></span>
+                    <span>Animal Welfare</span>
+                </label>
+            </div>
+            <div class="form-item -reduced">
+                <label class="option">
+                {{-- @TODO: update to similarly add a check for whether they've chosen it in the past --}}
+                    <input type="checkbox" name="animal_welfare" value="animal_welfare" >
+                    <span class="option__indicator"></span>
+                    <span>Animal Welfare</span>
+                </label>
+            </div>
+            <div class="form-item -reduced">
+                <label class="option">
+                {{-- @TODO: update to similarly add a check for whether they've chosen it in the past --}}
+                    <input type="checkbox" name="animal_welfare" value="animal_welfare" >
+                    <span class="option__indicator"></span>
+                    <span>Animal Welfare</span>
+                </label>
+            </div>
+            <div class="form-item -reduced">
+                <label class="option">
+                {{-- @TODO: update to similarly add a check for whether they've chosen it in the past --}}
+                    <input type="checkbox" name="animal_welfare" value="animal_welfare" >
+                    <span class="option__indicator"></span>
+                    <span>Animal Welfare</span>
+                </label>
+            </div>
+            <div class="form-item -reduced">
+                <label class="option">
+                {{-- @TODO: update to similarly add a check for whether they've chosen it in the past --}}
+                    <input type="checkbox" name="animal_welfare" value="animal_welfare" >
+                    <span class="option__indicator"></span>
+                    <span>Animal Welfare</span>
+                </label>
+            </div>
+            <div class="form-item -reduced">
+                <label class="option">
+                {{-- @TODO: update to similarly add a check for whether they've chosen it in the past --}}
+                    <input type="checkbox" name="animal_welfare" value="animal_welfare" >
+                    <span class="option__indicator"></span>
+                    <span>Animal Welfare</span>
+                </label>
+            </div>
+            <div class="form-item -reduced">
+                <label class="option">
+                {{-- @TODO: update to similarly add a check for whether they've chosen it in the past --}}
+                    <input type="checkbox" name="animal_welfare" value="animal_welfare" >
+                    <span class="option__indicator"></span>
+                    <span>Animal Welfare</span>
+                </label>
+            </div>
+            <div class="form-item -reduced">
+                <label class="option">
+                {{-- @TODO: update to similarly add a check for whether they've chosen it in the past --}}
+                    <input type="checkbox" name="animal_welfare" value="animal_welfare" >
+                    <span class="option__indicator"></span>
+                    <span>Animal Welfare</span>
+                </label>
+            </div>
+            <div class="form-item -reduced">
+                <label class="option">
+                {{-- @TODO: update to similarly add a check for whether they've chosen it in the past --}}
+                    <input type="checkbox" name="animal_welfare" value="animal_welfare" >
+                    <span class="option__indicator"></span>
+                    <span>Animal Welfare</span>
+                </label>
+            </div>
+        </div>
+         <div>
+            <div>
+                <input type="submit" id="register-submit" class="button" value="Skip">
+            </div>
+            <div>
+                <input type="submit" id="register-submit" class="button" value="Next">
             </div>
         </div>
     </form>
