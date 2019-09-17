@@ -2,9 +2,9 @@
 
 @section('title', 'Edit Profile | DoSomething.org')
 
-{{-- @section('profile-form-image')
-    <img src="https://picsum.photos/200/300"/>
-@endsection --}}
+@section('form-image-url')
+    'https://picsum.photos/100/200'
+@endsection
 
 @section('profile-title')
     <h2>Complete Your Profile</h2>
@@ -14,7 +14,7 @@
 @endsection
 
 @section('profile-form')
-    <form action={{ url('') }}>
+    <form style="bg-white font-source-sans" action={{ url('') }}>
         <div class="form-item">
             <label for="birthdate" class="field-label">{{ trans('auth.fields.birthday') }}</label>
             <input name="birthdate" type="text" id="birthdate" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.birthday') }}" value="{{ old('birthdate') }}" data-validate="birthday" data-validate-required />
@@ -43,13 +43,13 @@
                 </label>
             </div>
             {{-- there should be two buttons inside this div, both that bring you to the next page (how do we differentiate this ie is it just a matter of storing their answers and extending them to the next page?) --}}
-            <div>
-                <div class="form-actions -padded -left">
-                    <input type="submit" id="register-submit" class="button" value="{{ trans('auth.log_in.submit') }}">
-                </div>
-                <div class="form-actions -padded -left">
-                    <input type="submit" id="register-submit" class="button" value="{{ trans('auth.log_in.submit') }}">
-                </div>
+        </div>
+         <div>
+            <div >
+                <input type="submit" id="register-submit" class="button" value="{{ trans('auth.log_in.submit') }}">
+            </div>
+            <div >
+                <input type="submit" id="register-submit" class="button" value="{{ trans('auth.log_in.submit') }}">
             </div>
         </div>
     </form>
