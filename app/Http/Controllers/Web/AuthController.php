@@ -221,16 +221,20 @@ class AuthController extends Controller
                 $user->source_detail = stringify_object($sourceDetail);
             }
 
+            $feature_flags = $user->feature_flags;
+
             // If the badges test is running, sort users into badges group control group
             // (while ensuring that we completely exclude any 'club' referrals).
             if (config('features.badges') && data_get($sourceDetail, 'utm_source') !== 'clubs') {
-                $feature_flags = $user->feature_flags;
-
                 // Give 70% users the badges flag (1-7), 30% in control (8-10)
                 $feature_flags['badges'] = (rand(1, 10) < 8);
-
-                $user->feature_flags = $feature_flags;
             }
+            // If refer-friends feature is enabled, set refer-friends flag to true.
+            if (config('features.refer-friends')) {
+                $feature_flags['refer-friends'] = true;
+            }
+
+            $user->feature_flags = $feature_flags;
         });
 
         $this->cleanupSession();
