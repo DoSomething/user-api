@@ -1,4 +1,4 @@
-@extends('layouts.profile_edit')
+@extends('profiles.profile')
 
 @section('title', 'Edit Profile | DoSomething.org')
 
@@ -14,7 +14,7 @@
 @endsection
 
 @section('profile-form')
-    <form>
+    <form action={{ url('') }}>
         <div class="form-item">
             <label for="birthdate" class="field-label">{{ trans('auth.fields.birthday') }}</label>
             <input name="birthdate" type="text" id="birthdate" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.birthday') }}" value="{{ old('birthdate') }}" data-validate="birthday" data-validate-required />
