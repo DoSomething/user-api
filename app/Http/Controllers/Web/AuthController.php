@@ -230,13 +230,14 @@ class AuthController extends Controller
                     // Give 70% users the badges flag (1-7), 30% in control (8-10)
                     $feature_flags['badges'] = (rand(1, 10) < 8);
                 }
+
                 // If the refer-friends test is running, give all users the refer-friends flag.
                 if (config('features.refer-friends')) {
                     $feature_flags['refer-friends'] = true;
                 }
-            }
 
-            $user->feature_flags = $feature_flags;
+                $user->feature_flags = $feature_flags;
+            }
         });
 
         $this->cleanupSession();
