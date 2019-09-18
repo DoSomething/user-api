@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['extended' => true])
 
 {{-- @TODO: update padding of container --}}
 @section('content')
