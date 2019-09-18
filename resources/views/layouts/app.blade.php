@@ -27,7 +27,7 @@
         @endif
         <div class="wrapper">
             @include('layouts.navigation')
-            <section class="container -framed {{ isset($extended) && $extended ? '-extended' : '' }}">
+            <section class="container -framed {{ isset($extended) && $extended ? '-extended' : '' }} {{ isset($coverImage) && $coverImage ? '-cover-image' : '' }}">
                 @include('layouts.cover_image')
                 <div class="wrapper -half">
                     @yield('content')
