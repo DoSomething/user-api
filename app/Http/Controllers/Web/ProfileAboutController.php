@@ -10,7 +10,6 @@ class ProfileAboutController extends Controller
 {
     /**
      * Add Authentication Middleware.
-     *
      */
     public function __construct()
     {
@@ -20,6 +19,7 @@ class ProfileAboutController extends Controller
 
     /**
      * Display the User Details Form
+     * 
      * 
      * @return \Illuminate\Http\Response
      */
@@ -31,6 +31,7 @@ class ProfileAboutController extends Controller
      /**
      * Handle Submissions of the User Details Form
      * 
+     * 
      *  @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -39,5 +40,3 @@ class ProfileAboutController extends Controller
         //store stuff
     }
 }
-
-
