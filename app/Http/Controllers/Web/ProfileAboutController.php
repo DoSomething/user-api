@@ -19,8 +19,7 @@ class ProfileAboutController extends Controller
 
     /**
      * Display the User Details Form
-     * 
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit()
@@ -28,10 +27,9 @@ class ProfileAboutController extends Controller
         return view('profiles.about.edit', ['user' => auth()->guard('web')->user()]);
     }
 
-     /**
+    /**
      * Handle Submissions of the User Details Form
-     * 
-     * 
+     *
      *  @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
