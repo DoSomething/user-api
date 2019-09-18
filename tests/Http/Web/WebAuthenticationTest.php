@@ -219,9 +219,10 @@ class WebAuthenticationTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that club referrals do not get badges feature flags set when the badges test is on.
+     * Test that club referrals do not get feature flags set when the badges and refer-friends
+     * tests are on.
      */
-    public function testRegisterFromClubsWithoutBadgeTest()
+    public function testRegisterFromClubsWithoutFeatureFlagsTest()
     {
         // Turn on badges and refer-friends feature flags.
         config([
@@ -242,8 +243,8 @@ class WebAuthenticationTest extends BrowserKitTestCase
         $this->assertEquals('US', $user->country);
         $this->assertEquals('en', $user->language);
 
-        // The user should not have a value set for 'badges'
-        $this->assertArrayNotHasKey('badges', $user->feature_flags);
+        // The user should not have any `feature_flags`.
+        $this->assertEquals(true, is_null($user->feature_flags));
     }
 
     /**
