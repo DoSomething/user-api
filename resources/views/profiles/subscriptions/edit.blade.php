@@ -1,13 +1,13 @@
-@extends('layouts.profile_edit')
+@extends('profiles.profile')
 
 @section('title', 'Edit Profile | DoSomething.org')
 
-@section('profile-form-image')
-    <img src="https://picsum.photos/200/300"/>
+@section('form-image-url')
+    'https://picsum.photos/100/200'
 @endsection
 
 @section('profile-title')
-    <h2>A Title!</h2>
+    <h2 class="text-black">A Title!</h2>
 @endsection
 @section('profile-subtitle')
     <p>A subtitle!<p>

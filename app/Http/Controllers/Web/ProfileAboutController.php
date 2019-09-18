@@ -8,22 +8,36 @@ use Northstar\Http\Controllers\Controller;
 
 class ProfileAboutController extends Controller
 {
-    // @TODO: Add DocBlock.
+    /**
+     * Add Authentication Middleware.
+     *
+     */
     public function __construct()
     {
         $this->middleware('auth:web');
         $this->middleware('role:admin,staff');
     }
 
-    // @TODO: Add DocBlock.
+    /**
+     * Display the User Details Form
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function edit()
     {
         return view('profiles.about.edit', ['user' => auth()->guard('web')->user()]);
     }
 
-    // @TODO: Add DocBlock.
+     /**
+     * Handle Submissions of the User Details Form
+     * 
+     *  @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store()
     {
         //store stuff
     }
 }
+
+
