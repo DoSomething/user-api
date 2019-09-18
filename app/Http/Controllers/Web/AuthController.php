@@ -221,10 +221,10 @@ class AuthController extends Controller
                 $user->source_detail = stringify_object($sourceDetail);
             }
 
-            $feature_flags = $user->feature_flags;
-
             // Exclude any 'clubs' referrals from our feature flag tests.
             if (data_get($sourceDetail, 'utm_source') !== 'clubs') {
+                $feature_flags = $user->feature_flags;
+
                 // If the badges test is running, sort users into badges group control group.
                 if (config('features.badges')) {
                     // Give 70% users the badges flag (1-7), 30% in control (8-10)
