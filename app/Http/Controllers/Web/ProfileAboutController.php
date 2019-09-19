@@ -35,6 +35,7 @@ class ProfileAboutController extends Controller
      */
     public function update()
     {
-        return request()->all();
+        echo "is this running?";
+        return redirect(url('profile/subscriptions'));
     }
 }
