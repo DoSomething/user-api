@@ -14,7 +14,8 @@
 @endsection
 
 @section('profile-form')
-    <form>
+    <form method="PATCH" action="{{ url('profile/about') }}">
+        {{ csrf_field() }}
         <div class="form-item">
             <label for="birthdate" class="field-label">{{ trans('auth.fields.birthday') }}</label>
             <div class="form-item -reduced">
@@ -108,6 +109,13 @@
                 <input type="checkbox" name="sexual_harassment_assault" value="sexual_harassment_assault">
                 <span>Sexual Harassment & Assault</span>
             </div>
+        </div>
+
+        <div class="form-actions -padded -left">
+            <a href="{{ url('profile/subscriptions') }}" class="button">Skip</a>
+        </div>
+        <div class="form-actions -padded -right">
+            <input type="submit" id="register-submit" class="button" value="Next">
         </div>
     </form>
 @endsection

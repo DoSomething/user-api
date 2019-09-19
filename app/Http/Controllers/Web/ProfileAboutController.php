@@ -35,6 +35,6 @@ class ProfileAboutController extends Controller
      */
     public function update()
     {
-        //update stuff
+        return request()->all();
     }
 }
