@@ -38,7 +38,7 @@ $router->get('facebook/verify', 'FacebookController@handleProviderCallback');
 $router->get('register', 'AuthController@getRegister');
 $router->post('register', 'AuthController@postRegister');
 
-//Profile routes here
+// Profile
 $router->get('profile/about', 'ProfileAboutController@edit');
 $router->post('profile/about', 'ProfileAboutContorller@store');
 $router->get('profile/subscriptions', 'ProfileSubscriptionsController@edit');
