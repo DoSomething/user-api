@@ -17,7 +17,19 @@
     <form>
         <div class="form-item">
             <label for="birthdate" class="field-label">{{ trans('auth.fields.birthday') }}</label>
-            <input name="birthdate" type="text" id="birthdate" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.birthday') }}" value="{{ old('birthdate') }}" data-validate="birthday" data-validate-required />
+            <div class="form-item -reduced">
+                <label for="month">Month</label>
+                <input class="text-field" name="month" type="text" placeholder="MM" />
+            </div>
+            <div class="form-item -reduced">
+                <label for="day">Day</label>
+                <input class="text-field" name="day" type="text" placeholder="DD" />
+            </div>
+            <div class="form-item -reduced">
+                <label for="year">Year</label>
+                <input class="text-field" name="year" type="text" placeholder="YYYY" />
+            </div>
+            {{-- <input name="birthdate" type="text" id="birthdate" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.birthday') }}" value="{{ old('birthdate') }}" data-validate="birthday" data-validate-required /> --}}
         </div>
 
         <div class="form-item">
