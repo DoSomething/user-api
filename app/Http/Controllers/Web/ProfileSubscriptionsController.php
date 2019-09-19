@@ -33,8 +33,8 @@ class ProfileSubscriptionsController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store()
+    public function update()
     {
-        //store stuff
+        //update stuff
     }
 }
