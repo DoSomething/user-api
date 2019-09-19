@@ -14,7 +14,8 @@
 @endsection
 
 @section('profile-form')
-    <form method="PATCH" action="{{ url('profile/about') }}">
+    <form method="POST" action="{{ url('profile/about') }}">
+        <input type="hidden" name="_method" value="PATCH">
         {{ csrf_field() }}
         <div class="form-item">
             <label for="birthdate" class="field-label">{{ trans('auth.fields.birthday') }}</label>
