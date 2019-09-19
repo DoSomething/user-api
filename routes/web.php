@@ -40,9 +40,9 @@ $router->post('register', 'AuthController@postRegister');
 
 // Profile
 $router->get('profile/about', 'ProfileAboutController@edit');
-$router->post('profile/about', 'ProfileAboutContorller@store');
+$router->post('profile/about', 'ProfileAboutController@store');
 $router->get('profile/subscriptions', 'ProfileSubscriptionsController@edit');
-$router->post('profile/subscriptions', 'ProfileSubscriptionsContorller@store');
+$router->post('profile/subscriptions', 'ProfileSubscriptionsController@store');
 
 // Password Reset
 $router->get('password/reset', 'ForgotPasswordController@showLinkRequestForm');
