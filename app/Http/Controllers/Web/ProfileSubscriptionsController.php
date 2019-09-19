@@ -8,20 +8,31 @@ use Northstar\Http\Controllers\Controller;
 
 class ProfileSubscriptionsController extends Controller
 {
-    // @TODO: Add DocBlock.
+    /**
+     * Set auth middleware.
+     */
     public function __construct()
     {
         $this->middleware('auth:web');
         $this->middleware('role:admin,staff');
     }
 
-    // @TODO: Add DocBlock.
+    /**
+     * Display the User subscriptions form.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function edit()
     {
         return view('profiles.subscriptions.edit', ['user' => auth()->guard('web')->user()]);
     }
 
-    // @TODO: Add DocBlock.
+    /**
+     * Handle submissions of the User subscriptions form.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store()
     {
         //store stuff
