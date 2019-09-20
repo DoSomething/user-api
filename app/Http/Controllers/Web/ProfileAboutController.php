@@ -3,7 +3,7 @@
 namespace Northstar\Http\Controllers\Web;
 
 // use Northstar\Models\User;
-// use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use Northstar\Http\Controllers\Controller;
 
 class ProfileAboutController extends Controller
@@ -30,11 +30,13 @@ class ProfileAboutController extends Controller
     /**
      * Handle Submissions of the User Details Form
      *
-     *  @param Request $request
+     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update()
+    public function update(Request $request)
     {
+
+        $input = $request->all();
         return redirect(url('profile/subscriptions'));
     }
 }
