@@ -35,8 +35,22 @@ class ProfileAboutController extends Controller
      */
     public function update(Request $request)
     {
-
+        // notes for monday:
+        // concantenate dates together into a single string & validate
+        // add conditionals for whether there is a value passed from the user for each field
+        // write a foreach with the causes and push them into causes if it already exists
+        // save the user
+        
         $input = $request->all();
+        dd([
+            $request,
+            $request->all(),
+            auth()->guard('web')->user()
+        ]);
+        
+        //user here - use to update and validate specific attributes
+        $user = auth()->guard('web')->user();
+
         return redirect(url('profile/subscriptions'));
     }
 }
