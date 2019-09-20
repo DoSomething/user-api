@@ -34,9 +34,11 @@
       padding: 0;
       max-width: $extended-max-width;
 
-      > .wrapper.-half {
-        width: 50%;
-        padding: $base-spacing;
+      &.-cover-image {
+        > .wrapper.-half {
+          width: 50%;
+          padding: $base-spacing;
+        }
       }
     }
   }

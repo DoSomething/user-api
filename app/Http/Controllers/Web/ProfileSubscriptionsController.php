@@ -6,10 +6,10 @@ namespace Northstar\Http\Controllers\Web;
 // use Illuminate\Http\Request;
 use Northstar\Http\Controllers\Controller;
 
-class ProfileAboutController extends Controller
+class ProfileSubscriptionsController extends Controller
 {
     /**
-     * Add Authentication Middleware.
+     * Set auth middleware.
      */
     public function __construct()
     {
@@ -18,19 +18,19 @@ class ProfileAboutController extends Controller
     }
 
     /**
-     * Display the User Details Form
+     * Display the User subscriptions form.
      *
      * @return \Illuminate\Http\Response
      */
     public function edit()
     {
-        return view('profiles.about.edit', ['user' => auth()->guard('web')->user()]);
+        return view('profiles.subscriptions.edit', ['user' => auth()->guard('web')->user()]);
     }
 
     /**
-     * Handle Submissions of the User Details Form
+     * Handle submissions of the User subscriptions form.
      *
-     *  @param Request $request
+     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update()

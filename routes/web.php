@@ -38,7 +38,11 @@ $router->get('facebook/verify', 'FacebookController@handleProviderCallback');
 $router->get('register', 'AuthController@getRegister');
 $router->post('register', 'AuthController@postRegister');
 
-//Profile routes here
+// Profile
+$router->get('profile/about', 'ProfileAboutController@edit');
+$router->patch('profile/about', 'ProfileAboutController@update');
+$router->get('profile/subscriptions', 'ProfileSubscriptionsController@edit');
+$router->patch('profile/subscriptions', 'ProfileSubscriptionsController@update');
 
 // Password Reset
 $router->get('password/reset', 'ForgotPasswordController@showLinkRequestForm');
