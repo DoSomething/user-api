@@ -34,14 +34,14 @@ class ProfileAboutController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request)
-    {   
+    {
         // @TODO: finish adding validation and appending data to the user
         // notes for monday:
         // concantenate dates together into a single string & validate
         // add conditionals for whether there is a value passed from the user for each field
         // write a foreach with the causes and push them into causes if it already exists
         // save the user
-        
+
         $input = $request->all();
         //user here - use to update and validate specific attributes
         $user = auth()->guard('web')->user();
@@ -51,7 +51,6 @@ class ProfileAboutController extends Controller
         //     $request->all(),
         //     auth()->guard('web')->user()
         // ]);
-        
 
         return redirect(url('profile/subscriptions'));
     }
