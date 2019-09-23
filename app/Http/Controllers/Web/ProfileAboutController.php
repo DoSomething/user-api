@@ -5,6 +5,7 @@ namespace Northstar\Http\Controllers\Web;
 // use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Http\Controllers\Controller;
+use Northstar\Http\Requests\ProfileAboutRequest;
 
 class ProfileAboutController extends Controller
 {
@@ -20,7 +21,6 @@ class ProfileAboutController extends Controller
     /**
      * Display the User Details Form
      *
-     * @return \Illuminate\Http\Response
      */
     public function edit()
     {
@@ -30,6 +30,7 @@ class ProfileAboutController extends Controller
     /**
      * Handle Submissions of the User Details Form
      *
+     * @param ProfileAboutRequest $request
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -41,16 +42,25 @@ class ProfileAboutController extends Controller
         // add conditionals for whether there is a value passed from the user for each field
         // write a foreach with the causes and push them into causes if it already exists
         // save the user
-
-        $input = $request->all();
-        //user here - use to update and validate specific attributes
         $user = auth()->guard('web')->user();
+        $profile_input = $request->all();
+        $input_causes = array_slice($profile_input, 6);
+        $birthdate = $profile_input["month"]."/".$profile_input["day"]."/".$profile_input["year"];
 
-        // dd([
-        //     $request,
-        //     $request->all(),
-        //     auth()->guard('web')->user()
-        // ]);
+        if(strlen($profile_input["month"]) > 0 && strlen($profile_input["day"]) > 0 && strlen($profile_input["year"]) > 0)
+            $user->birthdate = $birthdate;
+
+        if($profile_input["voter_registration_status"])
+            $user->voter_registration_status = $profile_input["voter_registration_status"];
+
+        if($input_causes)
+                $user->causes = array_merge($user->causes, $input_causes);
+            // array_push($user->causes, $profile_input->gender_rights_equality);
+
+        dd([
+            $request->all(),
+            auth()->guard('web')->user()
+        ]);
 
         return redirect(url('profile/subscriptions'));
     }
