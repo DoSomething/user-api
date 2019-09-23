@@ -17,6 +17,7 @@
     <form method="POST" action="{{ url('profile/about') }}">
         <input type="hidden" name="_method" value="PATCH">
         {{ csrf_field() }}
+
         <div class="form-item">
             <label for="birthdate" class="field-label">{{ trans('auth.fields.birthday') }}</label>
             <div class="form-item -reduced">
@@ -31,7 +32,6 @@
                 <label for="year">Year</label>
                 <input class="text-field" name="year" type="text" placeholder="YYYY" />
             </div>
-            {{-- <input name="birthdate" type="text" id="birthdate" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.birthday') }}" value="{{ old('birthdate') }}" data-validate="birthday" data-validate-required /> --}}
         </div>
 
         <div class="form-item">
@@ -59,6 +59,7 @@
             </div>
         </div>
 
+        {{-- @TODO: Refactor to loop through list of causes to create the different options --}}
         <div class="form-item">
             <label for="cause_areas" class="field-label height-auto">{{"What cause areas do you care about most?"}}</label>
 
@@ -118,5 +119,6 @@
         <div class="form-actions -padded -right">
             <input type="submit" id="register-submit" class="button" value="Next">
         </div>
+        
     </form>
 @endsection
