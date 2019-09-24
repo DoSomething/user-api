@@ -2,7 +2,6 @@
 
 namespace Northstar\Http\Controllers\Web;
 
-// use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
 use Northstar\Http\Controllers\Controller;
