@@ -5,7 +5,6 @@ namespace Northstar\Http\Controllers\Web;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
 use Northstar\Http\Controllers\Controller;
-use Northstar\Http\Requests\ProfileAboutRequest;
 
 class ProfileAboutController extends Controller
 {
