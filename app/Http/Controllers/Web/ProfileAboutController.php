@@ -38,7 +38,7 @@ class ProfileAboutController extends Controller
 
         $request['birthdate'] = implode('/', $request['birthdate']);
 
-        if(strlen($request['birthdate'] < 3))
+        if (strlen($request['birthdate'] < 3))
             $request['birthdate'] = null;
 
         $this->registrar->validate($request, null, [
@@ -47,13 +47,13 @@ class ProfileAboutController extends Controller
             'mobile' => 'mobile|nullable|unique:users',
         ]);
 
-        if($request['birthdate'])
+        if ($request['birthdate'])
             $user->birthdate = $request['birthdate'];
 
-        if($request['voter_registration_status'])
+        if ($request['voter_registration_status'])
             $user->voter_registration_status = $request['voter_registration_status'];
 
-        if($request['causes'])
+        if ($request['causes'])
             $user->causes = array_merge($user->causes, $request['causes']);
 
         $user->save();
