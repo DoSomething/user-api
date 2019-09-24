@@ -38,15 +38,8 @@ class ProfileAboutController extends Controller
      */
     public function update(Request $request)
     {
-        // @TODO: finish adding validation and appending data to the user
-        // notes for monday:
-        // concantenate dates together into a single string & validate
-        // add conditionals for whether there is a value passed from the user for each field
-        // write a foreach with the causes and push them into causes if it already exists
-        // save the user
         $user = auth()->guard('web')->user();
 
-        
         $request["birthdate"] = implode("/", $request["birthdate"]);
 
         if(strlen($request["birthdate"] < 3))
