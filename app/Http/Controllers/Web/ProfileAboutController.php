@@ -20,7 +20,6 @@ class ProfileAboutController extends Controller
 
     /**
      * Display the User Details Form
-     *
      */
     public function edit()
     {
@@ -37,10 +36,10 @@ class ProfileAboutController extends Controller
     {
         $user = auth()->guard('web')->user();
 
-        $request["birthdate"] = implode("/", $request["birthdate"]);
+        $request['birthdate'] = implode('/', $request['birthdate']);
 
-        if(strlen($request["birthdate"] < 3))
-            $request["birthdate"] = null;
+        if(strlen($request['birthdate'] < 3))
+            $request['birthdate'] = null;
 
         $this->registrar->validate($request, null, [
             'birthdate' => 'nullable|date|date:now',
@@ -48,14 +47,14 @@ class ProfileAboutController extends Controller
             'mobile' => 'mobile|nullable|unique:users',
         ]);
 
-        if($request["birthdate"])
-            $user->birthdate = $request["birthdate"];
+        if($request['birthdate'])
+            $user->birthdate = $request['birthdate'];
 
-        if($request["voter_registration_status"])
-            $user->voter_registration_status = $request["voter_registration_status"];
+        if($request['voter_registration_status'])
+            $user->voter_registration_status = $request['voter_registration_status'];
 
-        if($request["causes"])
-            $user->causes = array_merge($user->causes, $request["causes"]);
+        if($request['causes'])
+            $user->causes = array_merge($user->causes, $request['causes']);
 
         $user->save();
 
