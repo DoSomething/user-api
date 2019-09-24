@@ -42,7 +42,10 @@
 
         <div class="form-item mt-1">
             <label for="community" class="option -checkbox">
-                <input type="checkbox" name="email_subscription_topics[]" id="community" value="community" class="mt-1" {{old("checked") || in_array('community', $user->email_subscription_topics ?: []) ? "checked" : null}}/>
+                {{-- @TODO: Handle logic to ensure if user currently *has* the subscription but has *unchecked* the subscription, the unchecked value persists and doesn't default to the existing subscription. --}}
+                {{-- @TODO: Implement finessed pre-fill logic across all checkboxes. --}}
+                {{-- @TODO: Make the checkbox a partial? --}}
+                <input type="checkbox" name="email_subscription_topics[]" id="community" value="community" class="mt-1" {{in_array("community", $user->email_subscription_topics ?: []) ? "checked" : null}}/>
                 <span class="font-bold">WYD (What You’re Doing)</span>
                 <p class="footnote">Our weekly community newsletter. Learn what DoSomething members are doing to change the world, and how you can join them!</p>
             </label>
