@@ -56,7 +56,7 @@ class ProfileAboutController extends Controller
             $user->voter_registration_status = $request['voter_registration_status'];
         }
 
-        if ($request['causes']){
+        if ($request['causes']) {
             $user->causes = array_merge($user->causes, $request['causes']);
         }
 
