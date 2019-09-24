@@ -2,7 +2,6 @@
 
 namespace Northstar\Http\Controllers\Web;
 
-// use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
 use Northstar\Http\Controllers\Controller;
@@ -41,6 +40,11 @@ class ProfileSubscriptionsController extends Controller
      */
     public function update(Request $request)
     {
-        //update stuff
+        $user = auth()->guard('web')->user();
+
+        $this->registrar->validate($request, $user, ['mobile' => 'mobile|nullable|unique:users']);
+        $this->registrar->register($request->all(), $user);
+
+        return redirect()->intended('/');
     }
 }
