@@ -29,7 +29,10 @@ class ProfileSubscriptionsController extends Controller
      */
     public function edit()
     {
-        return view('profiles.subscriptions.edit', ['user' => auth()->guard('web')->user()]);
+        return view('profiles.subscriptions.edit', [
+            'user' => auth()->guard('web')->user(),
+            'intended' => session()->pull('url.intended') ?: '/'
+        ]);
     }
 
     /**
