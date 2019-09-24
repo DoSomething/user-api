@@ -46,7 +46,7 @@ class ProfileSubscriptionsController extends Controller
     {
         $user = auth()->guard('web')->user();
 
-        $this->registrar->validate($request, $user, ['mobile' => 'mobile|nullable|unique:users']);
+        $this->registrar->validate($request, $user);
         $this->registrar->register($request->all(), $user);
 
         return redirect()->intended('/');
