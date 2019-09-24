@@ -30,7 +30,6 @@ class ProfileAboutController extends Controller
     /**
      * Handle Submissions of the User Details Form
      *
-     * @param ProfileAboutRequest $request
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
