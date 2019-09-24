@@ -19,6 +19,7 @@ class ProfileSubscriptionsController extends Controller
         $this->registrar = $registrar;
 
         $this->middleware('auth:web');
+        // Limiting access to Staff and Admins while this functionality is being built out.
         $this->middleware('role:admin,staff');
     }
 
