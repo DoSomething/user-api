@@ -45,19 +45,19 @@ class ProfileAboutController extends Controller
         $user = auth()->guard('web')->user();
         $profile_input = $request->all();
         $input_causes = array_slice($profile_input, 6);
-        $birthdate = $profile_input["month"]."/".$profile_input["day"]."/".$profile_input["year"];
+        // $birthdate = $profile_input["month"]."/".$profile_input["day"]."/".$profile_input["year"];
 
-        if(strlen($profile_input["month"]) > 0 && strlen($profile_input["day"]) > 0 && strlen($profile_input["year"]) > 0)
-            $user->birthdate = $birthdate;
+        if($profile_input["birthdate"])
+            $user->birthdate = $request->birthdate;
 
         if($profile_input["voter_registration_status"])
             $user->voter_registration_status = $profile_input["voter_registration_status"];
 
         if($input_causes)
                 $user->causes = array_merge($user->causes, $input_causes);
-            // array_push($user->causes, $profile_input->gender_rights_equality);
 
         dd([
+            $request,
             $request->all(),
             auth()->guard('web')->user()
         ]);
