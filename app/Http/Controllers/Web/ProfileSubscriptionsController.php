@@ -3,7 +3,7 @@
 namespace Northstar\Http\Controllers\Web;
 
 // use Northstar\Models\User;
-// use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
 use Northstar\Http\Controllers\Controller;
 
@@ -39,7 +39,7 @@ class ProfileSubscriptionsController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update()
+    public function update(Request $request)
     {
         //update stuff
     }
