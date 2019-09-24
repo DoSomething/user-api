@@ -31,7 +31,6 @@
 
         <div class="form-item">
             <label for="mobile" class="field-label">Cell Phone # (Optional)</label>
-            {{-- @TODO: Add validation! --}}
             <input name="mobile" type="text" id="mobile" class="text-field js-validate" placeholder="(555) 555-5555" value="{{ old('mobile') ?: $user->mobile }}" data-validate="phone" />
         </div>
         <div class="form-item">
