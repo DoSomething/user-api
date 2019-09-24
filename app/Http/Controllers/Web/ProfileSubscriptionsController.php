@@ -4,15 +4,21 @@ namespace Northstar\Http\Controllers\Web;
 
 // use Northstar\Models\User;
 // use Illuminate\Http\Request;
+use Northstar\Auth\Registrar;
 use Northstar\Http\Controllers\Controller;
 
 class ProfileSubscriptionsController extends Controller
 {
     /**
-     * Set auth middleware.
+     * Make a new ProfileSubscriptionsController,
+     * inject dependencies, and set auth middleware.
+     *
+     * @param Registrar $registrar
      */
-    public function __construct()
+    public function __construct(Registrar $registrar)
     {
+        $this->registrar = $registrar;
+
         $this->middleware('auth:web');
         $this->middleware('role:admin,staff');
     }
