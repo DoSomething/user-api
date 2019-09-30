@@ -38,12 +38,13 @@ class ProfileAboutController extends Controller
 
         $request['birthdate'] = implode('/', $request['birthdate']);
 
+        //checks if the birthdate we create above contains an inputted date
         if (strlen($request['birthdate'] < 3)) {
             $request['birthdate'] = null;
         }
 
         $this->registrar->validate($request, null, [
-            'birthdate' => 'nullable|date|date:now',
+            'birthdate' => 'required|date|before:now',
             'email' => 'email|nullable|unique:users',
             'mobile' => 'mobile|nullable|unique:users',
         ]);
