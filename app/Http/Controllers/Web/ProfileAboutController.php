@@ -36,6 +36,7 @@ class ProfileAboutController extends Controller
     {
         $user = auth()->guard('web')->user();
 
+        //creates a single string from the 3 dates inputted by the user
         $request['birthdate'] = implode('/', $request['birthdate']);
 
         //checks if the birthdate we create above contains an inputted date
@@ -49,17 +50,9 @@ class ProfileAboutController extends Controller
             'mobile' => 'mobile|nullable|unique:users',
         ]);
 
-        if ($request['birthdate']) {
-            $user->birthdate = $request['birthdate'];
-        }
+        $completedFields = array_filter($request->all());
 
-        if ($request['voter_registration_status']) {
-            $user->voter_registration_status = $request['voter_registration_status'];
-        }
-
-        if ($request['causes']) {
-            $user->causes = array_merge($user->causes, $request['causes']);
-        }
+        $user->fill($completedFields);
 
         $user->save();
 
