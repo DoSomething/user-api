@@ -22,15 +22,15 @@
             <label for="birthdate" class="field-label">{{ trans('auth.fields.birthday') }}</label>
             <div class="form-item -reduced">
                 <label for="month">Month</label>
-                <input class="text-field" name="birthdate[]" type="text" placeholder="MM"  />
+                <input class="text-field" name="birthdate[]" type="text" placeholder="MM" maxlength="2"  />
             </div>
             <div class="form-item -reduced">
                 <label for="day">Day</label>
-                <input class="text-field" name="birthdate[]" type="text" placeholder="DD" />
+                <input class="text-field" name="birthdate[]" type="text" placeholder="DD" maxlength="2" />
             </div>
             <div class="form-item -reduced">
                 <label for="year">Year</label>
-                <input class="text-field" name="birthdate[]" type="text" placeholder="YYYY" />
+                <input class="text-field" name="birthdate[]" type="text" placeholder="YYYY" maxlength="4" />
             </div>
         </div>
 
