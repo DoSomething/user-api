@@ -59,58 +59,12 @@
             </div>
         </div>
 
-        {{-- @TODO: Refactor to loop through list of causes to create the different options --}}
         <div class="form-item">
             <label for="cause_areas" class="field-label height-auto">"What cause areas do you care about most?"</label>
             <fieldset>
-                <div>
-                    <input type="checkbox" name="causes[]" value="animal_welfare">
-                    <span>Animal Welfare</span>
-                </div>
-                <div>
-                    <input type="checkbox" name="causes[]" value="bullying">
-                    <span>Bullying</span>
-                </div>
-                <div>
-                    <input type="checkbox" name="causes[]" value="education">
-                    <span>Education</span>
-                </div>
-                <div>
-                    <input type="checkbox" name="causes[]" value="environment">
-                    <span>Environment</span>
-                </div>
-                <div>
-                    <input type="checkbox" name="causes[]" value="gender_rights_equality">
-                    <span>Gender Rights & Equality</span>
-                </div>
-                <div>
-                    <input type="checkbox" name="causes[]" value="homelessness_poverty">
-                    <span>Homelessness & Poverty</span>
-                </div>
-                <div>
-                    <input type="checkbox" name="causes[]" value="immigration_refugees">
-                    <span>Immigration & Refugees</span>
-                </div>
-                <div>
-                    <input type="checkbox" name="causes[]" value="lgbtq_rights_equality">
-                    <span>LGBTQ+ Rights & Equality</span>
-                </div>
-                <div>
-                    <input type="checkbox" name="causes[]" value="mental_health">
-                    <span>Mental Health</span>
-                </div>
-                <div>
-                    <input type="checkbox" name="causes[]" value="physical_health">
-                    <span>Physical Health</span>
-                </div>
-                <div>
-                    <input type="checkbox" name="causes[]" value="racial_justice_equity">
-                    <span>Racial Justice & Equity</span>
-                </div>
-                <div>
-                    <input type="checkbox" name="causes[]" value="sexual_harassment_assault">
-                    <span>Sexual Harassment & Assault</span>
-                </div>
+                    @foreach ( $causes as $value => $label )
+                            @include('forms.checkbox', ['name' => 'causes[]', 'value' => $value , 'label' =>  $label])
+                    @endforeach
             </fieldset>
         </div>
 

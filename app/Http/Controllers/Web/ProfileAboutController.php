@@ -16,6 +16,7 @@ class ProfileAboutController extends Controller
         $this->registrar = $registrar;
         $this->middleware('auth:web');
         $this->middleware('role:admin,staff');
+        $this->causes = [ 'animal_welfare'=> 'Animal Welfare', 'bullying'=>'Bullying', 'education'=>'Education', 'environment' => 'Environment', 'gender_rights_equality' => 'Gender Rights & Equality', 'homelessness_poverty'=> 'Homelessness & Poverty', 'immigration_refugees'=> 'Immigration & Refugees', 'lgbtq_rights_equality' => 'LGBTQ+ Rights & Equality', 'mental_health' => 'Mental Health', 'physical_health' => 'Physical Health', 'racial_justice_equity' => 'Racial Justice & Equity', 'sexual_harassment_assault' => 'Sexual Harassment & Assault'];
     }
 
     /**
@@ -23,7 +24,7 @@ class ProfileAboutController extends Controller
      */
     public function edit()
     {
-        return view('profiles.about.edit', ['user' => auth()->guard('web')->user()]);
+        return view('profiles.about.edit', ['user' => auth()->guard('web')->user(), 'causes' => $this->causes]);
     }
 
     /**
