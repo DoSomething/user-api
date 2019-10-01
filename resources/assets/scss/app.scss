@@ -34,3 +34,158 @@
 @import '_regions/_chrome';
 @import '_regions/_navigation';
 @import '_regions/_container';
+
+/*
+|-------------------------------------------------------------------------------
+| Base 16 Grid
+|-------------------------------------------------------------------------------
+|
+| Small - 4 columns
+| Medium - 8 columns
+| Large - 16 columns
+*/
+
+.base-12-grid {
+    display: grid;
+  
+    // 4 columns
+    grid-template-columns: [full-start] 1fr 1fr [midway] 1fr 1fr [full-end];
+    grid-column-gap: $half-spacing;
+    padding: $half-spacing;
+  
+    @include media($medium) {
+      // 8 columns
+      grid-template-columns: [full-start] 1fr [main-start] 1fr 1fr 1fr [midway] 1fr 1fr 1fr [main-end] 1fr [full-end];
+      grid-column-gap: $base-spacing;
+      padding: $base-spacing $section-spacing;
+    }
+  
+    @include media($large) {
+      // 12 columns
+      grid-template-columns: [full-start] 1fr [wide-start] 1fr [main-start] 1fr [narrow-start] 1fr 1fr 1fr [midway] 1fr 1fr 1fr [narrow-end] 1fr [main-end] 1fr [wide-end] 1fr [full-end];
+    }
+  }
+  
+  .grid-full {
+    grid-column: full-start / full-end;
+  }
+  
+  .grid-compact {
+    grid-column: full-start / full-end;
+  
+    @include media($medium) {
+      grid-column: main-start / main-end;
+    }
+  
+    @include media($large) {
+      grid-column: compact-start / compact-end;
+    }
+  }
+  
+  .grid-main {
+    grid-column: full-start / full-end;
+  
+    @include media($medium) {
+      grid-column: main-start / main-end;
+    }
+  
+    @include media($large) {
+      grid-column: main-start / main-end;
+    }
+  }
+  
+  .grid-narrow {
+    grid-column: full-start / full-end;
+  
+    @include media($medium) {
+      grid-column: main-start / main-end;
+    }
+  
+    @include media($largest) {
+      grid-column: narrow-start / narrow-end;
+    }
+  }
+  
+  .grid-wide {
+    grid-column: full-start / full-end;
+  
+    @include media($large) {
+      grid-column: wide-start / wide-end;
+    }
+  }
+  
+  .grid-full-1\/2 {
+    grid-column: auto / span 4;
+  
+    @include media($medium) {
+      grid-column: auto / span 4;
+    }
+  
+    @include media($large) {
+      grid-column: auto / span 6;
+    }
+  }
+  
+  .grid-wide-1\/3 {
+    grid-column: full-start / full-end;
+  
+    @include media($medium) {
+      grid-column: midway / full-end;
+    }
+  
+    @include media($large) {
+      grid-column: 8 / span 4;
+    }
+  }
+  
+  .grid-wide-2\/3 {
+    grid-column: full-start / full-end;
+  
+    @include media($medium) {
+      grid-column: full-start / midway;
+    }
+  
+    @include media($large) {
+      grid-column: wide-start / span 6;
+    }
+  }
+  
+  .grid-wide-3\/10 {
+    grid-column: full-start / full-end;
+  
+    @include media($medium) {
+      grid-column: midway / full-end;
+    }
+  
+    @include media($large) {
+      grid-column: midway / wide-end;
+    }
+  
+    @include media($larger) {
+      grid-column: 8 / span 4;
+    }
+  
+    @include media($largest) {
+      grid-column: 9 / span 3;
+    }
+  }
+  
+  .grid-wide-7\/10 {
+    grid-column: full-start / full-end;
+  
+    @include media($medium) {
+      grid-column: full-start / midway;
+    }
+  
+    @include media($large) {
+      grid-column: wide-start / midway;
+    }
+  
+    @include media($larger) {
+      grid-column: wide-start / span 6;
+    }
+  
+    @include media($largest) {
+      grid-column: wide-start / span 7;
+    }
+  }  
