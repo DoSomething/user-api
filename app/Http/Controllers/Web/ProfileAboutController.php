@@ -28,7 +28,7 @@ class ProfileAboutController extends Controller
             'mental_health' => 'Mental Health',
             'physical_health' => 'Physical Health',
             'racial_justice_equity' => 'Racial Justice & Equity',
-            'sexual_harassment_assault' => 'Sexual Harassment & Assault'
+            'sexual_harassment_assault' => 'Sexual Harassment & Assault',
         ];
     }
 
@@ -39,7 +39,7 @@ class ProfileAboutController extends Controller
     {
         return view('profiles.about.edit', [
             'user' => auth()->guard('web')->user(),
-            'causes' => $this->causes
+            'causes' => $this->causes,
             ]);
     }
 
