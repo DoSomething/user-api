@@ -35,7 +35,7 @@
         </div>
 
         <div class="form-item">
-            <label for="voter_registration_status" class="field-label height-auto">"Are you registered to vote at your current address?"</label>
+            <label for="voter_registration_status" class="field-label height-auto">Are you registered to vote at your current address?</label>
             <div class="form-item -reduced">
                 <label class="option -radio">
                     <input type="radio" name="voter_registration_status" value="confirmed" {{ old('voter_registration_status') === 'confirmed' ? 'checked' : '' }}>
@@ -60,7 +60,7 @@
         </div>
 
         <div class="form-item">
-            <label for="cause_areas" class="field-label height-auto">"What cause areas do you care about most?"</label>
+            <label for="cause_areas" class="field-label height-auto">What cause areas do you care about most?</label>
             <fieldset>
                     @foreach ( $causes as $value => $label )
                             @include('forms.checkbox', ['name' => 'causes[]', 'value' => $value , 'label' =>  $label])
