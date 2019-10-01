@@ -3,7 +3,7 @@
 @section('title', 'Edit Profile | DoSomething.org')
 
 @section('form-image-url')
-    'https://picsum.photos/100/200'
+    '/images/registration-v2-02.svg'
 @endsection
 
 @section('profile-title')

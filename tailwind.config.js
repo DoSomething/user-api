@@ -98,7 +98,13 @@ module.exports = {
       '4xl': '5.695rem',
       '5xl': '8.543rem',
     },
-    extend: {},
+    extend: {
+      padding: {
+        '1/4': '25%',
+        '1/3': '33%',
+        '1/2': '50%'
+      }
+    },
   },
   variants: {},
   plugins: [],
