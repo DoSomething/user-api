@@ -3,14 +3,14 @@
 @section('title', 'Edit Profile | DoSomething.org')
 
 @section('form-image-url')
-    '/images/registration-v2-02.svg'
+    '/images/pattern1-welcome.png'
 @endsection
 
 @section('profile-title')
     <h2 class="text-black">Complete Your Profile</h2>
 @endsection
 @section('profile-subtitle')
-    <p>We want to customize your DoSomething experience so it's perfect for you. Fill out the next few sections and we'll make it happen.<p>
+    <p class="font-source-sans">We want to customize your DoSomething experience so it's perfect for you. Fill out the next few sections and we'll make it happen.<p>
 @endsection
 
 @section('profile-form')
@@ -81,10 +81,10 @@
                 placeholder text 
             </div>
             <div class="w-2/3 flex justify-around md:justify-end p-2">
-                <div class="w-1/4 ">
+                <div class="w-1/4 sm:w1/2">
                     <a href="{{ url('profile/subscriptions') }}" class="button ">Skip</a>
                 </div>
-                <div class="w-1/4">
+                <div class="w-1/4 sm:w1/2">
                     <input type="submit" id="register-submit" class="button" value="Next">
                 </div>
             </div>
