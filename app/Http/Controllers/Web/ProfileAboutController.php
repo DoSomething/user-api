@@ -16,13 +16,15 @@ class ProfileAboutController extends Controller
         $this->registrar = $registrar;
         $this->middleware('auth:web');
         $this->middleware('role:admin,staff');
-        $this->causes = [
+        $this->causes1 = [
             'animal_welfare'=> 'Animal Welfare',
             'bullying'=>'Bullying',
             'education'=>'Education',
             'environment' => 'Environment',
             'gender_rights_equality' => 'Gender Rights & Equality',
             'homelessness_poverty'=> 'Homelessness & Poverty',
+        ];
+        $this->causes2 = [
             'immigration_refugees'=> 'Immigration & Refugees',
             'lgbtq_rights_equality' => 'LGBTQ+ Rights & Equality',
             'mental_health' => 'Mental Health',
@@ -39,7 +41,8 @@ class ProfileAboutController extends Controller
     {
         return view('profiles.about.edit', [
             'user' => auth()->guard('web')->user(),
-            'causes' => $this->causes,
+            'causes1' => $this->causes1,
+            'causes2' => $this->causes2,
             ]);
     }
 

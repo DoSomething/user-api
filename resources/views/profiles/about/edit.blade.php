@@ -63,12 +63,12 @@
             <label for="cause_areas" class="field-label height-auto">What cause areas do you care about most?</label>
             <div class="flex flex-wrap" >
                 <div class="w-full md:w-1/2">
-                    @foreach ( $causes as $value => $label )
+                    @foreach ( $causes1 as $value => $label )
                             @include('forms.checkbox', ['name' => 'causes[]', 'value' => $value , 'label' =>  $label])
                     @endforeach
                 </div>
                 <div class="w-full md:w-1/2">
-                    @foreach ( $causes as $value => $label )
+                    @foreach ( $causes2 as $value => $label )
                             @include('forms.checkbox', ['name' => 'causes[]', 'value' => $value , 'label' =>  $label])
                     @endforeach
                 </div>
@@ -76,11 +76,18 @@
             </div>
         </div>
 
-        <div class="form-actions -padded -left">
-            <a href="{{ url('profile/subscriptions') }}" class="button">Skip</a>
-        </div>
-        <div class="form-actions -padded -right">
-            <input type="submit" id="register-submit" class="button" value="Next">
+        <div class="flex pt-4">
+            <div class="w-1/3 flex justify-between md:justify-start bg-blue-200">
+                placeholder text 
+            </div>
+            <div class="w-2/3 flex justify-around md:justify-end p-2">
+                <div class="w-1/4 ">
+                    <a href="{{ url('profile/subscriptions') }}" class="button ">Skip</a>
+                </div>
+                <div class="w-1/4">
+                    <input type="submit" id="register-submit" class="button" value="Next">
+                </div>
+            </div>
         </div>
         
     </form>
