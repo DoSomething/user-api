@@ -61,11 +61,19 @@
 
         <div class="form-item">
             <label for="cause_areas" class="field-label height-auto">What cause areas do you care about most?</label>
-            <fieldset>
+            <div class="flex flex-wrap" >
+                <div class="w-full md:w-1/2">
                     @foreach ( $causes as $value => $label )
                             @include('forms.checkbox', ['name' => 'causes[]', 'value' => $value , 'label' =>  $label])
                     @endforeach
-            </fieldset>
+                </div>
+                <div class="w-full md:w-1/2">
+                    @foreach ( $causes as $value => $label )
+                            @include('forms.checkbox', ['name' => 'causes[]', 'value' => $value , 'label' =>  $label])
+                    @endforeach
+                </div>
+                    
+            </div>
         </div>
 
         <div class="form-actions -padded -left">
