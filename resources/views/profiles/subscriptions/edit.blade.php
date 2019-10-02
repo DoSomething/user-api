@@ -67,7 +67,7 @@
         <ul class="form-actions -inline">
             <li>
                 <div class="form-actions">
-                    <a href="{{ $intended }}" class="button" >Skip</a>
+                    <a href="{{ $intended }}" class="button">Skip</a>
                 </div>
             </li>
             <li>
