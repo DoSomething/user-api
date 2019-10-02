@@ -42,25 +42,23 @@
 
         <div class="form-item mt-1">
             <label for="community" class="option -checkbox">
-                {{-- @TODO: Handle logic to ensure if user currently *has* the subscription but has *unchecked* the subscription, the unchecked value persists and doesn't default to the existing subscription. --}}
-                {{-- @TODO: Implement finessed pre-fill logic across all checkboxes. --}}
-                {{-- @TODO: Make the checkbox a partial? --}}
-                <input type="checkbox" name="email_subscription_topics[]" id="community" value="community" class="mt-1" {{in_array("community", $user->email_subscription_topics ?: []) ? "checked" : null}}/>
+                {{-- @TODO: DRY up this 'checked' logic somehow? Integrate this into the checkbox partial? --}}
+                <input type="checkbox" name="email_subscription_topics[]" id="community" value="community" class="mt-1" {{in_array("community", (count($errors) ? old('email_subscription_topics') : $user->email_subscription_topics) ?: []) ? "checked" : null}} />
                 <span class="font-bold">WYD (What You’re Doing)</span>
                 <p class="footnote">Our weekly community newsletter. Learn what DoSomething members are doing to change the world, and how you can join them!</p>
             </label>
             <label for="scholarships" class="option -checkbox">
-                <input type="checkbox" name="email_subscription_topics[]" id="scholarships" value="scholarships" class="mt-1"/>
+                <input type="checkbox" name="email_subscription_topics[]" id="scholarships" value="scholarships" class="mt-1" {{in_array("scholarships", (count($errors) ? old('email_subscription_topics') : $user->email_subscription_topics) ?: []) ? "checked" : null}} />
                 <span class="font-bold">Pays To Do Good</span>
                 <p class="footnote">Our monthly scholarships newsletter. Earn easy scholarships for volunteering, get clutch tips on applying, and read the latest news about education.</p>
             </label>
             <label for="news" class="option -checkbox">
-                <input type="checkbox" name="email_subscription_topics[]" id="news" value="news" class="mt-1"/>
+                <input type="checkbox" name="email_subscription_topics[]" id="news" value="news" class="mt-1" {{in_array("news", (count($errors) ? old('email_subscription_topics') : $user->email_subscription_topics) ?: []) ? "checked" : null}} />
                 <span class="font-bold">The Breakdown</span>
                 <p class="footnote">Our current events newsletter, sent twice a week. Featuring the week’s headlines and ways to impact them, you can read the news *and* change the news.</p>
             </label>
             <label for="lifestyle" class="option -checkbox">
-                <input type="checkbox" name="email_subscription_topics[]" id="lifestyle" value="lifestyle" class="mt-1"/>
+                <input type="checkbox" name="email_subscription_topics[]" id="lifestyle" value="lifestyle" class="mt-1" {{in_array("lifestyle", (count($errors) ? old('email_subscription_topics') : $user->email_subscription_topics) ?: []) ? "checked" : null}} />
                 <span class="font-bold">The Boost</span>
                 <p class="footnote">Our weekly cause and lifestyle newsletter. You’ll receive one article (like an inspiring story of a young changemaker or a how-to volunteering guide), plus one related action every Thursday.</p>
             </label>
