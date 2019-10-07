@@ -32,7 +32,7 @@ class ProfileSubscriptionsController extends Controller
     {
         return view('profiles.subscriptions.edit', [
             'user' => auth()->guard('web')->user(),
-            'intended' => session()->pull('url.intended', '/'),
+            'intended' => session()->get('url.intended', '/'),
         ]);
     }
 
