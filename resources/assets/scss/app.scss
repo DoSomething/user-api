@@ -6,6 +6,9 @@
 // Custom Variables
 @import '_utilities/_variables';
 
+// Fonts
+@import 'fonts';
+
 // Import DoSomething.org modules
 @import '~@dosomething/forge/scss/forge.scss';
 @import '~dosomething-validation/src/validation.scss';

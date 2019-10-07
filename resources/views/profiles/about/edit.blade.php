@@ -7,7 +7,7 @@
 @endsection
 
 @section('profile-title')
-    <h2 class="text-black">Complete Your Profile</h2>
+    <h2 class="text-black font-source-sans">Complete Your Profile</h2>
 @endsection
 @section('profile-subtitle')
     <p>We want to customize your DoSomething experience so it's perfect for you. Fill out the next few sections and we'll make it happen.<p>
