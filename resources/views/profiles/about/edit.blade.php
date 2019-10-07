@@ -3,7 +3,7 @@
 @section('title', 'Edit Profile | DoSomething.org')
 
 @section('form-image-url')
-    '/images/pattern-02.png'
+    '/images/about-form-bg.png'
 @endsection
 
 @section('profile-title')
@@ -92,7 +92,7 @@
 
         <div class="flex pt-4">
             <div class="w-1/3 flex justify-between md:justify-start">
-                <img src="/images/icons-2.svg" />
+                <img src="/images/about-form-icon.svg" />
             </div>
             <div class="w-2/3 flex justify-around md:justify-end p-2">
                 <div class="w-1/4 sm:w1/2">
