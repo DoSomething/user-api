@@ -30,7 +30,7 @@
         <input type="hidden" name="_method" value="PATCH">
         {{ csrf_field() }}
 
-        <div class="form-item flex flex-wrap justify-start justify-between md:justify-start">
+        <div class="form-item flex flex-wrap justify-between md:justify-start">
             <div class="w-full">
                 <label for="birthdate" class="field-label">{{ trans('auth.fields.birthday') }}</label>
             </div>
@@ -48,7 +48,7 @@
             </div>
         </div>
 
-        <div class="form-item flex flex-wrap sm:justify-start sm:justify-between md:justify-start">
+        <div class="form-item flex flex-wrap justify-between md:justify-start">
             <label for="voter_registration_status" class="field-label height-auto w-full">Are you registered to vote at your current address?</label>
             <div class="form-item -reduced w-1/5">
                 <label class="option -radio">
