@@ -176,7 +176,7 @@ class AuthController extends Controller
      */
     public function getRegister()
     {
-        return view('auth.register', ['coverImage' => true]);
+        return view('auth.register-beta');
     }
 
     /**
@@ -190,11 +190,9 @@ class AuthController extends Controller
     {
         $this->registrar->validate($request, null, [
             'first_name' => 'required|max:50',
-            'birthdate' => 'required|date|before:now',
+            'last_name' => 'required|max:50',
             'email' => 'required|email|unique:users',
-            'mobile' => 'mobile|nullable|unique:users',
             'password' => 'required|min:6|max:512',
-            'voter_registration_status' => 'required|in:uncertain,unregistered,confirmed',
         ]);
 
         // Register and login the user.
@@ -244,7 +242,7 @@ class AuthController extends Controller
 
         Auth::login($user, true);
 
-        return redirect()->intended('/');
+        return redirect('profile/about');
     }
 
     /**
