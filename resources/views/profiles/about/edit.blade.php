@@ -77,11 +77,11 @@
                 <img src="/images/about-form-icon.svg" />
             </div>
             <div class="w-2/3 flex justify-around md:justify-end p-2">
-                <div class="w-1/4 sm:w1/2">
-                    <a href="{{ url('profile/subscriptions') }}" class="button">Skip</a>
+                <div class="m-1">
+                    <a href="{{ url('profile/subscriptions') }}" class="button capitalize -secondary-beta">Skip</a>
                 </div>
-                <div class="w-1/4 sm:w1/2">
-                    <input type="submit" id="register-submit" class="button" value="Next">
+                <div class="m-1">
+                    <input type="submit" id="register-submit" class="button capitalize" value="Next">
                 </div>
             </div>
         </div>
