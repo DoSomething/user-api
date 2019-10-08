@@ -54,11 +54,6 @@ class ProfileAboutController extends Controller
     {
         $user = auth()->guard('web')->user();
 
-        //checks if the birthdate we create above contains an inputted date
-        if (strlen($request['birthdate'] < 3)) {
-            $request['birthdate'] = null;
-        }
-
         $this->registrar->validate($request, null, [
             'birthdate' => 'required|date|before:now',
             'email' => 'email|nullable|unique:users',
