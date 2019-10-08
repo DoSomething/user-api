@@ -60,12 +60,12 @@
             <div class="flex flex-wrap" >
                 <div class="w-full md:w-1/2">
                     @foreach ( $causes1 as $value => $label )
-                            @include('forms.checkbox', ['name' => 'causes[]', 'value' => $value , 'label' =>  $label])
+                            @include('forms.checkbox', ['name' => 'causes', 'value' => $value , 'label' =>  $label])
                     @endforeach
                 </div>
                 <div class="w-full md:w-1/2">
                     @foreach ( $causes2 as $value => $label )
-                            @include('forms.checkbox', ['name' => 'causes[]', 'value' => $value , 'label' =>  $label])
+                            @include('forms.checkbox', ['name' => 'causes', 'value' => $value , 'label' =>  $label])
                     @endforeach
                 </div>
                     
