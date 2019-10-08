@@ -54,9 +54,6 @@ class ProfileAboutController extends Controller
     {
         $user = auth()->guard('web')->user();
 
-        //creates a single string from the 3 dates inputted by the user
-        $request['birthdate'] = implode('/', $request['birthdate']);
-
         //checks if the birthdate we create above contains an inputted date
         if (strlen($request['birthdate'] < 3)) {
             $request['birthdate'] = null;

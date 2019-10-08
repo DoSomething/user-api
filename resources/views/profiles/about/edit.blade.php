@@ -27,18 +27,6 @@
             <div class="w-full">
                 <label for="birthdate" class="field-label">{{ trans('auth.fields.birthday') }}</label>
             </div>
-            <div class="form-item -reduced w-1/5">
-                <label for="month">Month</label>
-                <input class="text-field" name="birthdate[]" type="text" placeholder="MM" maxlength="2"  />
-            </div>
-            <div class="form-item -reduced w-1/5">
-                <label for="day">Day</label>
-                <input class="text-field " name="birthdate[]" type="text" placeholder="DD" maxlength="2" />
-            </div>
-            <div class="form-item -reduced w-1/5">
-                <label for="year">Year</label>
-                <input class="text-field" name="birthdate[]" type="text" placeholder="YYYY" maxlength="4" />
-            </div>
         </div>
 
         <div class="form-item flex flex-wrap justify-between md:justify-start">
