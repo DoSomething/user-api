@@ -67,10 +67,10 @@
             </div>
             <div class="w-2/3 flex justify-around sm:justify-end p-2">
                 <div class="m-1">
-                    <a href="{{ $intended }}" class="button normal-case -secondary-beta">Skip</a>
+                    <a href="{{ $intended }}" class="button capitalize -secondary-beta">Skip</a>
                 </div>
                 <div class="m-1">
-                    <input type="submit" class="button normal-case" value="Finish">
+                    <input type="submit" class="button capitalize" value="Finish">
                 </div>
             </div>
         </div>

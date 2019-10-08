@@ -1,6 +1,6 @@
 .button {
-  &.normal-case {
-    text-transform: none;
+  &.capitalize {
+    text-transform: capitalize;
   }
 
   // @TODO: incorporate this into Forge, or utilize whatever ends up being the new -secondary style.
