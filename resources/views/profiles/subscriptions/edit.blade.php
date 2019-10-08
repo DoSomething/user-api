@@ -61,17 +61,18 @@
             </label>
         </div>
 
-        <ul class="form-actions -inline">
-            <li>
-                <div class="form-actions">
-                    <a href="{{ $intended }}" class="button">Skip</a>
+        <div class="flex pt-4">
+            <div class="w-1/3 flex justify-start">
+                <img src="/images/subscription-form-icon.svg" />
+            </div>
+            <div class="w-2/3 flex justify-around sm:justify-end p-2">
+                <div class="m-1">
+                    <a href="{{ $intended }}" class="button normal-case -secondary-beta">Skip</a>
                 </div>
-            </li>
-            <li>
-                <div class="form-actions">
-                    <input type="submit" class="button" value="Finish">
+                <div class="m-1">
+                    <input type="submit" class="button normal-case" value="Finish">
                 </div>
-            </li>
-        </ul>
+            </div>
+        </div>
     </form>
 @endsection
