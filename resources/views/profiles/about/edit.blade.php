@@ -84,7 +84,7 @@
         </div>
 
         <div class="flex pt-4">
-            <div class="w-1/3 flex justify-between md:justify-start">
+            <div class="w-1/3 flex justify-start">
                 <img src="/images/about-form-icon.svg" />
             </div>
             <div class="w-2/3 flex justify-around md:justify-end p-2">

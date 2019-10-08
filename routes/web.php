@@ -35,8 +35,8 @@ $router->get('facebook/continue', 'FacebookController@redirectToProvider');
 $router->get('facebook/verify', 'FacebookController@handleProviderCallback');
 
 // Registration
-$router->get('register', 'AuthController@getRegister');
-$router->post('register', 'AuthController@postRegister');
+$router->get('register', '\Northstar\Http\Controllers\Legacy\AuthController@getRegister');
+$router->post('register', '\Northstar\Http\Controllers\Legacy\AuthController@postRegister');
 
 // Profile
 $router->get('profile/about', 'ProfileAboutController@edit');
