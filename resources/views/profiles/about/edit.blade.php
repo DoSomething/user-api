@@ -26,7 +26,7 @@
         <div class="form-item flex flex-wrap justify-between md:justify-start">
             <div class="w-1/2">
                 <label for="birthdate" class="field-label">{{ trans('auth.fields.birthday')." (MM/DD/YYYY)" }}</label>
-                <input name="birthdate" type="text" id="birthdate" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.birthday') }}" value="{{ old('birthdate') }}" data-validate="birthday" data-validate-required />
+                <input name="birthdate" type="text" id="birthdate" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.birthday') }}" value="{{ old('birthdate') ?: format_date($user->birthdate, "m/d/Y") }}" data-validate="birthday" data-validate-required />
             </div>
         </div>
 
@@ -34,21 +34,21 @@
             <label for="voter_registration_status" class="field-label height-auto w-full">Are you registered to vote at your current address?</label>
             <div class="form-item -reduced w-1/5">
                 <label class="option -radio">
-                    <input type="radio" name="voter_registration_status" value="confirmed" {{ old('voter_registration_status') === 'confirmed' ? 'checked' : '' }}>
+                    <input type="radio" name="voter_registration_status" value="confirmed" {{ (old('voter_registration_status') ?: $user->voter_registration_status) === 'confirmed' ? 'checked' : '' }}>
                     <span class="option__indicator"></span>
                     <span>Yes</span>
                 </label>
             </div>
             <div class="form-item -reduced w-1/5">
                 <label class="option -radio">
-                    <input type="radio" name="voter_registration_status" value="unregistered" {{ old('voter_registration_status') === 'unregistered' ? 'checked' : '' }}>
+                    <input type="radio" name="voter_registration_status" value="unregistered" {{ (old('voter_registration_status') ?: $user->voter_registration_status) === 'unregistered' ? 'checked' : '' }}>
                     <span class="option__indicator"></span>
                     <span>No</span>
                 </label>
             </div>
             <div class="form-item -reduced w-3/5 pr-0">
                 <label class="option -radio">
-                    <input type="radio" name="voter_registration_status" value="uncertain" {{ old('voter_registration_status') === 'uncertain' ? 'checked' : '' }}>
+                    <input type="radio" name="voter_registration_status" value="uncertain" {{ (old('voter_registration_status') ?: $user->voter_registration_status) === 'uncertain' ? 'checked' : '' }}>
                     <span class="option__indicator"></span>
                     <span>I'm not sure</span>
                 </label>
