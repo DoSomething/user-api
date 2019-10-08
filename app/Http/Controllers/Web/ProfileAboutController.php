@@ -55,7 +55,7 @@ class ProfileAboutController extends Controller
         $user = auth()->guard('web')->user();
 
         $this->registrar->validate($request, null, [
-            'birthdate' => 'required|date|before:now',
+            'birthdate' => 'nullable|date|before:now',
             'email' => 'email|nullable|unique:users',
             'mobile' => 'mobile|nullable|unique:users',
         ]);
