@@ -56,7 +56,7 @@
         </div>
 
         <div class="form-item">
-            <label for="cause_areas" class="field-label height-auto">What cause areas do you care about most?</label>
+            <p class="font-bold mt-2">What cause areas do you care about most?</p>
             <div class="flex flex-wrap" >
                 <div class="w-full md:w-1/2">
                     @foreach ( $causes1 as $value => $label )
