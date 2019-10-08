@@ -1,0 +1,18 @@
+.button {
+  &.capitalize {
+    text-transform: capitalize;
+  }
+
+  // @TODO: incorporate this into Forge, or utilize whatever ends up being the new -secondary style.
+  &.-secondary-beta {
+    background: $white;
+    // Tailwind color ($gray-500 in Phoenix https://git.io/JeW8A).
+    color: #999;
+    // Use box shadow inset so border is within the bounds of the button.
+    box-shadow: inset 0px 0px 0px 2px;
+
+    &:hover {
+      color: $black;
+    }
+  }
+}

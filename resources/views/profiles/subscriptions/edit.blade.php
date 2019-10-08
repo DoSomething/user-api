@@ -3,7 +3,7 @@
 @section('title', 'Edit Profile | DoSomething.org')
 
 @section('form-image-url')
-    '/images/registration-v2-03.svg'
+    '/images/subscription-form-bg.png'
 @endsection
 
 @section('profile-title')
@@ -30,10 +30,10 @@
             <p class="footnote"><em>DoSomething.org weekly updates will be sent to your phone number 1 time per week from 38383. Message and data rates may apply. Text <strong>HELP</strong> to 38383 for help. Text <strong>STOP</strong> to 38383 to opt out. Please review our <a href="https://www.dosomething.org/us/about/terms-service">Terms of Service​</a> and <a href="https://www.dosomething.org/us/about/privacy-policy">Privacy Policy</a> pages. T-Mobile is not liable for delayed or undelivered messages.</em></p>
         </div>
 
-        <p class="font-bold mt-2">Our Email Newsletters</p>
+        <p class="font-bold mt-6">Our Email Newsletters</p>
         <p class="mt-1">Community! Scholarships! News! Exclamation points! Our email newsletters are bringing inspiration and education straight to your inbox. Let us know which ones you want.</p>
 
-        <div class="form-item mt-1">
+        <div class="form-item mt-3">
             <label for="community" class="option -checkbox">
                 {{-- @TODO: DRY up this 'checked' logic somehow? Integrate this into the checkbox partial? --}}
                 <input type="checkbox" name="email_subscription_topics[]" id="community" value="community" {{in_array("community", (count($errors) ? old('email_subscription_topics') : $user->email_subscription_topics) ?: []) ? "checked" : null}} />
@@ -61,17 +61,18 @@
             </label>
         </div>
 
-        <ul class="form-actions -inline">
-            <li>
-                <div class="form-actions">
-                    <a href="{{ $intended }}" class="button">Skip</a>
+        <div class="flex pt-4">
+            <div class="w-1/3 flex justify-start">
+                <img src="/images/subscription-form-icon.svg" />
+            </div>
+            <div class="w-2/3 flex justify-around sm:justify-end p-2">
+                <div class="m-1">
+                    <a href="{{ $intended }}" class="button capitalize -secondary-beta">Skip</a>
                 </div>
-            </li>
-            <li>
-                <div class="form-actions">
-                    <input type="submit" class="button" value="Finish">
+                <div class="m-1">
+                    <input type="submit" class="button capitalize" value="Finish">
                 </div>
-            </li>
-        </ul>
+            </div>
+        </div>
     </form>
 @endsection
