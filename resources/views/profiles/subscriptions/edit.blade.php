@@ -30,7 +30,7 @@
             <p class="footnote"><em>DoSomething.org weekly updates will be sent to your phone number 1 time per week from 38383. Message and data rates may apply. Text <strong>HELP</strong> to 38383 for help. Text <strong>STOP</strong> to 38383 to opt out. Please review our <a href="https://www.dosomething.org/us/about/terms-service">Terms of Service​</a> and <a href="https://www.dosomething.org/us/about/privacy-policy">Privacy Policy</a> pages. T-Mobile is not liable for delayed or undelivered messages.</em></p>
         </div>
 
-        <p class="font-bold mt-8">Our Email Newsletters</p>
+        <p class="font-bold mt-6">Our Email Newsletters</p>
         <p class="mt-1">Community! Scholarships! News! Exclamation points! Our email newsletters are bringing inspiration and education straight to your inbox. Let us know which ones you want.</p>
 
         <div class="form-item mt-3">
