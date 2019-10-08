@@ -24,8 +24,9 @@
         {{ csrf_field() }}
 
         <div class="form-item flex flex-wrap justify-between md:justify-start">
-            <div class="w-full">
-                <label for="birthdate" class="field-label">{{ trans('auth.fields.birthday') }}</label>
+            <div class="w-1/2">
+                <label for="birthdate" class="field-label">{{ trans('auth.fields.birthday').' (MM/DD/YYYY)' }}</label>
+                <input name="birthdate" type="text" id="birthdate" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.birthday') }}" value="{{ old('birthdate') }}" data-validate="birthday" data-validate-required />
             </div>
             <div class="form-item -reduced w-1/5">
                 <label for="month">Month</label>
