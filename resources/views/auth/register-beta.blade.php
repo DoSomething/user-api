@@ -47,7 +47,7 @@
         </div>
 
         <div class="form-item">
-            <p class="footnote"><em>Creating an account means you agree to the <a href="https://www.dosomething.org/us/about/terms-service">Terms of Service​</a>, <a href="https://www.dosomething.org/us/about/privacy-policy">Privacy Policy</a> and our default Notification Settings. DoSomething.org will send you communications; you may change your preferences in your account settings.</em></p>
+            <p class="footnote"><em>Creating an account means you agree to the <a href="https://www.dosomething.org/us/about/terms-service">Terms of Service​</a>, <a href="https://www.dosomething.org/us/about/privacy-policy">Privacy Policy</a> and our default <a href="https://www.dosomething.org/us/about/default-notifications">Notification Settings</a>. DoSomething.org will send you communications; you may change your preferences in your account settings.</em></p>
         </div>
     </form>
 
