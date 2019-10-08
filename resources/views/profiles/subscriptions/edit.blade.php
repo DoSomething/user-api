@@ -3,7 +3,7 @@
 @section('title', 'Edit Profile | DoSomething.org')
 
 @section('form-image-url')
-    '/images/registration-v2-03.svg'
+    '/images/subscription-form-bg.png'
 @endsection
 
 @section('profile-title')
