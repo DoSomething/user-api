@@ -39,6 +39,7 @@ class GoogleController extends Controller
     public function redirectToProvider()
     {
         return Socialite::driver('google')
+            ->scopes(['profile', 'https://www.googleapis.com/auth/user.birthday.read'])
             ->redirect();
     }
 
