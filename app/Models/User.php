@@ -50,6 +50,7 @@ use Northstar\Jobs\SendPasswordResetToCustomerIo;
  * @property string $mobilecommons_id
  * @property string $drupal_id
  * @property string $facebook_id
+ * @property string $google_id
  *
  * Messaging subscription status:
  * @property string $sms_status
@@ -104,7 +105,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'country', 'language', 'addr_source',
 
         // External profiles:
-        'mobilecommons_id', 'mobilecommons_status', 'facebook_id',
+        'mobilecommons_id', 'mobilecommons_status', 'facebook_id', 'google_id',
         'sms_status', 'sms_paused', 'email_subscription_status', 'email_subscription_topics', 'last_messaged_at',
 
         // Voting Plan:
@@ -121,7 +122,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     public static $internal = [
-        'drupal_id', 'role', 'facebook_id',
+        'drupal_id', 'role', 'facebook_id', 'google_id',
         'mobilecommons_id', 'mobilecommons_status', 'sms_status', 'sms_paused',
         'last_messaged_at', 'feature_flags', 'totp',
     ];
@@ -135,7 +136,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     public static $uniqueIndexes = [
-        '_id', 'drupal_id', 'email', 'mobile', 'facebook_id',
+        '_id', 'drupal_id', 'email', 'mobile', 'facebook_id', 'google_id',
     ];
 
     /**
@@ -147,7 +148,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     public static $indexes = [
-        '_id', 'drupal_id', 'email', 'mobile', 'source', 'role', 'facebook_id',
+        '_id', 'drupal_id', 'email', 'mobile', 'source', 'role', 'facebook_id', 'google_id',
     ];
 
     /**
@@ -507,6 +508,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'sms_status_source' => (isset($this->audit['sms_status']['source'])) ? $this->audit['sms_status']['source'] : null,
             'sms_paused' => (bool) $this->sms_paused,
             'facebook_id' => $this->facebook_id,
+            'google_id' => $this->google_id,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'birthdate' => optional($this->birthdate)->timestamp,
