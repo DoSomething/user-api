@@ -67,7 +67,6 @@ class GoogleController extends Controller
 
             return redirect('/register')->with('status', 'We need your email to contact you if you win a scholarship.');
         }
-        info(print_r($googleUser, true));
 
         // Aggregate public profile fields
         $fields = [
