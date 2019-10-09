@@ -67,10 +67,13 @@ class GoogleController extends Controller
 
             return redirect('/register')->with('status', 'We need your email to contact you if you win a scholarship.');
         }
+        info(print_r($googleUser, true));
 
         // Aggregate public profile fields
         $fields = [
             'google_id' => $googleUser->id,
+            'first_name' => $googleUser->user['given_name'],
+            'last_name' => $googleUser->user['family_name'],
         ];
 
         $northstarUser = User::where('email', '=', $googleUser->email)->first();
