@@ -53,9 +53,8 @@ class GoogleController extends Controller
         // Grab the user's profile using their Google OAuth token.
         try {
             $googleUser = Socialite::driver('google')->user();
-            // $googleUser = Socialite::driver('google')
-            //     ->fields(['email'])
-            //     ->userFromToken($requestUser->token);
+            // TODO: Make API request with $googleUser->token to get user birthday.
+            // @see https://developers.google.com/people/api/rest/v1/people/get?apix_params=%7B%22resourceName%22%3A%22people%2Fme%22%2C%22personFields%22%3A%22birthdays%22%7D
         } catch (RequestException | ClientException | InvalidStateException $e) {
             logger()->warning('google_token_mismatch');
 
