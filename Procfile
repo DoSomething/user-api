@@ -1,4 +1,4 @@
-web: composer warmup && bootstrap/qgtunnel vendor/bin/heroku-php-nginx -C nginx.conf public/
+web: bootstrap/qgtunnel vendor/bin/heroku-php-nginx -C nginx.conf public/
 
 release: php artisan migrate --force
 
