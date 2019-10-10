@@ -23,24 +23,24 @@
 
         <div class="md:flex md:flex-wrap md:justify-between">
             <div class="form-item md:w-1/2 pr-4">
-                <label for="first_name" class="field-label">{{ trans('auth.fields.first_name') }}</label>
-                <input name="first_name" type="text" id="first_name" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.first_name') }}" value="{{ old('first_name') }}" autofocus data-validate="first_name" data-validate-required />
+                <label for="first_name" class="field-label">First Name</label>
+                <input name="first_name" type="text" id="first_name" class="text-field required js-validate" placeholder="First Name" value="{{ old('first_name') }}" autofocus data-validate="first_name" data-validate-required />
             </div>
 
             <div class="form-item md:w-1/2">
-                <label for="last_name" class="field-label">{{ trans('auth.fields.last_name') }}</label>
-                <input name="last_name" type="text" id="last_name" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.last_name') }}" value="{{ old('last_name') }}" data-validate="last_name" data-validate-required />
+                <label for="last_name" class="field-label">Last Name</label>
+                <input name="last_name" type="text" id="last_name" class="text-field required js-validate" placeholder="Last Name" value="{{ old('last_name') }}" data-validate="last_name" data-validate-required />
             </div>
         </div>
 
         <div class="form-item">
-            <label for="email" class="field-label">{{ trans('auth.fields.email') }}</label>
+            <label for="email" class="field-label">Email Address</label>
             <input name="email" type="text" id="email" class="text-field required js-validate" placeholder="puppet-sloth@example.org" value="{{ old('email') }}" data-validate="email" data-validate-required />
         </div>
 
         <div class="form-item password-visibility">
-            <label for="password" class="field-label">{{ trans('auth.fields.password') }}</label>
-            <input name="password" type="password" id="password" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.password') }}" data-validate="password" data-validate-required />
+            <label for="password" class="field-label">Password</label>
+            <input name="password" type="password" id="password" class="text-field required js-validate" placeholder="6+ characters... make it tricky!" data-validate="password" data-validate-required />
             <span class="password-visibility__toggle -hide"></span>
         </div>
 
