@@ -22,7 +22,7 @@
         {{ csrf_field() }}
 
         <div class="md:flex md:flex-wrap md:justify-between">
-            <div class="form-item md:w-1/2 pr-4">
+            <div class="form-item md:w-1/2 md:pr-4">
                 <label for="first_name" class="field-label">First Name</label>
                 <input name="first_name" type="text" id="first_name" class="text-field required js-validate" placeholder="First Name" value="{{ old('first_name') }}" autofocus data-validate="first_name" data-validate-required />
             </div>
