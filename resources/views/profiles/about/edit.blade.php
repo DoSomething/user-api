@@ -25,8 +25,8 @@
 
         <div class="form-item flex flex-wrap justify-between md:justify-start">
             <div class="w-1/2">
-                <label for="birthdate" class="field-label">{{ trans('auth.fields.birthday')." (MM/DD/YYYY)" }}</label>
-                <input name="birthdate" type="text" id="birthdate" class="text-field js-validate" placeholder="{{ trans('auth.validation.placeholder.birthday') }}" value="{{ old('birthdate') ?: format_date($user->birthdate, "m/d/Y") }}" data-validate="birthday" />
+                <label for="birthdate" class="field-label">Birthday (MM/DD/YYYY)</label>
+                <input name="birthdate" type="text" id="birthdate" class="text-field js-validate" placeholder="MM/DD/YYYY" value="{{ old('birthdate') ?: format_date($user->birthdate, "m/d/Y") }}" data-validate="birthday" />
             </div>
         </div>
 
@@ -68,7 +68,7 @@
                             @include('forms.checkbox', ['name' => 'causes', 'value' => $value , 'label' =>  $label])
                     @endforeach
                 </div>
-                    
+
             </div>
         </div>
 
@@ -85,6 +85,6 @@
                 </div>
             </div>
         </div>
-        
+
     </form>
 @endsection
