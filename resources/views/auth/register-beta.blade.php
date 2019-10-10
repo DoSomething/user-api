@@ -45,7 +45,7 @@
         </div>
 
         <div class="form-item -padded">
-            <input type="submit" class="button" value="Create Account">
+            <input type="submit" class="button capitalize" value="Create Account">
         </div>
 
         <div class="form-item">
