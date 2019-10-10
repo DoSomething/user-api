@@ -21,14 +21,16 @@
     <form method="POST" action="{{ url('register-beta')}}">
         {{ csrf_field() }}
 
-        <div class="form-item">
-            <label for="first_name" class="field-label">{{ trans('auth.fields.first_name') }}</label>
-            <input name="first_name" type="text" id="first_name" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.first_name') }}" value="{{ old('first_name') }}" autofocus data-validate="first_name" data-validate-required />
-        </div>
+        <div class="md:flex md:flex-wrap md:justify-between">
+            <div class="form-item md:w-1/2 pr-4">
+                <label for="first_name" class="field-label">{{ trans('auth.fields.first_name') }}</label>
+                <input name="first_name" type="text" id="first_name" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.first_name') }}" value="{{ old('first_name') }}" autofocus data-validate="first_name" data-validate-required />
+            </div>
 
-        <div class="form-item">
-            <label for="last_name" class="field-label">{{ trans('auth.fields.last_name') }}</label>
-            <input name="last_name" type="text" id="last_name" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.last_name') }}" value="{{ old('last_name') }}" data-validate="last_name" data-validate-required />
+            <div class="form-item md:w-1/2">
+                <label for="last_name" class="field-label">{{ trans('auth.fields.last_name') }}</label>
+                <input name="last_name" type="text" id="last_name" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.last_name') }}" value="{{ old('last_name') }}" data-validate="last_name" data-validate-required />
+            </div>
         </div>
 
         <div class="form-item">
