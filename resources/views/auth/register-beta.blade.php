@@ -60,5 +60,5 @@
 
     @include('auth.facebook')
 
-    <p class="text-gray-500">Already have an account? <a href="{{ url('login') }}">Log In</a></p>
+    <p class="text-gray-500 mt-5">Already have an account? <a href="{{ url('login') }}">Log In</a></p>
 @endsection
