@@ -67,6 +67,8 @@ class AuthController extends Controller
                 'title' => request()->query('title', trans('auth.get_started.create_account')),
                 'callToAction' => request()->query('callToAction', trans('auth.get_started.call_to_action')),
                 'coverImage' => request()->query('coverImage', asset('members.jpg')),
+                // Temporary 'feature flag' to redirect to the new registration flow (for testing).
+                'registerBeta' => request()->query('register_beta'),
                 // Store any provided UTMs, Referrer User ID, or Contentful ID for user's source_detail:
                 'source_detail' => array_filter([
                     'contentful_id' => request()->query('contentful_id'),
