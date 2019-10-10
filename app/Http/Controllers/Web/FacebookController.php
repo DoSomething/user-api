@@ -81,7 +81,7 @@ class FacebookController extends Controller
             $fields['birthdate'] = format_birthdate($facebookUser->user['birthday']);
         }
 
-        $northstarUser = User::where('email', '=', $facebookUser->email)->first();
+        $northstarUser = $this->registrar->resolve(['email' => $facebookUser->email]);
 
         if ($northstarUser) {
             $northstarUser->fillUnlessNull($fields);

@@ -75,7 +75,7 @@ class GoogleController extends Controller
             'last_name' => $googleUser->user['family_name'],
         ];
 
-        $northstarUser = User::where('email', '=', $googleUser->email)->first();
+        $northstarUser = $this->registrar->resolve(['email' => $googleUser->email]);
 
         if ($northstarUser) {
             $northstarUser->fillUnlessNull($fields);
