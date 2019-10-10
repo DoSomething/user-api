@@ -13,7 +13,7 @@ class AddIndexToGoogleId extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $collection) {
-            $collection->unique('google_id');
+            $collection->index('google_id', null, null, ['sparse' => true]);
         });
     }
 
