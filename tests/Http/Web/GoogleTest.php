@@ -68,7 +68,7 @@ class GoogleTest extends BrowserKitTestCase
     {
         // $this->visit('/google/continue');
         // @TODO: Test below results in a 404: "A request to [https://accounts.google.com/o/oauth2/auth?client_id=....M9] failed. Received status code [404]."
-        // $this->assertRedirectedTo('https:/accounts.google.com');
+        // $this->assertRedirectedTo('https://accounts.google.com');
     }
 
     /**
