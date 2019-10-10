@@ -20,7 +20,6 @@
     @endif
 
     <form method="POST" action="{{ url('profile/about') }}">
-
         <input type="hidden" name="_method" value="PATCH">
         {{ csrf_field() }}
 
