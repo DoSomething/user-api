@@ -14,8 +14,9 @@ class ProfileAboutController extends Controller
     public function __construct(Registrar $registrar)
     {
         $this->registrar = $registrar;
+
         $this->middleware('auth:web');
-        $this->middleware('role:admin,staff');
+
         $this->causes = [
             'animal_welfare'=> 'Animal Welfare',
             'bullying'=>'Bullying',
