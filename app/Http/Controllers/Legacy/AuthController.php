@@ -39,11 +39,6 @@ class AuthController extends Controller
      */
     public function getRegister()
     {
-        // Temporary 'feature flag' to redirect users to the new register flow (for testing).
-        if (session('registerBeta', false)) {
-            return redirect('register-beta');
-        }
-
         return view('auth.register', ['coverImage' => true]);
     }
 
