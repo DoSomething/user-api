@@ -405,7 +405,7 @@ function init() {
           verb: 'submitted',
         },
       });
-    })
+    });
 
     $('#password-reset-form').on('submit', () => {
       // Tracks password reset form submissions.
@@ -417,7 +417,7 @@ function init() {
           verb: 'submitted',
         },
       });
-    })
+    });
 
     $('.facebook-login').on('click', () => {
       // Tracks clicking on the Login With Facebook button.
@@ -441,7 +441,7 @@ function init() {
           verb: 'clicked',
         },
       });
-    })
+    });
 
     $('.register-link').on('click', () => {
       // Tracks clicking on any of the 'Register' or 'Create account' buttons and links.
@@ -453,7 +453,7 @@ function init() {
           verb: 'clicked',
         },
       });
-    })
+    });
 
     $('.forgot-password-link').on('click', () => {
       // Tracks clicking on the 'Forgot Password' link.
@@ -465,7 +465,7 @@ function init() {
           verb: 'clicked',
         },
       });
-    })
+    });
 
     // Check for and track validation errors returned from the backend after form submission.
     const $validationErrors = $('.validation-error');
