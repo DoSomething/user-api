@@ -467,6 +467,18 @@ function init() {
       });
     });
 
+    $('.form-skip').on('click', () => {
+      // Tracks clicking on the 'Skip' button in onboarding forms.
+      trackAnalyticsEvent({
+        metadata: {
+          category: 'onboarding',
+          noun: 'skip',
+          target: 'button',
+          verb: 'clicked',
+        },
+      });
+    });
+
     // Check for and track validation errors returned from the backend after form submission.
     const $validationErrors = $('.validation-error');
     if ($validationErrors && $validationErrors.length) {

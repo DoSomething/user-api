@@ -78,7 +78,7 @@
             </div>
             <div class="w-2/3 flex justify-around md:justify-end p-2">
                 <div class="m-1">
-                    <a href="{{ url('profile/subscriptions') }}" class="button capitalize -secondary-beta">Skip</a>
+                    <a href="{{ url('profile/subscriptions') }}" class="button capitalize -secondary-beta form-skip">Skip</a>
                 </div>
                 <div class="m-1">
                     <input type="submit" id="register-submit" class="button capitalize" value="Next">
