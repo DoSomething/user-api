@@ -431,13 +431,15 @@ function init() {
       });
     });
 
-    $('.login-link').on('click', () => {
+    $('.login-link').on('click', (e) => {
+      const target = e.target.dataset.target || 'button';
+
       // Tracks clicking on any of the 'Log in' buttons and links.
       trackAnalyticsEvent({
         metadata: {
           category: 'authentication',
           noun: 'login',
-          target: 'button',
+          target,
           verb: 'clicked',
         },
       });
