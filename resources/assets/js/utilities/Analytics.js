@@ -82,6 +82,23 @@ export function getAdditionalContext() {
 }
 
 /**
+ * Get the category for an event based on current pathname.
+ *
+ * @return {String}
+ */
+const getCategoryFromPath = () => {
+  const pathToCategoryMap = {
+    '/register': 'authentication',
+    '/profile/about': 'onboarding',
+    '/profile/subscriptions': 'onboarding',
+    // Temporary:
+    '/register-beta': 'authentication',
+  };
+
+  return pathToCategoryMap[window.location.pathname] || 'authentication';
+}
+
+/**
  * Parse analytics event name parameters into a snake cased string.
  *
  * @param  {String}      verb
