@@ -50,11 +50,24 @@ class GoogleController extends Controller
      */
     public function handleProviderCallback()
     {
-        // Grab the user's profile using their Google OAuth token.
+        // Fetch user's birthday using their Google OAuth token.
         try {
             $googleUser = Socialite::driver('google')->user();
-            // TODO: Make API request with $googleUser->token to get user birthday.
-            // @see https://developers.google.com/people/api/rest/v1/people/get?apix_params=%7B%22resourceName%22%3A%22people%2Fme%22%2C%22personFields%22%3A%22birthdays%22%7D
+
+            // @see https://developers.google.com/people/api/rest/v1/people/get
+            $client = new \GuzzleHttp\Client([
+                'base_uri' => 'https://people.googleapis.com/v1/',
+                'headers' =>  [
+                    'Authorization' => 'Bearer '.$googleUser->token,
+                ],
+            ]);
+
+            $response = $client->get('people/me?personFields=birthdays');
+            $data = json_decode($response->getBody()->getContents());
+
+            // TODO: Loop through $data->birthdays array, checking if each object entry has a data property that contains year. Use that as birthday.
+
+            info(print_r($data->birthdays, true));
         } catch (RequestException | ClientException | InvalidStateException $e) {
             logger()->warning('google_token_mismatch');
 
