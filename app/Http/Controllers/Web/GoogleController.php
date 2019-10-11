@@ -10,6 +10,7 @@ use Northstar\Http\Controllers\Controller;
 use Laravel\Socialite\Two\InvalidStateException;
 use Northstar\Auth\Registrar;
 use Northstar\Models\User;
+use Northstar\Services\Google;
 
 class GoogleController extends Controller
 {
@@ -55,15 +56,9 @@ class GoogleController extends Controller
             $googleUser = Socialite::driver('google')->user();
 
             // @see https://developers.google.com/people/api/rest/v1/people/get
-            $client = new \GuzzleHttp\Client([
-                'base_uri' => 'https://people.googleapis.com/v1/',
-                'headers' =>  [
-                    'Authorization' => 'Bearer '.$googleUser->token,
-                ],
-            ]);
+            $client = new Google($googleUser->token);
 
-            $response = $client->get('people/me?personFields=birthdays');
-            $data = json_decode($response->getBody()->getContents());
+            $data = $client->getProfile();
 
             // TODO: Loop through $data->birthdays array, checking if each object entry has a data property that contains year. Use that as birthday.
 
