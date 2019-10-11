@@ -304,7 +304,7 @@ function init() {
     trackAnalyticsEvent({
       metadata: {
         adjective: `field_${args}`,
-        category: 'authentication',
+        category: getCategoryFromPath(),
         label: args,
         noun: 'error',
         target: 'error',
@@ -321,7 +321,7 @@ function init() {
       },
       metadata: {
         adjective: 'field_email',
-        category: 'authentication',
+        category: getCategoryFromPath(),
         label: 'email_suggestion',
         noun: 'suggestion',
         target: 'suggestion',
@@ -335,7 +335,7 @@ function init() {
     trackAnalyticsEvent({
       metadata: {
         adjective: 'field_email',
-        category: 'authentication',
+        category: getCategoryFromPath(),
         label: 'email_suggestion',
         noun: 'suggestion',
         target: 'suggestion',
@@ -351,7 +351,7 @@ function init() {
         suggestion: args,
       },
       metadata: {
-        category: 'authentication',
+        category: getCategoryFromPath(),
         noun: 'register',
         target: 'form',
         verb: 'submitted',
@@ -364,7 +364,7 @@ function init() {
     trackAnalyticsEvent({
       metadata: {
         adjective: 'submit_register',
-        category: 'authentication',
+        category: getCategoryFromPath(),
         label: 'submit_register',
         noun: 'error',
         target: 'error',
@@ -512,7 +512,7 @@ function init() {
           validationMessages,
         },
         metadata: {
-          category: 'authentication',
+          category: getCategoryFromPath(),
           label: 'validation_error',
           noun: 'validation',
           target: 'validation',
