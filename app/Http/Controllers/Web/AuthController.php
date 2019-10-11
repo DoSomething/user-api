@@ -78,7 +78,7 @@ class AuthController extends Controller
             ]);
 
             // Optionally, we can override the default authorization page using `?mode=login`.
-            $authorizationRoute = request()->query('mode') === 'login' ? 'login' : 'register';
+            $authorizationRoute = request()->query('mode') ?: 'register';
 
             return redirect()->guest($authorizationRoute);
         }
