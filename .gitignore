@@ -6,8 +6,8 @@ stats.json
 /storage/cache
 
 # PHP
-/vendor
-!/vendor/nss_wrapper/**/*
+/vendor/*
+!/vendor/nss_wrapper
 .env
 
 # NPM
