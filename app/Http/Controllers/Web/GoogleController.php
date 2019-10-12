@@ -55,14 +55,12 @@ class GoogleController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
 
-            // @see https://developers.google.com/people/api/rest/v1/people/get
             $client = new Google($googleUser->token);
 
             $data = $client->getProfile();
 
             // TODO: Loop through $data->birthdays array, checking if each object entry has a data property that contains year. Use that as birthday.
-
-            info(print_r($data->birthdays, true));
+            // info(print_r($data->birthdays, true));
         } catch (RequestException | ClientException | InvalidStateException $e) {
             logger()->warning('google_token_mismatch');
 

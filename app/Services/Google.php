@@ -15,7 +15,7 @@ class Google
      * Create a new Google API client.
      * @param string $token
      */
-    public function __construct($token)
+    public function __construct($token = '')
     {
         // @see https://developers.google.com/people/api/rest/v1/people/get
         $this->client = new \GuzzleHttp\Client([

@@ -1,6 +1,7 @@
 <?php
 
 use Northstar\Models\User;
+use Northstar\Services\Google;
 use Laravel\Socialite\AbstractUser;
 
 class GoogleTest extends BrowserKitTestCase
@@ -59,6 +60,7 @@ class GoogleTest extends BrowserKitTestCase
     {
         $abstractUser = $this->mockSocialiteAbstractUser('test@dosomething.org', 'Puppet', 'Sloth', '12345', 'token');
         $this->mockSocialiteFromUser($abstractUser);
+        $this->mock(Google::class)->shouldReceive('getProfile')->andReturn(true);
     }
 
     /**
