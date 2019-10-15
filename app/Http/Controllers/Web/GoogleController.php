@@ -2,6 +2,8 @@
 
 namespace Northstar\Http\Controllers\Web;
 
+use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use GuzzleHttp\Exception\ClientException;
@@ -54,14 +56,11 @@ class GoogleController extends Controller
         // Fetch user's birthday using their Google OAuth token.
         try {
             $googleUser = Socialite::driver('google')->user();
-            // Use the service container so we can mock these API requests in tests.
+            // Use the service container so we can mock Google API requests in tests.
             // @see https://laravel.com/docs/5.5/helpers#method-app
             $client = app('Northstar\Services\Google');
 
-            $data = $client->getProfile($googleUser->token);
-
-            // TODO: Loop through $data->birthdays array, checking if each object entry has a data property that contains year. Use that as birthday.
-            // info(print_r($data->birthdays, true));
+            $googleProfile = $client->getProfile($googleUser->token);
         } catch (RequestException | ClientException | InvalidStateException $e) {
             logger()->warning('google_token_mismatch');
 
@@ -75,11 +74,18 @@ class GoogleController extends Controller
             return redirect('/register')->with('status', 'We need your email to contact you if you win a scholarship.');
         }
 
-        // Aggregate public profile fields
+        // Some date properties in this array may not contain a year property.
+        $birthdaysWithYear = array_filter($googleProfile->birthdays, function ($item) {
+            return isset($item->date->year);
+        });
+        $birthday = Arr::first($birthdaysWithYear)->date;
+
+        // Aggregate Google profile fields.
         $fields = [
             'google_id' => $googleUser->id,
             'first_name' => $googleUser->user['given_name'],
             'last_name' => $googleUser->user['family_name'],
+            'birthdate' => Carbon::createFromDate($birthday->year, $birthday->month, $birthday->day),
         ];
 
         $northstarUser = $this->registrar->resolve(['email' => $googleUser->email]);

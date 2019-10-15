@@ -13,7 +13,6 @@ class Google
 
     /**
      * Create a new Google API client.
-
      */
     public function __construct()
     {
@@ -33,7 +32,7 @@ class Google
         $response = $this->client->get('people/me?personFields=birthdays', [
             'headers' => [
                 'Authorization' => 'Bearer '.$token,
-            ]
+            ],
         ]);
 
         return json_decode($response->getBody()->getContents());

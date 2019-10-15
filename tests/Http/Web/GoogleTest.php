@@ -30,7 +30,6 @@ class GoogleTest extends BrowserKitTestCase
 
     /**
      * Make all of the fields to fake a Socialite user.
-     * TODO: Add birthdate.
      *
      * @param  string  $email      email
      * @param  string  $first_name first name
@@ -53,14 +52,55 @@ class GoogleTest extends BrowserKitTestCase
     }
 
     /**
+     * @see https://developers.google.com/people/api/rest/v1/people/get
+     * @return object
+     */
+    private function mockGoogleProfile($googleId)
+    {
+        return (object) [
+            'resourceName' => 'people/'.$googleId,
+            'birthdays' => [
+                (object) [
+                    'metadata' => (object) [
+                        'source' => (object) [
+                            'type' => 'DOMAIN_PROFILE',
+                            'id' => $googleId,
+                        ],
+                    ],
+                    'date' => (object) [
+                        'month' => 7,
+                        'day' => 11,
+                    ],
+                ],
+                (object) [
+                    'metadata' => (object) [
+                        'source' => (object) [
+                            'type' => 'ACCOUNT',
+                            'id' => $googleId,
+                        ],
+                    ],
+                    'date' => (object) [
+                        'year' => 2001,
+                        'month' => 7,
+                        'day' => 11,
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
      * Default set of operations that need to happen for most
      * of the tests.
      */
     private function defaultMock()
     {
-        $abstractUser = $this->mockSocialiteAbstractUser('test@dosomething.org', 'Puppet', 'Sloth', '12345', 'token');
+        $googleId = '12345';
+        $abstractUser = $this->mockSocialiteAbstractUser('test@dosomething.org', 'Puppet', 'Sloth', $googleId, 'token');
         $this->mockSocialiteFromUser($abstractUser);
-        $this->mock(Google::class)->shouldReceive('getProfile')->andReturn(true);
+        $this->mock(Google::class)
+          ->shouldReceive('getProfile')
+          ->andReturn($this->mockGoogleProfile($googleId));
     }
 
     /**
@@ -90,10 +130,11 @@ class GoogleTest extends BrowserKitTestCase
         $this->assertEquals($user->source_detail, 'google');
         $this->assertEquals($user->email_subscription_status, true);
         $this->assertEquals($user->email_subscription_topics, ['community']);
+        $this->assertEquals($user->birthdate, new Carbon\Carbon('2001-07-11'));
     }
 
     /**
-     * Test that public profile fields such as names, email and Facebook ID
+     * Test that public profile fields such as names, email and Google ID
      * are configured.
      */
     public function testGooglePublicProfileFieldsAreSet()
@@ -129,24 +170,25 @@ class GoogleTest extends BrowserKitTestCase
         $this->visit('/google/verify');
 
         $user = auth()->user();
-        // TODO: This will work once we return a user from the Google API.
-        // $this->assertEquals($user->first_name, 'Puppet');
-        // $this->assertEquals($user->last_name, 'Sloth');
+        $this->assertEquals($user->first_name, 'Puppet');
+        $this->assertEquals($user->last_name, 'Sloth');
+        $this->assertEquals($user->birthdate, new Carbon\Carbon('2001-07-11'));
     }
 
     /**
-     * TODO: This is failing, but can a Google user hide email anyway?
      * If the user does not share email, it should not authenticate them.
-
+     */
     public function testMissingEmail()
     {
         $abstractUser = $this->mockSocialiteAbstractUser('', 'Puppet', 'Sloth', '12345', 'token');
         $this->mockSocialiteFromUser($abstractUser);
+        $this->mock(Google::class)
+          ->shouldReceive('getProfile')
+          ->andReturn($this->mockGoogleProfile('12345'));
 
         $this->visit('/google/verify')
             ->seePageIs('/register')
             ->see('We need your email');
         $this->dontSeeIsAuthenticated('web');
     }
-    */
 }
