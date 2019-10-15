@@ -144,4 +144,21 @@ abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
             'voter_registration_status' => 'confirmed',
         ]);
     }
+
+    /**
+     * Register a new user account with updated registration page.
+     */
+    public function registerUpdated()
+    {
+        // Make sure we're logged out before trying to register.
+        auth('web')->logout();
+
+        $this->visit('register-beta');
+        $this->submitForm('register-beta-submit', [
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'email' => $this->faker->unique->email,
+            'password' => 'secret456',
+        ]);
+    }
 }
