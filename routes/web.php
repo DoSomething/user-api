@@ -34,9 +34,17 @@ $router->post('totp/configure', 'TotpController@store');
 $router->get('facebook/continue', 'FacebookController@redirectToProvider');
 $router->get('facebook/verify', 'FacebookController@handleProviderCallback');
 
+// Google Continue
+$router->get('google/continue', 'GoogleController@redirectToProvider');
+$router->get('google/verify', 'GoogleController@handleProviderCallback');
+
 // Registration
 $router->get('register', '\Northstar\Http\Controllers\Legacy\AuthController@getRegister');
 $router->post('register', '\Northstar\Http\Controllers\Legacy\AuthController@postRegister');
+
+// Registration Beta
+$router->get('register-beta', 'AuthController@getRegister');
+$router->post('register-beta', 'AuthController@postRegister');
 
 // Profile
 $router->get('profile/about', 'ProfileAboutController@edit');

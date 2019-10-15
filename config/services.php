@@ -44,6 +44,12 @@ return [
         'client_id' => env('FACEBOOK_APP_ID'),
     ],
 
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URL'),
+    ],
+
     'blink' => [
         'url' => env('BLINK_URL'),
         'user' => env('BLINK_USERNAME'),

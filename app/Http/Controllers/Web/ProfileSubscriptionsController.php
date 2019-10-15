@@ -19,8 +19,6 @@ class ProfileSubscriptionsController extends Controller
         $this->registrar = $registrar;
 
         $this->middleware('auth:web');
-        // Limiting access to Staff and Admins while this functionality is being built out.
-        $this->middleware('role:admin,staff');
     }
 
     /**
@@ -32,7 +30,7 @@ class ProfileSubscriptionsController extends Controller
     {
         return view('profiles.subscriptions.edit', [
             'user' => auth()->guard('web')->user(),
-            'intended' => session()->pull('url.intended', '/'),
+            'intended' => session()->get('url.intended', '/'),
         ]);
     }
 
