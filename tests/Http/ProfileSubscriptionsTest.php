@@ -1,0 +1,22 @@
+<?php
+
+use Northstar\Models\User;
+use Northstar\Models\Client;
+
+class ProfileSubscriptionsTest extends BrowserKitTestCase
+{
+    /**
+     * Test that users can reach the profile subscriptions page
+     * 
+     */
+    public function testViewingProfileSubscriptions()
+    {
+        $user = $this->makeAuthWebUser();
+
+        $this->visit('/profile/subscriptions')
+            ->see('Choose your contact method');
+            
+
+    }
+
+}

@@ -6,9 +6,10 @@ use Northstar\Models\Client;
 class ProfileAboutTest extends BrowserKitTestCase
 {
     /**
-     * Test that users can edit their preferences page in their profile.
+     * Test that users can navigate to the complete your profile page
+     * 
      */
-    public function updateProfilePreferences()
+    public function testViewingProfileAbout()
     {
         $user = $this->makeAuthWebUser();
 
