@@ -54,10 +54,11 @@ class GoogleController extends Controller
         // Fetch user's birthday using their Google OAuth token.
         try {
             $googleUser = Socialite::driver('google')->user();
+            // Use the service container so we can mock these API requests in tests.
+            // @see https://laravel.com/docs/5.5/helpers#method-app
+            $client = app('Northstar\Services\Google');
 
-            $client = new Google($googleUser->token);
-
-            $data = $client->getProfile();
+            $data = $client->getProfile($googleUser->token);
 
             // TODO: Loop through $data->birthdays array, checking if each object entry has a data property that contains year. Use that as birthday.
             // info(print_r($data->birthdays, true));
