@@ -11,7 +11,6 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
 
         $this->visit('/profile/subscriptions')
             ->see('Choose your contact method');
-
     }
 
     /**
@@ -52,5 +51,4 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
             ->click('Skip')
             ->seePageIs('/');
     }
-
 }

@@ -11,7 +11,6 @@ class ProfileAboutTest extends BrowserKitTestCase
 
         $this->visit('/profile/about')
             ->see('Complete Your Profile');
-
     }
 
     /**
@@ -68,6 +67,4 @@ class ProfileAboutTest extends BrowserKitTestCase
             ->click('Skip')
             ->seePageIs('/profile/subscriptions');
     }
-
 }
-
