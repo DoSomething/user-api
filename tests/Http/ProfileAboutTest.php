@@ -20,7 +20,7 @@ class ProfileAboutTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that users can updated their preferences successfully
+     * Test that users can update their preferences successfully
      * 
      */
     public function testUpdatingPreferenceFields()
@@ -30,14 +30,30 @@ class ProfileAboutTest extends BrowserKitTestCase
         $this->visit('/profile/about')
             ->type('10/10/2003', 'birthdate')
             ->select('unregistered', 'voter_registration_status')
-            // ->check('bullying')
-            ->check('causes')
+            ->check('causes[0]')
+            ->uncheck('causes[0]')
+            ->check('causes[8]')
+            ->check('causes[4]')
             ->press('Next')
             ->seePageIs('/profile/subscriptions');
     }
 
+      /**
+     * Test that users can update their preferences successfully
+     * 
+     */
+    public function testBirthdateError()
+    {
+        $user = $this->makeAuthWebUser();
+
+        $this->visit('/profile/about')
+            ->type('10/45/2003', 'birthdate')
+            ->press('Next')
+            ->seePageIs('/profile/about');
+    }
+
     /**
-     * Test that users can updated their preferences successfully
+     * Test that users can move to the next step of registration without updating any fields
      * 
      */
     public function testNextButtonWithoutUpdates()
@@ -49,15 +65,18 @@ class ProfileAboutTest extends BrowserKitTestCase
             ->seePageIs('/profile/subscriptions');
     }
 
+    /**
+     * Test that users can move to the next step of registration without completing any fields
+     * 
+     */
+    public function testSkipButton()
+    {
+        $user = $this->makeAuthWebUser();
+
+        $this->visit('/profile/about')
+            ->click('Skip')
+            ->seePageIs('/profile/subscriptions');
+    }
+
 }
 
-
-//rename this for profile about
-//create another file for profile subscriptions
-//recreate all the registration tests using new reg fields
-//list out test cases for subscriptions and cause pages for edge cases etc
-
-// tests to create:
-// clicking register and being navigated to this view 
-// updating all 3 fields 
-// clicking next and being navigated to the subscriptions page 
