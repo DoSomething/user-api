@@ -1,13 +1,9 @@
 <?php
 
-use Northstar\Models\User;
-use Northstar\Models\Client;
-
 class ProfileSubscriptionsTest extends BrowserKitTestCase
 {
     /**
      * Test that users can reach the profile subscriptions page
-     * 
      */
     public function testViewingProfileSubscriptions()
     {
@@ -15,13 +11,11 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
 
         $this->visit('/profile/subscriptions')
             ->see('Choose your contact method');
-            
 
     }
 
     /**
      * Test that users can update their contect methods successfully
-     * 
      */
     public function testUpdatingContactFields()
     {
@@ -37,7 +31,6 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
 
     /**
      * Test that users can move to the next step of registration without updating any fields
-     * 
      */
     public function testFinishButtonWithoutUpdates()
     {
@@ -48,9 +41,8 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
             ->seePageIs('/');
     }
 
-     /**
+    /**
      * Test that users can move to the next step of registration without completing any fields
-     * 
      */
     public function testSkipButton()
     {

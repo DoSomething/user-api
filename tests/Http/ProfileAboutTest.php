@@ -1,13 +1,9 @@
 <?php
 
-use Northstar\Models\User;
-use Northstar\Models\Client;
-
 class ProfileAboutTest extends BrowserKitTestCase
 {
     /**
      * Test that users can navigate to the complete your profile page
-     * 
      */
     public function testViewingProfileAbout()
     {
@@ -15,13 +11,11 @@ class ProfileAboutTest extends BrowserKitTestCase
 
         $this->visit('/profile/about')
             ->see('Complete Your Profile');
-            
 
     }
 
     /**
      * Test that users can update their preferences successfully
-     * 
      */
     public function testUpdatingPreferenceFields()
     {
@@ -38,9 +32,8 @@ class ProfileAboutTest extends BrowserKitTestCase
             ->seePageIs('/profile/subscriptions');
     }
 
-      /**
+    /**
      * Test that users can't update their birthday to an invalid date (backend validation)
-     * 
      */
     public function testBirthdateError()
     {
@@ -54,7 +47,6 @@ class ProfileAboutTest extends BrowserKitTestCase
 
     /**
      * Test that users can move to the next step of registration without updating any fields
-     * 
      */
     public function testNextButtonWithoutUpdates()
     {
@@ -67,7 +59,6 @@ class ProfileAboutTest extends BrowserKitTestCase
 
     /**
      * Test that users can move to the next step of registration without completing any fields
-     * 
      */
     public function testSkipButton()
     {

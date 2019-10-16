@@ -193,7 +193,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
         $this->assertEquals(['community'], $user->email_subscription_topics);
     }
 
-     /**
+    /**
      * Test that users can register via the web on the beta registration.
      */
     public function testRegisterBeta()
@@ -239,7 +239,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
         $this->assertEquals(true, $user->feature_flags['refer-friends']);
     }
 
-     /**
+    /**
      * Test that users get feature_flags values when tests are on with the beta registration.
      */
     public function testRegisterBetaWithFeatureFlagsTest()
@@ -400,7 +400,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
         $this->assertArrayNotHasKey('refer-friends', $user->feature_flags);
     }
 
-     /**
+    /**
      * Test that users get badges feature_flag value when test is on, and no refer-friends
      * value when test is off with registration beta.
      */
@@ -453,7 +453,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
         $this->assertEquals(true, is_null($user->feature_flags));
     }
 
-     /**
+    /**
      * Test that users do not get feature flags set when the badges and refer-friends
      * tests are off with registration beta.
      */
@@ -557,7 +557,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
         $this->see('Too many attempts.');
     }
 
-     /**
+    /**
      * Test that users can't brute-force the login form with registration beta.
      */
     public function testRegisterBetaRateLimited()
