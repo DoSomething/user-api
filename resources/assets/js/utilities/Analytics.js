@@ -490,8 +490,8 @@ function init() {
       });
     });
 
-    $('.login-link').on('click', (e) => {
-      const target = e.target.dataset.target || 'button';
+    $('.login-link').on('click', (element) => {
+      const target = element.target.dataset.target || 'button';
 
       // Tracks clicking on any of the 'Log in' buttons and links.
       trackAnalyticsEvent({
