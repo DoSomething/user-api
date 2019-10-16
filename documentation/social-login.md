@@ -2,13 +2,9 @@
 
 Northstar uses [Laravel Socialite](https://laravel.com/docs/5.5/socialite) to support login/registration via Facebook or Google.
 
-To test social login on your local Northstar instance, use [ngrok](https://ngrok.com/) to make your local Northstar instance available to the public:
+To test social login on your local Northstar instance, [SSH into your Homestead machine via `vagrant ssh` and run `share northstar.test` to make your local Northstar instance available to the public](https://laravel.com/docs/5.5/homestead#sharing-your-environment).
 
-```
-ngrok http -host-header=rewrite northstar.test:80
-```
-
-Once this is running, your local Northstar will be available at a URL like http://f782f37a.ngrok.io. We'll need to add this URL to the OAuth configuration in each platform (Facebook, Google) we wish to test against.
+Once this is running, your local Northstar instance will be available at a URL like http://f782f37a.ngrok.io. We'll need to add this URL to the OAuth configuration in each platform (Facebook, Google) we wish to test against.
 
 ## Google
 
