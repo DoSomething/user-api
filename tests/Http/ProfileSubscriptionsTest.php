@@ -62,8 +62,3 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
     }
 
 }
-
-// tests to create:
-// clicking next and being navigated to this view 
-// updating all fields 
-// clicking finish and being navigated to the profile homepage

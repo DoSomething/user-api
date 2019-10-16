@@ -39,7 +39,7 @@ class ProfileAboutTest extends BrowserKitTestCase
     }
 
       /**
-     * Test that users can update their preferences successfully
+     * Test that users can't update their birthday to an invalid date (backend validation)
      * 
      */
     public function testBirthdateError()
