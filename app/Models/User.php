@@ -510,7 +510,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'facebook_id' => $this->facebook_id,
             'google_id' => $this->google_id,
             'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
+            'display_name' => $this->display_name,
             'birthdate' => optional($this->birthdate)->timestamp,
             'addr_city' => $this->addr_city,
             'addr_state' => $this->addr_state,
