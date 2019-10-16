@@ -4,7 +4,7 @@ This is __Northstar__, the DoSomething.org user & identity service. It's our sin
 information. Northstar is currently only available for use by registered DoSomething.org services.
 
 ## Authentication
-See [Authentication](authentication.md) for details on authorizing your requests.
+See [Authentication](authentication.md) for details on authorizing your requests, and [Social Login](social-login.md) for details on authenticating with third-party OAuth providers.
 <br>
 
 ## Endpoints 
