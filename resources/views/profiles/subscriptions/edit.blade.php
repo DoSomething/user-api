@@ -18,7 +18,7 @@
         @include('forms.errors', ['errors' => $errors])
     @endif
 
-    <form method="POST" action="{{ url('profile/subscriptions')}}">
+    <form id="profile-subscriptions-form" method="POST" action="{{ url('profile/subscriptions')}}">
         {{ method_field('PATCH') }}
         {{ csrf_field() }}
 

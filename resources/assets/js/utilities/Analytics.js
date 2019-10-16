@@ -99,6 +99,14 @@ const getCategoryFromPath = () => {
 }
 
 /**
+ * Parse an id value to discern the form type (with a sensible default).
+ *
+ * @param {String} [id='']
+ * @return {String}
+ */
+const getFormTypeFromId = (id = '') => id.split('-')[1] || 'form';
+
+/**
  * Parse analytics event name parameters into a snake cased string.
  *
  * @param  {String}      verb
@@ -349,7 +357,7 @@ function init() {
     trackAnalyticsEvent({
       metadata: {
         category: getCategoryFromPath(),
-        noun: 'register',
+        noun: getFormTypeFromId(args),
         target: 'form',
         verb: 'submitted',
       },
@@ -357,12 +365,14 @@ function init() {
   });
 
   Validation.Events.subscribe('Validation:SubmitError', (topic, args) => {
+    const formType = getFormTypeFromId(args);
+
     // Tracks when a submission is prevented due to inline validation errors.
     trackAnalyticsEvent({
       metadata: {
-        adjective: 'submit_register',
+        adjective: `submit_${formType}`,
         category: getCategoryFromPath(),
-        label: 'submit_register',
+        label: `submit_${formType}`,
         noun: 'error',
         target: 'error',
         verb: 'triggered',

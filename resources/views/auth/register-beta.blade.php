@@ -18,7 +18,7 @@
         @include('forms.errors', ['errors' => $errors])
     @endif
 
-    <form method="POST" action="{{ url('register-beta')}}">
+    <form id="profile-register-form" method="POST" action="{{ url('register-beta')}}">
         {{ csrf_field() }}
 
         <div class="md:flex md:flex-wrap md:justify-between">
