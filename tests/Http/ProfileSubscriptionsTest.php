@@ -51,4 +51,5 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
             ->click('Skip')
             ->seePageIs('/');
     }
+
 }
