@@ -389,6 +389,41 @@ function init() {
       trackInputFocus(inputName);
     }
 
+    // Specifically tracks the #profile subscriptions & about forms to ensure submission is
+    // tracked irrespective of the validation package registering the submission sans required, populated input fields.
+    // @TODO replace this @HACK with the updated doSomething/validation package to register
+    // these submissions to begin with.
+    $('#profile-subscriptions-form, #profile-about-form').on('submit', function() {
+      // The following copies logic used by the dosomething-validation package,
+      // which determines weather there are fields to be validated.
+      var $form = $(this);
+
+      var $validationFields = $form.find("[data-validate]");
+
+      $validationFields = $validationFields.map(function() {
+        var $this = $(this);
+        if(typeof $this.attr("data-validate-required") !== "undefined" || $this.val() !== "") {
+          return $this;
+        }
+      });
+
+      // If there are fields to be validated, we defer to the dosomething-validation package
+      // which will publish a submission event which we've subscribed to, to track analytics.
+      if ($validationFields.length) {
+        return;
+      }
+
+      // Otherwise, track when an inline validation error free submission is made.
+      trackAnalyticsEvent({
+        metadata: {
+          category: getCategoryFromPath(),
+          noun: getFormTypeFromId($form.attr('id')),
+          target: 'form',
+          verb: 'submitted',
+        },
+      });
+    });
+
     // Tracks when user focuses on form field.
     $('input').on('focus', (element) => {
       const inputName = element.target.name;
