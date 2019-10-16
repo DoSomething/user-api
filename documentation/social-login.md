@@ -4,7 +4,7 @@ Northstar uses [Laravel Socialite](https://laravel.com/docs/5.5/socialite) to su
 
 To test social login on your local Northstar instance, [SSH into your Homestead machine via `vagrant ssh` and run `share northstar.test` to make your local Northstar instance available to the public](https://laravel.com/docs/5.5/homestead#sharing-your-environment).
 
-Once this is running, your local Northstar instance will be available at a URL like http://f782f37a.ngrok.io. We'll need to add this URL to the OAuth configuration in each platform (Facebook, Google) we wish to test against.
+Once this is running, your local Northstar instance will be available at a URL like `http://f782f37a.ngrok.io`. We'll need to add this URL to the OAuth configuration in each platform (Facebook, Google) we wish to test against.
 
 ## Google
 
@@ -20,13 +20,13 @@ Each Google Cloud project also has the Google People API enabled, which we use t
 
 For local development, use the Northstar-Dev project.
 
-* Add your ngrok URL, e.g. http://f782f37a.ngrok.io, to the [list of authorized domains in the OAuth consent screen](https://user-images.githubusercontent.com/1236811/66961310-e5d3d280-f05d-11e9-8b63-b7f2c0a3218d.png).
+* Add your ngrok URL, e.g. `http://f782f37a.ngrok.io`, to the [list of authorized domains in the OAuth consent screen](https://user-images.githubusercontent.com/1236811/66961310-e5d3d280-f05d-11e9-8b63-b7f2c0a3218d.png).
 
-* Once that has been saved, add http://f782f37a.ngrok.io/google/verify to the list of authorized redirect URI's in the [OAuth web client](https://user-images.githubusercontent.com/1236811/66961589-8c1fd800-f05e-11e9-859d-fbc9059521d7.png)
+* Once that has been saved, add `http://f782f37a.ngrok.io/google/verify` to the list of authorized redirect URI's in the [OAuth web client](https://user-images.githubusercontent.com/1236811/66961589-8c1fd800-f05e-11e9-859d-fbc9059521d7.png)
 
-* Update your local `GOOGLE_REDIRECT_URL` config var to http://f782f37a.ngrok.io/google/verify
+* Update your local `GOOGLE_REDIRECT_URL` config var to `http://f782f37a.ngrok.io/google/verify`
 
-* Visiting http://f782f37a.ngrok.io/google/continue should now direct you to the Google OAuth consent screen. Allowing access should result in redirecting back to http://f782f37a.ngrok.io as your authenticated Google user.
+* Visiting `http://f782f37a.ngrok.io/google/continue` should now direct you to the Google OAuth consent screen. Allowing access should result in redirecting back to `http://f782f37a.ngrok.io` as your authenticated Google user.
 
 ## Facebook
 
