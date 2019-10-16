@@ -347,9 +347,6 @@ function init() {
   Validation.Events.subscribe('Validation:Submitted', (topic, args) => {
     // Tracks when an inline validation error free submission is made.
     trackAnalyticsEvent({
-      context: {
-        suggestion: args,
-      },
       metadata: {
         category: getCategoryFromPath(),
         noun: 'register',
