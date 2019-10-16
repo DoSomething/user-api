@@ -26,7 +26,7 @@
         <div class="form-item flex flex-wrap justify-between md:justify-start">
             <div class="w-1/2">
                 <label for="birthdate" class="field-label">Birthday (MM/DD/YYYY)</label>
-                <input name="birthdate" type="text" id="birthdate" class="text-field js-validate" placeholder="MM/DD/YYYY" value="{{ old('birthdate') ?: format_date($user->birthdate, "m/d/Y") }}" data-validate="birthday" />
+                <input name="birthdate" type="text" id="birthdate" class="text-field js-validate" placeholder="MM/DD/YYYY" value="{{ old('birthdate') ?: format_date($user->birthdate, "m/d/Y") }}" data-validate="birthday" autofocus />
             </div>
         </div>
 
