@@ -491,6 +491,10 @@ function init() {
     });
 
     $('.login-link').on('click', (element) => {
+      // @HACK: Allow overriding the default 'button' target via a data-target attribute.
+      // (Ideally this should be standard and consistant based on the element type (e.g. a tag vs button),
+      // however, we're accounting for legacy 'button' events tracked on <a> tags.)
+      // (See DoSomething Slack: http://bit.ly/32kcSWE).
       const target = element.target.dataset.target || 'button';
 
       // Tracks clicking on any of the 'Log in' buttons and links.
