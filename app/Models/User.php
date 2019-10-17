@@ -577,14 +577,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * Fill & save the user with the given array of fields.
+     * Update user with the given array of fields if field is not already set.
      * Filter out any fields that have a null value.
      *
      * @param  array $fields
      */
-    public function fillUnlessNull($fields)
+    public function updateIfNotSet($fields)
     {
-        $this->fill(array_filter($fields));
+        foreach (array_filter($fields) as $key => $value) {
+            if (! isset($this->{$key})) {
+                $this->{$key} = $value;
+            }
+        }
     }
 
     /**

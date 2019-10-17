@@ -84,7 +84,7 @@ class GoogleController extends Controller
         $northstarUser = $this->registrar->resolve(['email' => $googleUser->email]);
 
         if ($northstarUser) {
-            $northstarUser->fillUnlessNull($fields);
+            $northstarUser->updateIfNotSet($fields);
             $northstarUser->save();
         } else {
             $fields['email'] = $googleUser->email;
