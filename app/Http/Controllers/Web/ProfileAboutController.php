@@ -42,6 +42,8 @@ class ProfileAboutController extends Controller
             'user' => auth()->guard('web')->user(),
             'causes1' => array_slice($this->causes, 0, count($this->causes) / 2),
             'causes2' => array_slice($this->causes, count($this->causes) / 2),
+            'index1' => 0,
+            'index2' => 6,
             ]);
     }
 

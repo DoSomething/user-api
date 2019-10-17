@@ -60,12 +60,19 @@
             <div class="flex flex-wrap" >
                 <div class="w-full md:w-1/2">
                     @foreach ( $causes1 as $value => $label )
-                            @include('forms.checkbox', ['name' => 'causes', 'value' => $value , 'label' =>  $label])
+                            @include('forms.checkbox', ['name' => 'causes', 'index' => $index1, 'value' => $value , 'label' =>  $label])
+                            //@TODO: clean up using a php block for this logic and in lower foreach
+                            @php
+                                $index1++;
+                            @endphp
                     @endforeach
                 </div>
                 <div class="w-full md:w-1/2">
                     @foreach ( $causes2 as $value => $label )
-                            @include('forms.checkbox', ['name' => 'causes', 'value' => $value , 'label' =>  $label])
+                            @include('forms.checkbox', ['name' => 'causes', 'index' => $index2, 'value' => $value , 'label' =>  $label])
+                            @php
+                                $index2++;
+                            @endphp
                     @endforeach
                 </div>
 

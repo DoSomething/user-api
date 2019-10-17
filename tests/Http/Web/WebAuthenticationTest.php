@@ -175,10 +175,10 @@ class WebAuthenticationTest extends BrowserKitTestCase
     /**
      * Test that users can register via the web.
      */
-    public function testRegister()
+    public function testRegisterBeta()
     {
         $this->withHeader('X-Fastly-Country-Code', 'US')
-            ->register();
+            ->registerUpdated();
 
         $this->seeIsAuthenticated('web');
 
@@ -196,7 +196,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
     /**
      * Test that users get feature_flags values when tests are on.
      */
-    public function testRegisterWithFeatureFlagsTest()
+    public function testRegisterBetaWithFeatureFlagsTest()
     {
         // Turn on the badges and refer-friends test feature flags.
         config([
@@ -205,7 +205,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
         ]);
 
         $this->withHeader('X-Fastly-Country-Code', 'US')
-            ->register();
+            ->registerUpdated();
 
         $this->seeIsAuthenticated('web');
 
@@ -222,7 +222,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
      * Test that club referrals do not get feature flags set when the badges and refer-friends
      * tests are on.
      */
-    public function testRegisterFromClubsWithoutFeatureFlagsTest()
+    public function testRegisterBetaFromClubsWithoutFeatureFlagsTest()
     {
         // Turn on badges and refer-friends feature flags.
         config([
@@ -233,7 +233,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
         // Mock a session for the user with a ?utm_source=clubs param, indicating a clubs referral
         $this->withSession(['source_detail' => ['utm_source' => 'clubs']])
             ->withHeader('X-Fastly-Country-Code', 'US')
-            ->register();
+            ->registerUpdated();
 
         $this->seeIsAuthenticated('web');
 
@@ -251,7 +251,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
      * Test that users get refer-friends feature_flag value when test is on, and no badges
      * value when test is off.
      */
-    public function testRegisterWithReferFriendsAndNoBadgesTest()
+    public function testRegisterBetaWithReferFriendsAndNoBadgesTest()
     {
         // Turn off badges, turn on refer-friends test feature flags.
         config([
@@ -260,7 +260,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
         ]);
 
         $this->withHeader('X-Fastly-Country-Code', 'US')
-            ->register();
+            ->registerUpdated();
 
         $this->seeIsAuthenticated('web');
 
@@ -277,7 +277,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
      * Test that users get badges feature_flag value when test is on, and no refer-friends
      * value when test is off.
      */
-    public function testRegisterWithBadgesAndNoReferFriendsTest()
+    public function testRegisterBetaWithBadgesAndNoReferFriendsTest()
     {
         // Turn on badges, turn off refer-friends test feature flags.
         config([
@@ -286,7 +286,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
         ]);
 
         $this->withHeader('X-Fastly-Country-Code', 'US')
-            ->register();
+            ->registerUpdated();
 
         $this->seeIsAuthenticated('web');
 
@@ -303,7 +303,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
      * Test that users do not get feature flags set when the badges and refer-friends
      * tests are off.
      */
-    public function testRegisterWithoutFeatureFlagTests()
+    public function testRegisterBetaWithoutFeatureFlagTests()
     {
         // Turn off the badges and refer-friends test feature flags.
         config([
@@ -312,7 +312,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
         ]);
 
         $this->withHeader('X-Fastly-Country-Code', 'US')
-            ->register();
+            ->registerUpdated();
 
         $this->seeIsAuthenticated('web');
 
@@ -329,7 +329,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
     /**
      * Test that users can't enter invalid profile info.
      */
-    public function testRegisterInvalid()
+    public function testRegisterBetaInvalid()
     {
         $this->withHeader('X-Fastly-Country-Code', 'US');
 
@@ -337,13 +337,12 @@ class WebAuthenticationTest extends BrowserKitTestCase
         $this->submitForm('register-submit', [
             'first_name' => $this->faker->text(150),
             'email' => $this->faker->unique->email,
-            'birthdate' => '1/15/2130',
-            'password' => 'secret',
+            'password' => '123',
         ]);
 
         $this->see('The first name may not be greater than 50 characters');
-        $this->see('The birthdate must be a date before now');
-        $this->see('The voter registration status field is required');
+        //@TODO: find out what the backend error is for passwords that we expect to see
+        //tried using error thrown on the front-end for validation and failed the test
 
         $this->dontSeeIsAuthenticated('web');
     }
@@ -355,7 +354,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
     public function testRegisterFromMexico()
     {
         $this->withHeader('X-Fastly-Country-Code', 'MX')
-            ->register();
+            ->registerUpdated();
 
         $this->seeIsAuthenticated('web');
 
@@ -369,14 +368,14 @@ class WebAuthenticationTest extends BrowserKitTestCase
     /**
      * Test that users can't brute-force the login form.
      */
-    public function testRegisterRateLimited()
+    public function testRegisterBetaRateLimited()
     {
         for ($i = 0; $i < 10; $i++) {
-            $this->register();
+            $this->registerUpdated();
             $this->seeIsAuthenticated('web');
         }
 
-        $this->register();
+        $this->registerUpdated();
 
         $this->dontSeeIsAuthenticated('web');
         $this->see('Too many attempts.');
