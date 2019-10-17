@@ -19,14 +19,14 @@
         @include('forms.errors', ['errors' => $errors])
     @endif
 
-    <form method="POST" action="{{ url('profile/about') }}">
+    <form id="profile-about-form" method="POST" action="{{ url('profile/about') }}">
         <input type="hidden" name="_method" value="PATCH">
         {{ csrf_field() }}
 
         <div class="form-item flex flex-wrap justify-between md:justify-start">
             <div class="w-1/2">
                 <label for="birthdate" class="field-label">Birthday (MM/DD/YYYY)</label>
-                <input name="birthdate" type="text" id="birthdate" class="text-field js-validate" placeholder="MM/DD/YYYY" value="{{ old('birthdate') ?: format_date($user->birthdate, "m/d/Y") }}" data-validate="birthday" />
+                <input name="birthdate" type="text" id="birthdate" class="text-field js-validate" placeholder="MM/DD/YYYY" value="{{ old('birthdate') ?: format_date($user->birthdate, "m/d/Y") }}" data-validate="birthday" autofocus />
             </div>
         </div>
 
@@ -78,7 +78,7 @@
             </div>
             <div class="w-2/3 flex justify-around md:justify-end p-2">
                 <div class="m-1">
-                    <a href="{{ url('profile/subscriptions') }}" class="button capitalize -secondary-beta">Skip</a>
+                    <a href="{{ url('profile/subscriptions') }}" class="button capitalize -secondary-beta form-skip">Skip</a>
                 </div>
                 <div class="m-1">
                     <input type="submit" id="register-submit" class="button capitalize" value="Next">

@@ -18,7 +18,7 @@
         @include('forms.errors', ['errors' => $errors])
     @endif
 
-    <form method="POST" action="{{ url('register-beta')}}">
+    <form id="profile-register-form" method="POST" action="{{ url('register-beta')}}">
         {{ csrf_field() }}
 
         <div class="md:flex md:flex-wrap md:justify-between">
@@ -60,5 +60,7 @@
 
     @include('auth.facebook')
 
-    <p class="text-gray-500 mt-5">Already have an account? <a href="{{ url('login') }}">Log In</a></p>
+    <p class="text-gray-500 mt-5">
+        Already have an account? <a class="login-link" href="{{ url('login') }}" data-target="link">Log In</a>
+    </p>
 @endsection

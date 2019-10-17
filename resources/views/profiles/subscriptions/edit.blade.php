@@ -18,13 +18,13 @@
         @include('forms.errors', ['errors' => $errors])
     @endif
 
-    <form method="POST" action="{{ url('profile/subscriptions')}}">
+    <form id="profile-subscriptions-form" method="POST" action="{{ url('profile/subscriptions')}}">
         {{ method_field('PATCH') }}
         {{ csrf_field() }}
 
         <div class="form-item">
             <label for="mobile" class="field-label">Cell Phone # (Optional)</label>
-            <input name="mobile" type="text" id="mobile" class="text-field js-validate" placeholder="(555) 555-5555" value="{{ old('mobile') ?: $user->mobile }}" data-validate="phone" />
+            <input name="mobile" type="text" id="mobile" class="text-field js-validate" placeholder="(555) 555-5555" value="{{ old('mobile') ?: $user->mobile }}" data-validate="phone" autofocus />
         </div>
         <div class="form-item">
             <p class="footnote"><em>DoSomething.org weekly updates will be sent to your phone number 1 time per week from 38383. Message and data rates may apply. Text <strong>HELP</strong> to 38383 for help. Text <strong>STOP</strong> to 38383 to opt out. Please review our <a href="https://www.dosomething.org/us/about/terms-service">Terms of Service​</a> and <a href="https://www.dosomething.org/us/about/privacy-policy">Privacy Policy</a> pages. T-Mobile is not liable for delayed or undelivered messages.</em></p>
@@ -67,7 +67,7 @@
             </div>
             <div class="w-2/3 flex justify-around sm:justify-end p-2">
                 <div class="m-1">
-                    <a href="{{ $intended }}" class="button capitalize -secondary-beta">Skip</a>
+                    <a href="{{ $intended }}" class="button capitalize -secondary-beta form-skip">Skip</a>
                 </div>
                 <div class="m-1">
                     <input type="submit" class="button capitalize" value="Finish">
