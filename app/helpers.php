@@ -333,3 +333,21 @@ function format_mobile(PhoneNumber $number, $format): string
 
     return $parser->format($number, $format);
 }
+
+/**
+ * Returns array of fields and values to use for a new user registering via web.
+ *
+ * @return array
+ */
+function get_default_web_registration_fields()
+{
+    return [
+        // Set the user's country code by Fastly geo-location header.
+        'country' => country_code(),
+        // Set language based on locale (either 'en', 'es-mx').
+        'language' => app()->getLocale(),
+        // Sign the user up for email messaging & give them the "community" topic.
+        'email_subscription_status' => true,
+        'email_subscription_topics' => ['community'],
+    ];
+}

@@ -62,8 +62,10 @@ class FacebookController extends Controller
             return redirect('/register')->with('status', 'Unable to verify Facebook account.');
         }
 
+        $email = $facebookUser->email;
+
         // If we were denied access to read email, do not log them in.
-        if (empty($facebookUser->email)) {
+        if (empty($email)) {
             logger()->info('facebook_email_hidden');
 
             return redirect('/register')->with('status', 'We need your email to contact you if you win a scholarship.');
@@ -81,19 +83,14 @@ class FacebookController extends Controller
             $fields['birthdate'] = format_birthdate($facebookUser->user['birthday']);
         }
 
-        $northstarUser = $this->registrar->resolve(['email' => $facebookUser->email]);
+        $northstarUser = $this->registrar->resolve(['email' => $email]);
 
         if ($northstarUser) {
             $northstarUser->updateIfNotSet($fields);
             $northstarUser->save();
         } else {
-            $fields['email'] = $facebookUser->email;
-            $fields['country'] = country_code();
-            $fields['language'] = app()->getLocale();
-
-            // Add same email settings as traditional new members
-            $fields['email_subscription_status'] = true;
-            $fields['email_subscription_topics'] = ['community'];
+            $fields['email'] = $email;
+            $fields = array_merge($fields, get_default_web_registration_fields());
 
             $northstarUser = $this->registrar->register($fields, null, function (User $user) {
                 $user->setSource(null, 'facebook');
