@@ -27,7 +27,7 @@
             <input name="mobile" type="text" id="mobile" class="text-field js-validate" placeholder="(555) 555-5555" value="{{ old('mobile') ?: $user->mobile }}" data-validate="phone" autofocus />
         </div>
         <div class="form-item">
-            <p class="footnote"><em>DoSomething.org weekly updates will be sent to your phone number 1 time per week from 38383. Message and data rates may apply. Text <strong>HELP</strong> to 38383 for help. Text <strong>STOP</strong> to 38383 to opt out. Please review our <a href="https://www.dosomething.org/us/about/terms-service">Terms of Service​</a> and <a href="https://www.dosomething.org/us/about/privacy-policy">Privacy Policy</a> pages. T-Mobile is not liable for delayed or undelivered messages.</em></p>
+            <p class="footnote"><em>DoSomething.org will send you updates about different social change actions and scholarship opportunities from our number, 38383. You can expect to receive up to 8 messages per month from us. Message and data rates may apply. Text <strong>HELP</strong>  to 38383 for support. Text <strong>STOP</strong> to 38383 to opt out. Please review our <a href="https://www.dosomething.org/us/about/terms-service">Terms of Service​</a> and <a href="https://www.dosomething.org/us/about/privacy-policy">Privacy Policy</a> pages. T-Mobile is not liable for delayed or undelivered messages.</em></p>
         </div>
 
         <p class="font-bold mt-6">Our Email Newsletters</p>
