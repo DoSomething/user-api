@@ -334,7 +334,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
         $this->withHeader('X-Fastly-Country-Code', 'US');
 
         $this->visit('register');
-        $this->submitForm('register-beta-submit', [
+        $this->submitForm('register-submit', [
             'first_name' => $this->faker->text(150),
             'email' => $this->faker->unique->email,
             'password' => '123',
