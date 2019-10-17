@@ -28,7 +28,7 @@
             </div>
         @endif
 
-        <form id="profile-registration-form" method="POST" action="{{ url('register') }}">
+        <form id="profile-register-form" method="POST" action="{{ url('register') }}">
             <input name="_token" type="hidden" value="{{ csrf_token() }}">
 
             <div>

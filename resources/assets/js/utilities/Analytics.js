@@ -82,6 +82,33 @@ export function getAdditionalContext() {
 }
 
 /**
+ * Get the category for an event based on current pathname.
+ *
+ * @return {String}
+ */
+const getCategoryFromPath = () => {
+  const pathToCategoryMap = {
+    '/register': 'authentication',
+    '/profile/about': 'onboarding',
+    '/profile/subscriptions': 'onboarding',
+    // Temporary:
+    '/register-beta': 'authentication',
+  };
+
+  return pathToCategoryMap[window.location.pathname] || 'authentication';
+}
+
+/**
+ * Parse an id value to discern the form type (with a sensible default).
+ * The id should contain at least two hyphen-separated values -
+ * e.g. an id of 'profile-register-form' would yield the 'register' value.
+ *
+ * @param {String} [id='']
+ * @return {String}
+ */
+const getFormTypeFromId = (id = '') => id.split('-')[1] || 'form';
+
+/**
  * Parse analytics event name parameters into a snake cased string.
  *
  * @param  {String}      verb
@@ -287,7 +314,7 @@ function init() {
     trackAnalyticsEvent({
       metadata: {
         adjective: `field_${args}`,
-        category: 'authentication',
+        category: getCategoryFromPath(),
         label: args,
         noun: 'error',
         target: 'error',
@@ -304,7 +331,7 @@ function init() {
       },
       metadata: {
         adjective: 'field_email',
-        category: 'authentication',
+        category: getCategoryFromPath(),
         label: 'email_suggestion',
         noun: 'suggestion',
         target: 'suggestion',
@@ -318,7 +345,7 @@ function init() {
     trackAnalyticsEvent({
       metadata: {
         adjective: 'field_email',
-        category: 'authentication',
+        category: getCategoryFromPath(),
         label: 'email_suggestion',
         noun: 'suggestion',
         target: 'suggestion',
@@ -330,12 +357,9 @@ function init() {
   Validation.Events.subscribe('Validation:Submitted', (topic, args) => {
     // Tracks when an inline validation error free submission is made.
     trackAnalyticsEvent({
-      context: {
-        suggestion: args,
-      },
       metadata: {
-        category: 'authentication',
-        noun: 'register',
+        category: getCategoryFromPath(),
+        noun: getFormTypeFromId(args),
         target: 'form',
         verb: 'submitted',
       },
@@ -343,12 +367,14 @@ function init() {
   });
 
   Validation.Events.subscribe('Validation:SubmitError', (topic, args) => {
+    const formType = getFormTypeFromId(args);
+
     // Tracks when a submission is prevented due to inline validation errors.
     trackAnalyticsEvent({
       metadata: {
-        adjective: 'submit_register',
-        category: 'authentication',
-        label: 'submit_register',
+        adjective: `submit_${formType}`,
+        category: getCategoryFromPath(),
+        label: `submit_${formType}`,
         noun: 'error',
         target: 'error',
         verb: 'triggered',
@@ -364,6 +390,41 @@ function init() {
       const inputName = focusedElement.attr('name');
       trackInputFocus(inputName);
     }
+
+    // Specifically tracks the #profile subscriptions & about forms to ensure submission is
+    // tracked irrespective of the validation package registering the submission sans required, populated input fields.
+    // @TODO replace this @HACK with the updated doSomething/validation package to register
+    // these submissions to begin with.
+    $('#profile-subscriptions-form, #profile-about-form').on('submit', function() {
+      // The following copies logic used by the dosomething-validation package,
+      // which determines weather there are fields to be validated.
+      var $form = $(this);
+
+      var $validationFields = $form.find("[data-validate]");
+
+      $validationFields = $validationFields.map(function() {
+        var $this = $(this);
+        if(typeof $this.attr("data-validate-required") !== "undefined" || $this.val() !== "") {
+          return $this;
+        }
+      });
+
+      // If there are fields to be validated, we defer to the dosomething-validation package
+      // which will publish a submission event which we've subscribed to, to track analytics.
+      if ($validationFields.length) {
+        return;
+      }
+
+      // Otherwise, track when an inline validation error free submission is made.
+      trackAnalyticsEvent({
+        metadata: {
+          category: getCategoryFromPath(),
+          noun: getFormTypeFromId($form.attr('id')),
+          target: 'form',
+          verb: 'submitted',
+        },
+      });
+    });
 
     // Tracks when user focuses on form field.
     $('input').on('focus', (element) => {
@@ -405,7 +466,7 @@ function init() {
           verb: 'submitted',
         },
       });
-    })
+    });
 
     $('#password-reset-form').on('submit', () => {
       // Tracks password reset form submissions.
@@ -417,7 +478,7 @@ function init() {
           verb: 'submitted',
         },
       });
-    })
+    });
 
     $('.facebook-login').on('click', () => {
       // Tracks clicking on the Login With Facebook button.
@@ -431,17 +492,23 @@ function init() {
       });
     });
 
-    $('.login-link').on('click', () => {
+    $('.login-link').on('click', (element) => {
+      // @HACK: Allow overriding the default 'button' target via a data-target attribute.
+      // (Ideally this should be standard and consistant based on the element type (e.g. a tag vs button),
+      // however, we're accounting for legacy 'button' events tracked on <a> tags.)
+      // (See DoSomething Slack: http://bit.ly/32kcSWE).
+      const target = element.target.dataset.target || 'button';
+
       // Tracks clicking on any of the 'Log in' buttons and links.
       trackAnalyticsEvent({
         metadata: {
           category: 'authentication',
           noun: 'login',
-          target: 'button',
+          target,
           verb: 'clicked',
         },
       });
-    })
+    });
 
     $('.register-link').on('click', () => {
       // Tracks clicking on any of the 'Register' or 'Create account' buttons and links.
@@ -453,7 +520,7 @@ function init() {
           verb: 'clicked',
         },
       });
-    })
+    });
 
     $('.forgot-password-link').on('click', () => {
       // Tracks clicking on the 'Forgot Password' link.
@@ -465,7 +532,19 @@ function init() {
           verb: 'clicked',
         },
       });
-    })
+    });
+
+    $('.form-skip').on('click', () => {
+      // Tracks clicking on the 'Skip' button in onboarding forms.
+      trackAnalyticsEvent({
+        metadata: {
+          category: 'onboarding',
+          noun: 'skip',
+          target: 'button',
+          verb: 'clicked',
+        },
+      });
+    });
 
     // Check for and track validation errors returned from the backend after form submission.
     const $validationErrors = $('.validation-error');
@@ -481,7 +560,7 @@ function init() {
           validationMessages,
         },
         metadata: {
-          category: 'authentication',
+          category: getCategoryFromPath(),
           label: 'validation_error',
           noun: 'validation',
           target: 'validation',

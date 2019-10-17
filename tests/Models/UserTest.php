@@ -19,7 +19,7 @@ class UserModelTest extends BrowserKitTestCase
         $this->blinkMock->shouldHaveReceived('userCreate')->once()->with([
             'id' => $user->id,
             'first_name' => $user->first_name,
-            'last_name' => $user->last_name,
+            'display_name' => $user->display_name,
             'birthdate' => '631238400',
             'email' => $user->email,
             'mobile' => $user->mobile,
@@ -56,6 +56,10 @@ class UserModelTest extends BrowserKitTestCase
             'physical_health' => false,
             'racial_justice_equity' => false,
             'sexual_harassment_assault' => true,
+            'voting_plan_status' => null,
+            'voting_plan_method_of_transport' => null,
+            'voting_plan_time_of_day' => null,
+            'voting_plan_attending_with' => null,
         ]);
     }
 

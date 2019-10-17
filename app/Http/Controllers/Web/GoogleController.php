@@ -2,6 +2,8 @@
 
 namespace Northstar\Http\Controllers\Web;
 
+use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use GuzzleHttp\Exception\ClientException;
@@ -10,6 +12,7 @@ use Northstar\Http\Controllers\Controller;
 use Laravel\Socialite\Two\InvalidStateException;
 use Northstar\Auth\Registrar;
 use Northstar\Models\User;
+use Northstar\Services\Google;
 
 class GoogleController extends Controller
 {
@@ -50,29 +53,32 @@ class GoogleController extends Controller
      */
     public function handleProviderCallback()
     {
-        // Grab the user's profile using their Google OAuth token.
+        // Fetch user's birthday using their Google OAuth token.
         try {
             $googleUser = Socialite::driver('google')->user();
-            // TODO: Make API request with $googleUser->token to get user birthday.
-            // @see https://developers.google.com/people/api/rest/v1/people/get?apix_params=%7B%22resourceName%22%3A%22people%2Fme%22%2C%22personFields%22%3A%22birthdays%22%7D
+            // Use the service container so we can mock Google API requests in tests.
+            // @see https://laravel.com/docs/5.5/helpers#method-app
+            $client = app('Northstar\Services\Google');
+
+            $googleProfile = $client->getProfile($googleUser->token);
         } catch (RequestException | ClientException | InvalidStateException $e) {
             logger()->warning('google_token_mismatch');
 
             return redirect('/register')->with('status', 'Unable to verify Google account.');
         }
 
-        // If we were denied access to read email, do not log them in.
-        if (empty($googleUser->email)) {
-            logger()->info('google_email_hidden');
+        // Some date properties in this array may not contain a year property.
+        $birthdaysWithYear = array_filter($googleProfile->birthdays, function ($item) {
+            return isset($item->date->year);
+        });
+        $birthday = Arr::first($birthdaysWithYear)->date;
 
-            return redirect('/register')->with('status', 'We need your email to contact you if you win a scholarship.');
-        }
-
-        // Aggregate public profile fields
+        // Aggregate Google profile fields.
         $fields = [
             'google_id' => $googleUser->id,
             'first_name' => $googleUser->user['given_name'],
             'last_name' => $googleUser->user['family_name'],
+            'birthdate' => Carbon::createFromDate($birthday->year, $birthday->month, $birthday->day),
         ];
 
         $northstarUser = $this->registrar->resolve(['email' => $googleUser->email]);
