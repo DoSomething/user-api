@@ -45,7 +45,17 @@ class ProfileSubscriptionsController extends Controller
         $user = auth()->guard('web')->user();
 
         $this->registrar->validate($request, $user);
-        $this->registrar->register($request->all(), $user);
+
+        $currentMobile = $user->mobile;
+
+        $this->registrar->register($request->all(), $user, function ($user) use ($currentMobile) {
+            // Set the sms_status if we're adding or updating the user's mobile.
+            if ($user->mobile && $user->mobile !== $currentMobile) {
+                $user->sms_status = 'active';
+            }
+        });
+
+        dd($user->sms_status);
 
         return redirect()->intended('/');
     }
