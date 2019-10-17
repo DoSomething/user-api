@@ -17,7 +17,7 @@
     @if (count($errors) > 0)
         @include('forms.errors', ['errors' => $errors])
     @endif
-
+    
     <form id="profile-register-form" method="POST" action="{{ url('register-beta')}}">
         {{ csrf_field() }}
 
@@ -44,8 +44,8 @@
             <span class="password-visibility__toggle -hide"></span>
         </div>
 
-        <div class="form-item -padded"> 
-            <input type="submit" class="button capitalize" value="Create Account">
+        <div class="form-item -padded">
+            <input type="submit" id='register-submit' class="button capitalize" value="Create Account">
         </div>
 
         <div class="form-item">
