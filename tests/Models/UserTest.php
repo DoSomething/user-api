@@ -19,7 +19,7 @@ class UserModelTest extends BrowserKitTestCase
         $this->blinkMock->shouldHaveReceived('userCreate')->once()->with([
             'id' => $user->id,
             'first_name' => $user->first_name,
-            'last_name' => $user->last_name,
+            'display_name' => $user->display_name,
             'birthdate' => '631238400',
             'email' => $user->email,
             'mobile' => $user->mobile,
