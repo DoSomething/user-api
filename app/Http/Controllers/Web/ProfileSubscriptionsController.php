@@ -55,8 +55,6 @@ class ProfileSubscriptionsController extends Controller
             }
         });
 
-        dd($user->sms_status);
-
         return redirect()->intended('/');
     }
 }
