@@ -208,11 +208,6 @@ class AuthController extends Controller
             $user->email_subscription_status = true;
             $user->email_subscription_topics = ['community'];
 
-            // Set sms_status, if applicable
-            if ($user->mobile) {
-                $user->sms_status = 'active';
-            }
-
             // Set source_detail, if applicable.
             $sourceDetail = session('source_detail');
             if ($sourceDetail) {
