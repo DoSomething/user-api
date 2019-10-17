@@ -67,13 +67,6 @@ class GoogleController extends Controller
             return redirect('/register')->with('status', 'Unable to verify Google account.');
         }
 
-        // If we were denied access to read email, do not log them in.
-        if (empty($googleUser->email)) {
-            logger()->info('google_email_hidden');
-
-            return redirect('/register')->with('status', 'We need your email to contact you if you win a scholarship.');
-        }
-
         // Some date properties in this array may not contain a year property.
         $birthdaysWithYear = array_filter($googleProfile->birthdays, function ($item) {
             return isset($item->date->year);

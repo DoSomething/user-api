@@ -174,21 +174,4 @@ class GoogleTest extends BrowserKitTestCase
         $this->assertEquals($user->last_name, 'Sloth');
         $this->assertEquals($user->birthdate, new Carbon\Carbon('2001-07-11'));
     }
-
-    /**
-     * If the user does not share email, it should not authenticate them.
-     */
-    public function testMissingEmail()
-    {
-        $abstractUser = $this->mockSocialiteAbstractUser('', 'Puppet', 'Sloth', '12345', 'token');
-        $this->mockSocialiteFromUser($abstractUser);
-        $this->mock(Google::class)
-          ->shouldReceive('getProfile')
-          ->andReturn($this->mockGoogleProfile('12345'));
-
-        $this->visit('/google/verify')
-            ->seePageIs('/register')
-            ->see('We need your email');
-        $this->dontSeeIsAuthenticated('web');
-    }
 }
