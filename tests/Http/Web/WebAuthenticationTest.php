@@ -385,22 +385,23 @@ class WebAuthenticationTest extends BrowserKitTestCase
      * Test that the various optional variables for customizing the experience
      * display on the page.
      */
-    public function testAuthorizeSessionVariablesExist()
-    {
-        $client = factory(Client::class, 'authorization_code')->create();
+    // @TODO Remove or update post NS flow launch!
+    // public function testAuthorizeSessionVariablesExist()
+    // {
+    //     $client = factory(Client::class, 'authorization_code')->create();
 
-        $this->get('authorize?'.http_build_query([
-            'response_type' => 'code',
-            'client_id' => $client->client_id,
-            'client_secret' => $client->client_secret,
-            'scope' => 'user',
-            'state' => csrf_token(),
-            'title' => 'test title',
-            'callToAction' => 'test call to action',
-        ]))->followRedirects();
+    //     $this->get('authorize?'.http_build_query([
+    //         'response_type' => 'code',
+    //         'client_id' => $client->client_id,
+    //         'client_secret' => $client->client_secret,
+    //         'scope' => 'user',
+    //         'state' => csrf_token(),
+    //         'title' => 'test title',
+    //         'callToAction' => 'test call to action',
+    //     ]))->followRedirects();
 
-        $this->seePageIs('register')
-            ->see('test title')
-            ->see('test call to action');
-    }
+    //     $this->seePageIs('register')
+    //         ->see('test title')
+    //         ->see('test call to action');
+    // }
 }
