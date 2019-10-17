@@ -100,6 +100,8 @@ const getCategoryFromPath = () => {
 
 /**
  * Parse an id value to discern the form type (with a sensible default).
+ * The id should contain at least two hyphen-separated values -
+ * e.g. an id of 'profile-register-form' would yield the 'register' value.
  *
  * @param {String} [id='']
  * @return {String}
