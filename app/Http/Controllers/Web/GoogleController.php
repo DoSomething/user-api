@@ -89,9 +89,8 @@ class GoogleController extends Controller
             $northstarUser->save();
         } else {
             $fields['email'] = $email;
-            $fields = array_merge($fields, get_default_web_registration_fields());
 
-            $northstarUser = $this->registrar->register($fields, null, function (User $user) {
+            $northstarUser = $this->registrar->registerViaWeb($fields, null, function (User $user) {
                 $user->setSource(null, 'google');
             });
         }

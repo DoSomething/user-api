@@ -197,9 +197,12 @@ class AuthController extends Controller
 
         // Register and login the user.
         $editableFields = $request->except(User::$internal);
-        $user = $this->registrar->register($editableFields, null, function ($user) {
-            // Set default web registration fields.
-            $user->fill(get_default_web_registration_fields());
+
+        $user = $this->registrar->registerViaWeb($editableFields, function ($user) {
+            // Set sms_status, if applicable
+            if ($user->mobile) {
+                $user->sms_status = 'active';
+            }
 
             // Set source_detail, if applicable.
             $sourceDetail = session('source_detail');
@@ -207,6 +210,7 @@ class AuthController extends Controller
                 $user->source_detail = stringify_object($sourceDetail);
             }
 
+            // TODO: Move this into registerViaWeb.
             // Exclude any 'clubs' referrals from our feature flag tests.
             if (data_get($sourceDetail, 'utm_source') !== 'clubs') {
                 $feature_flags = $user->feature_flags;

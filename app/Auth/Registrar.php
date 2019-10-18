@@ -203,4 +203,29 @@ class Registrar
 
         return $user;
     }
+
+    /**
+     * Create a new user OR update an existing user (if given).
+     *
+     * @param array $input - Profile fields
+     * @param User $user - Optionally, user to update
+     * @param Closure $customizer - Customize the user instance before saving.
+     * @return User|null
+     */
+    public function registerViaWeb($input, $user = null, Closure $customizer = null)
+    {
+        return $this->register($input, $user, function() use ($user) {
+            if (! is_null($customizer)) {
+                $customizer($user);
+            }
+            // Set the user's country code by Fastly geo-location header.
+            $user->country = country_code();
+            // Set language based on locale (either 'en', 'es-mx').
+            $user->language = app()->getLocale();
+            // Sign the user up for email messaging & give them the "community" topic.
+            $user->email_subscription_status = true;
+            $user->email_subscription_topics = ['community'];
+            // TODO: Check user source detail and assign feature flags if not clubs member.
+        });
+    }
 }
