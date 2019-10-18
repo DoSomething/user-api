@@ -61,7 +61,7 @@
                 <div class="w-full md:w-1/2">
                     @foreach ( $causes1 as $value => $label )
                             @include('forms.checkbox', ['name' => 'causes', 'index' => $index1, 'value' => $value , 'label' =>  $label])
-                            //@TODO: clean up using a php block for this logic and in lower foreach
+                            {{-- @TODO: clean up using a php block for this logic and in lower foreach --}}
                             @php
                                 $index1++;
                             @endphp
