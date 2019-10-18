@@ -214,7 +214,7 @@ class Registrar
      */
     public function registerViaWeb($input, $user = null, Closure $customizer = null)
     {
-        return $this->register($input, $user, function() use ($user) {
+        return $this->register($input, $user, function () use ($user) {
             if (! is_null($customizer)) {
                 $customizer($user);
             }
