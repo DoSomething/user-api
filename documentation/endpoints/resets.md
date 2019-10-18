@@ -21,8 +21,11 @@ POST /v2/resets
    *
    * Valid types:
    * - 'forgot-password'
+   * - `boost-activate-account`
    * - 'breakdown-activate-account'
+   * - `pays-to-do-good-activate-account`
    * - 'rock-the-vote-activate-account' 
+   * - `wyd-activate-account`
    */
   type: String
 }

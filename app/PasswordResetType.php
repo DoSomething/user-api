@@ -12,18 +12,39 @@ class PasswordResetType
     public static $forgotPassword = 'forgot-password';
 
     /**
-     * A Breakdown Subscriber Activate Account type.
+     * A Boost subscriber Activate Account type.
+     *
+     * @var string
+     */
+    public static $boostActivateAccount = 'boost-activate-account';
+
+    /**
+     * A Breakdown subscriber Activate Account type.
      *
      * @var string
      */
     public static $breakdownActivateAccount = 'breakdown-activate-account';
 
     /**
-     * A Rock The Vote Activate Account type.
+     * A Pays To Do Good subscriber Activate Account type.
+     *
+     * @var string
+     */
+    public static $paysToDoGoodActivateAccount = 'pays-to-do-good-activate-account';
+
+    /**
+     * A Rock The Vote registration Activate Account type.
      *
      * @var string
      */
     public static $rockTheVoteActivateAccount = 'rock-the-vote-activate-account';
+
+    /**
+     * A WYD subscriber Activate Account type.
+     *
+     * @var string
+     */
+    public static $wydActivateAccount = 'wyd-activate-account';
 
     /**
      * Returns list of all valid Password Reset Types.
@@ -34,8 +55,11 @@ class PasswordResetType
     {
         return [
             self::$forgotPassword,
+            self::$boostActivateAccount,
             self::$breakdownActivateAccount,
+            self::$paysToDoGoodActivateAccount,
             self::$rockTheVoteActivateAccount,
+            self::$wydActivateAccount,
         ];
     }
 }
