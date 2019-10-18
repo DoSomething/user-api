@@ -217,6 +217,7 @@ class Registrar
 
         $user->fill($input);
 
+        // The user's source_detail is often set via this customizer parameter.
         if (! is_null($customizer)) {
             $customizer($user);
         }
