@@ -170,8 +170,8 @@ class GoogleTest extends BrowserKitTestCase
         $this->visit('/google/verify');
 
         $user = auth()->user();
-        $this->assertEquals($user->first_name, 'Puppet');
+        $this->assertEquals($user->first_name, 'Joe');
         $this->assertEquals($user->last_name, 'Sloth');
-        $this->assertEquals($user->birthdate, new Carbon\Carbon('2001-07-11'));
+        $this->assertEquals($user->birthdate, $factoryUser->birthdate);
     }
 }

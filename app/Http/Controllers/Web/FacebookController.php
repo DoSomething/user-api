@@ -84,7 +84,7 @@ class FacebookController extends Controller
         $northstarUser = $this->registrar->resolve(['email' => $facebookUser->email]);
 
         if ($northstarUser) {
-            $northstarUser->fillUnlessNull($fields);
+            $northstarUser->updateIfNotSet($fields);
             $northstarUser->save();
         } else {
             $fields['email'] = $facebookUser->email;
