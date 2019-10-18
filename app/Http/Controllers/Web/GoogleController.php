@@ -90,7 +90,7 @@ class GoogleController extends Controller
         } else {
             $fields['email'] = $email;
 
-            $northstarUser = $this->registrar->registerViaWeb($fields, null, function (User $user) {
+            $northstarUser = $this->registrar->registerViaWeb($fields, function (User $user) {
                 $user->setSource(null, 'google');
             });
         }

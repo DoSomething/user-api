@@ -197,7 +197,6 @@ class AuthController extends Controller
 
         // Register and login the user.
         $editableFields = $request->except(User::$internal);
-
         $user = $this->registrar->registerViaWeb($editableFields, function ($user) {
             // Set sms_status, if applicable
             if ($user->mobile) {
