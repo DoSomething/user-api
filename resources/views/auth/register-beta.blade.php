@@ -58,9 +58,9 @@
         <hr class="ml-2 mt-2 w-full border-gray-600 border-t-2 border-solid">
     </div>
 
-    <div>
-    @include('auth.facebook')
-    @include('auth.google')
+    <div class="flex content-start justify-around">
+        @include('auth.facebook')
+        @include('auth.google')
     </div>
 
     <p class="text-gray-500 mt-5">

@@ -1,0 +1,16 @@
+$google-blue: #4285F4;
+
+.google-login {
+  background: #fff;
+  border: 1px solid #DDDDDD;
+  font-size: 18px;
+  color: #202020;
+  text-transform: none;
+  margin: $base-spacing / 2 0;
+  
+  &:active {
+    background: $google-blue;
+  }
+
+ 
+}
