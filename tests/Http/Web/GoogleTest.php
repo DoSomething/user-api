@@ -128,6 +128,8 @@ class GoogleTest extends BrowserKitTestCase
         $this->assertEquals($user->email, 'test@dosomething.org');
         $this->assertEquals($user->source, 'northstar');
         $this->assertEquals($user->source_detail, 'google');
+        $this->assertEquals($user->country_code, country_code());
+        $this->assertEquals($user->language, app()->getLocale());
         $this->assertEquals($user->email_subscription_status, true);
         $this->assertEquals($user->email_subscription_topics, ['community']);
         $this->assertEquals($user->birthdate, new Carbon\Carbon('2001-07-11'));

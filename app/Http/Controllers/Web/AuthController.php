@@ -197,23 +197,14 @@ class AuthController extends Controller
 
         // Register and login the user.
         $editableFields = $request->except(User::$internal);
-        $user = $this->registrar->register($editableFields, null, function ($user) {
-            // Set the user's country code by Fastly geo-location header.
-            $user->country = country_code();
-
-            // Set language based on locale (either 'en', 'es-mx')
-            $user->language = app()->getLocale();
-
-            // Sign the user up for email messaging & give them the "community" topic.
-            $user->email_subscription_status = true;
-            $user->email_subscription_topics = ['community'];
-
+        $user = $this->registrar->registerViaWeb($editableFields, function ($user) {
             // Set source_detail, if applicable.
             $sourceDetail = session('source_detail');
             if ($sourceDetail) {
                 $user->source_detail = stringify_object($sourceDetail);
             }
 
+            // TODO: Move this into registerViaWeb.
             // Exclude any 'clubs' referrals from our feature flag tests.
             if (data_get($sourceDetail, 'utm_source') !== 'clubs') {
                 $feature_flags = $user->feature_flags;
