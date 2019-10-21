@@ -56,6 +56,7 @@
 
     <div class="container__block -centered">
         @include('auth.facebook')
+        @include('auth.google')
 
         <ul>
             <li><a href="{{ url('register') }}" class="register-link">{{ trans('auth.log_in.create') }}</a></li>
