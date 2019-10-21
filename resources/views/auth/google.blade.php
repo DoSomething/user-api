@@ -7,5 +7,3 @@
         @include('icons.google-icon')
         Continue with Google
     </a>
-
-{{-- <a href="{{ url('google/continue') }}"><img src="/images/btn_google_signin_light_pressed_web@2x.png" /></a> --}}
