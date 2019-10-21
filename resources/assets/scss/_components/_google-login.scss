@@ -3,6 +3,7 @@ $google-blue: #4285F4;
 .google-login {
   background: #fff;
   border: 1px solid #DDDDDD;
+  padding: 0.38em 1em 0.38em;
   font-size: 18px;
   color: #202020;
   text-transform: none;
@@ -10,11 +11,11 @@ $google-blue: #4285F4;
 
   svg {
       display: inline-block;
-      height: 30px;
-      width: 30px;
+      height: 32px;
+      width: 32px;
   }
   
-  &:active {
+  &:hover, &:active {
     background: $google-blue;
   }
 

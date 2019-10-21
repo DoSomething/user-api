@@ -58,7 +58,7 @@
         <hr class="ml-2 mt-2 w-full border-gray-600 border-t-2 border-solid">
     </div>
 
-    <div class="bg-blue-500 md:flex ">
+    <div class="md:flex ">
         <div class="md:w-1/2">
             @include('auth.facebook')
         </div>
