@@ -104,6 +104,8 @@ class FacebookTest extends BrowserKitTestCase
         $this->assertEquals($user->email, 'test@dosomething.org');
         $this->assertEquals($user->source, 'northstar');
         $this->assertEquals($user->source_detail, 'facebook');
+        $this->assertEquals($user->country_code, country_code());
+        $this->assertEquals($user->language, app()->getLocale());
         $this->assertEquals($user->email_subscription_status, true);
         $this->assertEquals($user->email_subscription_topics, ['community']);
     }
@@ -164,8 +166,9 @@ class FacebookTest extends BrowserKitTestCase
         $this->visit('/facebook/verify');
 
         $user = auth()->user();
-        $this->assertEquals($user->first_name, 'Puppet');
+        $this->assertEquals($user->first_name, 'Joe');
         $this->assertEquals($user->last_name, 'Sloth');
+        $this->assertEquals($user->birthdate, $factoryUser->birthdate);
     }
 
     /**

@@ -4,7 +4,7 @@ $facebook-blue: #4267b2;
   background: $facebook-blue;
   text-transform: none;
   margin: $base-spacing / 2 0;
-
+  
   &:hover, &:active, &:focus {
     background: darken($facebook-blue, 10%);
   }

@@ -67,6 +67,7 @@ class GoogleController extends Controller
             return redirect('/register')->with('status', 'Unable to verify Google account.');
         }
 
+        $email = $googleUser->email;
         // Some date properties in this array may not contain a year property.
         $birthdaysWithYear = array_filter($googleProfile->birthdays, function ($item) {
             return isset($item->date->year);
@@ -81,21 +82,15 @@ class GoogleController extends Controller
             'birthdate' => Carbon::createFromDate($birthday->year, $birthday->month, $birthday->day),
         ];
 
-        $northstarUser = $this->registrar->resolve(['email' => $googleUser->email]);
+        $northstarUser = $this->registrar->resolve(['email' => $email]);
 
         if ($northstarUser) {
-            $northstarUser->fillUnlessNull($fields);
+            $northstarUser->updateIfNotSet($fields);
             $northstarUser->save();
         } else {
-            $fields['email'] = $googleUser->email;
-            $fields['country'] = country_code();
-            $fields['language'] = app()->getLocale();
+            $fields['email'] = $email;
 
-            // Add same email settings as traditional new members
-            $fields['email_subscription_status'] = true;
-            $fields['email_subscription_topics'] = ['community'];
-
-            $northstarUser = $this->registrar->register($fields, null, function (User $user) {
+            $northstarUser = $this->registrar->registerViaWeb($fields, function (User $user) {
                 $user->setSource(null, 'google');
             });
         }
