@@ -15,8 +15,11 @@
     @include('layouts.google_tag_manager')
     @include('layouts.snowplow')
 
-    <link rel="stylesheet" href="{{ elixir('app.css', 'dist') }}">
-    <script src="{{ asset('dist/modernizr.js') }}"></script>
+    @section('scripts')
+        <link rel="stylesheet" href="{{ elixir('app.css', 'dist') }}">
+        <script src="{{ asset('dist/modernizr.js') }}"></script>
+    @show
+    
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
