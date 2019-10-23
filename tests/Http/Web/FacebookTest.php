@@ -96,6 +96,11 @@ class FacebookTest extends BrowserKitTestCase
     public function testFacebookVerify()
     {
         $this->defaultMock();
+        // Turn on the badges and refer-friends test feature flags.
+        config([
+            'features.badges' => true,
+            'features.refer-friends' => true,
+        ]);
 
         $this->visit('/facebook/verify')->seePageIs('/');
         $this->seeIsAuthenticated('web');
@@ -108,6 +113,8 @@ class FacebookTest extends BrowserKitTestCase
         $this->assertEquals($user->language, app()->getLocale());
         $this->assertEquals($user->email_subscription_status, true);
         $this->assertEquals($user->email_subscription_topics, ['community']);
+        $this->assertArrayHasKey('badges', $user->feature_flags);
+        $this->assertEquals(true, $user->feature_flags['refer-friends']);
     }
 
     /**
