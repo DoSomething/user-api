@@ -55,7 +55,14 @@
     </div>
 
     <div class="container__block -centered">
-        @include('auth.facebook')
+        <div class="w-full">
+            @include('auth.facebook')
+        </div>
+        <div class="flex justify-center">
+            <div class="w-full md:w-3/4">
+                @include('auth.google')
+            </div>
+        </div>
 
         <ul>
             <li><a href="{{ url('register') }}" class="register-link">{{ trans('auth.log_in.create') }}</a></li>
