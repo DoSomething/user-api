@@ -230,7 +230,20 @@ class Registrar
         $user->email_subscription_status = true;
         $user->email_subscription_topics = ['community'];
 
-        // TODO: Check user->source_detail and assign feature flags if not clubs member.
+        // Exclude any 'clubs' referrals from our feature flag tests.
+        if (! str_contains($user->source_detail, 'utm_source:clubs')) {
+            $feature_flags = [];
+            // If the badges test is running, sort users into badges group control group
+            if (config('features.badges')) {
+                // Give 70% users the badges flag (1-7), 30% in control (8-10)
+                $feature_flags['badges'] = (rand(1, 10) < 8);
+            }
+            // If the refer-friends test is running, give all users the refer-friends flag.
+            if (config('features.refer-friends')) {
+                $feature_flags['refer-friends'] = true;
+            }
+            $user->feature_flags = $feature_flags;
+        }
 
         $user->save();
 
