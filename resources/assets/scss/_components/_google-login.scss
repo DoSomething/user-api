@@ -2,21 +2,21 @@ $google-blue: #4285F4;
 
 .google-login,
 .google-login:link {
-  background: #fff;
-  border: 1px solid #DDDDDD;
-  padding: 0.48em 1em 0.48em;
+  background: #ffffff;
   font-size: 18px;
-  color: #202020;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.24);
+  color: rgba(0, 0, 0, 0.54);
   text-transform: none;
-  margin: $base-spacing / 2 0;
+  margin: 12px 0;
 
   svg {
-      display: inline-block;
-      height: 32px;
-      width: 32px;
+    display: inline-block;
+    height: 32px;
+    width: 32px;
   }
-  
-  &:hover, &:active {
+
+  &:hover,
+  &:active {
     background: $google-blue;
   }
 }
