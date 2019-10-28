@@ -24,6 +24,16 @@ class GoogleController extends Controller
     protected $registrar;
 
     /**
+     * Redirect unsuccessful authentication requests.
+     *
+     * @return Redirect
+     */
+    protected function redirectUnsuccessfulRequest()
+    {
+        return redirect('/register')->with('status', 'Unable to verify Google account.');
+    }
+
+    /**
      * Make a new GoogleController, inject dependencies,
      * and set middleware for this controller's methods.
      *
@@ -64,7 +74,14 @@ class GoogleController extends Controller
         } catch (RequestException | ClientException | InvalidStateException $e) {
             logger()->warning('google_token_mismatch');
 
-            return redirect('/register')->with('status', 'Unable to verify Google account.');
+            return $this->redirectUnsuccessfulRequest();
+        }
+
+        // Ensure all required user attributes are available on the given profile.
+        foreach (['given_name', 'family_name'] as $requiredAttribute) {
+            if (! array_key_exists($requiredAttribute, $googleUser->user)) {
+                return $this->redirectUnsuccessfulRequest();
+            }
         }
 
         $email = $googleUser->email;
