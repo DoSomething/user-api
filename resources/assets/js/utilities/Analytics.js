@@ -493,7 +493,7 @@ function init() {
     });
 
     $('.google-login').on('click', () => {
-      // Tracks clicking on the Login With Facebook button.
+      // Tracks clicking on the Login With Google button.
       trackAnalyticsEvent({
         metadata: {
           category: 'authentication',
