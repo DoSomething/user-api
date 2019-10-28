@@ -4,7 +4,6 @@ namespace Northstar\Console\Commands;
 
 use DB;
 use Illuminate\Console\Command;
-use Illuminate\Support\Collection;
 
 class UnsetFieldCommand extends Command
 {
