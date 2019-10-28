@@ -492,6 +492,18 @@ function init() {
       });
     });
 
+    $('.google-login').on('click', () => {
+      // Tracks clicking on the Login With Facebook button.
+      trackAnalyticsEvent({
+        metadata: {
+          category: 'authentication',
+          noun: 'login_google',
+          target: 'button',
+          verb: 'clicked',
+        },
+      });
+    });
+
     $('.login-link').on('click', (element) => {
       // @HACK: Allow overriding the default 'button' target via a data-target attribute.
       // (Ideally this should be standard and consistant based on the element type (e.g. a tag vs button),
