@@ -26,7 +26,7 @@ class GoogleController extends Controller
     /**
      * Redirect unsuccessful authentication requests.
      *
-     * @return Redirect
+     * @return \Illuminate\Http\RedirectResponse
      */
     protected function redirectUnsuccessfulRequest()
     {
