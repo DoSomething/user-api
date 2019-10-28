@@ -23,6 +23,8 @@ $ php artisan northstar:setup
 $ npm run build
 ```
 
+**Pro Tip**: You can run `npm start` after running `npm run build` to initiate a 'watched' webpack server which will recompile following any saved changes to the front end, but be sure to try and re-run `npm run build` if you encounter any styling borkiness, since our [`modernizr` step](https://github.com/DoSomething/northstar/blob/7fddfda34ff09aac31adad1219c4f3300abe378d/package.json#L9) is skipped when running `npm start`.
+
 We follow [Laravel's code style](http://laravel.com/docs/5.5/contributions#coding-style) and automatically
 lint all pull requests with [StyleCI](https://styleci.io/repos/26884886). Be sure to configure
 [EditorConfig](http://editorconfig.org) to ensure you have proper indentation settings.
