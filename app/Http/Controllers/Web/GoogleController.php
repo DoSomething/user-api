@@ -68,19 +68,31 @@ class GoogleController extends Controller
         }
 
         $email = $googleUser->email;
-        // Some date properties in this array may not contain a year property.
-        $birthdaysWithYear = array_filter($googleProfile->birthdays, function ($item) {
-            return isset($item->date->year);
-        });
-        $birthday = Arr::first($birthdaysWithYear)->date;
+
+        $birthday = null;
+        // If birthdate is not set on the google profile, we won't receive a 'birthdays' attribute.
+        if (array_key_exists('birthdays', $googleProfile)) {
+            // Some date properties in this array may not contain a year property.
+            $birthdaysWithYear = array_filter($googleProfile->birthdays, function ($item) {
+                return isset($item->date->year);
+            });
+            $birthday = Arr::first($birthdaysWithYear)->date;
+        }
 
         // Aggregate Google profile fields.
         $fields = [
             'google_id' => $googleUser->id,
             'first_name' => $googleUser->user['given_name'],
             'last_name' => $googleUser->user['family_name'],
-            'birthdate' => Carbon::createFromDate($birthday->year, $birthday->month, $birthday->day),
         ];
+
+        if ($birthday) {
+            $fields['birthdate'] = Carbon::createFromDate(
+                $birthday->year,
+                $birthday->month,
+                $birthday->day
+            );
+        }
 
         $northstarUser = $this->registrar->resolve(['email' => $email]);
 
