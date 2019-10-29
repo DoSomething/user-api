@@ -28,9 +28,9 @@ class GoogleController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function redirectUnsuccessfulRequest()
+    protected function redirectUnsuccessfulRequest($message = null)
     {
-        return redirect('/register')->with('status', 'Unable to verify Google account.');
+        return redirect('/register')->with('status', $message ?: 'Unable to verify Google account.');
     }
 
     /**
@@ -86,7 +86,7 @@ class GoogleController extends Controller
 
         // If this is a new registration, ensure we've received the required profile fields.
         if (! $northstarUser && (! $firstName || ! $lastName)) {
-            return $this->redirectUnsuccessfulRequest();
+            return $this->redirectUnsuccessfulRequest('We need your first and last name to create your account! Please confirm that these are set on your Google profile and try again.');
         }
 
         $birthday = null;
