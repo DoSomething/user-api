@@ -24,6 +24,16 @@ class GoogleController extends Controller
     protected $registrar;
 
     /**
+     * Redirect unsuccessful authentication requests.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function redirectUnsuccessfulRequest($message = null)
+    {
+        return redirect('/register')->with('status', $message ?: 'Unable to verify Google account.');
+    }
+
+    /**
      * Make a new GoogleController, inject dependencies,
      * and set middleware for this controller's methods.
      *
@@ -64,25 +74,45 @@ class GoogleController extends Controller
         } catch (RequestException | ClientException | InvalidStateException $e) {
             logger()->warning('google_token_mismatch');
 
-            return redirect('/register')->with('status', 'Unable to verify Google account.');
+            return $this->redirectUnsuccessfulRequest();
         }
 
         $email = $googleUser->email;
-        // Some date properties in this array may not contain a year property.
-        $birthdaysWithYear = array_filter($googleProfile->birthdays, function ($item) {
-            return isset($item->date->year);
-        });
-        $birthday = Arr::first($birthdaysWithYear)->date;
+
+        $northstarUser = $this->registrar->resolve(['email' => $email]);
+
+        $firstName = data_get($googleUser->user, 'given_name');
+        $lastName = data_get($googleUser->user, 'family_name');
+
+        // If this is a new registration, ensure we've received the required profile fields.
+        if (! $northstarUser && (! $firstName || ! $lastName)) {
+            return $this->redirectUnsuccessfulRequest('We need your first and last name to create your account! Please confirm that these are set on your Google profile and try again.');
+        }
+
+        $birthday = null;
+        // If birthdate is not set on the google profile, we won't receive a 'birthdays' field.
+        if (array_key_exists('birthdays', $googleProfile)) {
+            // Some date properties in this array may not contain a year property.
+            $birthdaysWithYear = array_filter($googleProfile->birthdays, function ($item) {
+                return isset($item->date->year);
+            });
+            $birthday = data_get(Arr::first($birthdaysWithYear), 'date');
+        }
 
         // Aggregate Google profile fields.
         $fields = [
             'google_id' => $googleUser->id,
-            'first_name' => $googleUser->user['given_name'],
-            'last_name' => $googleUser->user['family_name'],
-            'birthdate' => Carbon::createFromDate($birthday->year, $birthday->month, $birthday->day),
+            'first_name' => $firstName,
+            'last_name' => $lastName,
         ];
 
-        $northstarUser = $this->registrar->resolve(['email' => $email]);
+        if ($birthday) {
+            $fields['birthdate'] = Carbon::createFromDate(
+                $birthday->year,
+                $birthday->month,
+                $birthday->day
+            );
+        }
 
         if ($northstarUser) {
             $northstarUser->updateIfNotSet($fields);
