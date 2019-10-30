@@ -96,7 +96,7 @@ class GoogleController extends Controller
             $birthdaysWithYear = array_filter($googleProfile->birthdays, function ($item) {
                 return isset($item->date->year);
             });
-            $birthday = Arr::first($birthdaysWithYear)->date;
+            $birthday = data_get(Arr::first($birthdaysWithYear), 'date');
         }
 
         // Aggregate Google profile fields.
