@@ -190,7 +190,7 @@ class GoogleTest extends BrowserKitTestCase
         $this->mockSocialiteFromUser($abstractUser);
 
         $mockGoogleProfile = $this->mockGoogleProfile($googleId);
-        // Remove the borthdays attribute from the mocked Google Profile payload.
+        // Remove the birthdays attribute from the mocked Google Profile payload.
         unset($mockGoogleProfile->birthdays);
 
         $this->mock(Google::class)
