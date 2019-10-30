@@ -5,3 +5,9 @@ nav.navigation {
 .navigation__logo {
   padding-bottom: $base-spacing * 2;
 }
+
+// Temporary overide for Halloween 2019!
+.navigation__logo:after {
+  background: url("./boo-something-logo.svg");
+  background-repeat: no-repeat;
+}
