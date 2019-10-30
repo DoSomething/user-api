@@ -163,6 +163,45 @@ class GoogleTest extends BrowserKitTestCase
     }
 
     /**
+     * Test that attempted registrations with missing required profile fields are
+     * unsuccessful and the correct flash message is presented.
+     */
+    public function testGoogleMissingProfileFields()
+    {
+        $googleId = '12345';
+        $abstractUser = $this->mockSocialiteAbstractUser('test@dosomething.org', null, null, $googleId, 'token');
+        $this->mockSocialiteFromUser($abstractUser);
+        $this->mock(Google::class)
+            ->shouldReceive('getProfile')
+            ->andReturn($this->mockGoogleProfile($googleId));
+
+        $this->visit('/google/verify')->seePageIs('/register');
+        $this->see('We need your first and last name to create your account! Please confirm that these are set on your Google profile and try again.');
+    }
+
+    /**
+     * Test that authentication is still successful when the 'birthdays' field is missing
+     * from the Google Profile.
+     */
+    public function testGoogleMissingBirthday()
+    {
+        $googleId = '12345';
+        $abstractUser = $this->mockSocialiteAbstractUser('test@dosomething.org', 'Puppet', 'Sloth', $googleId, 'token');
+        $this->mockSocialiteFromUser($abstractUser);
+
+        $mockGoogleProfile = $this->mockGoogleProfile($googleId);
+        // Remove the borthdays attribute from the mocked Google Profile payload.
+        unset($mockGoogleProfile->birthdays);
+
+        $this->mock(Google::class)
+            ->shouldReceive('getProfile')
+            ->andReturn($mockGoogleProfile);
+
+        $this->visit('/google/verify')->seePageIs('/');
+        $this->seeIsAuthenticated('web');
+    }
+
+    /**
      * Test that an existing Northstar account can successfully login and merge
      * with a Google user profile.
      */
