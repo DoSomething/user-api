@@ -150,6 +150,7 @@ Either a mobile number or email is required.
   addr_zip: String;
   country: String; // two character country code
   language: String;
+  school_id: String;
   agg_id: Number;
   cgg_id: Number;
   drupal_id: String;
