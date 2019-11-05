@@ -73,7 +73,6 @@ class UserTransformer extends BaseTransformer
 
             $response['interests'] = [];
             $response['age'] = $user->age;
-            $response['school_id'] = $user->school_id;
 
             $response['addr_city'] = $user->addr_city;
             $response['addr_state'] = $user->addr_state;
