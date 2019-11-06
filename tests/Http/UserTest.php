@@ -98,6 +98,7 @@ class UserTest extends BrowserKitTestCase
         $this->assertArrayNotHasKey('email', $data);
         $this->assertArrayNotHasKey('mobile', $data);
         $this->assertArrayNotHasKey('facebook_id', $data);
+        $this->assertArrayNotHasKey('school_id', $data);
     }
 
     /**
@@ -126,6 +127,7 @@ class UserTest extends BrowserKitTestCase
         $this->dontSeeJsonField('data.email');
         $this->dontSeeJsonField('data.mobile');
         $this->dontSeeJsonField('data.facebook_id');
+        $this->dontSeeJsonField('data.school_id');
     }
 
     /**
@@ -157,6 +159,7 @@ class UserTest extends BrowserKitTestCase
         $this->seeJsonField('data.email_preview', 'pup...@dosomething.org');
         $this->seeJsonField('data.mobile', '8602035512'); // @TODO: This should be E.164!
         $this->seeJsonField('data.mobile_preview', '(860) 203-XXXX');
+        $this->seeJsonField('data.school_id', '12500012');
     }
 
     /**
@@ -176,7 +179,7 @@ class UserTest extends BrowserKitTestCase
         // Check that public & private profile fields are visible
         $this->seeJsonStructure([
             'data' => [
-                'id', 'email', 'first_name', 'last_name', 'facebook_id',
+                'id', 'email', 'first_name', 'last_name', 'facebook_id', 'school_id',
             ],
         ]);
     }
@@ -194,10 +197,11 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
 
         // Normal users should not be able to query sensitive values for others:
-        $this->asNormalUser()->get('v2/users/'.$user->id.'?include=email,addr_street1');
+        $this->asNormalUser()->get('v2/users/'.$user->id.'?include=email,addr_street1,school_id');
         $this->assertResponseOk()
             ->dontSeeJsonField('data.email')
-            ->dontSeeJsonField('data.addr_street1');
+            ->dontSeeJsonField('data.addr_street1')
+            ->dontSeeJsonField('data.school_id');
     }
 
     /**
@@ -217,10 +221,11 @@ class UserTest extends BrowserKitTestCase
         $this->assertResponseOk()->dontSeeJsonField('data.email');
 
         // When we re-query with `?include=`, we should see them!
-        $this->asStaffUser()->get('v2/users/'.$user->id.'?include=email,addr_street1');
+        $this->asStaffUser()->get('v2/users/'.$user->id.'?include=email,addr_street1,school_id');
         $this->assertResponseOk()
             ->seeJsonField('data.email', $user->email)
-            ->seeJsonField('data.addr_street1', $user->addr_street1);
+            ->seeJsonField('data.addr_street1', $user->addr_street1)
+            ->seeJsonField('data.school_id', $user->school_id);
     }
 
     /**
@@ -262,6 +267,7 @@ class UserTest extends BrowserKitTestCase
         $this->asUser($user, ['user', 'write'])->json('PUT', 'v2/users/'.$user->id, [
             'first_name' => 'Pepper',
             'last_name' => 'Puppy',
+            'school_id' => '7110001',
         ]);
 
         $this->assertResponseStatus(200);
@@ -271,6 +277,7 @@ class UserTest extends BrowserKitTestCase
             'first_name' => 'Pepper',
             'last_name' => 'Puppy',
             '_id' => $user->id,
+            'school_id' => '7110001',
         ]);
     }
 
@@ -338,6 +345,7 @@ class UserTest extends BrowserKitTestCase
         $this->asMachine()->json('PUT', 'v2/users/'.$user->id, [
             'first_name' => 'Wilhelmina',
             'last_name' => 'Grubbly-Plank',
+            'school_id' => '11122019',
         ]);
 
         $this->assertResponseStatus(200);
@@ -347,6 +355,7 @@ class UserTest extends BrowserKitTestCase
             'first_name' => 'Wilhelmina',
             'last_name' => 'Grubbly-Plank',
             '_id' => $user->id,
+            'school_id' => '11122019',
         ]);
     }
 

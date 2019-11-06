@@ -165,6 +165,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'addr_street1',
         'addr_street2',
         'birthdate',
+        'school_id',
     ];
 
     /**
