@@ -33,6 +33,7 @@ use Northstar\Jobs\SendPasswordResetToCustomerIo;
  * @property string $source
  * @property string $source_detail
  * @property string $voter_registration_status
+ * @property string $school_id
  * @property string $role - The user's role, e.g. 'user', 'staff', or 'admin'
  *
  * @property string $addr_street1
@@ -98,7 +99,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'email', 'mobile', 'password', 'role',
 
         // Profile:
-        'first_name', 'last_name', 'birthdate', 'voter_registration_status', 'causes',
+        'first_name', 'last_name', 'birthdate', 'voter_registration_status', 'causes', 'school_id',
 
         // Address:
         'addr_street1', 'addr_street2', 'addr_city', 'addr_state', 'addr_zip',
