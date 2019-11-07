@@ -99,12 +99,11 @@ class FacebookController extends Controller
             $northstarUser = $this->registrar->registerViaWeb($fields, function (User $user) {
                 $user->setSource(null, 'facebook');
             });
-            
+
             Auth::login($northstarUser, true);
             logger()->info('facebook_authentication');
-    
+
             return redirect('profile/about');
         }
-
     }
 }

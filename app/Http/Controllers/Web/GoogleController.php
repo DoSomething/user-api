@@ -120,7 +120,7 @@ class GoogleController extends Controller
 
             Auth::login($northstarUser, true);
             logger()->info('google_authentication');
-            
+
             return redirect()->intended('/');
         } else {
             $fields['email'] = $email;
@@ -131,9 +131,8 @@ class GoogleController extends Controller
 
             Auth::login($northstarUser, true);
             logger()->info('google_authentication');
-            
+
             return redirect('profile/about');
         }
-
     }
 }
