@@ -102,7 +102,7 @@ class FacebookTest extends BrowserKitTestCase
             'features.refer-friends' => true,
         ]);
 
-        $this->visit('/facebook/verify')->seePageIs('/');
+        $this->visit('/facebook/verify')->seePageIs('/profile/about');
         $this->seeIsAuthenticated('web');
 
         $user = auth()->user();
@@ -125,7 +125,7 @@ class FacebookTest extends BrowserKitTestCase
     {
         $this->defaultMock();
 
-        $this->visit('/facebook/verify')->seePageIs('/');
+        $this->visit('/facebook/verify')->seePageIs('/profile/about');
         $this->seeIsAuthenticated('web');
 
         $user = auth()->user();
