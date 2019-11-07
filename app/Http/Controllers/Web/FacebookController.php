@@ -88,17 +88,23 @@ class FacebookController extends Controller
         if ($northstarUser) {
             $northstarUser->updateIfNotSet($fields);
             $northstarUser->save();
+
+            Auth::login($northstarUser, true);
+            logger()->info('facebook_authentication');
+
+            return redirect()->intended('/');
         } else {
             $fields['email'] = $email;
 
             $northstarUser = $this->registrar->registerViaWeb($fields, function (User $user) {
                 $user->setSource(null, 'facebook');
             });
+            
+            Auth::login($northstarUser, true);
+            logger()->info('facebook_authentication');
+    
+            return redirect('profile/about');
         }
 
-        Auth::login($northstarUser, true);
-        logger()->info('facebook_authentication');
-
-        return redirect()->intended('/');
     }
 }
