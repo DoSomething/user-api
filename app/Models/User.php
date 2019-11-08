@@ -692,10 +692,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         $schoolId = $this->school_id;
 
-        if (!isset($schoolId)) {
+        if (! isset($schoolId)) {
             return null;
         }
 
-        return strlen($schoolId) > 3 ? substr($schoolId, 0, 3).'XXXXX' : 'N/A';
+        if ($schoolId === 'school-not-available') {
+            return $schoolId;
+        }
+
+        return substr($schoolId, 0, 3).'XXXXX';
     }
 }
