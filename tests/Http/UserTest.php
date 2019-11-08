@@ -160,6 +160,7 @@ class UserTest extends BrowserKitTestCase
         $this->seeJsonField('data.mobile', '8602035512'); // @TODO: This should be E.164!
         $this->seeJsonField('data.mobile_preview', '(860) 203-XXXX');
         $this->seeJsonField('data.school_id', '12500012');
+        $this->seeJsonField('data.school_id_preview', '125XXXXX');
     }
 
     /**
