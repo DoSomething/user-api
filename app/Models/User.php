@@ -681,4 +681,20 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return ! empty($value) ? $value : [];
     }
+
+    /**
+     * Accessor for the `school_id_preview` attribute.
+     *
+     * @return string
+     */
+    public function getSchoolIdPreviewAttribute()
+    {
+        $schoolId = $this->school_id;
+
+        if (!isset($schoolId)) {
+            return null;
+        }
+
+        return strlen($schoolId) > 3 ? substr($schoolId, 0, 3).'XXXXX' : 'N/A';
+    }
 }
