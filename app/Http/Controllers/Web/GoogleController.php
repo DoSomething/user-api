@@ -62,7 +62,7 @@ class GoogleController extends Controller
      * @return Response
      */
     public function handleProviderCallback()
-    {
+    {   
         // Fetch user's birthday using their Google OAuth token.
         try {
             $googleUser = Socialite::driver('google')->user();

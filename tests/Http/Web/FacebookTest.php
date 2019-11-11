@@ -170,7 +170,7 @@ class FacebookTest extends BrowserKitTestCase
 
         $this->defaultMock();
 
-        $this->visit('/facebook/verify');
+        $this->visit('/facebook/verify')->seePageIs('/');;
 
         $user = auth()->user();
         $this->assertEquals($user->first_name, 'Joe');
