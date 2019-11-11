@@ -215,7 +215,7 @@ class GoogleTest extends BrowserKitTestCase
 
         $this->defaultMock();
 
-        $this->visit('/google/verify')->seePageIs('/');;
+        $this->visit('/google/verify')->seePageIs('/');
 
         $user = auth()->user();
         $this->assertEquals($user->first_name, 'Joe');
