@@ -165,6 +165,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'addr_street1',
         'addr_street2',
         'birthdate',
+        'school_id',
     ];
 
     /**
@@ -518,6 +519,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'addr_zip' => $this->addr_zip,
             'language' => $this->language,
             'country' => $this->country,
+            'school_id' => $this->school_id,
             'voter_registration_status' => $this->voter_registration_status,
             'source' => $this->source,
             'source_detail' => $this->source_detail,
@@ -679,5 +681,25 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function getCausesAttribute($value)
     {
         return ! empty($value) ? $value : [];
+    }
+
+    /**
+     * Accessor for the `school_id_preview` attribute.
+     *
+     * @return string
+     */
+    public function getSchoolIdPreviewAttribute()
+    {
+        $schoolId = $this->school_id;
+
+        if (! isset($schoolId)) {
+            return null;
+        }
+
+        if ($schoolId === 'school-not-available') {
+            return $schoolId;
+        }
+
+        return substr($schoolId, 0, 3).'XXXXX';
     }
 }

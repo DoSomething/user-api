@@ -32,6 +32,7 @@ class UserModelTest extends BrowserKitTestCase
             'addr_state' => $user->addr_state,
             'addr_zip' => $user->addr_zip,
             'country' => $user->country,
+            'school_id' => $user->school_id,
             'voter_registration_status' => $user->voter_registration_status,
             'language' => $user->language,
             'source' => $user->source,
