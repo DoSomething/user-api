@@ -24,6 +24,9 @@ $router->group(['prefix' => 'v2', 'as' => 'v2.'], function () {
     $this->get('mobile/{mobile}', 'MobileController@show');
     $this->get('email/{email}', 'EmailController@show');
 
+    // Subscriptions
+    $this->post('subscriptions', 'SubscriptionController@create');
+
     // Profile
     // ...
 

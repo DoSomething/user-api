@@ -85,9 +85,8 @@ class UserTransformer extends BaseTransformer
             // Internal & third-party service IDs:
             $response['slack_id'] = null;
 
-            // Email subscription statuses
+            // Email subscription status
             $response['email_subscription_status'] = (bool) $user->email_subscription_status;
-            $response['email_subscription_topics'] = $user->email_subscription_topics;
 
             //Cause Areas
             $response['causes'] = $user->causes;
@@ -113,6 +112,9 @@ class UserTransformer extends BaseTransformer
         // SMS subscription status
         $response['sms_status'] = $user->sms_status;
         $response['sms_paused'] = (bool) $user->sms_paused;
+
+        // Email subscription topics
+        $response['email_subscription_topics'] = $user->email_subscription_topics;
 
         $response['role'] = $user->role;
 
