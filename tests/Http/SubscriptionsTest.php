@@ -181,12 +181,12 @@ class SubscriptionsTest extends BrowserKitTestCase
         // Post to /subscriptions 10 times
         for ($i = 0; $i < 10; $i++) {
             $this->json('POST', 'v2/subscriptions', [
-                'email' => 'topics' . $i . '@dosomething.org',
+                'email' => 'topics'.$i.'@dosomething.org',
                 'email_subscription_topics' => ['scholarships', 'news'],
                 'source' => 'phoenix-next',
                 'source_detail' => 'test_source_detail',
             ]);
-            
+
             $this->assertResponseStatus(201);
         }
 
