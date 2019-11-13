@@ -46,8 +46,7 @@ class SubscriptionController extends Controller
     {
         $this->validate($request, [
             'email' => 'required|email',
-            'email_subscription_topics' => 'required',
-            'email_subscription_topics.*' => 'in:news,scholarships,lifestyle,community',
+            'email_subscription_topic' => 'required|in:news,scholarships,lifestyle,community',
             'source' => 'required',
             'source_detail' => 'required',
         ]);
@@ -56,9 +55,7 @@ class SubscriptionController extends Controller
 
         // If the user already exists, only update the email topics
         if ($existingUser) {
-            foreach ($request->get('email_subscription_topics') as $topic) {
-                $existingUser->addEmailSubscriptionTopic($topic);
-            }
+            $existingUser->addEmailSubscriptionTopic($request->get('email_subscription_topic'));
 
             $existingUser->save();
 
@@ -67,6 +64,7 @@ class SubscriptionController extends Controller
 
         $newUser = $this->registrar->register($request->all());
 
+        $newUser->email_subscription_topics = [$request->get('email_subscription_topic')];
         $newUser->email_subscription_status = true;
         $newUser->source = $request->get('source');
         $newUser->source_detail = $request->get('source_detail');
