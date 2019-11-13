@@ -37,26 +37,8 @@ class ResetController extends Controller
         /** @var \Northstar\Models\User $user */
         $user = User::findOrFail($request['id']);
 
-        $tokenRepository = $this->createTokenRepository();
-        $token = $tokenRepository->create($user);
-        $message = $user->sendPasswordReset($request['type'], $token);
+        $user->sendPasswordReset($request['type']);
 
         return $this->respond('Message sent.');
-    }
-
-    /**
-     * Create a token repository instance based on the given configuration.
-     *
-     * @return DatabaseTokenRepository
-     */
-    protected function createTokenRepository()
-    {
-        return new DatabaseTokenRepository(
-            app('db')->connection(),
-            app('hash'),
-            config('auth.passwords.users.table'),
-            config('app.key'),
-            config('auth.passwords.users.expire')
-        );
     }
 }
