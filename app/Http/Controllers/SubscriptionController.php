@@ -51,11 +51,13 @@ class SubscriptionController extends Controller
             'source_detail' => 'required',
         ]);
 
+        $topic = $request->get('email_subscription_topic');
+
         $existingUser = $this->registrar->resolve($request->only('email'));
 
         // If the user already exists, only update the email topics
         if ($existingUser) {
-            $existingUser->addEmailSubscriptionTopic($request->get('email_subscription_topic'));
+            $existingUser->addEmailSubscriptionTopic($topic);
 
             $existingUser->save();
 
@@ -64,7 +66,7 @@ class SubscriptionController extends Controller
 
         $newUser = $this->registrar->register($request->all());
 
-        $newUser->email_subscription_topics = [$request->get('email_subscription_topic')];
+        $newUser->email_subscription_topics = [$topic];
         $newUser->email_subscription_status = true;
         $newUser->source = $request->get('source');
         $newUser->source_detail = $request->get('source_detail');
@@ -72,9 +74,20 @@ class SubscriptionController extends Controller
         $newUser->save();
 
         // Send activate account email to new user
-        $tokenRepository = $this->createTokenRepository();
-        $token = $tokenRepository->create($newUser);
-        $message = $newUser->sendPasswordReset($token, 'pays-to-do-good-activate-account');
+        switch ($topic) {
+            case 'scholarships':
+                $newUser->sendPasswordReset('pays-to-do-good-activate-account');
+                break;
+            case 'news':
+                $newUser->sendPasswordReset('breakdown-activate-account');
+                break;
+            case 'lifestyle':
+                $newUser->sendPasswordReset('boost-activate-account');
+                break;
+            case 'community':
+                $newUser->sendPasswordReset('wyd-activate-account');
+                break;
+        }
 
         return $this->item($newUser, 201);
     }
