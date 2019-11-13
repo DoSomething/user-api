@@ -42,7 +42,7 @@ class SubscriptionController extends Controller
      * @param Request $request
      * @return array
      */
-    public function create(Request $request) 
+    public function create(Request $request)
     {
         $this->validate($request, [
             'email' => 'required|email',
@@ -57,7 +57,7 @@ class SubscriptionController extends Controller
         // If the user already exists, only update the email topics
         if ($existingUser) {
             foreach ($request->get('email_subscription_topics') as $topic) {
-                $existingUser->addEmailSubscriptionTopic($topic);   
+                $existingUser->addEmailSubscriptionTopic($topic);
             }
 
             $existingUser->save();

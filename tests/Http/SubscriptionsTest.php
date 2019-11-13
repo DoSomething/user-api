@@ -1,6 +1,5 @@
 <?php
 
-use Carbon\Carbon;
 use Northstar\Models\User;
 
 class SubscriptionsTest extends BrowserKitTestCase
@@ -19,7 +18,7 @@ class SubscriptionsTest extends BrowserKitTestCase
             'email' => $user->email,
             'email_subscription_topics' => ['scholarships'],
             'source' => 'phoenix-next',
-            'source_detail' => 'test_source_detail'
+            'source_detail' => 'test_source_detail',
         ]);
 
         $this->assertResponseStatus(200);
@@ -29,7 +28,7 @@ class SubscriptionsTest extends BrowserKitTestCase
             'email' => $user->email,
             'email_subscription_topics' => ['scholarships'],
             'source' => $user->source,
-            'source_detail' => $user->source_detail
+            'source_detail' => $user->source_detail,
         ]);
     }
 
@@ -47,7 +46,7 @@ class SubscriptionsTest extends BrowserKitTestCase
             'email' => $user->email,
             'email_subscription_topics' => ['scholarships', 'lifestyle'],
             'source' => 'phoenix-next',
-            'source_detail' => 'test_source_detail'
+            'source_detail' => 'test_source_detail',
         ]);
 
         $this->assertResponseStatus(200);
@@ -57,7 +56,7 @@ class SubscriptionsTest extends BrowserKitTestCase
             'email' => $user->email,
             'email_subscription_topics' => ['scholarships', 'lifestyle'],
             'source' => $user->source,
-            'source_detail' => $user->source_detail
+            'source_detail' => $user->source_detail,
         ]);
     }
 
@@ -76,7 +75,7 @@ class SubscriptionsTest extends BrowserKitTestCase
             'email' => $user->email,
             'email_subscription_topics' => ['news'],
             'source' => 'phoenix-next',
-            'source_detail' => 'test_source_detail'
+            'source_detail' => 'test_source_detail',
         ]);
 
         $this->assertResponseStatus(200);
@@ -86,7 +85,7 @@ class SubscriptionsTest extends BrowserKitTestCase
             'email' => $user->email,
             'email_subscription_topics' => ['news'],
             'source' => $user->source,
-            'source_detail' => $user->source_detail
+            'source_detail' => $user->source_detail,
         ]);
     }
 
@@ -105,7 +104,7 @@ class SubscriptionsTest extends BrowserKitTestCase
             'email' => $user->email,
             'email_subscription_topics' => ['news', 'community'],
             'source' => 'phoenix-next',
-            'source_detail' => 'test_source_detail'
+            'source_detail' => 'test_source_detail',
         ]);
 
         $this->assertResponseStatus(200);
@@ -115,7 +114,7 @@ class SubscriptionsTest extends BrowserKitTestCase
             'email' => $user->email,
             'email_subscription_topics' => ['news', 'lifestyle', 'community'],
             'source' => $user->source,
-            'source_detail' => $user->source_detail
+            'source_detail' => $user->source_detail,
         ]);
     }
 
@@ -131,7 +130,7 @@ class SubscriptionsTest extends BrowserKitTestCase
             'email' => 'topics@dosomething.org',
             'email_subscription_topics' => ['scholarships'],
             'source' => 'phoenix-next',
-            'source_detail' => 'test_source_detail'
+            'source_detail' => 'test_source_detail',
         ]);
 
         $this->assertResponseStatus(201);
@@ -141,7 +140,7 @@ class SubscriptionsTest extends BrowserKitTestCase
             'email' => 'topics@dosomething.org',
             'email_subscription_topics' => ['scholarships'],
             'source' => 'phoenix-next',
-            'source_detail' => 'test_source_detail'
+            'source_detail' => 'test_source_detail',
         ]);
     }
 
@@ -157,7 +156,7 @@ class SubscriptionsTest extends BrowserKitTestCase
             'email' => 'topics@dosomething.org',
             'email_subscription_topics' => ['scholarships', 'news'],
             'source' => 'phoenix-next',
-            'source_detail' => 'test_source_detail'
+            'source_detail' => 'test_source_detail',
         ]);
 
         $this->assertResponseStatus(201);
@@ -167,7 +166,7 @@ class SubscriptionsTest extends BrowserKitTestCase
             'email' => 'topics@dosomething.org',
             'email_subscription_topics' => ['scholarships', 'news'],
             'source' => 'phoenix-next',
-            'source_detail' => 'test_source_detail'
+            'source_detail' => 'test_source_detail',
         ]);
     }
 
@@ -185,7 +184,7 @@ class SubscriptionsTest extends BrowserKitTestCase
                 'email' => 'topics' . $i . '@dosomething.org',
                 'email_subscription_topics' => ['scholarships', 'news'],
                 'source' => 'phoenix-next',
-                'source_detail' => 'test_source_detail'
+                'source_detail' => 'test_source_detail',
             ]);
             
             $this->assertResponseStatus(201);
@@ -196,7 +195,7 @@ class SubscriptionsTest extends BrowserKitTestCase
             'email' => 'topics11@dosomething.org',
             'email_subscription_topics' => ['scholarships', 'news'],
             'source' => 'phoenix-next',
-            'source_detail' => 'test_source_detail'
+            'source_detail' => 'test_source_detail',
         ]);
 
         $this->assertResponseStatus(429);
@@ -214,7 +213,7 @@ class SubscriptionsTest extends BrowserKitTestCase
             'email' => 'topics@dosomething.org',
             'email_subscription_topics' => ['scholarships'],
             'source' => 'phoenix-next',
-            'source_detail' => 'test_source_detail'
+            'source_detail' => 'test_source_detail',
         ]);
 
         $this->assertResponseStatus(201);
