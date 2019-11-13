@@ -23,8 +23,8 @@ class SubscriptionController extends Controller
      */
     protected $transformer;
 
-     /**
-     * Make a new ResetController, inject dependencies,
+    /**
+     * Make a new SubscriptionController, inject dependencies,
      * and set middleware for this controller's methods.
      */
     public function __construct(Registrar $registrar, UserTransformer $transformer)
@@ -42,7 +42,8 @@ class SubscriptionController extends Controller
      * @param Request $request
      * @return array
      */
-    public function create(Request $request) {
+    public function create(Request $request) 
+    {
         $this->validate($request, [
             'email' => 'required|email',
             'email_subscription_topics' => 'required',
@@ -50,12 +51,12 @@ class SubscriptionController extends Controller
             'source' => 'required',
             'source_detail' => 'required',
         ]);
-        
+
         $existingUser = $this->registrar->resolve($request->only('email'));
 
         // If the user already exists, only update the email topics
         if ($existingUser) {
-            foreach($request->get('email_subscription_topics') as $topic) {
+            foreach ($request->get('email_subscription_topics') as $topic) {
                 $existingUser->addEmailSubscriptionTopic($topic);   
             }
 
@@ -68,7 +69,7 @@ class SubscriptionController extends Controller
 
         $newUser->email_subscription_status = true;
         $newUser->source = $request->get('source');
-        $newUser->source_detail =  $request->get('source_detail');
+        $newUser->source_detail = $request->get('source_detail');
 
         $newUser->save();
 
