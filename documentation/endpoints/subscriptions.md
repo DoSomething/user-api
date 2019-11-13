@@ -4,7 +4,11 @@ This endpoint has no authentication, but is rate limited to 10 requests per hour
 
 ## Add a subscription topic to a user by email
 
-Tries to find a user by email, and creates a new user if one is not found. If the user already exists, the given `email_subscription_topics` are added to the user. If a new user was created, the given `email_subscription_topics`, `source`, and `source_detail` are set on the user.
+Tries to find a user by email, and creates a new user if one is not found.
+
+If the user already exists, the given `email_subscription_topics` are added to the user.
+
+If a new user was created, the given `email_subscription_topics`, `source`, and `source_detail` are set on the user. _A new user is also sent an activate account email, corresponding to the newsletter that they have just signed up for._
 
 ```
 POST /v2/subscriptions
