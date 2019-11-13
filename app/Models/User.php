@@ -647,7 +647,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function sendPasswordReset($type, $token = null)
     {
-        if (!$token) {
+        if (! $token) {
             $tokenRepository = new DatabaseTokenRepository(
                 app('db')->connection(),
                 app('hash'),

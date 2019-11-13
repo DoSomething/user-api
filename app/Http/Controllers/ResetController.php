@@ -3,10 +3,9 @@
 namespace Northstar\Http\Controllers;
 
 use Northstar\Models\User;
-use Northstar\PasswordResetType;
-use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
-use Jenssegers\Mongodb\Auth\DatabaseTokenRepository;
+use Illuminate\Validation\Rule;
+use Northstar\PasswordResetType;
 
 class ResetController extends Controller
 {
