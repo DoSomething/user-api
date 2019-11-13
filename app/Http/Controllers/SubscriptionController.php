@@ -6,6 +6,7 @@ use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
 use Northstar\Http\Transformers\UserTransformer;
+use Jenssegers\Mongodb\Auth\DatabaseTokenRepository;
 
 class SubscriptionController extends Controller
 {
@@ -65,11 +66,33 @@ class SubscriptionController extends Controller
 
         $newUser = $this->registrar->register($request->all());
 
+        $newUser->email_subscription_status = true;
         $newUser->source = $request->get('source');
         $newUser->source_detail =  $request->get('source_detail');
 
         $newUser->save();
 
+        // Send activate account email to new user
+        $tokenRepository = $this->createTokenRepository();
+        $token = $tokenRepository->create($newUser);
+        $message = $newUser->sendPasswordReset($token, 'pays-to-do-good-activate-account');
+
         return $this->item($newUser, 201);
+    }
+
+    /**
+     * Create a token repository instance based on the given configuration.
+     *
+     * @return DatabaseTokenRepository
+     */
+    protected function createTokenRepository()
+    {
+        return new DatabaseTokenRepository(
+            app('db')->connection(),
+            app('hash'),
+            config('auth.passwords.users.table'),
+            config('app.key'),
+            config('auth.passwords.users.expire')
+        );
     }
 }

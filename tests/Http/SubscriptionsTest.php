@@ -201,4 +201,25 @@ class SubscriptionsTest extends BrowserKitTestCase
 
         $this->assertResponseStatus(429);
     }
+
+    /**
+     * Test that a new user gets a password reset email.
+     * POST /v2/subscriptions
+     *
+     * @return void
+     */
+    public function testNewUserGetsActivateAccountEmail()
+    {
+        $this->json('POST', 'v2/subscriptions', [
+            'email' => 'topics@dosomething.org',
+            'email_subscription_topics' => ['scholarships'],
+            'source' => 'phoenix-next',
+            'source_detail' => 'test_source_detail'
+        ]);
+
+        $this->assertResponseStatus(201);
+        $this->blinkMock->shouldHaveReceived('userCallToActionEmail')->once();
+
+        $this->seeInDatabase('password_resets', ['email' => 'topics@dosomething.org']);
+    }
 }
