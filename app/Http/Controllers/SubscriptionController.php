@@ -6,7 +6,6 @@ use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
 use Northstar\Http\Transformers\UserTransformer;
-use Jenssegers\Mongodb\Auth\DatabaseTokenRepository;
 
 class SubscriptionController extends Controller
 {
@@ -90,21 +89,5 @@ class SubscriptionController extends Controller
         }
 
         return $this->item($newUser, 201);
-    }
-
-    /**
-     * Create a token repository instance based on the given configuration.
-     *
-     * @return DatabaseTokenRepository
-     */
-    protected function createTokenRepository()
-    {
-        return new DatabaseTokenRepository(
-            app('db')->connection(),
-            app('hash'),
-            config('auth.passwords.users.table'),
-            config('app.key'),
-            config('auth.passwords.users.expire')
-        );
     }
 }
