@@ -6,9 +6,9 @@ This endpoint has no authentication, but is rate limited to 10 requests per hour
 
 Tries to find a user by email, and creates a new user if one is not found.
 
-If the user already exists, the given `email_subscription_topics` are added to the user.
+If the user already exists, the given `email_subscription_topic` is added to the user.
 
-If a new user was created, the given `email_subscription_topics`, `source`, and `source_detail` are set on the user. _A new user is also sent an activate account email, corresponding to the newsletter that they have just signed up for._
+If a new user was created, the given `email_subscription_topic`, `source`, and `source_detail` are set on the user. _A new user is also sent an activate account email, corresponding to the newsletter that they have just signed up for._
 
 ```
 POST /v2/subscriptions
@@ -21,7 +21,7 @@ POST /v2/subscriptions
   /* The email of the user to find or create. */
   email: String;
 
-  /* The email subscription topics to add to the user.
+  /* The email subscription topic to add to the user.
    *
    * Valid topics:
    * - 'lifestyle'
@@ -29,7 +29,7 @@ POST /v2/subscriptions
    * - 'scholarships'
    * - `community`
    */
-  email_subscription_topics: Array;
+  email_subscription_topic: String;
 
   /* These fields will only be set on new users. */
   source: String;
@@ -47,9 +47,7 @@ POST /v2/subscriptions
      -d $'{
   "email": "funner@dosomething.org",
   "source_details": "subscription-page",
-  "email_subscription_topics": [
-    "lifestyle"
-  ],
+  "email_subscription_topic": "lifestyle",
   "source": "phoenix-next"
 }'
 ```
