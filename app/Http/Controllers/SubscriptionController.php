@@ -5,6 +5,7 @@ namespace Northstar\Http\Controllers;
 use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
+use Northstar\PasswordResetType;
 use Northstar\Http\Transformers\UserTransformer;
 
 class SubscriptionController extends Controller
@@ -75,16 +76,16 @@ class SubscriptionController extends Controller
         // Send activate account email to new user
         switch ($topic) {
             case 'scholarships':
-                $newUser->sendPasswordReset('pays-to-do-good-activate-account');
+                $newUser->sendPasswordReset(PasswordResetType::$paysToDoGoodActivateAccount);
                 break;
             case 'news':
-                $newUser->sendPasswordReset('breakdown-activate-account');
+                $newUser->sendPasswordReset(PasswordResetType::$breakdownActivateAccount);
                 break;
             case 'lifestyle':
-                $newUser->sendPasswordReset('boost-activate-account');
+                $newUser->sendPasswordReset(PasswordResetType::$boostActivateAccount);
                 break;
             case 'community':
-                $newUser->sendPasswordReset('wyd-activate-account');
+                $newUser->sendPasswordReset(PasswordResetType::$wydActivateAccount);
                 break;
         }
 
