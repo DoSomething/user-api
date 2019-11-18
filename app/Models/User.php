@@ -514,6 +514,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'google_id' => $this->google_id,
             'first_name' => $this->first_name,
             'display_name' => $this->display_name,
+            'last_name' => null, // We want to unset this on Customer.io profiles.
             'birthdate' => optional($this->birthdate)->timestamp,
             'addr_city' => $this->addr_city,
             'addr_state' => $this->addr_state,
