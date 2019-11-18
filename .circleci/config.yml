@@ -41,4 +41,11 @@ jobs:
             - ~/.cache/Cypress
       - run: npm run build
       - run: php artisan northstar:setup
-      - run: vendor/bin/phpunit
+      - run:
+          command: |
+            mkdir -p ~/phpunit
+            vendor/bin/phpunit -d memory_limit=512M --log-junit ~/phpunit/junit.xml
+      - store_test_results:
+          path: ~/phpunit
+      - store_artifacts:
+          path: ~/phpunit
