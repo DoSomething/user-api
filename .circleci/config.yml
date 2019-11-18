@@ -17,9 +17,12 @@ jobs:
       - checkout
       - run: sudo composer self-update
       # Install PHP extensions required by Laravel & MongoDB.
-      - run: sudo docker-php-ext-install bcmath
-      - run: sudo pecl install mongodb
-      - run: echo -e "extension=mongodb.so" | sudo tee /usr/local/etc/php/php.ini > /dev/null
+      - run:
+          name: install php extensions
+          command: |
+            sudo pecl install mongodb
+            sudo docker-php-ext-enable mongodb
+            sudo docker-php-ext-install bcmath
       - restore_cache:
           keys:
             - composer-v1-{{ checksum "composer.lock" }}
@@ -41,6 +44,7 @@ jobs:
       - run: npm run build
       - run: php artisan northstar:setup
       - run:
+          name: run phpunit tests
           command: |
             mkdir -p ~/phpunit
             vendor/bin/phpunit -d memory_limit=512M --log-junit ~/phpunit/junit.xml
