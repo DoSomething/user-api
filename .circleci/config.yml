@@ -1,0 +1,44 @@
+# CircleCI 2.1 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-php/ for more details
+#
+version: 2.1
+
+jobs:
+  # Install dependencies & run tests.
+  build:
+    docker:
+      - image: circleci/php:7.3-node-browsers
+      - image: circleci/mongo:4.0.13
+      - image: circleci/redis:4.0.14
+    steps:
+      # Check out source code for this branch & install dependencies.
+      # If we can, we'll load these from cache (based on the lockfile).
+      - checkout
+      - run: sudo composer self-update
+      # Install PHP extensions required by Laravel & MongoDB.
+      - run: sudo docker-php-ext-install bcmath
+      - run: sudo pecl install mongodb
+      - run: echo -e "extension=mongodb.so" | sudo tee /usr/local/etc/php/php.ini > /dev/null
+      - restore_cache:
+          keys:
+            - composer-v1-{{ checksum "composer.lock" }}
+            - composer-v1-
+      - run: composer install -n --prefer-dist --ignore-platform-reqs
+      - save_cache:
+          key: composer-v1-{{ checksum "composer.lock" }}
+          paths:
+            - vendor
+      - restore_cache:
+          keys:
+            - node-v2-{{ checksum "package-lock.json" }}
+            - node-v2-
+      - run: npm install
+      - save_cache:
+          key: node-v2-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+            - ~/.cache/Cypress
+      - run: npm run build
+      - run: php artisan northstar:setup
+      - run: vendor/bin/phpunit
