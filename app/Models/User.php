@@ -3,19 +3,20 @@
 namespace Northstar\Models;
 
 use Carbon\Carbon;
+use Northstar\Auth\Role;
+use Illuminate\Support\Str;
 use Email\Parse as EmailParser;
-use libphonenumber\PhoneNumberFormat;
-use Illuminate\Foundation\Auth\Access\Authorizable;
+use Northstar\PasswordResetType;
 use Illuminate\Auth\Authenticatable;
+use libphonenumber\PhoneNumberFormat;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Northstar\Jobs\SendPasswordResetToCustomerIo;
+use Illuminate\Foundation\Auth\Access\Authorizable;
+use Jenssegers\Mongodb\Auth\DatabaseTokenRepository;
+use Illuminate\Contracts\Auth\CanResetPassword as ResetPasswordContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Illuminate\Contracts\Auth\CanResetPassword as ResetPasswordContract;
-use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Str;
-use Northstar\Auth\Role;
-use Northstar\PasswordResetType;
-use Northstar\Jobs\SendPasswordResetToCustomerIo;
 
 /**
  * The User model. (Fight for the user!)
@@ -513,6 +514,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'google_id' => $this->google_id,
             'first_name' => $this->first_name,
             'display_name' => $this->display_name,
+            'last_name' => null, // We want to unset this on Customer.io profiles.
             'birthdate' => optional($this->birthdate)->timestamp,
             'addr_city' => $this->addr_city,
             'addr_state' => $this->addr_state,
@@ -635,7 +637,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function sendPasswordResetNotification($token)
     {
-        return $this->sendPasswordReset($token, PasswordResetType::$forgotPassword);
+        return $this->sendPasswordReset(PasswordResetType::$forgotPassword, $token);
     }
 
     /**
@@ -645,8 +647,19 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @param  string  $type
      * @return void
      */
-    public function sendPasswordReset($token, $type)
+    public function sendPasswordReset($type, $token = null)
     {
+        if (! $token) {
+            $tokenRepository = new DatabaseTokenRepository(
+                app('db')->connection(),
+                app('hash'),
+                config('auth.passwords.users.table'),
+                config('app.key'),
+                config('auth.passwords.users.expire')
+            );
+            $token = $tokenRepository->create($this);
+        }
+
         SendPasswordResetToCustomerIo::dispatch($this, $token, $type);
     }
 
