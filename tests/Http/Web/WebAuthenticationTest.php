@@ -198,10 +198,10 @@ class WebAuthenticationTest extends BrowserKitTestCase
      */
     public function testRegisterBetaWithFeatureFlagsTest()
     {
-        // Turn on the badges and refer-friends test feature flags.
+        // Turn on the badges and refer-friends-scholarship test feature flags.
         config([
             'features.badges' => true,
-            'features.refer-friends' => true,
+            'features.refer-friends-scholarship' => true,
         ]);
 
         $this->withHeader('X-Fastly-Country-Code', 'US')
@@ -214,20 +214,20 @@ class WebAuthenticationTest extends BrowserKitTestCase
 
         // The user should have a value set for 'badges'
         $this->assertArrayHasKey('badges', $user->feature_flags);
-        // The user should have true set for 'refer-friends'
-        $this->assertEquals(true, $user->feature_flags['refer-friends']);
+        // The user should have true set for 'refer-friends-scholarship'
+        $this->assertEquals(true, $user->feature_flags['refer-friends-scholarship']);
     }
 
     /**
-     * Test that club referrals do not get feature flags set when the badges and refer-friends
+     * Test that club referrals do not get feature flags set when the badges and refer-friends-scholarship
      * tests are on.
      */
     public function testRegisterBetaFromClubsWithoutFeatureFlagsTest()
     {
-        // Turn on badges and refer-friends feature flags.
+        // Turn on badges and refer-friends-scholarship feature flags.
         config([
             'features.badges' => true,
-            'features.refer-friends' => true,
+            'features.refer-friends-scholarship' => true,
         ]);
 
         // Mock a session for the user with a ?utm_source=clubs param, indicating a clubs referral
@@ -248,15 +248,15 @@ class WebAuthenticationTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that users get refer-friends feature_flag value when test is on, and no badges
+     * Test that users get refer-friends-scholarship feature_flag value when test is on, and no badges
      * value when test is off.
      */
     public function testRegisterBetaWithReferFriendsAndNoBadgesTest()
     {
-        // Turn off badges, turn on refer-friends test feature flags.
+        // Turn off badges, turn on refer-friends-scholarship test feature flags.
         config([
             'features.badges' => false,
-            'features.refer-friends' => true,
+            'features.refer-friends-scholarship' => true,
         ]);
 
         $this->withHeader('X-Fastly-Country-Code', 'US')
@@ -269,20 +269,20 @@ class WebAuthenticationTest extends BrowserKitTestCase
 
         // The user should not have a value set for 'badges'
         $this->assertArrayNotHasKey('badges', $user->feature_flags);
-        // The user should have true set for 'refer-friends'
-        $this->assertEquals(true, $user->feature_flags['refer-friends']);
+        // The user should have true set for 'refer-friends-scholarship'
+        $this->assertEquals(true, $user->feature_flags['refer-friends-scholarship']);
     }
 
     /**
-     * Test that users get badges feature_flag value when test is on, and no refer-friends
+     * Test that users get badges feature_flag value when test is on, and no refer-friends-scholarship
      * value when test is off.
      */
     public function testRegisterBetaWithBadgesAndNoReferFriendsTest()
     {
-        // Turn on badges, turn off refer-friends test feature flags.
+        // Turn on badges, turn off refer-friends-scholarship test feature flags.
         config([
             'features.badges' => true,
-            'features.refer-friends' => false,
+            'features.refer-friends-scholarship' => false,
         ]);
 
         $this->withHeader('X-Fastly-Country-Code', 'US')
@@ -295,20 +295,20 @@ class WebAuthenticationTest extends BrowserKitTestCase
 
         // The user should have a value set for 'badges'
         $this->assertArrayHasKey('badges', $user->feature_flags);
-        // The user should not have a value set for 'refer-friends'
-        $this->assertArrayNotHasKey('refer-friends', $user->feature_flags);
+        // The user should not have a value set for 'refer-friends-scholarship'
+        $this->assertArrayNotHasKey('refer-friends-scholarship', $user->feature_flags);
     }
 
     /**
-     * Test that users do not get feature flags set when the badges and refer-friends
+     * Test that users do not get feature flags set when the badges and refer-friends-scholarship
      * tests are off.
      */
     public function testRegisterBetaWithoutFeatureFlagTests()
     {
-        // Turn off the badges and refer-friends test feature flags.
+        // Turn off the badges and refer-friends-scholarship test feature flags.
         config([
             'features.badges' => false,
-            'features.refer-friends' => false,
+            'features.refer-friends-scholarship' => false,
         ]);
 
         $this->withHeader('X-Fastly-Country-Code', 'US')
