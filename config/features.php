@@ -22,5 +22,5 @@ return [
 
     'optional-fields' => env('DS_OPTIONAL_FIELDS', false),
 
-    'refer-friends' => env('DS_REFER_FRIENDS_TEST', false),
+    'refer-friends-scholarship' => env('DS_REFER_FRIENDS_SCHOLARSHIP_TEST', false),
 ];
