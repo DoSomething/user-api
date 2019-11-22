@@ -120,10 +120,10 @@ class GoogleTest extends BrowserKitTestCase
     public function testGoogleVerify()
     {
         $this->defaultMock();
-        // Turn on the badges and refer-friends test feature flags.
+        // Turn on the badges and refer-friends-scholarship test feature flags.
         config([
             'features.badges' => true,
-            'features.refer-friends' => true,
+            'features.refer-friends-scholarship' => true,
         ]);
 
         $this->visit('/google/verify')->seePageIs('/profile/about');
@@ -139,7 +139,7 @@ class GoogleTest extends BrowserKitTestCase
         $this->assertEquals($user->email_subscription_topics, ['community']);
         $this->assertEquals($user->birthdate, new Carbon\Carbon('2001-07-11'));
         $this->assertArrayHasKey('badges', $user->feature_flags);
-        $this->assertEquals(true, $user->feature_flags['refer-friends']);
+        $this->assertEquals(true, $user->feature_flags['refer-friends-scholarship']);
     }
 
     /**
