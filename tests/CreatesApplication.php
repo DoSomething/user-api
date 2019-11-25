@@ -24,6 +24,13 @@ trait CreatesApplication
     protected $customerIoMock;
 
     /**
+     * The GraphQL client mock.
+     *
+     * @var \Mockery\MockInterface
+     */
+    protected $graphqlMock;
+
+    /**
      * The Faker generator, for creating test data.
      *
      * @var \Faker\Generator
@@ -49,6 +56,13 @@ trait CreatesApplication
         // Configure a mock for any Customer.io API calls.
         $this->customerIoMock = $this->mock(\Northstar\Services\CustomerIo::class);
         $this->customerIoMock->shouldReceive('trackEvent');
+
+        // Configure a mock for GraphQL calls.
+        $this->customerIoMock = $this->mock(\Northstar\Services\GraphQL::class);
+        $this->customerIoMock->shouldReceive('getSchoolById')->andReturn([
+            'name' => 'San Dimas High School',
+            'state' => 'CA',
+        ]);
 
         return $app;
     }

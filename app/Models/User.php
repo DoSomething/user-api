@@ -577,8 +577,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             if (isset($school)) {
                 $payload['school_name'] = $school['name'];
                 $payload['school_state'] = $school['state'];
-            };
-        }     
+            }
+        }
 
         return $payload;
     }
