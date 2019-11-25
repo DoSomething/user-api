@@ -22,19 +22,39 @@ class GraphQL
     }
 
     /**
-     * Returns School information for given id.
+     * Run a GraphQL query using the client and return the data result.
      *
-     * @param string $schoolId
-     * @return object
+     * @param  $query     String
+     * @param  $variables Array
+     * @return array
+     */
+    public function query($query, $variables)
+    {
+        $response = $this->client->query($query, $variables);
+
+        return $response ? $response->getData() : [];
+    }
+
+    /**
+     * Query for a School by ID.
+     *
+     * @param  $schoolId String
+     * @return array
      */
     public function getSchoolById($schoolId)
     {
-        $response = $this->client->get('people/me?personFields=birthdays', [
-            'headers' => [
-                'Authorization' => 'Bearer '.$token,
-            ],
-        ]);
+        $query = '
+        query GetSchoolById($schoolId: String!) {
+          school(id: $schoolId) {
+            name
+            state
+          }
+        }';
 
-        return json_decode($response->getBody()->getContents());
+        $variables = [
+            'schoolId' => $schoolId,
+        ];
+
+        return $this->query($query, $variables)['school'];
     }
 }
