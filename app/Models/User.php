@@ -4,6 +4,7 @@ namespace Northstar\Models;
 
 use Carbon\Carbon;
 use Northstar\Auth\Role;
+use Northstar\Services\GraphQL;
 use Illuminate\Support\Str;
 use Email\Parse as EmailParser;
 use Northstar\PasswordResetType;
@@ -566,6 +567,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             }
             if (array_key_exists('refer-friends-scholarship', $this->feature_flags)) {
                 $payload['refer_friends_scholarship_feature_flag'] = $this->feature_flags['refer-friends-scholarship'];
+            }
+        }
+
+        // Fetch School information from GraphQL.
+        if ($this->school_id) {
+            $school = app(GraphQL::class)->getSchoolById($this->school_id);
+
+            if (isset($school)) {
+                $payload['school_name'] = $school['name'];
+                $payload['school_state'] = $school['state'];
             }
         }
 

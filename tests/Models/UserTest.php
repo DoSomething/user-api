@@ -34,6 +34,8 @@ class UserModelTest extends BrowserKitTestCase
             'addr_zip' => $user->addr_zip,
             'country' => $user->country,
             'school_id' => $user->school_id,
+            'school_name' => 'San Dimas High School',
+            'school_state' => 'CA',
             'voter_registration_status' => $user->voter_registration_status,
             'language' => $user->language,
             'source' => $user->source,
