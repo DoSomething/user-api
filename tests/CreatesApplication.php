@@ -58,8 +58,8 @@ trait CreatesApplication
         $this->customerIoMock->shouldReceive('trackEvent');
 
         // Configure a mock for GraphQL calls.
-        $this->customerIoMock = $this->mock(\Northstar\Services\GraphQL::class);
-        $this->customerIoMock->shouldReceive('getSchoolById')->andReturn([
+        $this->graphqlMock = $this->mock(\Northstar\Services\GraphQL::class);
+        $this->graphqlMock->shouldReceive('getSchoolById')->andReturn([
             'name' => 'San Dimas High School',
             'state' => 'CA',
         ]);
