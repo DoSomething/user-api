@@ -50,6 +50,10 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URL'),
     ],
 
+    'graphql' => [
+        'url' => env('GRAPHQL_URL'),
+    ],
+
     'blink' => [
         'url' => env('BLINK_URL'),
         'user' => env('BLINK_USERNAME'),

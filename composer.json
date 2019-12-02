@@ -35,6 +35,7 @@
     "mongodb/mongodb": "~1.2.0",
     "predis/predis": "^1.1",
     "seatgeek/sixpack-php": "^2.1",
+    "softonic/graphql-client": "^1.2",
     "spomky-labs/otphp": "^10.0",
     "symfony/psr-http-message-bridge": "^1.0.0",
     "zendframework/zend-diactoros": "^1.3"
