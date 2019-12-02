@@ -1,6 +1,7 @@
 # Code Owners <https://git.io/vFXjf>
 # ==================================
-# This will automatically request the following users to review
-# pull requests made on this repository.
 
-*       @dosomething/team-bleed
+# This will automatically request a review from someone on either
+# Team Applications or Team Platforms, based on the GitHub team's
+# review assignment settings. <https://git.io/JeMo3>
+*       @dosomething/applications
