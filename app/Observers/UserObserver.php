@@ -3,7 +3,6 @@
 namespace Northstar\Observers;
 
 use Northstar\Models\User;
-use Northstar\Services\Fastly;
 use Northstar\Jobs\SendUserToCustomerIo;
 
 class UserObserver
@@ -66,9 +65,5 @@ class UserObserver
         $queueLevel = config('queue.jobs.users');
         $queue = config('queue.names.'.$queueLevel);
         SendUserToCustomerIo::dispatch($user)->onQueue($queue);
-
-        // Purge Fastly cache of user
-        $fastly = new Fastly;
-        $fastly->purgeKey('user-'.$user->id);
     }
 }

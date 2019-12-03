@@ -2,7 +2,6 @@
 
 namespace Northstar\Http\Controllers;
 
-use Auth;
 use Northstar\Auth\Role;
 use Northstar\Models\User;
 use Illuminate\Http\Request;
@@ -138,15 +137,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        $response = $this->item($user);
-
-        if (Auth::guest()) {
-            // If this is an anonymous request, cache in Fastly until it changes.
-            $response->headers->set('Surrogate-Key', 'user-'.$user->id);
-            $response->setPublic()->setMaxAge(60 * 60 * 24 * 365);
-        }
-
-        return $response;
+        return $this->item($user);
     }
 
     /**
