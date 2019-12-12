@@ -1,22 +1,29 @@
 $google-blue: #4285F4;
+$google-gray: #EEE;
 
 .google-login,
 .google-login:link {
-  background: #fff;
-  border: 1px solid #DDDDDD;
-  padding: 0.48em 1em 0.48em;
-  font-size: 18px;
-  color: #202020;
+  background: #ffffff;
+  border: 1px solid white;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.24);
+  color: rgba(0, 0, 0, 0.54);
   text-transform: none;
-  margin: $base-spacing / 2 0;
+  margin: 12px 0;
 
   svg {
-      display: inline-block;
-      height: 32px;
-      width: 32px;
+    display: inline-block;
+    height: 22px;
+    width: 32px;
+    margin-right: 12px;
   }
-  
-  &:hover, &:active {
-    background: $google-blue;
+
+  &:hover {
+    border-color: $google-blue;
+    background: theme('colors.white');
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  &:active {
+    background: $google-gray;
   }
 }
