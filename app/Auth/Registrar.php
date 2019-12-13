@@ -233,11 +233,21 @@ class Registrar
         // Exclude any 'clubs' referrals from our feature flag tests.
         if (! str_contains($user->source_detail, 'utm_source:clubs')) {
             $feature_flags = [];
-            // If the badges test is running, sort users into badges group control group
-            if (config('features.badges')) {
+
+            // Did the user come from a campaign that should not have badges?
+            $badgesEligible = true;
+            foreach (config('features.no-badge-campaigns') as $noBadgeCampaigns) {
+                if (str_contains($user->source_detail, $noBadgeCampaigns)) {
+                    $badgesEligible = false;
+                }
+            }
+
+            // If the badges test is running & the user is eligible, sort users into badges group & control group
+            if (config('features.badges') && $badgesEligible) {
                 // Give 70% users the badges flag (1-7), 30% in control (8-10)
                 $feature_flags['badges'] = (rand(1, 10) < 8);
             }
+
             // If the refer-friends-scholarship test is running, give all users the refer-friends-scholarship flag.
             if (config('features.refer-friends-scholarship')) {
                 $feature_flags['refer-friends-scholarship'] = true;
