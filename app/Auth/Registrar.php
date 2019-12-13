@@ -234,16 +234,8 @@ class Registrar
         if (! str_contains($user->source_detail, 'utm_source:clubs')) {
             $feature_flags = [];
 
-            // Did the user come from a campaign that should not have badges?
-            $badgesEligible = true;
-            foreach (config('features.no-badge-campaigns') as $noBadgeCampaigns) {
-                if (str_contains($user->source_detail, $noBadgeCampaigns)) {
-                    $badgesEligible = false;
-                }
-            }
-
             // If the badges test is running & the user is eligible, sort users into badges group & control group
-            if (config('features.badges') && $badgesEligible) {
+            if (config('features.badges') && ! str_contains($user->source_detail, config('features.no-badge-campaigns'))) {
                 // Give 70% users the badges flag (1-7), 30% in control (8-10)
                 $feature_flags['badges'] = (rand(1, 10) < 8);
             }
