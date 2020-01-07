@@ -1,7 +1,6 @@
 const $ = require('jquery');
 const queryString = require('query-string');
 const Validation = require('dosomething-validation');
-const { Engine } = require('@dosomething/puck-client');
 const {
   flattenDeep,
   isNil,
@@ -14,9 +13,6 @@ const {
 
 // App name prefix used for analytics event naming.
 const APP_PREFIX = 'northstar';
-
-// Variable that stores the instance of PuckClient.
-let puckClient = null;
 
 /**
  * Get the query-string value at the given key.
@@ -125,34 +121,6 @@ const formatEventName = (verb, noun, adjective = null) => {
 };
 
 /**
- * Return an instantiated Puck Client (Engine).
- *
- * @return {Object}
- */
-const puckClientInit = () => (
-  new Engine({
-    source: 'northstar',
-    puckUrl: window.ENV.PUCK_URL,
-    getUser: () => window.NORTHSTAR_ID,
-  })
-);
-
-/**
- * Send event to analyze with Puck.
- *
- * @param  {String} name
- * @param  {Object} data
- * @return {void}
- */
-export function analyzeWithPuck(name, data) {
-  if (!puckClient) {
-    puckClient = puckClientInit();
-  }
-
-  puckClient.trackEvent(name, data);
-}
-
-/**
  * Send event to analyze with Google Analytics.
  *
  * @param  {String} category
@@ -226,13 +194,9 @@ const sendToServices = (name, category, action, label, data, service) => {
       analyzeWithGoogle(name, category, action, label, data);
       break;
 
-    case 'puck':
-      analyzeWithPuck(name, data);
-      break;
 
     default:
       analyzeWithGoogle(name, category, action, label, data);
-      analyzeWithPuck(name, data);
       analyzeWithSnowplow(name, category, action, label, data);
   }
 };
@@ -287,10 +251,6 @@ function trackInputFocus(inputName) {
 }
 
 function init() {
-  if (!puckClient) {
-    puckClient = puckClientInit();
-  }
-
   if (typeof window.snowplow === 'function') {
     // If available, set User ID for Snowplow analytics.
     if (window.NORTHSTAR_ID) {
