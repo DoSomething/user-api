@@ -190,10 +190,13 @@ export function analyzeWithSnowplow(name, category, action, label, data) {
  */
 const sendToServices = (name, category, action, label, data, service) => {
   switch (service) {
-    case 'ga':
+    case 'google':
       analyzeWithGoogle(name, category, action, label, data);
       break;
 
+    case 'snowplow':
+      analyzeWithSnowplow(name, category, action, label, data);
+      break;
 
     default:
       analyzeWithGoogle(name, category, action, label, data);
