@@ -44,7 +44,7 @@ class ProfileAboutController extends Controller
             'causes2' => array_slice($this->causes, count($this->causes) / 2),
             'index1' => 0,
             'index2' => 6,
-            ]);
+        ]);
     }
 
     /**
