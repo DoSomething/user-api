@@ -55,15 +55,14 @@
     </div>
 
     <div class="container__block -centered">
-        <div class="w-full">
-            @include('auth.facebook')
-        </div>
         <div class="flex justify-center">
             <div class="w-full md:w-3/4">
                 @include('auth.google')
             </div>
         </div>
-
+        <div class="w-full">
+            @include('auth.facebook')
+        </div>
         <ul>
             <li><a href="{{ url('register') }}" class="register-link">{{ trans('auth.log_in.create') }}</a></li>
             <li><a href="{{ url('password/reset') }}" class="forgot-password-link">{{ trans('auth.forgot_password.header') }}</a></li>
