@@ -60,10 +60,10 @@
 
     <div class="md:flex ">
         <div class="md:w-1/2">
-            @include('auth.facebook')
+            @include('auth.google')
         </div>
         <div class="md:w-1/2">
-            @include('auth.google')
+            @include('auth.facebook')
         </div>
     </div>
 
