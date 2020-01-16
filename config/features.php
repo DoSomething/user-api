@@ -23,4 +23,6 @@ return [
     'optional-fields' => env('DS_OPTIONAL_FIELDS', false),
 
     'refer-friends-scholarship' => env('DS_REFER_FRIENDS_SCHOLARSHIP_TEST', false),
+
+    'no-badge-campaigns' => explode(',', env('DS_CONTENTFUL_IDS_FOR_CAMPAIGNS_WITH_NO_BADGES', null)),
 ];

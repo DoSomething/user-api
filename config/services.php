@@ -66,10 +66,6 @@ return [
         'password' => env('CUSTOMER_IO_PASSWORD'),
     ],
 
-    'puck' => [
-        'url' => env('PUCK_URL'),
-    ],
-
     'sixpack' => [
         'enabled' => env('SIXPACK_ENABLED'),
         'url' => env('SIXPACK_BASE_URL'),
