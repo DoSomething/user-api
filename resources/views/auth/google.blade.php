@@ -3,7 +3,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 @endsection
 
-    <a href="{{ url('google/continue') }}" class="button google-login" >
+    <a href="{{ url('google/continue') }}" class="button pl-4 google-login" >
         <div class="hidden md:inline-block">
             @include('icons.google-icon-2')
         </div>
