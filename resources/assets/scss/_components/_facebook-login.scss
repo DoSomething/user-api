@@ -1,6 +1,8 @@
 $facebook-blue: #4267b2;
 
 .facebook-login {
+  font-size: 18px;
+  width: 274px;
   background: $facebook-blue;
   border: 1px solid $facebook-blue;
   text-transform: none;
@@ -10,7 +12,7 @@ $facebook-blue: #4267b2;
     background: darken($facebook-blue, 10%);
   }
 
-  @include media($medium) {
+
     &:before {
       @include icomoon-icon;
       content: "\e600";
@@ -20,5 +22,4 @@ $facebook-blue: #4267b2;
       vertical-align: middle;
       margin-right: $base-spacing / 2;
     }
-  }
 }

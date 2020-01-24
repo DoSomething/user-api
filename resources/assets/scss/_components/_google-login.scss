@@ -3,27 +3,24 @@ $google-gray: #EEE;
 
 .google-login,
 .google-login:link {
-  background: #ffffff;
-  border: 1px solid white;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.24);
-  color: rgba(0, 0, 0, 0.54);
+  padding: 0px 10px 0px 0px;
+  font-size: 18px;
+  width: 274px;
+  background: $google-blue;
+  border: 1px solid $google-blue;
+  color: #FFF;
   text-transform: none;
   margin: 12px 0;
 
   svg {
     display: inline-block;
-    height: 22px;
-    width: 32px;
-    margin-right: 12px;
+    height: 42px;
+    width: 42px; 
   }
 
   &:hover {
-    border-color: $google-blue;
+    border-color: $google-gray;
     background: theme('colors.white');
     color: rgba(0, 0, 0, 0.54);
-  }
-
-  &:active {
-    background: $google-gray;
   }
 }
