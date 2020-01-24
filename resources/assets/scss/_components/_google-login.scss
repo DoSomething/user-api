@@ -1,6 +1,10 @@
 $google-blue: #4285F4;
 $google-gray: #EEE;
 
+.button.google-login {
+  text-align: left;
+}
+
 .google-login,
 .google-login:link {
   padding: 0px 10px 0px 0px;
@@ -17,6 +21,7 @@ $google-gray: #EEE;
     display: inline-block;
     height: 46px;
     width: 46px; 
+    vertical-align: middle;
   }
 
   &:hover, &:active, &:focus  {
