@@ -1,29 +1,29 @@
 $google-blue: #4285F4;
 $google-gray: #EEE;
 
+.button.google-login {
+  text-align: left;
+}
+
 .google-login,
 .google-login:link {
-  background: #ffffff;
-  border: 1px solid white;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.24);
-  color: rgba(0, 0, 0, 0.54);
+  padding: 0px 10px 0px 0px;
+  font-size: 18px;
+  width: 274px;
+  background: $google-blue;
+  color: #FFF;
   text-transform: none;
   margin: 12px 0;
 
   svg {
     display: inline-block;
-    height: 22px;
-    width: 32px;
-    margin-right: 12px;
+    height: 46px;
+    width: 46px; 
+    vertical-align: middle;
   }
 
-  &:hover {
-    border-color: $google-blue;
-    background: theme('colors.white');
-    color: rgba(0, 0, 0, 0.54);
-  }
-
-  &:active {
-    background: $google-gray;
+  &:hover, &:active, &:focus  {
+    border-color: darken($google-blue, 10%);
+    background: darken($google-blue, 10%);
   }
 }
