@@ -5,7 +5,7 @@
 
     <a href="{{ url('google/continue') }}" class="button google-login" >
         <div class="inline-block mr-4">
-            @include('icons.new-google-icon')
+            @include('icons.google-icon-white')
         </div>
         Continue with Google
     </a>
