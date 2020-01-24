@@ -8,6 +8,7 @@ $google-gray: #EEE;
   width: 274px;
   background: $google-blue;
   border: 1px solid $google-blue;
+  border-radius: 4px;
   color: #FFF;
   text-transform: none;
   margin: 12px 0;
@@ -18,9 +19,8 @@ $google-gray: #EEE;
     width: 42px; 
   }
 
-  &:hover {
-    border-color: $google-gray;
-    background: theme('colors.white');
-    color: rgba(0, 0, 0, 0.54);
+  &:hover, &:active, &:focus  {
+    border-color: darken($google-blue, 10%);
+    background: darken($google-blue, 10%);
   }
 }
