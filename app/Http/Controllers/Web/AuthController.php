@@ -176,7 +176,9 @@ class AuthController extends Controller
      */
     public function getRegister()
     {
-        return view('auth.register-beta');
+        $positionSocialAuth = participate('social-auth-position', ['position_bottom', 'position_top']);
+
+        return view('auth.register-beta', ['social_auth_position' => $positionSocialAuth]);
     }
 
     /**
@@ -188,6 +190,8 @@ class AuthController extends Controller
      */
     public function postRegister(Request $request)
     {
+        convert('social-auth-first');
+
         $this->registrar->validate($request, null, [
             'first_name' => 'required|max:50',
             'last_name' => 'required|max:50',

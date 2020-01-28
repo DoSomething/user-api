@@ -18,6 +18,22 @@
         @include('forms.errors', ['errors' => $errors])
     @endif
 
+    @if ($social_auth_position === 'position_top')
+        <div class="md:flex items-start">
+            <div class="mb-4 md:m-0 md:w-1/2">
+                @include('auth.google')
+            </div>
+            <div class="md:w-1/2">
+                @include('auth.facebook')
+            </div>
+        </div>
+
+        <div class="my-6 flex">
+            <p class="ml-2 footnote">or</p>
+            <hr class="ml-2 mt-2 w-full border-gray-600 border-t-2 border-solid">
+        </div>
+    @endif
+
     <form id="profile-register-form" method="POST" action="{{ url('register')}}">
         {{ csrf_field() }}
 
@@ -53,19 +69,21 @@
         </div>
     </form>
 
-    <div class="my-6 flex">
-        <p class="ml-2 footnote">or</p>
-        <hr class="ml-2 mt-2 w-full border-gray-600 border-t-2 border-solid">
-    </div>
+    @if ($social_auth_position === 'position_bottom')
+        <div class="my-6 flex">
+            <p class="ml-2 footnote">or</p>
+            <hr class="ml-2 mt-2 w-full border-gray-600 border-t-2 border-solid">
+        </div>
 
-    <div class="md:flex ">
-        <div class="md:w-1/2">
-            @include('auth.google')
+        <div class="md:flex">
+            <div class="mb-4 md:m-0 md:w-1/2">
+                @include('auth.google')
+            </div>
+            <div class="md:w-1/2">
+                @include('auth.facebook')
+            </div>
         </div>
-        <div class="md:w-1/2">
-            @include('auth.facebook')
-        </div>
-    </div>
+    @endif
 
     <p class="text-gray-500 mt-5">
         Already have an account? <a class="login-link" href="{{ url('login') }}" data-target="link">Log In</a>
