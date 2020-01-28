@@ -18,8 +18,8 @@
         @include('forms.errors', ['errors' => $errors])
     @endif
 
-    @if ($social_auth_first === 'social_first_form')
-        <div class="md:flex ">
+    @if ($social_auth_position === 'position_top')
+        <div class="md:flex items-start">
             <div class="md:w-1/2">
                 @include('auth.google')
             </div>
@@ -69,7 +69,7 @@
         </div>
     </form>
 
-    @if ($social_auth_first === 'normal_form')
+    @if ($social_auth_position === 'position_bottom')
         <div class="my-6 flex">
             <p class="ml-2 footnote">or</p>
             <hr class="ml-2 mt-2 w-full border-gray-600 border-t-2 border-solid">
