@@ -190,7 +190,7 @@ class AuthController extends Controller
     public function postRegister(Request $request)
     {
         convert('social-auth-first');
-        
+    
         $this->registrar->validate($request, null, [
             'first_name' => 'required|max:50',
             'last_name' => 'required|max:50',
