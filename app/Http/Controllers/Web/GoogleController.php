@@ -114,7 +114,6 @@ class GoogleController extends Controller
             );
         }
 
-
         if ($northstarUser) {
             $northstarUser->updateIfNotSet($fields);
             $northstarUser->save();
