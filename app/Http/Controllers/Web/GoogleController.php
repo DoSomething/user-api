@@ -114,6 +114,7 @@ class GoogleController extends Controller
             );
         }
 
+
         if ($northstarUser) {
             $northstarUser->updateIfNotSet($fields);
             $northstarUser->save();
@@ -124,6 +125,8 @@ class GoogleController extends Controller
             return redirect()->intended('/');
         } else {
             $fields['email'] = $email;
+
+            convert('social-auth-position');
 
             $northstarUser = $this->registrar->registerViaWeb($fields, function (User $user) {
                 $user->setSource(null, 'google');
