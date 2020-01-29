@@ -125,11 +125,11 @@ class GoogleController extends Controller
         } else {
             $fields['email'] = $email;
 
-            convert('social-auth-position');
-
             $northstarUser = $this->registrar->registerViaWeb($fields, function (User $user) {
                 $user->setSource(null, 'google');
             });
+
+            convert('social-auth-position');
 
             Auth::login($northstarUser, true);
             logger()->info('google_authentication');

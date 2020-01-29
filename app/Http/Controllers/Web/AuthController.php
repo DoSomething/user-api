@@ -190,24 +190,24 @@ class AuthController extends Controller
      */
     public function postRegister(Request $request)
     {
-        convert('social-auth-position');
-
         $this->registrar->validate($request, null, [
             'first_name' => 'required|max:50',
             'last_name' => 'required|max:50',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|max:512',
-        ]);
+            ]);
 
-        // Register and login the user.
-        $editableFields = $request->except(User::$internal);
-        $user = $this->registrar->registerViaWeb($editableFields, function ($user) {
-            // Set source_detail, if applicable.
-            $sourceDetail = session('source_detail');
-            if ($sourceDetail) {
-                $user->source_detail = stringify_object($sourceDetail);
-            }
-        });
+            // Register and login the user.
+            $editableFields = $request->except(User::$internal);
+            $user = $this->registrar->registerViaWeb($editableFields, function ($user) {
+                // Set source_detail, if applicable.
+                $sourceDetail = session('source_detail');
+                if ($sourceDetail) {
+                    $user->source_detail = stringify_object($sourceDetail);
+                }
+            });
+
+        convert('social-auth-position');
 
         $this->cleanupSession();
 
