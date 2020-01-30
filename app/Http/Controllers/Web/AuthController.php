@@ -190,8 +190,6 @@ class AuthController extends Controller
      */
     public function postRegister(Request $request)
     {
-        convert('social-auth-first');
-
         $this->registrar->validate($request, null, [
             'first_name' => 'required|max:50',
             'last_name' => 'required|max:50',
@@ -208,6 +206,8 @@ class AuthController extends Controller
                 $user->source_detail = stringify_object($sourceDetail);
             }
         });
+
+        convert('social-auth-position');
 
         $this->cleanupSession();
 

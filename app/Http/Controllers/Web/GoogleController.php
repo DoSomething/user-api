@@ -129,6 +129,8 @@ class GoogleController extends Controller
                 $user->setSource(null, 'google');
             });
 
+            convert('social-auth-position');
+
             Auth::login($northstarUser, true);
             logger()->info('google_authentication');
 

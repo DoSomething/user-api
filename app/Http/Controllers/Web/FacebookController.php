@@ -100,6 +100,8 @@ class FacebookController extends Controller
                 $user->setSource(null, 'facebook');
             });
 
+            convert('social-auth-position');
+
             Auth::login($northstarUser, true);
             logger()->info('facebook_authentication');
 
