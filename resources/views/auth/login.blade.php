@@ -56,11 +56,11 @@
 
     <div class="container__block -centered">
         <div class="flex justify-center">
-            <div class="w-full md:w-3/4">
+            <div class="w-full mb-4 md:w-3/4">
                 @include('auth.google')
             </div>
         </div>
-        <div class="w-full">
+        <div class="w-full mb-4">
             @include('auth.facebook')
         </div>
         <ul>
