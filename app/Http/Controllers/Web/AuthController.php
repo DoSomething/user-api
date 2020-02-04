@@ -199,13 +199,7 @@ class AuthController extends Controller
 
         // Register and login the user.
         $editableFields = $request->except(User::$internal);
-        $user = $this->registrar->registerViaWeb($editableFields, function ($user) {
-            // Set source_detail, if applicable.
-            $sourceDetail = session('source_detail');
-            if ($sourceDetail) {
-                $user->source_detail = stringify_object($sourceDetail);
-            }
-        });
+        $user = $this->registrar->registerViaWeb($editableFields);
 
         convert('social-auth-position');
 

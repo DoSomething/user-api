@@ -217,9 +217,15 @@ class Registrar
 
         $user->fill($input);
 
-        // The user's source_detail is often set via this customizer parameter.
         if (! is_null($customizer)) {
             $customizer($user);
+        }
+
+        // Set source_detail to the session source_detail if we haven't set one yet.
+        $sourceDetail = session('source_detail');
+
+        if ($sourceDetail && ! isset($user->source_detail)) {
+            $user->source_detail = stringify_object($sourceDetail);
         }
 
         // Set the user's country code by Fastly geo-location header.
