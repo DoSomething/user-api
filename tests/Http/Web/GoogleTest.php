@@ -120,20 +120,27 @@ class GoogleTest extends BrowserKitTestCase
     public function testGoogleVerify()
     {
         $this->defaultMock();
+
         // Turn on the badges and refer-friends-scholarship test feature flags.
         config([
             'features.badges' => true,
             'features.refer-friends-scholarship' => true,
         ]);
-        // @TODO: Test 
-        // $this->visit('/authorize?options=%7B%22utm_source%22%3A%22phpunit%22%7D');
+
+        // Set session UTM parameters.
+        session([
+            'source_detail' => [
+                'utm_source' => 'phpunit',
+            ],
+        ]);
+
         $this->visit('/google/verify')->seePageIs('/profile/about');
         $this->seeIsAuthenticated('web');
 
         $user = auth()->user();
         $this->assertEquals($user->email, 'test@dosomething.org');
         $this->assertEquals($user->source, 'northstar');
-        $this->assertEquals($user->source_detail, 'auth_source:google');
+        $this->assertEquals($user->source_detail, 'utm_source:phpunit,auth_source:google');
         $this->assertEquals($user->country_code, country_code());
         $this->assertEquals($user->language, app()->getLocale());
         $this->assertEquals($user->email_subscription_status, true);
