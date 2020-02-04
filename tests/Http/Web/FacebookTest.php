@@ -108,7 +108,7 @@ class FacebookTest extends BrowserKitTestCase
         $user = auth()->user();
         $this->assertEquals($user->email, 'test@dosomething.org');
         $this->assertEquals($user->source, 'northstar');
-        $this->assertEquals($user->source_detail, 'facebook');
+        $this->assertEquals($user->source_detail, 'auth_source:facebook');
         $this->assertEquals($user->country_code, country_code());
         $this->assertEquals($user->language, app()->getLocale());
         $this->assertEquals($user->email_subscription_status, true);

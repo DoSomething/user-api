@@ -208,26 +208,26 @@ class Registrar
      * Create a new user via web.
      *
      * @param array $input - Profile fields
-     * @param Closure $customizer - Customize the user instance before saving.
+     * @param string $authSource - Source of authentication
      * @return User|null
      */
-    public function registerViaWeb($input, Closure $customizer = null)
+    public function registerViaWeb($input, $authSource = null)
     {
         $user = new User;
 
         $user->fill($input);
 
-        if (! is_null($customizer)) {
-            $customizer($user);
+        $sourceDetail = [];
+
+        if ($authSource) {
+            $sourceDetail['auth_source'] = $authSource;
         }
 
-        // Set source_detail to the session source_detail if we haven't set one yet.
-        $sourceDetail = session('source_detail');
-
-        if ($sourceDetail && ! isset($user->source_detail)) {
-            $user->source_detail = stringify_object($sourceDetail);
+        if (session('source_detail')) {
+            $sourceDetail = array_merge(session('source_detail'), $sourceDetail);
         }
 
+        $user->setSource(null, $sourceDetail ? stringify_object($sourceDetail) : null);
         // Set the user's country code by Fastly geo-location header.
         $user->country = country_code();
         // Set language based on locale (either 'en', 'es-mx').
