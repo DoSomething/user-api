@@ -870,7 +870,7 @@ class UserTest extends BrowserKitTestCase
      *
      * @return void
      */
-    public function testV2UpdateEmailSubscriptionStatusWhenAddingTopics()
+    public function testEmailSubscriptionStatusWhenAddingTopics()
     {
         $nullStatusUser = factory(User::class)->create();
 
@@ -880,6 +880,29 @@ class UserTest extends BrowserKitTestCase
 
         $this->seeInDatabase('users', [
             '_id' => $nullStatusUser->id,
+            'email_subscription_status' => true,
+        ]);
+    }
+
+    /**
+     * Test that user email_subcription_status remains true if clearing email_subscription_topics.
+     * PUT /v2/users/:id
+     *
+     * @return void
+     */
+    public function testEmailSubscriptionStatusWhenClearingTopics()
+    {
+        $subscribedUser = factory(User::class)->create([
+            'email_subscription_status' => true,
+            'email_subscription_topics' => ['news'],
+        ]);
+
+        $this->asUser($subscribedUser, ['user', 'write'])->json('PUT', 'v2/users/'.$subscribedUser->id, [
+            'email_subscription_topics' => null,
+        ]);
+
+        $this->seeInDatabase('users', [
+            '_id' => $subscribedUser->id,
             'email_subscription_status' => true,
         ]);
     }
