@@ -96,9 +96,7 @@ class FacebookController extends Controller
         } else {
             $fields['email'] = $email;
 
-            $northstarUser = $this->registrar->registerViaWeb($fields, function (User $user) {
-                $user->setSource(null, 'facebook');
-            });
+            $northstarUser = $this->registrar->registerViaWeb($fields, 'facebook');
 
             convert('social-auth-position');
 
