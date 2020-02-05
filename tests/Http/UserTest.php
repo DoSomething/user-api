@@ -863,4 +863,24 @@ class UserTest extends BrowserKitTestCase
             'email_subscription_topics' => ['news'],
         ]);
     }
+
+    /**
+     * Test that user email_subcription_status is set to true if adding email_subscription_topics.
+     * PUT /v2/users/:id
+     *
+     * @return void
+     */
+    public function testV2UpdateEmailSubscriptionStatusWhenAddingTopics()
+    {
+        $nullStatusUser = factory(User::class)->create();
+
+        $this->asUser($nullStatusUser, ['user', 'write'])->json('PUT', 'v2/users/'.$nullStatusUser->id, [
+            'email_subscription_topics' => ['news'],
+        ]);
+
+        $this->seeInDatabase('users', [
+            '_id' => $nullStatusUser->id,
+            'email_subscription_status' => true,
+        ]);
+    }
 }
