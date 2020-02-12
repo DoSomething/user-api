@@ -892,14 +892,14 @@ class UserTest extends BrowserKitTestCase
      */
     public function testFalseEmailSubscriptionStatusChangesWhenAddingTopics()
     {
-        $unsubscribeStatusUser = factory(User::class)->states('email-unsubscribed')->create();
+        $unsubscribedUser = factory(User::class)->states('email-unsubscribed')->create();
 
-        $this->asUser($unsubscribeStatusUser, ['user', 'write'])->json('PUT', 'v2/users/'.$unsubscribeStatusUser->id, [
+        $this->asUser($unsubscribedUser, ['user', 'write'])->json('PUT', 'v2/users/'.$unsubscribedUser->id, [
             'email_subscription_topics' => ['news'],
         ]);
 
         $this->seeInDatabase('users', [
-            '_id' => $unsubscribeStatusUser->id,
+            '_id' => $unsubscribedUser->id,
             'email_subscription_status' => true,
         ]);
     }
