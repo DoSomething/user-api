@@ -907,7 +907,7 @@ class UserTest extends BrowserKitTestCase
      */
     public function testEmailSubscriptionStatusWhenClearingTopics()
     {
-        // Our user factory creates an email subscriber with topic(s) by default. 
+        // Our user factory creates an email subscriber with topic(s) by default.
         $subscribedUser = factory(User::class)->create();
 
         $this->asUser($subscribedUser, ['user', 'write'])->json('PUT', 'v2/users/'.$subscribedUser->id, [
