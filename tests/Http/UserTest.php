@@ -865,16 +865,14 @@ class UserTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that user email_subcription_status is set to true if adding email_subscription_topics.
+     * Test that user email_subcription_status is set to true if email_subscription_topics is null.
      * PUT /v2/users/:id
      *
      * @return void
      */
-    public function testEmailSubscriptionStatusWhenAddingTopics()
+    public function testNullEmailSubscriptionStatusChangesWhenAddingTopics()
     {
-        $nullStatusUser = factory(User::class)->create([
-            'email_subscription_topics' => null,
-        ]);
+        $nullStatusUser = factory(User::class)->create();
 
         $this->asUser($nullStatusUser, ['user', 'write'])->json('PUT', 'v2/users/'.$nullStatusUser->id, [
             'email_subscription_topics' => ['news'],
@@ -884,10 +882,17 @@ class UserTest extends BrowserKitTestCase
             '_id' => $nullStatusUser->id,
             'email_subscription_status' => true,
         ]);
+    }
 
-        $unsubscribeStatusUser = factory(User::class)->create([
-            'email_subscription_topics' => false,
-        ]);
+    /**
+     * Test that user email_subcription_status is set to true if email_subscription_topics is null.
+     * PUT /v2/users/:id
+     *
+     * @return void
+     */
+    public function testFalseEmailSubscriptionStatusChangesWhenAddingTopics()
+    {
+        $unsubscribeStatusUser = factory(User::class)->states('email-unsubscribed')->create();
 
         $this->asUser($unsubscribeStatusUser, ['user', 'write'])->json('PUT', 'v2/users/'.$unsubscribeStatusUser->id, [
             'email_subscription_topics' => ['news'],
@@ -905,10 +910,9 @@ class UserTest extends BrowserKitTestCase
      *
      * @return void
      */
-    public function testEmailSubscriptionStatusWhenClearingTopics()
+    public function testEmailSubscriptionStatusRemainsTrueWhenClearingTopics()
     {
-        // Our user factory creates an email subscriber with topic(s) by default.
-        $subscribedUser = factory(User::class)->create();
+        $subscribedUser = factory(User::class)->states('email-subscribed')->create();
 
         $this->asUser($subscribedUser, ['user', 'write'])->json('PUT', 'v2/users/'.$subscribedUser->id, [
             'email_subscription_topics' => null,

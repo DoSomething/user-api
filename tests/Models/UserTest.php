@@ -110,9 +110,7 @@ class UserModelTest extends BrowserKitTestCase
     /** @test */
     public function it_should_include_unsubscribed_false_in_customerio_payload_if_email_subscription_status_true()
     {
-        $subscribedStatusUser = factory(User::class)->create([
-            'email_subscription_status' => true,
-        ]);
+        $subscribedStatusUser = factory(User::class)->states('email-subscribed')->create();
         $result = $subscribedStatusUser->toCustomerIoPayload();
 
         $this->assertTrue($result['email_subscription_status']);
@@ -122,9 +120,7 @@ class UserModelTest extends BrowserKitTestCase
     /** @test */
     public function it_should_include_unsubscribed_true_in_customerio_payload_if_email_subscription_status_false()
     {
-        $unsubscribedStatusUser = factory(User::class)->create([
-            'email_subscription_status' => false,
-        ]);
+        $unsubscribedStatusUser = factory(User::class)->states('email-unsubscribed')->create();
         $result = $unsubscribedStatusUser->toCustomerIoPayload();
 
         $this->assertFalse($result['email_subscription_status']);
