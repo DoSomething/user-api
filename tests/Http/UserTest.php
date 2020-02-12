@@ -872,7 +872,9 @@ class UserTest extends BrowserKitTestCase
      */
     public function testEmailSubscriptionStatusWhenAddingTopics()
     {
-        $nullStatusUser = factory(User::class)->create();
+        $nullStatusUser = factory(User::class)->create([
+            'email_subscription_topics' => null,
+        ]);
 
         $this->asUser($nullStatusUser, ['user', 'write'])->json('PUT', 'v2/users/'.$nullStatusUser->id, [
             'email_subscription_topics' => ['news'],
@@ -882,20 +884,31 @@ class UserTest extends BrowserKitTestCase
             '_id' => $nullStatusUser->id,
             'email_subscription_status' => true,
         ]);
+
+        $unsubscribeStatusUser = factory(User::class)->create([
+            'email_subscription_topics' => false,
+        ]);
+
+        $this->asUser($unsubscribeStatusUser, ['user', 'write'])->json('PUT', 'v2/users/'.$unsubscribeStatusUser->id, [
+            'email_subscription_topics' => ['news'],
+        ]);
+
+        $this->seeInDatabase('users', [
+            '_id' => $unsubscribeStatusUser->id,
+            'email_subscription_status' => true,
+        ]);
     }
 
     /**
-     * Test that user email_subcription_status remains true if clearing email_subscription_topics.
+     * Test that user email_subcription_status remains true if unsetting email_subscription_topics.
      * PUT /v2/users/:id
      *
      * @return void
      */
     public function testEmailSubscriptionStatusWhenClearingTopics()
     {
-        $subscribedUser = factory(User::class)->create([
-            'email_subscription_status' => true,
-            'email_subscription_topics' => ['news'],
-        ]);
+        // Our user factory creates an email subscriber with topic(s) by default. 
+        $subscribedUser = factory(User::class)->create();
 
         $this->asUser($subscribedUser, ['user', 'write'])->json('PUT', 'v2/users/'.$subscribedUser->id, [
             'email_subscription_topics' => null,
