@@ -184,6 +184,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     protected $dates = [
         'birthdate',
+        'deletion_requested_at',
         'last_accessed_at',
         'last_authenticated_at',
         'last_messaged_at',
