@@ -45,6 +45,16 @@ class UserObserver
      */
     public function updating(User $user)
     {
+        /**
+         * If any email subscription topics exist, ensure that email subscription status is true.
+         *
+         * Note: We're intentionally not checking for inverse of unsubscribing if topics is empty,
+         * @see https://www.pivotaltracker.com/n/projects/2401401/stories/170599403/comments/211127349.
+         */
+        if (isset($user->email_subscription_topics) && count($user->email_subscription_topics) && ! $user->email_subscription_status) {
+            $user->email_subscription_status = true;
+        }
+
         // Write profile changes to the log, with redacted values for hidden fields.
         $changed = $user->getChanged();
 
