@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Northstar\Models\User;
+use Northstar\Services\CustomerIo;
 
 class LegacyUserTest extends BrowserKitTestCase
 {
@@ -764,6 +765,8 @@ class LegacyUserTest extends BrowserKitTestCase
     public function testDelete()
     {
         $user = User::create(['email' => 'delete-me@example.com']);
+
+        $this->mock(CustomerIo::class)->shouldReceive('deleteUser')->once();
 
         // Only 'admin' scoped keys should be able to delete users.
         $this->withLegacyApiKeyScopes(['user', 'write'])->delete('v1/users/'.$user->id);

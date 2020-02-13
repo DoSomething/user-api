@@ -44,8 +44,7 @@ class DeleteUsersCommand extends Command
                 continue;
             }
 
-            $user->deletion_requested_at = now();
-            $user->save();
+            $user->requestDeletion();
         }
 
         info('Done!');

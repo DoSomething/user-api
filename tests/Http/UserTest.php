@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Northstar\Models\User;
+use Northstar\Services\CustomerIo;
 
 class UserTest extends BrowserKitTestCase
 {
@@ -830,6 +831,8 @@ class UserTest extends BrowserKitTestCase
     public function testV2AdminCanDeleteUser()
     {
         $userToDelete = factory(User::class)->create();
+
+        $this->mock(CustomerIo::class)->shouldReceive('deleteUser')->once();
 
         $response = $this->asAdminUser()->json('DELETE', 'v2/users/'.$userToDelete->id, [
             'first_name' => 'Hercules',
