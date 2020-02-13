@@ -44,7 +44,7 @@ class UserObserver
      * @return void
      */
     public function updating(User $user)
-    {        
+    {
         $changed = $user->getDirty();
 
         // If we're unsubscribing from email, clear all topics.
