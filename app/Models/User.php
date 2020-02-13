@@ -11,6 +11,7 @@ use Northstar\PasswordResetType;
 use Illuminate\Auth\Authenticatable;
 use libphonenumber\PhoneNumberFormat;
 use Illuminate\Notifications\Notifiable;
+use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Northstar\Jobs\SendPasswordResetToCustomerIo;
 use Illuminate\Foundation\Auth\Access\Authorizable;
@@ -81,7 +82,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract, ResetPasswordContract
 {
-    use Authenticatable, Authorizable, Notifiable, CanResetPassword;
+    use Authenticatable, Authorizable, CanResetPassword, Notifiable, SoftDeletes;
 
     /**
      * Should changes to this model's attributes be stored
@@ -184,6 +185,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     protected $dates = [
         'birthdate',
+        'deletion_requested_at',
         'last_accessed_at',
         'last_authenticated_at',
         'last_messaged_at',
@@ -728,5 +730,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         }
 
         return substr($schoolId, 0, 3).'XXXXX';
+    }
+
+    /**
+     * Mark this account for deletion.
+     *
+     * @return void
+     */
+    public function requestDeletion(): void
+    {
+        $this->deletion_requested_at = now();
+        $this->save();
     }
 }
