@@ -865,7 +865,7 @@ class UserTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that user email_subscription_status is set to true if email_subscription_topics is null.
+     * Test that email subscription status is true after adding topics to user with null status.
      * PUT /v2/users/:id
      *
      * @return void
@@ -885,7 +885,7 @@ class UserTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that user email_subscription_status is set to true if email_subscription_topics is null.
+     * Test that email subscription status is true after adding topics to user with false status.
      * PUT /v2/users/:id
      *
      * @return void
@@ -905,7 +905,7 @@ class UserTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that user email_subscription_status remains true if unsetting email_subscription_topics.
+     * Test that email subscription status remains true after unsetting topics.
      * PUT /v2/users/:id
      *
      * @return void
@@ -925,7 +925,7 @@ class UserTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that user email_subscription_topics are cleared if setting email_subscription_status false.
+     * Test that user email subscription topics are cleared after setting email subscription status to false.
      * PUT /v2/users/:id
      *
      * @return void

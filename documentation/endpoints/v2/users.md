@@ -477,3 +477,10 @@ curl -X DELETE \
 ```
 
 </details>
+
+## Notes
+
+* Northstar will automatically set the  `email_subscription_status` field to `true` if a user is created or updated with one or more `email_subscription_topics`.
+
+* Northstar will automatically set the  `email_subscription_topics` field to an empty array if a user is updated with a  `email_subscription_status` value of `false`.
+
