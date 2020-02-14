@@ -56,9 +56,9 @@ class UserObserver
         if (isset($changed['email_subscription_status']) && ! $changed['email_subscription_status']) {
             $user->email_subscription_topics = [];
         /**
-         * Else if we are updating topics with at least item, ensure email subscription status is true.
+         * Else if we are updating topics, ensure email subscription status is true.
          *
-         * Note: We're intentionally not checking for inverse of unsubscribing if topics is empty,
+         * Note: We intentionally do not auto-unsubscribe if we're updating topics with an empty array.
          * @see https://www.pivotaltracker.com/n/projects/2401401/stories/170599403/comments/211127349.
          */
         } elseif (isset($changed['email_subscription_topics']) && count($changed['email_subscription_topics']) && ! $user->email_subscription_status) {

@@ -865,7 +865,7 @@ class UserTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that user email_subcription_status is set to true if email_subscription_topics is null.
+     * Test that user email_subscription_status is set to true if email_subscription_topics is null.
      * PUT /v2/users/:id
      *
      * @return void
@@ -885,7 +885,7 @@ class UserTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that user email_subcription_status is set to true if email_subscription_topics is null.
+     * Test that user email_subscription_status is set to true if email_subscription_topics is null.
      * PUT /v2/users/:id
      *
      * @return void
@@ -905,7 +905,7 @@ class UserTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that user email_subcription_status remains true if unsetting email_subscription_topics.
+     * Test that user email_subscription_status remains true if unsetting email_subscription_topics.
      * PUT /v2/users/:id
      *
      * @return void
@@ -921,6 +921,27 @@ class UserTest extends BrowserKitTestCase
         $this->seeInDatabase('users', [
             '_id' => $subscribedUser->id,
             'email_subscription_status' => true,
+        ]);
+    }
+
+    /**
+     * Test that user email_subscription_topics are cleared if setting email_subscription_status false.
+     * PUT /v2/users/:id
+     *
+     * @return void
+     */
+    public function testEmailSubscriptionTopicsAreClearedWhenUnsubscribing()
+    {
+        $subscribedUser = factory(User::class)->states('email-subscribed')->create();
+
+        $this->asUser($subscribedUser, ['user', 'write'])->json('PUT', 'v2/users/'.$subscribedUser->id, [
+            'email_subscription_status' => false,
+        ]);
+
+        $this->seeInDatabase('users', [
+            '_id' => $subscribedUser->id,
+            'email_subscription_status' => false,
+            'email_subscription_topics' => null,
         ]);
     }
 }
