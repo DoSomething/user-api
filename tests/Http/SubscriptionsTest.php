@@ -26,6 +26,7 @@ class SubscriptionsTest extends BrowserKitTestCase
         // The email_subscription_topics should be added, but the source and source_detail should not change
         $this->seeInDatabase('users', [
             'email' => $user->email,
+            'email_subscription_status' => true,
             'email_subscription_topics' => ['scholarships'],
             'source' => $user->source,
             'source_detail' => $user->source_detail,
@@ -81,6 +82,7 @@ class SubscriptionsTest extends BrowserKitTestCase
         // The user should be created with the given email_subscription_topics, source, and source_detail
         $this->seeInDatabase('users', [
             'email' => 'topics@dosomething.org',
+            'email_subscription_status' => true,
             'email_subscription_topics' => ['scholarships'],
             'source' => 'phoenix-next',
             'source_detail' => 'test_source_detail',

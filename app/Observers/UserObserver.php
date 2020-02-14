@@ -15,6 +15,11 @@ class UserObserver
      */
     public function creating(User $user)
     {
+        // Subscribe user to email if topics have been provided.
+        if (isset($user->email_subscription_topics) && count($user->email_subscription_topics)) {
+            $user->email_subscription_status = true;
+        }
+
         // Set source automatically if not provided.
         $user->source = $user->source ?: client_id();
     }
