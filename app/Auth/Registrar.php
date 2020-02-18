@@ -232,9 +232,8 @@ class Registrar
         $user->country = country_code();
         // Set language based on locale (either 'en', 'es-mx').
         $user->language = app()->getLocale();
-        // Sign the user up for email messaging & give them the "community" topic.
-        $user->email_subscription_status = true;
-        $user->email_subscription_topics = ['community'];
+        // Subscribe user to the community email topic.
+        $user->addEmailSubscriptionTopic('community');
 
         // Exclude any 'clubs' referrals from our feature flag tests.
         if (! str_contains($user->source_detail, 'utm_source:clubs')) {

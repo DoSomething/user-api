@@ -866,4 +866,85 @@ class UserTest extends BrowserKitTestCase
             'email_subscription_topics' => ['news'],
         ]);
     }
+
+    /**
+     * Test that email subscription status is true after adding topics to user with null status.
+     * PUT /v2/users/:id
+     *
+     * @return void
+     */
+    public function testNullEmailSubscriptionStatusChangesWhenAddingTopics()
+    {
+        $nullStatusUser = factory(User::class)->create();
+
+        $this->asUser($nullStatusUser, ['user', 'write'])->json('PUT', 'v2/users/'.$nullStatusUser->id, [
+            'email_subscription_topics' => ['news'],
+        ]);
+
+        $this->seeInDatabase('users', [
+            '_id' => $nullStatusUser->id,
+            'email_subscription_status' => true,
+        ]);
+    }
+
+    /**
+     * Test that email subscription status is true after adding topics to user with false status.
+     * PUT /v2/users/:id
+     *
+     * @return void
+     */
+    public function testFalseEmailSubscriptionStatusChangesWhenAddingTopics()
+    {
+        $unsubscribedUser = factory(User::class)->states('email-unsubscribed')->create();
+
+        $this->asUser($unsubscribedUser, ['user', 'write'])->json('PUT', 'v2/users/'.$unsubscribedUser->id, [
+            'email_subscription_topics' => ['news'],
+        ]);
+
+        $this->seeInDatabase('users', [
+            '_id' => $unsubscribedUser->id,
+            'email_subscription_status' => true,
+        ]);
+    }
+
+    /**
+     * Test that email subscription status remains true after unsetting topics.
+     * PUT /v2/users/:id
+     *
+     * @return void
+     */
+    public function testEmailSubscriptionStatusRemainsTrueWhenClearingTopics()
+    {
+        $subscribedUser = factory(User::class)->states('email-subscribed')->create();
+
+        $this->asUser($subscribedUser, ['user', 'write'])->json('PUT', 'v2/users/'.$subscribedUser->id, [
+            'email_subscription_topics' => null,
+        ]);
+
+        $this->seeInDatabase('users', [
+            '_id' => $subscribedUser->id,
+            'email_subscription_status' => true,
+        ]);
+    }
+
+    /**
+     * Test that user email subscription topics are cleared after setting email subscription status to false.
+     * PUT /v2/users/:id
+     *
+     * @return void
+     */
+    public function testEmailSubscriptionTopicsAreClearedWhenUnsubscribing()
+    {
+        $subscribedUser = factory(User::class)->states('email-subscribed')->create();
+
+        $this->asUser($subscribedUser, ['user', 'write'])->json('PUT', 'v2/users/'.$subscribedUser->id, [
+            'email_subscription_status' => false,
+        ]);
+
+        $this->seeInDatabase('users', [
+            '_id' => $subscribedUser->id,
+            'email_subscription_status' => false,
+            'email_subscription_topics' => null,
+        ]);
+    }
 }

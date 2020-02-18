@@ -17,6 +17,11 @@ class UserObserver
      */
     public function creating(User $user)
     {
+        // Subscribe user to email if topics have been provided.
+        if (isset($user->email_subscription_topics) && count($user->email_subscription_topics)) {
+            $user->email_subscription_status = true;
+        }
+
         // Set source automatically if not provided.
         $user->source = $user->source ?: client_id();
     }
@@ -47,11 +52,24 @@ class UserObserver
      */
     public function updating(User $user)
     {
-        // Write profile changes to the log, with redacted values for hidden fields.
-        $changed = $user->getChanged();
+        $changed = $user->getDirty();
 
+        // If we're unsubscribing from email, clear all topics.
+        if (isset($changed['email_subscription_status']) && ! $changed['email_subscription_status']) {
+            $user->email_subscription_topics = [];
+        /**
+         * Else if we are updating topics, ensure email subscription status is true.
+         *
+         * Note: We intentionally do not auto-unsubscribe if we're updating topics with an empty array.
+         * @see https://www.pivotaltracker.com/n/projects/2401401/stories/170599403/comments/211127349.
+         */
+        } elseif (isset($changed['email_subscription_topics']) && count($changed['email_subscription_topics']) && ! $user->email_subscription_status) {
+            $user->email_subscription_status = true;
+        }
+
+        // Write profile changes to the log, with redacted values for hidden fields.
         if (! app()->runningInConsole()) {
-            logger('updated user', ['id' => $user->id, 'changed' => $changed]);
+            logger('updated user', ['id' => $user->id, 'changed' => $user->getChanged()]);
         }
     }
 
