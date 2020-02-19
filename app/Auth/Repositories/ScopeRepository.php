@@ -11,6 +11,20 @@ use Northstar\Auth\Scope;
 class ScopeRepository implements ScopeRepositoryInterface
 {
     /**
+     * Create ScopeEntities from a given list of identifiers.
+     *
+     * @return ScopeEntityInterface[]
+     */
+    public function create(...$identifiers)
+    {
+        $scopeEntities = array_map(function($identifier) {
+            return $this->getScopeEntityByIdentifier($identifier);
+        }, $identifiers);
+
+        return array_filter($scopeEntities);
+    }
+
+    /**
      * Return information about a scope.
      *
      * @param string $identifier The scope identifier
