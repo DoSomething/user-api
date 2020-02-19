@@ -16,8 +16,6 @@ class BearerTokenResponse extends BaseTokenResponse
      */
     protected function getExtraParams(AccessTokenEntityInterface $accessToken)
     {
-        $jwtAccessToken = $this->accessToken->convertToJWT($this->privateKey);
-
-        return ['id_token' => (string) $jwtAccessToken];
+        return ['id_token' => (string) $this->accessToken];
     }
 }
