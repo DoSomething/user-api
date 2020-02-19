@@ -108,7 +108,7 @@ trait WithAuthentication
         $accessToken = new AccessTokenEntity();
         $accessToken->setClient(new ClientEntity('phpunit', 'PHPUnit', $scopes));
         $accessToken->setIdentifier(bin2hex(random_bytes(40)));
-        $accessToken->setExpiryDateTime((new \DateTime())->add(new DateInterval('PT1H')));
+        $accessToken->setExpiryDateTime((new \DateTimeImmutable())->add(new DateInterval('PT1H')));
 
         if ($user) {
             $accessToken->setUserIdentifier($user->id);
