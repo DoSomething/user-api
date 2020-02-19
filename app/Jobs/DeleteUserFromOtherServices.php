@@ -44,6 +44,7 @@ class DeleteUserFromOtherServices implements ShouldQueue
         // Customer.io or any of our internal APIs with a deluge of requests).
         Redis::throttle('delete-apis')->allow(1)->every(1)->then(function () {
             app(CustomerIo::class)->deleteUser($this->id);
+            app(Gambit::class)->deleteUser($this->id);
         });
     }
 }
