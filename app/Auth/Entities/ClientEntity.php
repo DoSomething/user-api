@@ -34,6 +34,18 @@ class ClientEntity implements ClientEntityInterface
     }
 
     /**
+     * Is this client able to keep a secret?
+     *
+     * @return bool
+     */
+    public function isConfidential()
+    {
+        // TODO: When we add support for PKCE flow, we'll want to
+        // swap this to 'true' for clients that support it.
+        return true;
+    }
+
+    /**
      * Make a new ClientEntity from an Eloquent model.
      *
      * @param Client $client

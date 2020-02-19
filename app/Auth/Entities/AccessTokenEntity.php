@@ -46,8 +46,8 @@ class AccessTokenEntity implements AccessTokenEntityInterface
      * Generate a JWT from the access token. We override this method from
      * AccessTokenTrait so that we can add the `iss` and `role` claims.
      *
-     * @param \League\OAuth2\Server\CryptKey $privateKey
-     * @return string
+     * @param CryptKey $privateKey
+     * @return Token
      */
     public function convertToJWT(CryptKey $privateKey)
     {

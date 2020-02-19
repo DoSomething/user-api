@@ -12,14 +12,10 @@ class ClientRepository implements ClientRepositoryInterface
      * Get a client.
      *
      * @param string      $clientIdentifier   The client's identifier
-     * @param string      $grantType          The grant type used
-     * @param null|string $clientSecret       The client's secret (if sent)
-     * @param bool        $mustValidateSecret If true the client must attempt to validate the secret unless the client
-     *                                        is confidential
      *
      * @return \League\OAuth2\Server\Entities\ClientEntityInterface
      */
-    public function getClientEntity($clientIdentifier, $grantType = null, $clientSecret = null, $mustValidateSecret = true)
+    public function getClientEntity($clientIdentifier)
     {
         /** @var \Northstar\Models\Client $model */
         $model = Client::where('client_id', $clientIdentifier)->first();
@@ -28,17 +24,31 @@ class ClientRepository implements ClientRepositoryInterface
             return null;
         }
 
-        // Is this client allowed to use this grant type?
-        if (! $this->clientCanUseGrant($model, $grantType)) {
-            return null;
-        }
-
-        // If the grant requires us to check the client secret, do that.
-        if ($mustValidateSecret && $model->client_secret !== $clientSecret) {
-            return null;
-        }
-
         return ClientEntity::fromModel($model);
+    }
+
+    /**
+     * Validate a client's secret.
+     *
+     * @param string      $clientIdentifier The client's identifier
+     * @param null|string $clientSecret     The client's secret (if sent)
+     * @param null|string $grantType        The type of grant the client is using (if sent)
+     *
+     * @return bool
+     */
+    public function validateClient($clientIdentifier, $clientSecret, $grantType)
+    {
+        $client = Client::where('client_id', $clientIdentifier)->first();
+
+        if (! $client) {
+            return false;
+        }
+
+        if (! $this->clientCanUseGrant($client, $grantType)) {
+            return false;
+        }
+
+        return $client->client_secret === $clientSecret;
     }
 
     /**

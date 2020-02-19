@@ -22,6 +22,11 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
     {
         $accessToken = new AccessTokenEntity();
+        $accessToken->setClient($clientEntity);
+
+        foreach ($scopes as $scope) {
+            $accessToken->addScope($scope);
+        }
 
         if ($userIdentifier) {
             $user = User::find($userIdentifier);
@@ -30,7 +35,8 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
             $user->last_accessed_at = Carbon::now();
             $user->save();
 
-            // Embed the user's role in the token.
+            // Embed the user's information in the token.
+            $accessToken->setUserIdentifier($userIdentifier);
             $accessToken->setRole($user->role);
         }
 
