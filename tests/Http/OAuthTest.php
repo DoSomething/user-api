@@ -143,7 +143,7 @@ class OAuthTest extends BrowserKitTestCase
             'password' => 'letmein',
         ]);
 
-        $this->assertResponseStatus(401);
+        $this->assertResponseStatus(400);
     }
 
     /**
