@@ -19,6 +19,8 @@ $router->group(['prefix' => 'v2', 'as' => 'v2.'], function () {
 
     // Users
     $this->resource('users', 'UserController');
+    $this->post('users/{user}/deletion', 'DeletionRequestController@store');
+    $this->delete('users/{user}/deletion', 'DeletionRequestController@destroy');
 
     // User (by email or mobile number)
     $this->get('mobile/{mobile}', 'MobileController@show');
