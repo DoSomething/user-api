@@ -75,4 +75,16 @@ class UserPolicy
     {
         return $this->isSuperuser($viewer) || $this->isOwner($viewer, $target);
     }
+
+    /**
+     * Determine if the authorized user can request deletion for the target user.
+     *
+     * @param User $viewer
+     * @param User $target
+     * @return bool
+     */
+    public function delete(?User $viewer, User $target)
+    {
+        return $this->isSuperuser($viewer);
+    }
 }
