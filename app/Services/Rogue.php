@@ -37,7 +37,7 @@ class Rogue
      */
     public function deleteUser(string $id)
     {
-        if (!config('features.delete-api')) {
+        if (! config('features.delete-api')) {
             info('User '.$id.' would have been deleted in Rogue.');
 
             return;

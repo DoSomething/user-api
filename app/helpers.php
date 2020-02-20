@@ -1,7 +1,6 @@
 <?php
 
 use Carbon\Carbon;
-use Northstar\Auth\Scope;
 use Illuminate\Support\Str;
 use Northstar\Models\Client;
 use Northstar\Auth\Normalizer;
@@ -10,7 +9,6 @@ use Illuminate\Support\HtmlString;
 use League\OAuth2\Server\CryptKey;
 use libphonenumber\PhoneNumberUtil;
 use libphonenumber\PhoneNumberFormat;
-use Northstar\Auth\Entities\ScopeEntity;
 use Northstar\Auth\Entities\ClientEntity;
 use SeatGeek\Sixpack\Session\Base as Sixpack;
 use Northstar\Auth\Repositories\ScopeRepository;

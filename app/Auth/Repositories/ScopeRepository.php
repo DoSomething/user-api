@@ -17,7 +17,7 @@ class ScopeRepository implements ScopeRepositoryInterface
      */
     public function create(...$identifiers)
     {
-        $scopeEntities = array_map(function($identifier) {
+        $scopeEntities = array_map(function ($identifier) {
             return $this->getScopeEntityByIdentifier($identifier);
         }, $identifiers);
 
