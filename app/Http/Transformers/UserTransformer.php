@@ -120,6 +120,7 @@ class UserTransformer extends BaseTransformer
         $response['role'] = $user->role;
 
         if (Gate::allows('view-full-profile', $user)) {
+            $response['deletion_requested_at'] = iso8601($user->deletion_requested_at);
             $response['last_accessed_at'] = iso8601($user->last_accessed_at);
             $response['last_authenticated_at'] = iso8601($user->last_authenticated_at);
             $response['last_messaged_at'] = iso8601($user->last_messaged_at);
