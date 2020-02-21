@@ -77,7 +77,7 @@ class UserPolicy
     }
 
     /**
-     * Determine if the authorized user can immediately delete the target user.
+     * Determine if the authorized user can request deletion for the target user.
      *
      * @param User $viewer
      * @param User $target
@@ -89,7 +89,7 @@ class UserPolicy
     }
 
     /**
-     * Determine if the authorized user can request deletion for the target user.
+     * Determine if the authorized user can immediately delete the target user.
      *
      * @param User $viewer
      * @param User $target
