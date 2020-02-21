@@ -4,8 +4,8 @@ namespace Northstar\Observers;
 
 use Northstar\Models\User;
 use Northstar\Models\RefreshToken;
-use Northstar\Services\CustomerIo;
 use Northstar\Jobs\SendUserToCustomerIo;
+use Northstar\Jobs\DeleteUserFromOtherServices;
 
 class UserObserver
 {
@@ -114,8 +114,8 @@ class UserObserver
         // Delete refresh tokens to end any active sessions:
         $token = RefreshToken::where('user_id', $user->id)->delete();
 
-        // And finally, delete the user's profile in Customer.io:
-        app(CustomerIo::class)->deleteUser($user);
+        // And finally, delete the user from other services:
+        DeleteUserFromOtherServices::dispatch($user->id);
 
         info('Deleted: '.$user->id);
     }

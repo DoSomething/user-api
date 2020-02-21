@@ -2,8 +2,6 @@
 
 namespace Northstar\Services;
 
-use Northstar\Models\User;
-
 class CustomerIo
 {
     /**
@@ -51,10 +49,16 @@ class CustomerIo
      * Delete the given user's profile in Customer.io
      * @see https://customer.io/docs/api/#apitrackcustomerscustomers_delete
      *
-     * @param User $user
+     * @param string $id
      */
-    public function deleteUser(User $user)
+    public function deleteUser(string $id)
     {
-        return $this->client->delete('customers/'.$user->id);
+        if (! config('features.delete-api')) {
+            info('User '.$id.' would have been deleted in Customer.io.');
+
+            return;
+        }
+
+        return $this->client->delete('customers/'.$id);
     }
 }

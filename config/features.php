@@ -25,4 +25,8 @@ return [
     'refer-friends-scholarship' => env('DS_REFER_FRIENDS_SCHOLARSHIP_TEST', false),
 
     'no-badge-campaigns' => explode(',', env('DS_CONTENTFUL_IDS_FOR_CAMPAIGNS_WITH_NO_BADGES', null)),
+
+    // If this is enabled, we'll also make requests to Rogue, Gambit, and
+    // Customer.io's deletion APIs whenever a user model is deleted.
+    'delete-api' => env('DS_ENABLE_DELETE_APIS', false),
 ];

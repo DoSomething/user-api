@@ -6,9 +6,13 @@ use Northstar\Models\Client;
 use Northstar\Auth\Normalizer;
 use libphonenumber\PhoneNumber;
 use Illuminate\Support\HtmlString;
+use League\OAuth2\Server\CryptKey;
 use libphonenumber\PhoneNumberUtil;
 use libphonenumber\PhoneNumberFormat;
+use Northstar\Auth\Entities\ClientEntity;
 use SeatGeek\Sixpack\Session\Base as Sixpack;
+use Northstar\Auth\Repositories\ScopeRepository;
+use Northstar\Auth\Repositories\AccessTokenRepository;
 
 /**
  * Normalize the given value.
@@ -331,4 +335,25 @@ function format_mobile(PhoneNumber $number, $format): string
     $parser = PhoneNumberUtil::getInstance();
 
     return $parser->format($number, $format);
+}
+
+/**
+ * Create a "personal" access token that Northstar can use
+ * to make API calls to resource servers (like Rogue).
+ *
+ * @return string
+ */
+function machine_token(...$scopes)
+{
+    $client = new ClientEntity('northstar', config('app.name'), $scopes);
+    $scopeEntities = app(ScopeRepository::class)->create(...$scopes);
+
+    $accessToken = app(AccessTokenRepository::class)->getNewToken($client, $scopeEntities);
+    $accessToken->setPrivateKey(new CryptKey(storage_path('app/keys/private.key'), null, false));
+    $accessToken->setIdentifier(bin2hex(random_bytes(40)));
+
+    // Since this token is only used for Northstar's own API requests, we'll give it a very short TTL:
+    $accessToken->setExpiryDateTime((new \DateTimeImmutable())->add(new DateInterval('PT5M')));
+
+    return 'Bearer '.(string) $accessToken;
 }
