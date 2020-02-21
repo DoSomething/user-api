@@ -14,7 +14,7 @@ class Rogue
     protected $client;
 
     /**
-     * Create a new Gambit API client.
+     * Create a new Rogue API client.
      */
     public function __construct()
     {
@@ -31,7 +31,7 @@ class Rogue
     /**
      * Delete the given user's activity in Rogue.
      *
-     * @see https://git.io/JvWb6
+     * @see https://git.io/JvRin
      *
      * @param string $id
      */
