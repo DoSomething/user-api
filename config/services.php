@@ -54,6 +54,16 @@ return [
         'url' => env('GRAPHQL_URL'),
     ],
 
+    'rogue' => [
+        'url' => env('ROGUE_URL'),
+    ],
+
+    'gambit' => [
+        'url' => env('GAMBIT_URL'),
+        'user' => env('GAMBIT_USERNAME'),
+        'password' => env('GAMBIT_PASSWORD'),
+    ],
+
     'blink' => [
         'url' => env('BLINK_URL'),
         'user' => env('BLINK_USERNAME'),
