@@ -77,6 +77,8 @@ class Handler extends ExceptionHandler
             return $this->invalidated($request, $e);
         } elseif ($e instanceof ModelNotFoundException) {
             $e = new NotFoundHttpException('That resource could not be found.');
+        } elseif ($e instanceof AuthorizationException) {
+            $e = new AccessDeniedHttpException($e->getMessage(), $e);
         }
 
         // If request has 'Accepts: application/json' header or we're on a route that
