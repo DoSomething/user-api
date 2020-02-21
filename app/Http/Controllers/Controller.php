@@ -7,12 +7,13 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Northstar\Exceptions\NorthstarValidationException;
 use Northstar\Http\Controllers\Traits\FiltersRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Northstar\Http\Controllers\Traits\TransformsResponses;
 use Illuminate\Http\Request;
 
 abstract class Controller extends BaseController
 {
-    use DispatchesJobs, ValidatesRequests, FiltersRequests, TransformsResponses;
+    use DispatchesJobs, AuthorizesRequests, ValidatesRequests, FiltersRequests, TransformsResponses;
 
     /**
      * Throw the failed validation exception with our custom formatting. Overrides the

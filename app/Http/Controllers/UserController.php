@@ -178,15 +178,19 @@ class UserController extends Controller
      * Delete a user resource.
      * DELETE /users/:id
      *
-     * @param $id - User ID
+     * @param User $user
      * @return \Illuminate\Http\Response
      * @throws NotFoundHttpException
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $user = User::findOrFail($id);
+        $this->authorize('delete', $user);
+
+        // @see: UserObserver@deleting
         $user->delete();
 
-        return $this->respond('No Content.');
+        // We'll return the deleted user since that may be helpful
+        // for some applications to update their local state.
+        return $this->item($user);
     }
 }
