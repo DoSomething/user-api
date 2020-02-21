@@ -2,6 +2,7 @@
 
 namespace Northstar\Services;
 
+use RuntimeException;
 use Northstar\Models\User;
 
 class Gambit
@@ -22,7 +23,7 @@ class Gambit
 
         $this->client = new \GuzzleHttp\Client([
             'base_uri' => $config['url'],
-            'auth' => [$config['username'], $config['password']],
+            'auth' => [$config['user'], $config['password']],
         ]);
     }
 
@@ -41,6 +42,25 @@ class Gambit
             return;
         }
 
-        return $this->client->delete('/api/v2/users/'.$id);
+        // We don't want to throw on 404 errors, since that's expected if a user has no activity:
+        $response = $this->client->delete('/api/v2/users/'.$id, ['http_errors' => false]);
+        $status = $response->getStatusCode();
+
+        if ($status === 200) {
+            info('User '.$id.' successfully deleted from Gambit.');
+
+            return;
+        }
+
+        if ($status === 404) {
+            info('User '.$id.' did not have any conversation history in Gambit.');
+
+            return;
+        }
+
+        // Otherwise, something must have gone wrong...
+        $json = $response->getBody()->getContents();
+        $message = data_get($json, 'message', 'Unknown Error');
+        throw new RuntimeException('Gambit Error: '.$message);
     }
 }

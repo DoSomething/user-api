@@ -2,6 +2,8 @@
 
 use Carbon\Carbon;
 use Northstar\Models\User;
+use Northstar\Services\Rogue;
+use Northstar\Services\Gambit;
 use Northstar\Services\CustomerIo;
 
 class LegacyUserTest extends BrowserKitTestCase
@@ -766,6 +768,8 @@ class LegacyUserTest extends BrowserKitTestCase
     {
         $user = User::create(['email' => 'delete-me@example.com']);
 
+        $this->mock(Rogue::class)->shouldReceive('deleteUser')->once();
+        $this->mock(Gambit::class)->shouldReceive('deleteUser')->once();
         $this->mock(CustomerIo::class)->shouldReceive('deleteUser')->once();
 
         // Only 'admin' scoped keys should be able to delete users.

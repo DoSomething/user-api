@@ -14,11 +14,11 @@ class Rogue
     protected $client;
 
     /**
-     * Create a new Gambit API client.
+     * Create a new Rogue API client.
      */
     public function __construct()
     {
-        $config = config('services.gambit');
+        $config = config('services.rogue');
 
         $this->client = new \GuzzleHttp\Client([
             'base_uri' => $config['url'],
@@ -31,7 +31,7 @@ class Rogue
     /**
      * Delete the given user's activity in Rogue.
      *
-     * @see https://git.io/JvWb6
+     * @see https://git.io/JvRin
      *
      * @param string $id
      */
