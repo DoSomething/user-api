@@ -20,7 +20,7 @@ class DeleteUsersCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Queue users for deletion, given a CSV of IDs.';
+    protected $description = 'Delete users from our systems, given a CSV of IDs.';
 
     /**
      * Execute the console command.
@@ -33,7 +33,7 @@ class DeleteUsersCommand extends Command
         $csv = Reader::createFromString($input);
         $csv->setHeaderOffset(0);
 
-        info('Queueing '.count($csv).' users for deletion...');
+        info('Immediately deleting '.count($csv).' users...');
 
         foreach ($csv->getRecords() as $record) {
             $id = $record[$this->option('id_column')];
