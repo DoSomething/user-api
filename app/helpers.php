@@ -6,11 +6,11 @@ use Northstar\Models\Client;
 use Northstar\Auth\Normalizer;
 use libphonenumber\PhoneNumber;
 use Illuminate\Support\HtmlString;
-use League\OAuth2\Server\CryptKey;
 use libphonenumber\PhoneNumberUtil;
 use libphonenumber\PhoneNumberFormat;
 use Northstar\Auth\Entities\ClientEntity;
 use SeatGeek\Sixpack\Session\Base as Sixpack;
+use Northstar\Auth\Repositories\KeyRepository;
 use Northstar\Auth\Repositories\ScopeRepository;
 use Northstar\Auth\Repositories\AccessTokenRepository;
 
@@ -349,7 +349,7 @@ function machine_token(...$scopes)
     $scopeEntities = app(ScopeRepository::class)->create(...$scopes);
 
     $accessToken = app(AccessTokenRepository::class)->getNewToken($client, $scopeEntities);
-    $accessToken->setPrivateKey(new CryptKey(storage_path('app/keys/private.key'), null, false));
+    $accessToken->setPrivateKey(app(KeyRepository::class)->getPrivateKey());
     $accessToken->setIdentifier(bin2hex(random_bytes(40)));
 
     // Since this token is only used for Northstar's own API requests, we'll give it a very short TTL:
