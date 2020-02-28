@@ -62,7 +62,6 @@ class DeletionRequestController extends Controller
     {
         $this->authorize('request-deletion', $user);
 
-
         $user->deletion_requested_at = null;
         $user->save();
 
