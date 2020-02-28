@@ -40,6 +40,8 @@ class DeletionRequestController extends Controller
 
         $user->deletion_requested_at = now();
 
+        info('created_deletion_request', ['id' => $user->id]);
+
         // We'll also automatically unsubscribe users from marketing:
         $user->email_subscription_status = false;
         $user->email_subscription_topics = [];
@@ -59,6 +61,8 @@ class DeletionRequestController extends Controller
     public function destroy(User $user)
     {
         $this->authorize('request-deletion', $user);
+
+        info('undo_deletion_request', ['id' => $user->id]);
 
         $user->deletion_requested_at = null;
         $user->save();
