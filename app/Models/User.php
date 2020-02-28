@@ -528,6 +528,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'voter_registration_status' => $this->voter_registration_status,
             'source' => $this->source,
             'source_detail' => $this->source_detail,
+            'deletion_requested_at' => optional($this->deletion_requested_at)->timestamp,
             'last_messaged_at' => optional($this->last_messaged_at)->timestamp,
             'last_authenticated_at' => iso8601($this->last_authenticated_at), // TODO: Update Blink to just accept timestamp.
             'updated_at' => iso8601($this->updated_at), // TODO: Update Blink to just accept timestamp.

@@ -40,6 +40,7 @@ class UserModelTest extends BrowserKitTestCase
             'language' => $user->language,
             'source' => $user->source,
             'source_detail' => $user->source_detail,
+            'deletion_requested_at' => null,
             'last_authenticated_at' => null,
             'last_messaged_at' => null,
             'updated_at' => $user->updated_at->toIso8601String(),
