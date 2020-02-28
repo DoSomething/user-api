@@ -39,6 +39,12 @@ class DeletionRequestController extends Controller
         $this->authorize('request-deletion', $user);
 
         $user->deletion_requested_at = now();
+
+        // We'll also automatically unsubscribe users from marketing:
+        $user->email_subscription_status = false;
+        $user->email_subscription_topics = [];
+        $user->sms_status = 'stop';
+
         $user->save();
 
         return $this->item($user);

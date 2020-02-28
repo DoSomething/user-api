@@ -20,6 +20,8 @@ class DeletionRequestTest extends BrowserKitTestCase
         $this->asUser($user, ['user', 'write'])->post('v2/users/'.$user->id.'/deletion');
 
         $this->assertResponseStatus(200);
+        $this->seeJsonField('data.sms_status', 'stop');
+        $this->seeJsonField('data.email_subscription_status', false);
         $this->seeJsonField('data.deletion_requested_at', '2019-04-26T19:00:00+00:00');
     }
 
