@@ -47,6 +47,8 @@ class DeletionRequestController extends Controller
 
         $user->save();
 
+        info('created_deletion_request', ['id' => $user->id]);
+
         return $this->item($user);
     }
 
@@ -62,6 +64,8 @@ class DeletionRequestController extends Controller
 
         $user->deletion_requested_at = null;
         $user->save();
+
+        info('revoked_deletion_request', ['id' => $user->id]);
 
         return $this->item($user);
     }
