@@ -72,5 +72,4 @@ class SubscriptionUpdateTest extends BrowserKitTestCase
 
         $this->assertResponseStatus(403);
     }
-
 }

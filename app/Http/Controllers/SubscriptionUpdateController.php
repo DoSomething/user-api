@@ -8,16 +8,16 @@ use Northstar\Http\Transformers\UserTransformer;
 class SubscriptionUpdateController extends Controller
 {
     /**
-      * @var UserTransformer
-      */
+     * @var UserTransformer
+     */
     protected $transformer;
 
     /**
-      * Make a new SubpscriptionUpdateController, inject dependencies,
-      * and set middleware for this controller's methods.
-      *
-      * @param UserTransformer $transformer
-      */
+     * Make a new SubpscriptionUpdateController, inject dependencies,
+     * and set middleware for this controller's methods.
+     *
+     * @param UserTransformer $transformer
+     */
     public function __construct(UserTransformer $transformer)
     {
         $this->transformer = $transformer;
@@ -51,5 +51,4 @@ class SubscriptionUpdateController extends Controller
 
         return $this->item($user);
     }
-
 }
