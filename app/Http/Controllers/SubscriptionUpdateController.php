@@ -27,7 +27,7 @@ class SubscriptionUpdateController extends Controller
         $this->middleware('scope:write');
     }
 
-    public function update(User $user, string $topic)
+    public function store(User $user, string $topic)
     {
       $this->authorize('edit-profile', $user);
 
