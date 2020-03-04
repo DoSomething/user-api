@@ -1,11 +1,10 @@
 <?php
 
-use Carbon\Carbon;
 use Northstar\Models\User;
 
 class SubscriptionUpdateTest extends BrowserKitTestCase
 {
-  /**
+    /**
      * Test that a user can add email subscriptions.
      * POST /v2/users/:id/subscriptions/:topic
      *
@@ -13,12 +12,12 @@ class SubscriptionUpdateTest extends BrowserKitTestCase
      */
     public function testAddSubscription()
     {
-      $user = factory(User::class)->create();
+        $user = factory(User::class)->create();
 
         $this->asUser($user, ['user', 'write'])->post('v2/users/'.$user->id.'/subscriptions/news');
 
         $this->assertResponseStatus(200);
-        $this->seeJsonField('data.email_subscription_topics', ["news"]);
+        $this->seeJsonField('data.email_subscription_topics', ['news']);
     }
 
     /**
@@ -31,13 +30,13 @@ class SubscriptionUpdateTest extends BrowserKitTestCase
     {
 
         $user = factory(User::class)->create([
-          'email_subscription_topics' => ['news'],
+            'email_subscription_topics' => ['news'],
         ]);
 
         $this->asUser($user, ['user', 'write'])->post('v2/users/'.$user->id.'/subscriptions/news');
 
         $this->assertResponseStatus(200);
-        $this->seeJsonField('data.email_subscription_topics', ["news"]);
+        $this->seeJsonField('data.email_subscription_topics', ['news']);
     }
 
     /**
@@ -48,9 +47,9 @@ class SubscriptionUpdateTest extends BrowserKitTestCase
      */
     public function testRemoveSubscription()
     {
-      $user = factory(User::class)->create([
-        'email_subscription_topics' => ['news'],
-      ]);
+        $user = factory(User::class)->create([
+            'email_subscription_topics' => ['news'],
+        ]);
 
         $this->asUser($user, ['user', 'write'])->delete('v2/users/'.$user->id.'/subscriptions/news');
 
