@@ -28,7 +28,6 @@ class SubscriptionUpdateTest extends BrowserKitTestCase
      */
     public function testAddExistingSubscription()
     {
-
         $user = factory(User::class)->create([
             'email_subscription_topics' => ['news'],
         ]);
