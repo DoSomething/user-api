@@ -3,10 +3,9 @@
 namespace Northstar\Http\Controllers;
 
 use Northstar\Models\User;
-use Illuminate\Http\Request;
 use Northstar\Http\Transformers\UserTransformer;
 
-class SubscriptionUpdateController extends Controller 
+class SubscriptionUpdateController extends Controller
 {
     /**
     * @var UserTransformer
@@ -14,7 +13,7 @@ class SubscriptionUpdateController extends Controller
     protected $transformer;
 
     /**
-     * Make a new UserController, inject dependencies,
+     * Make a new SubpscriptionUpdateController, inject dependencies,
      * and set middleware for this controller's methods.
      *
      * @param UserTransformer $transformer
