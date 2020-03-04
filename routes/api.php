@@ -29,6 +29,10 @@ $router->group(['prefix' => 'v2', 'as' => 'v2.'], function () {
     // Subscriptions
     $this->post('subscriptions', 'SubscriptionController@create');
 
+    // Email Subscriptions
+    $this->post('users/{user}/subscriptions/{topic}', 'SubscriptionUpdateController@update');
+    $this->delete('users/{user}/subscriptions/{topic}', 'SubscriptionUpdateController@destroy');
+
     // Profile
     // ...
 
