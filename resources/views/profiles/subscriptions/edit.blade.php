@@ -29,6 +29,7 @@
         <div class="w-full flex justify-start">
             <div class="form-item pr-6">
                 <label class="option -radio">
+                    {{-- we need to basically also check if the mobile input is populated when setting checked --}}
                     <input type="radio" name="sms_status" value="active" {{ (old('sms_status') ?: $user->sms_status) === 'active' ? 'checked' : '' }}>
                     <span class="option__indicator"></span>
                     <span>Weekly Texts</span>
