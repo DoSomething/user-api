@@ -22,6 +22,7 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
 
         $this->visit('/profile/subscriptions')
              ->type('(555) 555-5555', 'mobile')
+             ->select('less', 'sms_status')
              ->check('email_subscription_topics[1]')
              ->check('email_subscription_topics[3]')
              ->press('Finish')

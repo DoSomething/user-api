@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="form-item">
-            <p class="footnote"><em>DoSomething.org will send you updates about different social change actions and scholarship opportunities from our number, 38383. You can expect to receive up to 8 messages per month from us. Message and data rates may apply. Text <strong>HELP</strong>  to 38383 for support. Text <strong>STOP</strong> to 38383 to opt out. Please review our <a href="https://www.dosomething.org/us/about/terms-service">Terms of Service​</a> and <a href="https://www.dosomething.org/us/about/privacy-policy">Privacy Policy</a> pages. T-Mobile is not liable for delayed or undelivered messages.</em></p>
+            <p class="footnote"><em>By providing your number, DoSomething.org will send you Weekly (up to 8 msgs/month) or Monthly (up to 4 msgs/month) updates about different social change actions and scholarship opportunities from our number, 38383. Message and data rates may apply. Text <strong>HELP</strong> to 38383 for support; text <strong>STOP</strong> to opt out. Please review our <a href="https://www.dosomething.org/us/about/terms-service">Terms of Service​</a> and <a href="https://www.dosomething.org/us/about/privacy-policy">Privacy Policy</a>. Carriers are not liable for delayed or undelivered messages.</em></p>
         </div>
 
         <p class="font-bold mt-6">Our Email Newsletters</p>
