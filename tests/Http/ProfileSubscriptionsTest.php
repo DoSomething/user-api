@@ -17,12 +17,11 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
 
     /**
      * Test that users can update their contact methods successfully
-     * 
      */
     public function testUpdatingContactFields()
     {
         $user = factory(User::class)->create([
-            'sms_status' => null
+            'sms_status' => null,
         ]);
 
         $this->be($user, 'web');
@@ -41,12 +40,11 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
 
       /**
      * Test that users can update their contact methods successfully
-     * 
      */
     public function testUpdatingContactFieldsWithAutoSelectSMS()
     {
         $user = factory(User::class)->create([
-            'sms_status' => null
+            'sms_status' => null,
         ]);
 
         $this->be($user, 'web');

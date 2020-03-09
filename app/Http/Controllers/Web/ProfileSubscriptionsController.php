@@ -53,7 +53,7 @@ class ProfileSubscriptionsController extends Controller
         $this->registrar->register($request->all(), $user, function ($user) use ($currentMobile) {
             // Set the sms_status if we're adding or updating the user's mobile.
             if ($user->mobile && $user->mobile !== $currentMobile) {
-                if($user->sms_status !== 'less') {
+                if ($user->sms_status !== 'less') {
                     $user->sms_status = 'active';
                 };
             }
