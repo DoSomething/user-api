@@ -55,7 +55,7 @@ class ProfileSubscriptionsController extends Controller
             if ($user->mobile && $user->mobile !== $currentMobile) {
                 if ($user->sms_status !== 'less') {
                     $user->sms_status = 'active';
-                };
+                }
             }
         });
 

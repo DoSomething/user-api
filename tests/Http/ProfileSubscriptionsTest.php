@@ -38,7 +38,7 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
         $this->assertEquals('less', $updatedUser->sms_status);
     }
 
-      /**
+    /**
      * Test that users can update their contact methods successfully
      */
     public function testUpdatingContactFieldsWithAutoSelectSMS()
