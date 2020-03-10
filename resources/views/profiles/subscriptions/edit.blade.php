@@ -23,7 +23,7 @@
         {{ csrf_field() }}
 
         <div class="form-item">
-            <label for="mobile" class="field-label">Cell number to receive texts (Optional)</label>
+            <label for="mobile" class="field-label">Cell Number to Receive Texts (Optional)</label>
             <input name="mobile" type="text" id="mobile" class="text-field js-validate" placeholder="(555) 555-5555" value="{{ old('mobile') ?: $user->mobile }}" data-validate="phone" autofocus />
         </div>
         <div class="w-full flex justify-start">
