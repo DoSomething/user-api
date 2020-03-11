@@ -54,25 +54,25 @@
                 {{-- @TODO: DRY up this 'checked' logic somehow? Integrate this into the checkbox partial? --}}
                 <input type="checkbox" name="email_subscription_topics[0]" id="community" value="community" {{in_array("community", (count($errors) ? old('email_subscription_topics') : $user->email_subscription_topics) ?: []) ? "checked" : null}} />
                 <span class="option__indicator"></span>
-                <span class="font-bold">WYD (What You’re Doing)</span>
+                <span class="font-bold field-label">WYD (What You’re Doing)</span>
                 <p class="footnote">Our weekly community newsletter. Learn what DoSomething members are doing to change the world, and how you can join them!</p>
             </label>
             <label for="scholarships" class="option -checkbox">
                 <input type="checkbox" name="email_subscription_topics[1]" id="scholarships" value="scholarships" {{in_array("scholarships", (count($errors) ? old('email_subscription_topics') : $user->email_subscription_topics) ?: []) ? "checked" : null}} />
                 <span class="option__indicator"></span>
-                <span class="font-bold">Pays To Do Good</span>
+                <span class="font-bold field-label">Pays To Do Good</span>
                 <p class="footnote">Our monthly scholarships newsletter. Earn easy scholarships for volunteering, get clutch tips on applying, and read the latest news about education.</p>
             </label>
             <label for="news" class="option -checkbox">
                 <input type="checkbox" name="email_subscription_topics[2]" id="news" value="news" {{in_array("news", (count($errors) ? old('email_subscription_topics') : $user->email_subscription_topics) ?: []) ? "checked" : null}} />
                 <span class="option__indicator"></span>
-                <span class="font-bold">The Breakdown</span>
+                <span class="font-bold field-label">The Breakdown</span>
                 <p class="footnote">Our current events newsletter, sent twice a week. Featuring the week’s headlines and ways to impact them, you can read the news *and* change the news.</p>
             </label>
             <label for="lifestyle" class="option -checkbox">
                 <input type="checkbox" name="email_subscription_topics[3]" id="lifestyle" value="lifestyle" {{in_array("lifestyle", (count($errors) ? old('email_subscription_topics') : $user->email_subscription_topics) ?: []) ? "checked" : null}} />
                 <span class="option__indicator"></span>
-                <span class="font-bold">The Boost</span>
+                <span class="font-bold field-label">The Boost</span>
                 <p class="footnote">Our weekly cause and lifestyle newsletter. You’ll receive one article (like an inspiring story of a young changemaker or a how-to volunteering guide), plus one related action every Thursday.</p>
             </label>
         </div>
