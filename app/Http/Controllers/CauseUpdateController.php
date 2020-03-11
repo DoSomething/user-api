@@ -30,11 +30,11 @@ class CauseUpdateController extends Controller
     {
         $this->authorize('edit-profile', $user);
 
-        if (! in_array($cause, ['news', 'scholarships', 'community', 'lifestyle'])) {
-            abort(404, 'That subscription does not exist.');
+        if (! in_array($cause, ['animal_welfare', 'bullying', 'education', 'environment', 'gender_rights_equality', 'homelessness_poverty', 'immigration_refugees', 'lgbtq_rights_equality', ' mental_health', 'physical_health', 'racial_justice_equity','sexual_harassment_assault'])) {
+            abort(404, 'That cause does not exist.');
         }
 
-        $user->push('email_subscription_topics', $cause, true);
+        $user->push('causes', $cause, true);
 
         return $this->item($user);
     }
@@ -43,11 +43,11 @@ class CauseUpdateController extends Controller
     {
         $this->authorize('edit-profile', $user);
 
-        if (! in_array($cause, ['news', 'scholarships', 'community', 'lifestyle'])) {
-            abort(404, 'That subscription does not exist.');
+        if (! in_array($cause, ['animal_welfare', 'bullying', 'education', 'environment', 'gender_rights_equality', 'homelessness_poverty', 'immigration_refugees', 'lgbtq_rights_equality', ' mental_health', 'physical_health', 'racial_justice_equity','sexual_harassment_assault'])) {
+            abort(404, 'That cause does not exist.');
         }
 
-        $user->pull('email_subscription_topics', $cause);
+        $user->pull('causes', $cause);
 
         return $this->item($user);
     }
