@@ -33,6 +33,10 @@ $router->group(['prefix' => 'v2', 'as' => 'v2.'], function () {
     $this->post('users/{user}/subscriptions/{topic}', 'SubscriptionUpdateController@store');
     $this->delete('users/{user}/subscriptions/{topic}', 'SubscriptionUpdateController@destroy');
 
+    // Cause Preferences
+    $this->post('users/{user}/causes/{cause}', 'CauseUpdateController@store');
+    $this->delete('users/{user}/causes/{cause}', 'CauseUpdateController@destroy');
+
     // Profile
     // ...
 

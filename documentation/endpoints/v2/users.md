@@ -443,6 +443,74 @@ curl -X PUT \
 
 </details>
 
+## Update a User's Cause Preferences
+
+Update a user resource's cause preferences, retrieved with the user's Northstar ID. This requires the `user` scope and the `write` scope.
+
+```
+POST /v2/users/:user_id/causes/:cause
+```
+
+<details>
+<summary><strong>Example Request</strong></summary>
+
+```sh
+curl -X POST \
+  -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+  https://northstar.dosomething.org/v2/5430e850dt8hbc541c37tt3d/causes/bullying
+```
+
+</details>
+
+<details>
+<summary><strong>Example Response</strong></summary>
+
+```js
+// 200 Okay
+
+{
+    "data": {
+        "id": "5430e850dt8hbc541c37tt3d",
+        "causes": ["bullying"],
+        // the rest of the profile...
+    }
+}
+```
+
+</details>
+
+```
+DELETE /v2/users/:user_id/causes/:cause
+```
+
+<details>
+<summary><strong>Example Request</strong></summary>
+
+```sh
+curl -X DELETE \
+  -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+  https://northstar.dosomething.org/v2/5430e850dt8hbc541c37tt3d/causes/bullying
+```
+
+</details>
+
+<details>
+<summary><strong>Example Response</strong></summary>
+
+```js
+// 200 Okay
+
+{
+    "data": {
+        "id": "5430e850dt8hbc541c37tt3d",
+        "causes": [],
+        // the rest of the profile...
+    }
+}
+```
+
+</details>
+
 ## Delete a User
 
 Destroy a user resource. The `user_id` property of the user to delete must be provided in the URL path, and refers to the user's Northstar ID. This requires either the `admin` scope, or "admin" or "staff" role with the appropriate scope.
