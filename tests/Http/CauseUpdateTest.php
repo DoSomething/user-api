@@ -15,9 +15,9 @@ class CauseUpdateTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
 
         $this->asUser($user, ['user', 'write'])->post('v2/users/'.$user->id.'/causes/animal_welfare');
-        
+
         $this->assertResponseStatus(200);
-        
+
         $freshUser = $user->fresh();
         $this->assertContains('animal_welfare', $freshUser->causes);
     }
