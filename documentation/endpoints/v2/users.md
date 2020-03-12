@@ -443,9 +443,9 @@ curl -X PUT \
 
 </details>
 
-## Update a Users Cause Preferences
+## Update a User's Cause Preferences
 
-Update a user resources cause preferences, retrieved with the user's Northstar ID. This requires the `user` scope and the `write` scope.
+Update a user resource's cause preferences, retrieved with the user's Northstar ID. This requires the `user` scope and the `write` scope.
 
 ```
 POST /v2/users/:user_id/causes/:cause
@@ -487,7 +487,7 @@ DELETE /v2/users/:user_id/causes/:cause
 <summary><strong>Example Request</strong></summary>
 
 ```sh
-curl -X POST \
+curl -X DELETE \
   -H "Authorization: Bearer ${ACCESS_TOKEN}" \
   https://northstar.dosomething.org/v2/5430e850dt8hbc541c37tt3d/causes/bullying
 ```

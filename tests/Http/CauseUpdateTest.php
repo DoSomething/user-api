@@ -64,13 +64,13 @@ class CauseUpdateTest extends BrowserKitTestCase
     public function testRemoveCause()
     {
         $user = factory(User::class)->create([
-            'causes' => ['gender_rights_equality'],
+            'causes' => ['gender_rights_equality', 'environment', 'bullying'],
         ]);
 
         $this->asUser($user, ['user', 'write'])->delete('v2/users/'.$user->id.'/causes/gender_rights_equality');
 
         $this->assertResponseStatus(200);
-        $this->seeJsonField('data.causes', []);
+        $this->seeJsonField('data.causes', ['environment', 'bullying']);
     }
 
     /**
