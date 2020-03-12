@@ -74,6 +74,24 @@ class CauseUpdateTest extends BrowserKitTestCase
     }
 
     /**
+     * Test that a user can remove a cause.
+     * DELETE /v2/users/:id/causes/:cause
+     *
+     * @return void
+     */
+    public function testRemoveFinalCause()
+    {
+        $user = factory(User::class)->create([
+            'causes' => ['gender_rights_equality'],
+        ]);
+
+        $this->asUser($user, ['user', 'write'])->delete('v2/users/'.$user->id.'/causes/gender_rights_equality');
+
+        $this->assertResponseStatus(200);
+        $this->seeJsonField('data.causes', []);
+    }
+
+    /**
      * Test that a user can't edit another user's causes.
      * POST /v2/users/:id/causes/:cause
      *
