@@ -36,6 +36,7 @@ class CauseUpdateController extends Controller
 
         $user->push('causes', $cause, true);
 
+        dump('hello?', $user->causes, $user->id);
         return $this->item($user);
     }
 

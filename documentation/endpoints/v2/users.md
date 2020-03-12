@@ -443,6 +443,85 @@ curl -X PUT \
 
 </details>
 
+## Update a Users Cause Preferences
+
+Update a user resources cause preferences, retrieved with the user's Northstar ID. This requires the `user` scope and the `write` scope.
+
+```
+PUT /v2/users/:user_id/causes/:cause
+```
+
+**Request Parameters:**
+
+```js
+// Content-Type: application/json
+
+{
+  email: String;
+  mobile: String;
+  facebook_id: Number;
+  password: String;
+  birthdate: Date;
+  first_name: String;
+  last_name: String;
+  addr_street1: String;
+  addr_street2: String;
+  addr_city: String;
+  addr_state: String;
+  addr_zip: String;
+  country: String; // two character country code
+  language: String;
+  agg_id: Number;
+  cgg_id: Number;
+  slack_id: String;
+  interests: String, Array; // CSV values or array will be appended to existing interests
+  role: String; // Can only be modified by admins. Either 'user' (default), 'staff', or 'admin'.
+  sms_status: String; // Either 'active', 'stop', less', 'undeliverable', 'pending', or 'unknown'
+  sms_paused: Boolean; // Whether a user is in a support conversation.
+
+  // Hidden fields (optional):
+  race: String;
+  religion: String;
+  college_name: String;
+  degree_type: String;
+  major_name: String;
+  hs_gradyear: String;
+  hs_name: String;
+  sat_math: Number;
+  sat_verbal: Number;
+  sat_writing: Number;
+}
+```
+
+<details>
+<summary><strong>Example Request</strong></summary>
+
+```sh
+curl -X PUT \
+  -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+  -d '{"first_name": "New First name"}' \
+  https://northstar.dosomething.org/v2/5430e850dt8hbc541c37tt3d
+```
+
+</details>
+
+<details>
+<summary><strong>Example Response</strong></summary>
+
+```js
+// 200 Okay
+
+{
+    "data": {
+        "id": "5430e850dt8hbc541c37tt3d",
+        "first_name": "New First Name",
+        // the rest of the profile...
+    }
+}
+```
+
+</details>
+
 ## Delete a User
 
 Destroy a user resource. The `user_id` property of the user to delete must be provided in the URL path, and refers to the user's Northstar ID. This requires either the `admin` scope, or "admin" or "staff" role with the appropriate scope.
