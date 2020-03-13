@@ -74,11 +74,7 @@ class CauseUpdateTest extends BrowserKitTestCase
     }
 
     /**
-<<<<<<< HEAD
      * Test that a user can remove a cause and it will return an empty array as expected.
-=======
-     * Test that a user can remove a cause.
->>>>>>> master
      * DELETE /v2/users/:id/causes/:cause
      *
      * @return void
