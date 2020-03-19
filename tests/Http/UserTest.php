@@ -951,4 +951,25 @@ class UserTest extends BrowserKitTestCase
             'email_subscription_topics' => null,
         ]);
     }
+
+    /**
+     * Test that user SMS subscription topics are cleared after setting SMS status to stop.
+     * PUT /v2/users/:id
+     *
+     * @return void
+     */
+    public function testSmsSubscriptionTopicsAreClearedWhenUnsubscribing()
+    {
+        $subscribedUser = factory(User::class)->states('sms-subscribed')->create();
+
+        $this->asUser($subscribedUser, ['user', 'write'])->json('PUT', 'v2/users/'.$subscribedUser->id, [
+            'sms_status' => 'stop',
+        ]);
+
+        $this->seeInDatabase('users', [
+            '_id' => $subscribedUser->id,
+            'sms_status' => 'stop',
+            'sms_subscription_topics' => null,
+        ]);
+    }
 }

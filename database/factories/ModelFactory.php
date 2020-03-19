@@ -51,6 +51,14 @@ $factory->state(Northstar\Models\User::class, 'email-unsubscribed', function (Fa
     ];
 });
 
+$factory->state(Northstar\Models\User::class, 'sms-subscribed', function (Faker\Generator $faker) {
+    return [
+        'sms_status' => 'active',
+        // Note: Not all users will have SMS subscription topics, it was added in Mar 2020.
+        'sms_subscription_topics' => ['voting'],
+    ];
+});
+
 $factory->defineAs(Northstar\Models\User::class, 'staff', function (Faker\Generator $faker) {
     $faker->addProvider(new FakerPhoneNumber($faker));
 
