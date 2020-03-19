@@ -649,7 +649,6 @@ class UserTest extends BrowserKitTestCase
         $this->assertResponseStatus(201);
     }
 
-
     /**
      * Test that the `mobile` field is validated.
      * POST /users/:id
