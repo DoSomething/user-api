@@ -649,6 +649,28 @@ class UserTest extends BrowserKitTestCase
         $this->assertResponseStatus(201);
     }
 
+
+    /**
+     * Test that the `mobile` field is validated.
+     * POST /users/:id
+     *
+     * @return void
+     */
+    public function testV2ValidatesMobile()
+    {
+        $this->asAdminUser()->json('POST', 'v2/users', [
+            'mobile' => '000-00-0000',
+        ]);
+
+        $this->assertResponseStatus(422);
+
+        $this->asAdminUser()->json('POST', 'v2/users', [
+            'mobile' => '212-254-2390',
+        ]);
+
+        $this->assertResponseStatus(201);
+    }
+
     /**
      * Test that we can only upsert with the ?upsert=true param
      * POST /v2/users/
