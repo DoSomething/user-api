@@ -529,7 +529,7 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that the `country` field is validated.
-     * GET /users/:id
+     * POST /users/:id
      *
      * @return void
      */
@@ -617,6 +617,36 @@ class UserTest extends BrowserKitTestCase
             'email' => 'alejandro@example.com',
             'created_at' => new MongoDB\BSON\UTCDateTime($date->getTimestamp() * 1000),
         ]);
+    }
+
+    /**
+     * Test that the `sms_subscription_topics` field is validated.
+     * POST /users/:id
+     *
+     * @return void
+     */
+    public function testV2ValidatesSmsSubscriptionTopics()
+    {
+        $this->asAdminUser()->json('POST', 'v2/users', [
+            'email' => 'test@example.com',
+            'sms_subscription_topics' => ['bugs'],
+        ]);
+
+        $this->assertResponseStatus(422);
+
+        $this->asAdminUser()->json('POST', 'v2/users', [
+            'email' => 'test@example.com',
+            'sms_subscription_topics' => 'bugs',
+        ]);
+
+        $this->assertResponseStatus(500);
+
+        $this->asAdminUser()->json('POST', 'v2/users', [
+            'email' => 'test@example.com',
+            'sms_subscription_topics' => ['voting'],
+        ]);
+
+        $this->assertResponseStatus(201);
     }
 
     /**
