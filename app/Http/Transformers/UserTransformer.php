@@ -110,9 +110,10 @@ class UserTransformer extends BaseTransformer
         $response['language'] = $user->language;
         $response['country'] = $user->country;
 
-        // SMS subscription status
+        // SMS subscription
         $response['sms_status'] = $user->sms_status;
         $response['sms_paused'] = (bool) $user->sms_paused;
+        $response['sms_subscription_topics'] = $user->sms_subscription_topics;
 
         // Email subscription topics
         $response['email_subscription_topics'] = $user->email_subscription_topics;
