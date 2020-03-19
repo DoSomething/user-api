@@ -709,6 +709,17 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
+     * Mutator to ensure no duplicates in the SMS topics array.
+     *
+     * @param array $value
+     */
+    public function setSmsSubscriptionTopicsAttribute($value)
+    {
+        // Set de-duped array as sms_subscription_topics
+        $this->attributes['sms_subscription_topics'] = array_values(array_unique($value));
+    }
+
+    /**
      * Accessor for the `causes` attribute.
      *
      * @param  mixed value
