@@ -63,6 +63,7 @@ class Registrar
             'mobilecommons_status' => 'in:active,undeliverable,unknown', // for backwards compatibility.
             'sms_status' => 'nullable|in:active,less,stop,undeliverable,unknown,pending',
             'sms_paused' => 'boolean',
+            'sms_subscription_topics.*' => 'in:voting',
             'last_messaged_at' => 'date',
             'email_subscription_status' => 'boolean',
             'email_subscription_topics.*' => 'in:news,scholarships,lifestyle,community',

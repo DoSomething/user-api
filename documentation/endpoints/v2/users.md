@@ -153,9 +153,11 @@ Either a mobile number or email is required.
   cgg_id: Number;
   slack_id: String;
   interests: String, Array; // CSV values or array will be appended to existing interests
-  sms_status: String; // Either 'active', 'stop', 'less', 'undeliverable', 'pending', or 'unknown'
+  sms_status: String; // Either 'active', 'stop', less', 'undeliverable', 'pending', or 'unknown'
   sms_paused: Boolean; // Whether a user is in a support conversation.
-  email_subscription_status: Boolean; // Whether a user can recieve emails or not.
+  sms_subscription_topics: Array; // Valid values: 'voting'
+  email_subscription_status: Boolean; // Whether a user is subscribed to receive emails.
+  email_subscription_topics: Array; // Valid values: 'news', 'scholarships', 'lifestyle', 'community'
   source: String; // Immutable. Will only be set on new records.
   source_detail: String; // Only accepted alongside a valid 'source'.
   created_at: Number; // timestamp

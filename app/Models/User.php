@@ -110,7 +110,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
         // External profiles:
         'mobilecommons_id', 'mobilecommons_status', 'facebook_id', 'google_id',
-        'sms_status', 'sms_paused', 'email_subscription_status', 'email_subscription_topics', 'last_messaged_at',
+
+        // SMS Subscription:
+        'sms_status', 'sms_paused', 'sms_subscription_topics', 'last_messaged_at',
+
+        // Email Subscription:
+        'email_subscription_status', 'email_subscription_topics',
 
         // Voting Plan:
         'voting_plan_status', 'voting_plan_method_of_transport', 'voting_plan_time_of_day', 'voting_plan_attending_with',
@@ -537,6 +542,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'lifestyle_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('lifestyle', $this->email_subscription_topics) : false,
             'community_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('community', $this->email_subscription_topics) : false,
             'scholarship_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('scholarships', $this->email_subscription_topics) : false,
+            'voting_sms_subscription_status' => isset($this->sms_subscription_topics) ? in_array('voting', $this->sms_subscription_topics) : false,
             'animal_welfare' => in_array('animal_welfare', $this->causes) ? true : false,
             'bullying' => in_array('bullying', $this->causes) ? true : false,
             'education' => in_array('education', $this->causes) ? true : false,
@@ -700,6 +706,17 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         // Set de-duped array as email_subscription_topics
         $this->attributes['email_subscription_topics'] = array_values(array_unique($value));
+    }
+
+    /**
+     * Mutator to ensure no duplicates in the SMS topics array.
+     *
+     * @param array $value
+     */
+    public function setSmsSubscriptionTopicsAttribute($value)
+    {
+        // Set de-duped array as sms_subscription_topics
+        $this->attributes['sms_subscription_topics'] = array_values(array_unique($value));
     }
 
     /**
