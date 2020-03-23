@@ -82,6 +82,7 @@ class UserTransformer extends BaseTransformer
             // Signup source (e.g. cgg, mobile...)
             $response['source'] = $user->source;
             $response['source_detail'] = $user->source_detail;
+            $response['referrer_user_id'] = $user->referrer_user_id;
 
             // Internal & third-party service IDs:
             $response['slack_id'] = null;

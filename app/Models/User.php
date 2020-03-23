@@ -35,6 +35,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
  * @property Carbon $birthdate
  * @property string $source
  * @property string $source_detail
+ * @property string $referrer_user_id
  * @property string $voter_registration_status
  * @property string $school_id
  * @property string $role - The user's role, e.g. 'user', 'staff', or 'admin'
@@ -133,7 +134,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public static $internal = [
         'drupal_id', 'role', 'facebook_id', 'google_id',
         'mobilecommons_id', 'mobilecommons_status', 'sms_status', 'sms_paused',
-        'last_messaged_at', 'feature_flags', 'totp',
+        'last_messaged_at', 'feature_flags', 'totp', 'referrer_user_id',
     ];
 
     /**
@@ -533,6 +534,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'voter_registration_status' => $this->voter_registration_status,
             'source' => $this->source,
             'source_detail' => $this->source_detail,
+            'referrer_user_id' => $this->referrer_user_id,
             'deletion_requested_at' => optional($this->deletion_requested_at)->timestamp,
             'last_messaged_at' => optional($this->last_messaged_at)->timestamp,
             'last_authenticated_at' => iso8601($this->last_authenticated_at), // TODO: Update Blink to just accept timestamp.
