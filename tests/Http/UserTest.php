@@ -149,6 +149,7 @@ class UserTest extends BrowserKitTestCase
             'email' => 'puppet.sloth@dosomething.org',
             'mobile' => '+18602035512',
             'birthdate' => '01/01/1993',
+            'referrer_user_id' => '559442cca59dbfca578b4bed',
         ]);
 
         $this->asStaffUser()->get('v2/users/'.$user->id);
@@ -164,6 +165,7 @@ class UserTest extends BrowserKitTestCase
         $this->seeJsonField('data.mobile_preview', '(860) 203-XXXX');
         $this->seeJsonField('data.school_id', '12500012');
         $this->seeJsonField('data.school_id_preview', '125XXXXX');
+        $this->seeJsonField('data.referrer_user_id', '559442cca59dbfca578b4bed');
     }
 
     /**
