@@ -178,6 +178,8 @@ class WebAuthenticationTest extends BrowserKitTestCase
     public function testRegisterBeta()
     {
         $this->withHeader('X-Fastly-Country-Code', 'US')
+            ->withHeader('X-Fastly-Postal-Code', '10010')
+            ->withHeader('X-Fastly-Region-Code', 'CA')
             ->registerUpdated();
 
         $this->seeIsAuthenticated('web');
@@ -187,6 +189,8 @@ class WebAuthenticationTest extends BrowserKitTestCase
 
         $this->assertEquals('US', $user->country);
         $this->assertEquals('en', $user->language);
+        $this->assertEquals('10010', $user->addr_zip);
+        $this->assertEquals('CA', $user->addr_state);
 
         // The user should be signed up for email messaging.
         $this->assertEquals(true, $user->email_subscription_status);
@@ -233,6 +237,8 @@ class WebAuthenticationTest extends BrowserKitTestCase
         // Mock a session for the user with a ?utm_source=clubs param, indicating a clubs referral
         $this->withSession(['source_detail' => ['utm_source' => 'clubs']])
             ->withHeader('X-Fastly-Country-Code', 'US')
+            ->withHeader('X-Fastly-Postal-Code', '10010')
+            ->withHeader('X-Fastly-Region-Code', 'CA')
             ->registerUpdated();
 
         $this->seeIsAuthenticated('web');
@@ -242,6 +248,8 @@ class WebAuthenticationTest extends BrowserKitTestCase
 
         $this->assertEquals('US', $user->country);
         $this->assertEquals('en', $user->language);
+        $this->assertEquals('10010', $user->addr_zip);
+        $this->assertEquals('CA', $user->addr_state);
 
         // The user should not have any `feature_flags`.
         $this->assertEquals(true, is_null($user->feature_flags));
@@ -312,6 +320,8 @@ class WebAuthenticationTest extends BrowserKitTestCase
         ]);
 
         $this->withHeader('X-Fastly-Country-Code', 'US')
+            ->withHeader('X-Fastly-Postal-Code', '10010')
+            ->withHeader('X-Fastly-Region-Code', 'CA')
             ->registerUpdated();
 
         $this->seeIsAuthenticated('web');
@@ -321,6 +331,8 @@ class WebAuthenticationTest extends BrowserKitTestCase
 
         $this->assertEquals('US', $user->country);
         $this->assertEquals('en', $user->language);
+        $this->assertEquals('10010', $user->addr_zip);
+        $this->assertEquals('CA', $user->addr_state);
 
         // The user should not have any `feature_flags`.
         $this->assertEquals(true, is_null($user->feature_flags));
