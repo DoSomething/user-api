@@ -109,6 +109,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'addr_street1', 'addr_street2', 'addr_city', 'addr_state', 'addr_zip',
         'country', 'language', 'addr_source',
 
+        // Source info:
+        'referrer_user_id',
+
         // External profiles:
         'mobilecommons_id', 'mobilecommons_status', 'facebook_id', 'google_id',
 

@@ -352,6 +352,7 @@ class UserTest extends BrowserKitTestCase
             'first_name' => 'Wilhelmina',
             'last_name' => 'Grubbly-Plank',
             'school_id' => '11122019',
+            'referrer_user_id' => '5e7aa023fdce2754fc584dea',
         ]);
 
         $this->assertResponseStatus(200);
@@ -362,6 +363,7 @@ class UserTest extends BrowserKitTestCase
             'last_name' => 'Grubbly-Plank',
             '_id' => $user->id,
             'school_id' => '11122019',
+            'referrer_user_id' => '5e7aa023fdce2754fc584dea',
         ]);
     }
 
