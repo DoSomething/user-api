@@ -513,6 +513,79 @@ curl -X DELETE \
 
 </details>
 
+## Update a User's Email Subscriptions
+
+Update a user resource's email subscriptions, retrieved with the user's Northstar ID. This requires the `user` scope and the `write` scope.
+
+```
+POST /v2/users/:user_id/subscriptions/:topic
+```
+
+<details>
+<summary><strong>Example Request</strong></summary>
+
+```sh
+curl -X POST \
+  -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+  https://northstar.dosomething.org/v2/5430e850dt8hbc541c37tt3d/subscriptions/news
+```
+
+</details>
+
+<details>
+<summary><strong>Example Response</strong></summary>
+
+```js
+// 200 Okay
+
+{
+    "data": {
+        "id": "5430e850dt8hbc541c37tt3d",
+        "email_subscription_topics": [
+            "news",
+            "lifestyle"
+        ],
+        // the rest of the profile...
+    }
+}
+```
+
+</details>
+
+```
+DELETE /v2/users/:user_id/subscriptions/:topic
+```
+
+<details>
+<summary><strong>Example Request</strong></summary>
+
+```sh
+curl -X DELETE \
+  -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+  https://northstar.dosomething.org/v2/5430e850dt8hbc541c37tt3d/subscriptions/news
+```
+
+</details>
+
+<details>
+<summary><strong>Example Response</strong></summary>
+
+```js
+// 200 Okay
+
+{
+    "data": {
+        "id": "5430e850dt8hbc541c37tt3d",
+        "email_subscription_topics": [
+            "lifestyle"
+        ],
+        // the rest of the profile...
+    }
+}
+```
+
+</details>
+
 ## Delete a User
 
 Destroy a user resource. The `user_id` property of the user to delete must be provided in the URL path, and refers to the user's Northstar ID. This requires either the `admin` scope, or "admin" or "staff" role with the appropriate scope.
@@ -550,7 +623,6 @@ curl -X DELETE \
 
 ## Notes
 
-* Northstar will automatically set the  `email_subscription_status` field to `true` if a user is created or updated with one or more `email_subscription_topics`.
+- Northstar will automatically set the `email_subscription_status` field to `true` if a user is created or updated with one or more `email_subscription_topics`.
 
-* Northstar will automatically set the  `email_subscription_topics` field to an empty array if a user is updated with a  `email_subscription_status` value of `false`.
-
+- Northstar will automatically set the `email_subscription_topics` field to an empty array if a user is updated with a `email_subscription_status` value of `false`.
