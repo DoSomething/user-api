@@ -231,6 +231,10 @@ class Registrar
         $user->setSource(null, $sourceDetail ? stringify_object($sourceDetail) : null);
         // Set the user's country code by Fastly geo-location header.
         $user->country = country_code();
+        // Set the user's zip code by Fastly geo-location header.
+        $user->addr_zip = postal_code();
+        // Set the user's state by Fastly geo-location header.
+        $user->addr_state = region_code();
         // Set language based on locale (either 'en', 'es-mx').
         $user->language = app()->getLocale();
         // Subscribe user to the community email topic.

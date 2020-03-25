@@ -142,6 +142,30 @@ function country_code()
 }
 
 /**
+ * Get the postal code from the `X-Fastly-Postal-Code` header.
+ *
+ * @return string|null
+ */
+function postal_code()
+{
+    $code = request()->header('X-Fastly-Postal-Code');
+
+    return $code ? Str::upper($code) : null;
+}
+
+/**
+ * Get the region code from the `X-Fastly-Region-Code` header.
+ *
+ * @return string|null
+ */
+function region_code()
+{
+    $code = request()->header('X-Fastly-Region-Code');
+
+    return $code ? Str::upper($code) : null;
+}
+
+/**
  * Replace the given keys with a value.
  *
  * @param $array
