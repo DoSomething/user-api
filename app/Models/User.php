@@ -732,7 +732,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function getCausesAttribute($value)
     {
-        return ! empty($value) ? $value : [];
+        if (empty($value)) {
+            return [];
+        }
+
+        // Fix formatting issue where some causes were saved as indexed objects
+        // (e.g. {0: "animal_welfare", 1: "bullying"}) instead of an array.
+        // Context: https://www.pivotaltracker.com/story/show/172005082
+        return collect($value)->values()->all();
     }
 
     /**
