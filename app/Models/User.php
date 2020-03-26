@@ -732,7 +732,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function getCausesAttribute($value)
     {
-        return ! empty($value) ? $value : [];
+        return ! empty($value) ? collect($value)->values()->all() : [];
     }
 
     /**
