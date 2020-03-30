@@ -760,12 +760,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function setCausesAttribute($value)
     {
-        // convert causes object to an array
-        if (array_has($this->attributes, 'causes')) {
-            $this->attributes['causes'] = collect($this->attributes['causes'])->values()->all();
-        }
-
-        // Set de-duped array as causes array
+        // Convert causes to an array and de-dupe
         $this->attributes['causes'] = array_values(array_unique($value));
     }
 
