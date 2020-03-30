@@ -34,7 +34,9 @@ class CauseUpdateController extends Controller
             abort(404, 'That cause does not exist.');
         }
 
-        $user->push('causes', $cause, true);
+        $user->addCause($cause);
+
+        $user->save();
 
         return $this->item($user);
     }

@@ -743,6 +743,28 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
+     * Add the given cause to the user's array of causes if it is not already there.
+     *
+     * @param string $cause
+     */
+    public function addCause($cause)
+    {
+        // Add the new cause to the existing array of causes
+        $this->causes = array_merge($this->causes ?: [], [$cause]);
+    }
+
+    /**
+     * Mutator to ensure causes attribute is the correct data type.
+     *
+     * @param array $value
+     */
+    public function setCausesAttribute($value)
+    {
+        // Convert causes to an array and de-dupe
+        $this->attributes['causes'] = array_values(array_unique($value));
+    }
+
+    /**
      * Accessor for the `school_id_preview` attribute.
      *
      * @return string
