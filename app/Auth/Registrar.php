@@ -67,7 +67,11 @@ class Registrar
             'last_messaged_at' => 'date',
             'email_subscription_status' => 'boolean',
             'email_subscription_topics.*' => 'in:news,scholarships,lifestyle,community',
-            'voter_registration_status' => 'nullable|in:uncertain,ineligible,unregistered,confirmed,registration_complete',
+            /**
+             * Includes current values sent from Rock The Vote import, as well as older values for
+             * backwards compatability.
+             */
+            'voter_registration_status' => 'nullable|in:uncertain,ineligible,unregistered,confirmed,registration_complete,rejected,under-18,step-1,step-2,step-3,step-4',
             'causes.*' => 'in:animal_welfare,bullying,education,environment,gender_rights_equality,homelessness_poverty,immigration_refugees,lgbtq_rights_equality,mental_health,physical_health,racial_justice_equity,sexual_harassment_assault',
         ];
 
