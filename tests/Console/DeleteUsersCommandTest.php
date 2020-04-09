@@ -4,6 +4,7 @@ use Northstar\Models\User;
 use Northstar\Services\Rogue;
 use Northstar\Services\Gambit;
 use Northstar\Services\CustomerIo;
+use Illuminate\Support\Facades\Artisan;
 
 class DeleteUsersCommandTest extends TestCase
 {
@@ -23,7 +24,7 @@ class DeleteUsersCommandTest extends TestCase
         $this->mock(CustomerIo::class)->shouldReceive('deleteUser')->twice();
 
         // Run the 'northstar:delete' command on the 'example-identify-output.csv' file:
-        $this->artisan('northstar:delete', ['input' => $input]);
+        Artisan::call('northstar:delete', ['input' => $input]);
 
         // The command should remove
         $this->assertAnonymized($user1);

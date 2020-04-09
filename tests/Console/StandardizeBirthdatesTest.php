@@ -1,6 +1,7 @@
 <?php
 
 use Northstar\Models\User;
+use Illuminate\Support\Facades\Artisan;
 
 class StandardizeBirthdatesTest extends TestCase
 {
@@ -27,7 +28,7 @@ class StandardizeBirthdatesTest extends TestCase
         $this->assertEquals($borkedUsersCount, 2);
 
         // Run the Birthdate Standardizer command.
-        $this->artisan('northstar:bday');
+        Artisan::call('northstar:bday');
 
         // Make sure we have 0 borked users
         $borkedUsersCount = User::whereRaw([

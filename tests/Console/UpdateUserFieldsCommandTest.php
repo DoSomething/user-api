@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Northstar\Models\User;
+use Illuminate\Support\Facades\Artisan;
 
 class UpdateUserFieldsCommandTest extends BrowserKitTestCase
 {
@@ -15,7 +16,7 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
         factory(User::class)->create(['_id' => '5acfbf609a89201c340543e5']);
 
         // Run the user update command.
-        $this->artisan('northstar:update', ['path' => 'tests/Console/example-user-updates.csv', 'fields' => ['source', 'created_at']]);
+        Artisan::call('northstar:update', ['path' => 'tests/Console/example-user-updates.csv', 'fields' => ['source', 'created_at']]);
 
         // Make sure the updates were made
         $this->seeInDatabase('users', [
@@ -53,7 +54,7 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
         $user = factory(User::class)->create(['_id' => '5acfbf609a89201c340543e5', 'email_subscription_topics' => ['lifestyle']]);
 
         // Run the user update command.
-        $this->artisan('northstar:update', ['path' => 'tests/Console/example-topic-updates.csv', 'fields' => ['email_subscription_topics']]);
+        Artisan::call('northstar:update', ['path' => 'tests/Console/example-topic-updates.csv', 'fields' => ['email_subscription_topics']]);
 
         // Updating user with no email topics
         $this->seeInDatabase('users', [

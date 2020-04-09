@@ -22,13 +22,13 @@
         <div class="container__block -centered">
             <figure class="figure -medium">
                 <div class="figure__media">
-                    <img class="avatar" alt="avatar" src="{{ $user->avatar or asset('avatar-placeholder.png') }}" />
+                    <img class="avatar" alt="avatar" src="{{ $user->avatar ?? asset('avatar-placeholder.png') }}" />
                 </div>
                 <div class="figure__body">
                     You are logged in as <strong>{{ $user->displayName() }}</strong>.
                 </div>
                 <div class="figure__body footnote">
-                    {{ $user->email or $user->mobile }}
+                    {{ $user->email ?? $user->mobile }}
                 </div>
             </figure>
         </div>

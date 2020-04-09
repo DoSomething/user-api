@@ -1,6 +1,7 @@
 <?php
 
 use Northstar\Models\User;
+use Illuminate\Support\Facades\Artisan;
 
 class AddAddressesCommand extends TestCase
 {
@@ -12,7 +13,7 @@ class AddAddressesCommand extends TestCase
         User::forceCreate(['_id' => '54fa272c469c64d7068b456c', 'first_name' => 'Dominique']);
 
         // Run the addresses command.
-        $this->artisan('northstar:addr', ['path' => 'tests/Console/example-addresses.csv']);
+        Artisan::call('northstar:addr', ['path' => 'tests/Console/example-addresses.csv']);
 
         // And see that we stored the provided addresses!
         $this->seeInDatabase('users', [

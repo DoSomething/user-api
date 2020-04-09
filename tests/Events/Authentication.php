@@ -15,7 +15,7 @@ class AuthenticationEventsTest extends BrowserKitTestCase
         Carbon::setTestNow($now = Carbon::now());
 
         // Trigger the login event!
-        event(new \Illuminate\Auth\Events\Login($user, true));
+        event(new \Illuminate\Auth\Events\Login(config('auth.defaults.guard'), $user, true));
 
         // The user's `last_authenticated_at` timestamp should be updated.
         $this->seeInDatabase('users', [

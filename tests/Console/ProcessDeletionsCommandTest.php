@@ -5,6 +5,7 @@ use Northstar\Models\User;
 use Northstar\Services\Rogue;
 use Northstar\Services\Gambit;
 use Northstar\Services\CustomerIo;
+use Illuminate\Support\Facades\Artisan;
 
 class ProcessDeletionsCommandTest extends TestCase
 {
@@ -23,7 +24,7 @@ class ProcessDeletionsCommandTest extends TestCase
         $this->mock(CustomerIo::class)->shouldReceive('deleteUser')->twice();
 
         // Run the 'northstar:delete' command on the 'example-identify-output.csv' file:
-        $this->artisan('northstar:process-deletions');
+        Artisan::call('northstar:process-deletions');
 
         // The command should remove the users queued for > 14 days:
         $this->assertAnonymized($user1);
