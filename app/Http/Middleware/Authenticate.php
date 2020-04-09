@@ -37,7 +37,7 @@ class Authenticate
      */
     public function handle($request, Closure $next, ...$guards)
     {
-        $this->authenticate($guards);
+        $this->authenticate($request, $guards);
 
         return $next($request);
     }

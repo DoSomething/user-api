@@ -14,7 +14,7 @@ class SwapE164ForMobileField extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $collection) {
-            $collection->dropIndex('mobile');
+            $collection->dropIndex('mobile_1');
         });
 
         $this->renameField('users', 'mobile', '_old_mobile');
@@ -33,7 +33,7 @@ class SwapE164ForMobileField extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $collection) {
-            $collection->dropIndex('mobile');
+            $collection->dropIndex('mobile_1');
         });
 
         $this->renameField('users', 'mobile', 'e164');

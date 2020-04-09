@@ -28,11 +28,11 @@ class AddKeyAndTokenIndexes extends Migration
     public function down()
     {
         Schema::table('tokens', function ($collection) {
-            $collection->dropIndex('key');
+            $collection->dropIndex('key_1');
         });
 
         Schema::table('api_keys', function ($collection) {
-            $collection->dropIndex('api_key');
+            $collection->dropIndex('api_key_1');
         });
     }
 }

@@ -25,7 +25,7 @@ class AddIndexToFacebookId extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $collection) {
-            $collection->dropIndex('facebook_id');
+            $collection->dropIndex('facebook_id_1');
         });
     }
 }

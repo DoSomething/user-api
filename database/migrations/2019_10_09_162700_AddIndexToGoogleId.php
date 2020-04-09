@@ -25,7 +25,7 @@ class AddIndexToGoogleId extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $collection) {
-            $collection->dropIndex('google_id');
+            $collection->dropIndex('google_id_1');
         });
     }
 }
