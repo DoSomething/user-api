@@ -143,7 +143,7 @@ class RegistrarTest extends BrowserKitTestCase
         $registrar = $this->app->make(Registrar::class);
 
         // Trying to resolve a user that doesn't exist should throw exception:
-        $this->setExpectedException(ModelNotFoundException::class);
+        $this->expectException(ModelNotFoundException::class);
         $registrar->resolveOrFail(['email' => 'ThisDoesNotExist@DoSomething.org']);
     }
 
