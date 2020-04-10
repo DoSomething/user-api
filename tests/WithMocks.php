@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Closure;
 use Mockery;
 use Carbon\Carbon;
 
@@ -13,7 +14,7 @@ trait WithMocks
      * @param $class String - Class name to mock
      * @return \Mockery\MockInterface
      */
-    public function mock($class)
+    public function mock($class, ?Closure $closure = null)
     {
         $mock = Mockery::mock($class);
 
@@ -28,7 +29,7 @@ trait WithMocks
      * @param $class String - Class name to mock
      * @return \Mockery\MockInterface
      */
-    public function spy($class)
+    public function spy($class, ?Closure $closure = null)
     {
         $spy = Mockery::spy($class);
 

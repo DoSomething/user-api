@@ -10,68 +10,68 @@
  */
 
 // https://profile.dosomething.org/v2/
-$router->group(['prefix' => 'v2', 'as' => 'v2.'], function () {
+Route::group(['prefix' => 'v2', 'as' => 'v2.'], function () {
     // Authentication
-    $this->post('auth/token', 'OAuthController@createToken');
-    $this->delete('auth/token', 'OAuthController@invalidateToken');
-    $this->get('auth/info', 'OAuthController@info'); // Deprecated.
-    $this->get('userinfo', 'UserInfoController@show');
+    Route::post('auth/token', 'OAuthController@createToken');
+    Route::delete('auth/token', 'OAuthController@invalidateToken');
+    Route::get('auth/info', 'OAuthController@info'); // Deprecated.
+    Route::get('userinfo', 'UserInfoController@show');
 
     // Users
-    $this->resource('users', 'UserController');
-    $this->post('users/{user}/deletion', 'DeletionRequestController@store');
-    $this->delete('users/{user}/deletion', 'DeletionRequestController@destroy');
+    Route::resource('users', 'UserController');
+    Route::post('users/{user}/deletion', 'DeletionRequestController@store');
+    Route::delete('users/{user}/deletion', 'DeletionRequestController@destroy');
 
     // User (by email or mobile number)
-    $this->get('mobile/{mobile}', 'MobileController@show');
-    $this->get('email/{email}', 'EmailController@show');
+    Route::get('mobile/{mobile}', 'MobileController@show');
+    Route::get('email/{email}', 'EmailController@show');
 
     // Subscriptions
-    $this->post('subscriptions', 'SubscriptionController@create');
+    Route::post('subscriptions', 'SubscriptionController@create');
 
     // Email Subscriptions
-    $this->post('users/{user}/subscriptions/{topic}', 'SubscriptionUpdateController@store');
-    $this->delete('users/{user}/subscriptions/{topic}', 'SubscriptionUpdateController@destroy');
+    Route::post('users/{user}/subscriptions/{topic}', 'SubscriptionUpdateController@store');
+    Route::delete('users/{user}/subscriptions/{topic}', 'SubscriptionUpdateController@destroy');
 
     // Cause Preferences
-    $this->post('users/{user}/causes/{cause}', 'CauseUpdateController@store');
-    $this->delete('users/{user}/causes/{cause}', 'CauseUpdateController@destroy');
+    Route::post('users/{user}/causes/{cause}', 'CauseUpdateController@store');
+    Route::delete('users/{user}/causes/{cause}', 'CauseUpdateController@destroy');
 
     // Profile
     // ...
 
     // OAuth Clients
-    $this->resource('clients', 'ClientController');
+    Route::resource('clients', 'ClientController');
 
     // Password Reset
-    $this->resource('resets', 'ResetController', ['only' => 'store']);
+    Route::resource('resets', 'ResetController', ['only' => 'store']);
 
     // Public Key
-    $this->get('keys', 'KeyController@index');
+    Route::get('keys', 'KeyController@index');
 
     // Scopes
-    $this->get('scopes', 'ScopeController@index');
+    Route::get('scopes', 'ScopeController@index');
 });
 
 // https://profile.dosomething.org/v1/
-$router->group(['prefix' => 'v1', 'as' => 'v1.'], function () {
+Route::group(['prefix' => 'v1', 'as' => 'v1.'], function () {
     // Users
-    $this->resource('users', 'Legacy\UserController', ['except' => ['show', 'update']]);
-    $this->get('users/{term}/{id}', 'Legacy\UserController@show');
-    $this->put('users/{term}/{id}', 'Legacy\UserController@update');
-    $this->post('users/{id}/merge', 'Legacy\MergeController@store');
+    Route::resource('users', 'Legacy\UserController', ['except' => ['show', 'update']]);
+    Route::get('users/{term}/{id}', 'Legacy\UserController@show');
+    Route::put('users/{term}/{id}', 'Legacy\UserController@update');
+    Route::post('users/{id}/merge', 'Legacy\MergeController@store');
 
     // Profile (the currently authenticated user)
-    $this->get('profile', 'Legacy\ProfileController@show');
-    $this->post('profile', 'Legacy\ProfileController@update');
+    Route::get('profile', 'Legacy\ProfileController@show');
+    Route::post('profile', 'Legacy\ProfileController@update');
 });
 
 // Discovery
-$router->group(['prefix' => '.well-known'], function () {
-    $this->get('openid-configuration', 'DiscoveryController@index');
+Route::group(['prefix' => '.well-known'], function () {
+    Route::get('openid-configuration', 'DiscoveryController@index');
 });
 
 // Simple health check endpoint
-$router->get('/status', function () {
+Route::get('/status', function () {
     return ['status' => 'good'];
 });

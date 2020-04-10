@@ -6,6 +6,7 @@ stats.json
 /storage/cache
 
 # PHP
+.phpunit.result.cache
 /vendor
 .env
 
