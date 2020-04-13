@@ -316,7 +316,7 @@ PUT /v1/users/drupal_id/<drupal_id>
   role: String; // Can only be modified by admins. Either 'user' (default), 'staff', or 'admin'.
   sms_status: String; // Either 'active', 'stop', less', 'undeliverable', 'pending', or 'unknown'
   sms_paused: Boolean; // Whether a user is in a support conversation.
-  sms_subscription_topics: Array; // Valid values: 'voting'
+  sms_subscription_topics: Array; // Valid values: 'general', 'voting'
   email_subscription_status: Boolean; // Whether a user is subscribed to receive emails.
   email_subscription_topics: Array; // Valid values: 'news', 'scholarships', 'lifestyle', 'community'
 

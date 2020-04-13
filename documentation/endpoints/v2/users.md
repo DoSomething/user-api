@@ -155,7 +155,7 @@ Either a mobile number or email is required.
   interests: String, Array; // CSV values or array will be appended to existing interests
   sms_status: String; // Either 'active', 'stop', less', 'undeliverable', 'pending', or 'unknown'
   sms_paused: Boolean; // Whether a user is in a support conversation.
-  sms_subscription_topics: Array; // Valid values: 'voting'
+  sms_subscription_topics: Array; // Valid values: 'general', voting'
   email_subscription_status: Boolean; // Whether a user is subscribed to receive emails.
   email_subscription_topics: Array; // Valid values: 'news', 'scholarships', 'lifestyle', 'community'
   source: String; // Immutable. Will only be set on new records.
