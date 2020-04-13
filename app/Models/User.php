@@ -543,11 +543,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'last_authenticated_at' => iso8601($this->last_authenticated_at), // TODO: Update Blink to just accept timestamp.
             'updated_at' => iso8601($this->updated_at), // TODO: Update Blink to just accept timestamp.
             'created_at' => iso8601($this->created_at), // TODO: Update Blink to just accept timestamp.
+            // Email subscription topics:
             'news_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('news', $this->email_subscription_topics) : false,
             'lifestyle_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('lifestyle', $this->email_subscription_topics) : false,
             'community_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('community', $this->email_subscription_topics) : false,
             'scholarship_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('scholarships', $this->email_subscription_topics) : false,
+            // SMS subscription topics:
+            'general_sms_subscription_status' => isset($this->sms_subscription_topics) ? in_array('general', $this->sms_subscription_topics) : false,
             'voting_sms_subscription_status' => isset($this->sms_subscription_topics) ? in_array('voting', $this->sms_subscription_topics) : false,
+            // Causes:
             'animal_welfare' => in_array('animal_welfare', $this->causes) ? true : false,
             'bullying' => in_array('bullying', $this->causes) ? true : false,
             'education' => in_array('education', $this->causes) ? true : false,
@@ -560,6 +564,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'physical_health' => in_array('physical_health', $this->causes) ? true : false,
             'racial_justice_equity' => in_array('racial_justice_equity', $this->causes) ? true : false,
             'sexual_harassment_assault' => in_array('sexual_harassment_assault', $this->causes) ? true : false,
+            // Voting plan:
             'voting_plan_status' => $this->voting_plan_status,
             'voting_plan_method_of_transport' => $this->voting_plan_method_of_transport,
             'voting_plan_time_of_day' => $this->voting_plan_time_of_day,
