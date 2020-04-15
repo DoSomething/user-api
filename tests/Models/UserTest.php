@@ -157,4 +157,29 @@ class UserModelTest extends BrowserKitTestCase
 
         $this->assertEquals($subscribedUser->sms_subscription_topics, []);
     }
+
+    public function doesNotChangeSubscriptionTopicsIfExistsWhenChangingSubscribedStatus()
+    {
+        $user = factory(User::class)->create([
+            'sms_status' => 'less',
+            'sms_subscription_topics' => ['voting'],
+        ]);
+
+        $user->sms_status = 'active';
+        $user->save();
+
+        $this->assertEquals($user->sms_subscription_topics, ['voting']);
+    }
+
+    public function addsDefaultSmsSubscriptionTopicsIfChangingToSubscribed()
+    {
+        $user = factory(User::class)->create([
+            'sms_status' => 'stop',
+        ]);
+
+        $user->sms_status = 'active';
+        $user->save();
+
+        $this->assertEquals($user->sms_subscription_topics, ['general', 'voting']);
+    }
 }
