@@ -72,10 +72,9 @@ class UserObserver
             $user->email_subscription_status = true;
         }
 
-
         if (isset($changed['sms_status'])) {
             $updatedSmsStatus = $changed['sms_status'];
-            info('Changing status: ' . $updatedSmsStatus);
+            info('Changing status: '.$updatedSmsStatus);
 
             $unsubscribedStatuses = ['stop', 'undeliverable'];
 
@@ -84,7 +83,7 @@ class UserObserver
              *
              * Note: We don't allow users to set their own SMS subscription topics yet, so there
              * isn't a need to change sms_status if an unsubscribed user adds a SMS topic.
-              */
+             */
             if (in_array($updatedSmsStatus, $unsubscribedStatuses)) {
                 $user->sms_subscription_topics = [];
             /**
