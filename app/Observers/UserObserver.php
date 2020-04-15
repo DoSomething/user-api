@@ -72,14 +72,29 @@ class UserObserver
             $user->email_subscription_status = true;
         }
 
-        /**
-         * If we're unsubscribing from SMS, clear all topics.
-         *
-         * Note: We don't allow users to set their own SMS subscription topics yet, so there isn't a
-         * need to change sms_status if an unsubscribed user happened to add a SMS topic.
-         */
-        if (isset($changed['sms_status']) && $changed['sms_status'] == 'stop') {
-            $user->sms_subscription_topics = [];
+
+        if (isset($changed['sms_status'])) {
+            $updatedSmsStatus = $changed['sms_status'];
+            info('Changing status: ' . $updatedSmsStatus);
+
+            $unsubscribedStatuses = ['stop', 'undeliverable'];
+
+            /**
+             * If we're unsubscribing from SMS, clear all topics.
+             *
+             * Note: We don't allow users to set their own SMS subscription topics yet, so there
+             * isn't a need to change sms_status if an unsubscribed user adds a SMS topic.
+              */
+            if (in_array($updatedSmsStatus, $unsubscribedStatuses)) {
+                $user->sms_subscription_topics = [];
+            /**
+             * If resubscribing and not adding topics, add the default topics if none provided.
+             * @TODO: Check if topics were changed, don't clear topics if changing from less to active.
+             */
+            } elseif (in_array($updatedSmsStatus, ['active', 'less'])) {
+                // @TODO: I see this is set in the logs for updating user, yet doesn't save to DB.
+                $user->sms_subscription_topics = ['general', 'voting'];
+            }
         }
 
         // Write profile changes to the log, with redacted values for hidden fields.
