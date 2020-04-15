@@ -84,10 +84,7 @@ class UserObserver
              */
             if (in_array($changed['sms_status'], ['stop', 'undeliverable'])) {
                 $user->sms_subscription_topics = [];
-            /**
-             * If resubscribing and not adding topics, add the default topics if none provided.
-             * @TODO: Check if topics were changed, don't clear topics if changing from less to active.
-             */
+            // If resubscribing and not adding topics, add the default topics if none provided.
             } elseif (in_array($changed['sms_status'], static::$subscribedSmsStatuses) && ! isset($changed['sms_subscription_topics'])) {
                 // Don't update if already set, e.g. status changes from less to active
                 $hasSmsSubscriptionTopics = isset($user->sms_subscription_topics) && count($user->sms_subscription_topics);
