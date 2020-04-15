@@ -9,6 +9,9 @@ use Northstar\Jobs\DeleteUserFromOtherServices;
 
 class UserObserver
 {
+    public static $subscribedSmsStatuses = ['active', 'less'];
+    public static $defaultSmsSubscriptionTopics = ['general', 'voting'];
+
     /**
      * Handle the User "creating" event.
      *
@@ -23,8 +26,8 @@ class UserObserver
         }
 
         // Populate default topics if subscribing to SMS without any topics provided.
-        if (isset($user->sms_status) && in_array($user->sms_status, ['active', 'less']) && ! isset($user->sms_subscription_topics)) {
-            $user->sms_subscription_topics = ['general', 'voting'];
+        if (isset($user->sms_status) && in_array($user->sms_status, static::$subscribedSmsStatuses) && ! isset($user->sms_subscription_topics)) {
+            $user->sms_subscription_topics = static::$defaultSmsSubscriptionTopics;
         }
 
         // Set source automatically if not provided.
@@ -73,26 +76,25 @@ class UserObserver
         }
 
         if (isset($changed['sms_status'])) {
-            $updatedSmsStatus = $changed['sms_status'];
-            info('Changing status: '.$updatedSmsStatus);
-
-            $unsubscribedStatuses = ['stop', 'undeliverable'];
-
             /**
              * If we're unsubscribing from SMS, clear all topics.
              *
              * Note: We don't allow users to set their own SMS subscription topics yet, so there
              * isn't a need to change sms_status if an unsubscribed user adds a SMS topic.
              */
-            if (in_array($updatedSmsStatus, $unsubscribedStatuses)) {
+            if (in_array($changed['sms_status'], ['stop', 'undeliverable'])) {
                 $user->sms_subscription_topics = [];
             /**
              * If resubscribing and not adding topics, add the default topics if none provided.
              * @TODO: Check if topics were changed, don't clear topics if changing from less to active.
              */
-            } elseif (in_array($updatedSmsStatus, ['active', 'less'])) {
-                // @TODO: I see this is set in the logs for updating user, yet doesn't save to DB.
-                $user->sms_subscription_topics = ['general', 'voting'];
+            } elseif (in_array($changed['sms_status'], static::$subscribedSmsStatuses) && ! isset($changed['sms_subscription_topics'])) {
+                // Don't update if already set, e.g. status changes from less to active
+                $hasSmsSubscriptionTopics = isset($user->sms_subscription_topics) && count($user->sms_subscription_topics);
+
+                if (! $hasSmsSubscriptionTopics) {
+                    $user->sms_subscription_topics = static::$defaultSmsSubscriptionTopics;
+                }
             }
         }
 
