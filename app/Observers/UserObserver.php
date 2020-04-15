@@ -22,6 +22,11 @@ class UserObserver
             $user->email_subscription_status = true;
         }
 
+        // Populate default topics if subscribing to SMS without any topics provided.
+        if (isset($user->sms_status) && in_array($user->sms_status, ['active', 'less']) && ! isset($user->sms_subscription_topics)) {
+            $user->sms_subscription_topics = ['general', 'voting'];
+        }
+
         // Set source automatically if not provided.
         $user->source = $user->source ?: client_id();
     }

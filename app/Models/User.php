@@ -725,7 +725,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function setSmsSubscriptionTopicsAttribute($value)
     {
-        // Set de-duped array as sms_subscription_topics
+        if (! is_array($value)) {
+            $value = [$value];
+        }
+
+        // Set de-duped array as sms_subscription_topics.
         $this->attributes['sms_subscription_topics'] = array_values(array_unique($value));
     }
 

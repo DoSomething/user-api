@@ -62,6 +62,7 @@ class MergeTest extends BrowserKitTestCase
             'mobilecommons_id' => $duplicate->mobilecommons_id,
             'sms_status' => $duplicate->sms_status,
             'drupal_id' => '1234567',
+            'sms_subscription_topics' => ['general', 'voting'],
         ]);
 
         // The "duplicate" user should have the duplicate fields removed.
