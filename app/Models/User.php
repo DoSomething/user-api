@@ -223,9 +223,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * Whether a SMS status value is a subscribed SMS status.
      *
      * @param string $smsStatusValue
-     * @return boolean
+     * @return bool
      */
-    public static function isSmsSubscribedStatus($smsStatusValue) {
+    public static function isSmsSubscribedStatus($smsStatusValue)
+    {
         return in_array($smsStatusValue, ['active', 'less']);
     }
 
@@ -233,9 +234,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * Whether a SMS status value is a unsubscribed SMS status.
      *
      * @param string $smsStatusValue
-     * @return boolean
+     * @return bool
      */
-    public static function isSmsUnsubscribedStatus($smsStatusValue) {
+    public static function isSmsUnsubscribedStatus($smsStatusValue)
+    {
         return in_array($smsStatusValue, ['stop', 'undeliverable']);
     }
 
