@@ -25,9 +25,9 @@ class UserObserver
             $user->email_subscription_status = true;
         }
 
-        // Populate default topics if subscribing to SMS without any topics provided.
-        if (isset($user->sms_status) && in_array($user->sms_status, static::$subscribedSmsStatuses) && ! isset($user->sms_subscription_topics)) {
-            $user->sms_subscription_topics = static::$defaultSmsSubscriptionTopics;
+        // Populate default topics if subscribing to SMS without providing any topics.
+        if ($user->is_sms_subscribed && ! $user->has_sms_subscription_topics) {
+            $user->sms_subscription_topics = User::DEFAULT_SMS_SUBSCRIPTION_TOPICS;
         }
 
         // Set source automatically if not provided.
@@ -82,16 +82,11 @@ class UserObserver
              * Note: We don't allow users to set their own SMS subscription topics yet, so there
              * isn't a need to change sms_status if an unsubscribed user adds a SMS topic.
              */
-            if (in_array($changed['sms_status'], ['stop', 'undeliverable'])) {
+            if (in_array($changed['sms_status'], User::UNSUBSCRIBED_SMS_STATUSES)) {
                 $user->sms_subscription_topics = [];
-            // If resubscribing and not adding topics, add the default topics if none provided.
-            } elseif (in_array($changed['sms_status'], static::$subscribedSmsStatuses) && ! isset($changed['sms_subscription_topics'])) {
-                // Don't update if already set, e.g. status changes from less to active
-                $hasSmsSubscriptionTopics = isset($user->sms_subscription_topics) && count($user->sms_subscription_topics);
-
-                if (! $hasSmsSubscriptionTopics) {
-                    $user->sms_subscription_topics = static::$defaultSmsSubscriptionTopics;
-                }
+            // If resubscribing and not adding topics, add the default topics if user has none.
+            } elseif (in_array($changed['sms_status'], User::SUBSCRIBED_SMS_STATUSES) && ! isset($changed['sms_subscription_topics']) && ! $user->has_sms_subscription_topics) {
+                $user->sms_subscription_topics = User::DEFAULT_SMS_SUBSCRIPTION_TOPICS;
             }
         }
 

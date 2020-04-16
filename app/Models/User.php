@@ -214,6 +214,33 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
 
     /**
+     * Constants for SMS subscriptions.
+     */
+    const DEFAULT_SMS_SUBSCRIPTION_TOPICS = ['general', 'voting'];
+    const SUBSCRIBED_SMS_STATUSES = ['active', 'less'];
+    const UNSUBSCRIBED_SMS_STATUSES = ['stop', 'undeliverable'];
+
+    /**
+     * Whether user has a subscribed SMS status.
+     *
+     * @return boolean
+     */
+    public function getIsSmsSubscribedAttribute()
+    {
+        return isset($user->sms_status) && in_array($user->sms_status, SUBSCRIBED_SMS_STATUSES);
+    }
+
+    /**
+     * Whether user has any SMS subscription topics.
+     *
+     * @return boolean
+     */
+    public function getHasSmsSubscriptionTopics()
+    {
+        return isset($user->sms_subscription_topics) && count($user->sms_subscription_topics);
+    }
+
+    /**
      * Computed last initial field, for public profiles.
      *
      * @return string
