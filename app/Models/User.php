@@ -248,7 +248,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function getIsSmsSubscribedAttribute()
     {
-        return isset($user->sms_status) && self::isSmsSubscribedStatus($user->sms_status);
+        return isset($this->sms_status) && self::isSubscribedSmsStatus($this->sms_status);
     }
 
     /**
@@ -258,7 +258,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function getHasSmsSubscriptionTopicsAttribute()
     {
-        return isset($user->sms_subscription_topics) && count($user->sms_subscription_topics);
+        return isset($this->sms_subscription_topics) && count($this->sms_subscription_topics);
     }
 
     /**

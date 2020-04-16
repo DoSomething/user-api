@@ -147,7 +147,7 @@ class UserModelTest extends BrowserKitTestCase
             'sms_status' => 'active',
         ]);
         // @TODO: Why have you forsaken me
-        //$this->assertTrue($user->is_sms_subscribed);
+        $this->assertTrue($user->is_sms_subscribed);
     }
 
     public function testIsSmsSubscribedisFalseIfSmsStatusIsNull()
