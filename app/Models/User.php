@@ -236,7 +236,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @param string $smsStatusValue
      * @return bool
      */
-    public static function isSmsUnsubscribedStatus($smsStatusValue)
+    public static function isUnsubscribedSmsStatus($smsStatusValue)
     {
         return in_array($smsStatusValue, ['stop', 'undeliverable']);
     }
