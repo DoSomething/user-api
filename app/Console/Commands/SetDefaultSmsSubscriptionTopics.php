@@ -66,8 +66,6 @@ class SetDefaultSmsSubscriptionTopics extends Command
             $users->each(function (User $user) use ($totalCount) {
                 $user->sms_subscription_topics = ['general', 'voting'];
                 $user->save();
-
-                $this->line('northstar:default-sms-topics - User '.$user->id.' given "general" and "voting" topics.');
             });
 
             // Logging to track progress (may read over 100% at the end when there are less than 200 users in the last chunk)
