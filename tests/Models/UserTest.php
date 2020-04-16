@@ -146,7 +146,16 @@ class UserModelTest extends BrowserKitTestCase
         $user = factory(User::class)->create([
             'sms_status' => 'active',
         ]);
-        // @TODO: Why have you forsaken me
+
+        $this->assertTrue($user->is_sms_subscribed);
+    }
+
+    public function testIsSmsSubscribedisTrueIfSmsStatusIsLess()
+    {
+        $user = factory(User::class)->create([
+            'sms_status' => 'less',
+        ]);
+
         $this->assertTrue($user->is_sms_subscribed);
     }
 
@@ -166,6 +175,20 @@ class UserModelTest extends BrowserKitTestCase
         ]);
 
         $this->assertFalse($user->is_sms_subscribed);
+    }
+
+    public function testHasSmsSubscriptionTopicsisTrueIfTopicsExist()
+    {
+        $user = factory(User::class)->states('sms-subscribed')->create();
+
+        $this->assertTrue($user->has_sms_subscription_topics);
+    }
+
+    public function testHasSmsSubscriptionTopicsisFalseIfTopicsIsNull()
+    {
+        $user = factory(User::class)->states('sms-unsubscribed')->create();
+
+        $this->assertFalse($user->has_sms_subscription_topics);
     }
 
     public function addsDefaultSmsSubscriptionTopicsIfSubscribed()
