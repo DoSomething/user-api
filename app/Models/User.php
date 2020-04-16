@@ -214,28 +214,47 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
 
     /**
-     * Constants for SMS subscriptions.
+     * Default SMS subscription topics to assign when user is created or updated with a subscribed
+     * SMS status and topics have not been provided.
      */
     const DEFAULT_SMS_SUBSCRIPTION_TOPICS = ['general', 'voting'];
-    const SUBSCRIBED_SMS_STATUSES = ['active', 'less'];
-    const UNSUBSCRIBED_SMS_STATUSES = ['stop', 'undeliverable'];
+
+    /**
+     * Whether a SMS status value is a subscribed SMS status.
+     *
+     * @param string $smsStatusValue
+     * @return boolean
+     */
+    public static function isSmsSubscribedStatus($smsStatusValue) {
+        return in_array($smsStatusValue, ['active', 'less']);
+    }
+
+    /**
+     * Whether a SMS status value is a unsubscribed SMS status.
+     *
+     * @param string $smsStatusValue
+     * @return boolean
+     */
+    public static function isSmsUnsubscribedStatus($smsStatusValue) {
+        return in_array($smsStatusValue, ['stop', 'undeliverable']);
+    }
 
     /**
      * Whether user has a subscribed SMS status.
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsSmsSubscribedAttribute()
     {
-        return isset($user->sms_status) && in_array($user->sms_status, SUBSCRIBED_SMS_STATUSES);
+        return isset($user->sms_status) && self::isSmsSubscribedStatus($user->sms_status);
     }
 
     /**
      * Whether user has any SMS subscription topics.
      *
-     * @return boolean
+     * @return bool
      */
-    public function getHasSmsSubscriptionTopics()
+    public function getHasSmsSubscriptionTopicsAttribute()
     {
         return isset($user->sms_subscription_topics) && count($user->sms_subscription_topics);
     }
@@ -753,7 +772,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function setSmsSubscriptionTopicsAttribute($value)
     {
         // Set de-duped array as sms_subscription_topics.
-        $this->attributes['sms_subscription_topics'] = array_values(array_unique($value ? $value : []));
+        $this->attributes['sms_subscription_topics'] = array_values(array_unique($value ?: []));
     }
 
     /**

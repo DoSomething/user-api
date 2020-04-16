@@ -9,9 +9,6 @@ use Northstar\Jobs\DeleteUserFromOtherServices;
 
 class UserObserver
 {
-    public static $subscribedSmsStatuses = ['active', 'less'];
-    public static $defaultSmsSubscriptionTopics = ['general', 'voting'];
-
     /**
      * Handle the User "creating" event.
      *
@@ -82,10 +79,10 @@ class UserObserver
              * Note: We don't allow users to set their own SMS subscription topics yet, so there
              * isn't a need to change sms_status if an unsubscribed user adds a SMS topic.
              */
-            if (in_array($changed['sms_status'], User::UNSUBSCRIBED_SMS_STATUSES)) {
+            if (User::isUnsubscribedSmsStatus($changed['sms_status'])) {
                 $user->sms_subscription_topics = [];
             // If resubscribing and not adding topics, add the default topics if user has none.
-            } elseif (in_array($changed['sms_status'], User::SUBSCRIBED_SMS_STATUSES) && ! isset($changed['sms_subscription_topics']) && ! $user->has_sms_subscription_topics) {
+            } elseif (User::isSubscribedSmsStatus($changed['sms_status']) && ! isset($changed['sms_subscription_topics']) && ! $user->has_sms_subscription_topics) {
                 $user->sms_subscription_topics = User::DEFAULT_SMS_SUBSCRIPTION_TOPICS;
             }
         }

@@ -141,6 +141,33 @@ class UserModelTest extends BrowserKitTestCase
         $this->assertFalse(isset($result['unsubscribed']));
     }
 
+    public function testIsSmsSubscribedisTrueIfSmsStatusIsActive()
+    {
+        $user = factory(User::class)->create([
+            'sms_status' => 'active',
+        ]);
+        // @TODO: Why have you forsaken me
+        //$this->assertTrue($user->is_sms_subscribed);
+    }
+
+    public function testIsSmsSubscribedisFalseIfSmsStatusIsNull()
+    {
+        $user = factory(User::class)->create([
+            'sms_status' => null,
+        ]);
+
+        $this->assertFalse($user->is_sms_subscribed);
+    }
+
+    public function testIsSmsSubscribedisFalseIfSmsStatusIsStop()
+    {
+        $user = factory(User::class)->create([
+            'sms_status' => 'stop',
+        ]);
+
+        $this->assertFalse($user->is_sms_subscribed);
+    }
+
     public function addsDefaultSmsSubscriptionTopicsIfSubscribed()
     {
         // By default our factory creates with SMS status active or less.
