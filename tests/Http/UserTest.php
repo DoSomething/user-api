@@ -596,34 +596,6 @@ class UserTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that users get created_at & updated_at fields.
-     * POST /v2/users/
-     *
-     * @return void
-     */
-    public function testV2SetCreatedAtField()
-    {
-        $this->asAdminUser()->json('POST', 'v2/users', [
-            'email' => 'alejandro@example.com',
-        ]);
-
-        $this->assertResponseStatus(201);
-
-        // Let's see what 'created_at' is returned in the response
-        $response = $this->decodeResponseJson();
-        $date = new Carbon($response['data']['created_at']);
-
-        // It should be today!
-        $this->assertTrue($date->isSameDay(Carbon::now()));
-
-        // And it should be stored as a ISODate in the actual database.
-        $this->seeInDatabase('users', [
-            'email' => 'alejandro@example.com',
-            'created_at' => new MongoDB\BSON\UTCDateTime($date->getTimestamp() * 1000),
-        ]);
-    }
-
-    /**
      * Test that the `sms_subscription_topics` field is validated.
      * POST /users/:id
      *
