@@ -42,19 +42,24 @@ class HelpersTest extends BrowserKitTestCase
     }
 
     /** @test */
-    public function testGetClientId()
+    public function testGetClientIdFromWeb()
     {
-        // Web requests should report as 'northstar'.
         $this->get('/register');
         $this->assertEquals(client_id(), 'northstar');
+    }
 
-        // Make a request using legacy API header.
+    /** @test */
+    public function testGetClientIdFromLegacyHeader()
+    {
         $client = Client::create(['client_id' => 'legacy_client', 'scope' => 'user']);
-        $this->withLegacyApiKey($client)->json('GET', '/status');
+        $this->withLegacyApiKey($client)->getJson('/status');
         $this->assertEquals(client_id(), 'legacy_client');
+    }
 
-        // And make a request using OAuth.
-        $this->asNormalUser()->json('GET', '/status');
+    /** @test */
+    public function testGetClientIdFromOAuth()
+    {
+        $this->asNormalUser()->getJson('/status');
         $this->assertEquals(client_id(), 'phpunit');
     }
 }

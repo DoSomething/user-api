@@ -6,6 +6,7 @@ use DateInterval;
 use Defuse\Crypto\Key;
 use Northstar\Auth\Registrar;
 use Illuminate\Cache\RateLimiter;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Northstar\Auth\NorthstarTokenGuard;
 use League\OAuth2\Server\ResourceServer;
@@ -39,20 +40,14 @@ class OAuthServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        /**
-         * The authentication manager.
-         * @var \Illuminate\Auth\AuthManager $auth
-         */
-        $auth = $this->app['auth'];
-
         // Register our custom user provider
-        $auth->provider('northstar', function ($app, array $config) {
+        Auth::provider('northstar', function ($app, array $config) {
             return new NorthstarUserProvider($app[Registrar::class], $app['hash'], $config['model']);
         });
 
         // Register our custom token Guard implementation
-        $auth->extend('northstar-token', function ($app, $name, array $config) use ($auth) {
-            return new NorthstarTokenGuard($auth->createUserProvider($config['provider']), request());
+        Auth::extend('northstar-token', function ($app, $name, array $config) {
+            return new NorthstarTokenGuard(Auth::createUserProvider($config['provider']), request());
         });
 
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);

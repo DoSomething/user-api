@@ -10,46 +10,46 @@
  */
 
 // Homepage
-$router->get('/', 'UserController@home');
+Route::get('/', 'UserController@home');
 
 // Users
-$router->resource('users', 'UserController', ['except' => ['index', 'create', 'delete']]);
+Route::resource('users', 'UserController', ['except' => ['index', 'create', 'delete']]);
 
 // Authorization flow for the Auth Code OAuth grant.
-$router->get('authorize', 'AuthController@getAuthorize');
-$router->get('callback', 'AuthController@getCallback');
+Route::get('authorize', 'AuthController@getAuthorize');
+Route::get('callback', 'AuthController@getCallback');
 
 // Login & Logout
-$router->get('login', 'AuthController@getLogin');
-$router->post('login', 'AuthController@postLogin');
-$router->get('logout', 'AuthController@getLogout');
+Route::get('login', 'AuthController@getLogin');
+Route::post('login', 'AuthController@postLogin');
+Route::get('logout', 'AuthController@getLogout');
 
 // Two-Factor Authentication
-$router->get('totp', 'TotpController@prompt');
-$router->post('totp', 'TotpController@verify');
-$router->get('totp/configure', 'TotpController@configure');
-$router->post('totp/configure', 'TotpController@store');
+Route::get('totp', 'TotpController@prompt');
+Route::post('totp', 'TotpController@verify');
+Route::get('totp/configure', 'TotpController@configure');
+Route::post('totp/configure', 'TotpController@store');
 
 // Facebook Continue
-$router->get('facebook/continue', 'FacebookController@redirectToProvider');
-$router->get('facebook/verify', 'FacebookController@handleProviderCallback');
+Route::get('facebook/continue', 'FacebookController@redirectToProvider');
+Route::get('facebook/verify', 'FacebookController@handleProviderCallback');
 
 // Google Continue
-$router->get('google/continue', 'GoogleController@redirectToProvider');
-$router->get('google/verify', 'GoogleController@handleProviderCallback');
+Route::get('google/continue', 'GoogleController@redirectToProvider');
+Route::get('google/verify', 'GoogleController@handleProviderCallback');
 
 // Registration
-$router->get('register', 'AuthController@getRegister');
-$router->post('register', 'AuthController@postRegister');
+Route::get('register', 'AuthController@getRegister');
+Route::post('register', 'AuthController@postRegister');
 
 // Profile
-$router->get('profile/about', 'ProfileAboutController@edit');
-$router->patch('profile/about', 'ProfileAboutController@update');
-$router->get('profile/subscriptions', 'ProfileSubscriptionsController@edit');
-$router->patch('profile/subscriptions', 'ProfileSubscriptionsController@update');
+Route::get('profile/about', 'ProfileAboutController@edit');
+Route::patch('profile/about', 'ProfileAboutController@update');
+Route::get('profile/subscriptions', 'ProfileSubscriptionsController@edit');
+Route::patch('profile/subscriptions', 'ProfileSubscriptionsController@update');
 
 // Password Reset
-$router->get('password/reset', 'ForgotPasswordController@showLinkRequestForm');
-$router->post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
-$router->get('password/reset/{type}/{token}', ['as' => 'password.reset', 'uses' => 'ResetPasswordController@showResetForm']);
-$router->post('password/reset/{type}', 'ResetPasswordController@reset');
+Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm');
+Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
+Route::get('password/reset/{type}/{token}', ['as' => 'password.reset', 'uses' => 'ResetPasswordController@showResetForm']);
+Route::post('password/reset/{type}', 'ResetPasswordController@reset');

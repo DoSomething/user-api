@@ -29,13 +29,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // Register custom Gate with anonymous authorization support:
-        $this->app->singleton(GateContract::class, function ($app) {
-            return new CustomGate($app, function () use ($app) {
-                return call_user_func($app['auth']->userResolver());
-            });
-        });
-
         // Configure Mongo 'failed_jobs' collection.
         $this->app->extend('queue.failer', function ($instance, $app) {
             return new MongoFailedJobProvider(

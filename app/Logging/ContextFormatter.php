@@ -16,9 +16,15 @@ class ContextFormatter
     {
         foreach ($logger->getHandlers() as $handler) {
             $handler->pushProcessor(function ($record) {
-                $record['extra']['user_id'] = auth()->id();
-                $record['extra']['client_id'] = client_id();
+                // This header is set by Heroku's router on all incoming requests.
                 $record['extra']['request_id'] = request()->header('X-Request-Id');
+
+                // Without this check, logging or exceptions that occur before the application
+                // is fully loaded will result in 'Class auth/session does not exist' errors).
+                if (app()->isBooted()) {
+                    $record['extra']['user_id'] = auth()->id();
+                    $record['extra']['client_id'] = client_id();
+                }
 
                 return $record;
             });
