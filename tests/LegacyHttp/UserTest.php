@@ -1,6 +1,5 @@
 <?php
 
-use Carbon\Carbon;
 use Northstar\Models\User;
 use Northstar\Services\Rogue;
 use Northstar\Services\Gambit;

@@ -3,11 +3,9 @@
 namespace Northstar\Providers;
 
 use Northstar\Models\User;
-use Northstar\Auth\CustomGate;
 use Northstar\Observers\UserObserver;
 use Illuminate\Support\ServiceProvider;
 use Northstar\Database\MongoFailedJobProvider;
-use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 
 class AppServiceProvider extends ServiceProvider
 {
