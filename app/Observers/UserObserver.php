@@ -22,9 +22,9 @@ class UserObserver
             $user->email_subscription_status = true;
         }
 
-        // Populate default topics if subscribing to SMS without providing any topics.
+        // Populate default topics if subscribing to SMS without any topics provided.
         if ($user->isSmsSubscribed() && ! $user->hasSmsSubscriptionTopics()) {
-            $user->sms_subscription_topics = User::DEFAULT_SMS_SUBSCRIPTION_TOPICS;
+            $user->addDefaultSmsSubscriptionTopics();
         }
 
         // Set source automatically if not provided.
@@ -80,10 +80,10 @@ class UserObserver
              * isn't a need to change sms_status if an unsubscribed user adds a SMS topic.
              */
             if (User::isUnsubscribedSmsStatus($changed['sms_status'])) {
-                $user->sms_subscription_topics = [];
+                $user->clearSmsSubscriptionTopics();
             // If resubscribing and not adding topics, add the default topics if user has none.
             } elseif (User::isSubscribedSmsStatus($changed['sms_status']) && ! isset($changed['sms_subscription_topics']) && ! $user->hasSmsSubscriptionTopics()) {
-                $user->sms_subscription_topics = User::DEFAULT_SMS_SUBSCRIPTION_TOPICS;
+                $user->addDefaultSmsSubscriptionTopics();
             }
         }
 
