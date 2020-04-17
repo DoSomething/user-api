@@ -140,4 +140,96 @@ class UserModelTest extends BrowserKitTestCase
         $this->assertFalse(isset($result['email_subscription_status']));
         $this->assertFalse(isset($result['unsubscribed']));
     }
+
+    public function testIsSmsSubscribedisTrueIfSmsStatusIsActive()
+    {
+        $user = factory(User::class)->create([
+            'sms_status' => 'active',
+        ]);
+
+        $this->assertTrue($user->isSmsSubscribed());
+    }
+
+    public function testIsSmsSubscribedisTrueIfSmsStatusIsLess()
+    {
+        $user = factory(User::class)->create([
+            'sms_status' => 'less',
+        ]);
+
+        $this->assertTrue($user->isSmsSubscribed());
+    }
+
+    public function testIsSmsSubscribedisFalseIfSmsStatusIsNull()
+    {
+        $user = factory(User::class)->create([
+            'sms_status' => null,
+        ]);
+
+        $this->assertFalse($user->isSmsSubscribed());
+    }
+
+    public function testIsSmsSubscribedisFalseIfSmsStatusIsStop()
+    {
+        $user = factory(User::class)->create([
+            'sms_status' => 'stop',
+        ]);
+
+        $this->assertFalse($user->isSmsSubscribed());
+    }
+
+    public function testHasSmsSubscriptionTopicsisTrueIfTopicsExist()
+    {
+        $user = factory(User::class)->states('sms-subscribed')->create();
+
+        $this->assertTrue($user->hasSmsSubscriptionTopics());
+    }
+
+    public function testHasSmsSubscriptionTopicsisFalseIfTopicsIsNull()
+    {
+        $user = factory(User::class)->states('sms-unsubscribed')->create();
+
+        $this->assertFalse($user->hasSmsSubscriptionTopics());
+    }
+
+    public function addsDefaultSmsSubscriptionTopicsIfSubscribed()
+    {
+        // By default our factory creates with SMS status active or less.
+        $subscribedUser = factory(User::class)->create();
+
+        $this->assertEquals($subscribedUser->sms_subscription_topics, ['general', 'voting']);
+    }
+
+    public function addsEmptySmsSubscriptionTopicsIfUnsubscribed()
+    {
+        $unsubscribedUser = factory(User::class)->create([
+            'sms_status' => 'stop',
+        ]);
+
+        $this->assertEquals($subscribedUser->sms_subscription_topics, []);
+    }
+
+    public function doesNotChangeSubscriptionTopicsIfExistsWhenChangingSubscribedStatus()
+    {
+        $user = factory(User::class)->create([
+            'sms_status' => 'less',
+            'sms_subscription_topics' => ['voting'],
+        ]);
+
+        $user->sms_status = 'active';
+        $user->save();
+
+        $this->assertEquals($user->sms_subscription_topics, ['voting']);
+    }
+
+    public function addsDefaultSmsSubscriptionTopicsIfChangingToSubscribed()
+    {
+        $user = factory(User::class)->create([
+            'sms_status' => 'stop',
+        ]);
+
+        $user->sms_status = 'active';
+        $user->save();
+
+        $this->assertEquals($user->sms_subscription_topics, ['general', 'voting']);
+    }
 }

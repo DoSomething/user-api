@@ -725,8 +725,66 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function setSmsSubscriptionTopicsAttribute($value)
     {
-        // Set de-duped array as sms_subscription_topics
-        $this->attributes['sms_subscription_topics'] = array_values(array_unique($value));
+        // Set de-duped array as sms_subscription_topics.
+        $this->attributes['sms_subscription_topics'] = array_values(array_unique($value ?: []));
+    }
+
+    /**
+     * Sets default SMS subscription topics.
+     */
+    public function addDefaultSmsSubscriptionTopics()
+    {
+        $this->sms_subscription_topics = ['general', 'voting'];
+    }
+
+    /**
+     * Sets default SMS subscription topics.
+     */
+    public function clearSmsSubscriptionTopics()
+    {
+        $this->sms_subscription_topics = [];
+    }
+
+    /**
+     * Whether a SMS status value is a subscribed SMS status.
+     *
+     * @param string $smsStatusValue
+     * @return bool
+     */
+    public static function isSubscribedSmsStatus($smsStatusValue)
+    {
+        return in_array($smsStatusValue, ['active', 'less']);
+    }
+
+    /**
+     * Whether a SMS status value is a unsubscribed SMS status.
+     *
+     * @param string $smsStatusValue
+     * @return bool
+     */
+    public static function isUnsubscribedSmsStatus($smsStatusValue)
+    {
+        return in_array($smsStatusValue, ['stop', 'undeliverable']);
+    }
+
+    /**
+     * Whether user has a subscribed SMS status.
+     *
+     * @return bool
+     */
+    public function isSmsSubscribed()
+    {
+        return isset($this->sms_status) && self::isSubscribedSmsStatus($this->sms_status);
+    }
+
+    /**
+     * Whether user has any SMS subscription topics.
+     *
+     * @return bool
+     */
+    public function hasSmsSubscriptionTopics()
+    {
+        return isset($this->sms_subscription_topics) && count($this->sms_subscription_topics);
     }
 
     /**

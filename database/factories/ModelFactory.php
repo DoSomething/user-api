@@ -59,6 +59,13 @@ $factory->state(Northstar\Models\User::class, 'sms-subscribed', function (Faker\
     ];
 });
 
+$factory->state(Northstar\Models\User::class, 'sms-unsubscribed', function (Faker\Generator $faker) {
+    return [
+        'sms_status' => 'stop',
+        'sms_subscription_topics' => null,
+    ];
+});
+
 $factory->defineAs(Northstar\Models\User::class, 'staff', function (Faker\Generator $faker) {
     $faker->addProvider(new FakerPhoneNumber($faker));
 
