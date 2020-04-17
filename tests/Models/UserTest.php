@@ -147,7 +147,7 @@ class UserModelTest extends BrowserKitTestCase
             'sms_status' => 'active',
         ]);
 
-        $this->assertTrue($user->is_sms_subscribed);
+        $this->assertTrue($user->isSmsSubscribed());
     }
 
     public function testIsSmsSubscribedisTrueIfSmsStatusIsLess()
@@ -156,7 +156,7 @@ class UserModelTest extends BrowserKitTestCase
             'sms_status' => 'less',
         ]);
 
-        $this->assertTrue($user->is_sms_subscribed);
+        $this->assertTrue($user->isSmsSubscribed());
     }
 
     public function testIsSmsSubscribedisFalseIfSmsStatusIsNull()
@@ -165,7 +165,7 @@ class UserModelTest extends BrowserKitTestCase
             'sms_status' => null,
         ]);
 
-        $this->assertFalse($user->is_sms_subscribed);
+        $this->assertFalse($user->isSmsSubscribed());
     }
 
     public function testIsSmsSubscribedisFalseIfSmsStatusIsStop()
@@ -174,21 +174,21 @@ class UserModelTest extends BrowserKitTestCase
             'sms_status' => 'stop',
         ]);
 
-        $this->assertFalse($user->is_sms_subscribed);
+        $this->assertFalse($user->isSmsSubscribed());
     }
 
     public function testHasSmsSubscriptionTopicsisTrueIfTopicsExist()
     {
         $user = factory(User::class)->states('sms-subscribed')->create();
 
-        $this->assertTrue($user->has_sms_subscription_topics);
+        $this->assertTrue($user->hasSmsSubscriptionTopics());
     }
 
     public function testHasSmsSubscriptionTopicsisFalseIfTopicsIsNull()
     {
         $user = factory(User::class)->states('sms-unsubscribed')->create();
 
-        $this->assertFalse($user->has_sms_subscription_topics);
+        $this->assertFalse($user->hasSmsSubscriptionTopics());
     }
 
     public function addsDefaultSmsSubscriptionTopicsIfSubscribed()
