@@ -37,10 +37,10 @@ class SetupCommand extends Command
         $key = Key::createNewRandomKey();
         $this->writeEnvironmentVariable('APP_AUTH_KEY', $key->saveToAsciiSafeString());
 
-        $this->runCommand('key:generate', 'Creating application key');
+        $this->runArtisanCommand('key:generate', 'Creating application key');
 
-        $this->runCommand('northstar:keys', 'Creating public/private key');
+        $this->runArtisanCommand('northstar:keys', 'Creating public/private key');
 
-        $this->runCommand('migrate', 'Running database migrations');
+        $this->runArtisanCommand('migrate', 'Running database migrations');
     }
 }

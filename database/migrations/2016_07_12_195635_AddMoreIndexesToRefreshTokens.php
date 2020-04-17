@@ -26,8 +26,8 @@ class AddMoreIndexesToRefreshTokens extends Migration
     public function down()
     {
         Schema::table('refresh_tokens', function (Blueprint $collection) {
-            $collection->dropIndex('user_id');
-            $collection->dropIndex('client_id');
+            $collection->dropIndex('user_id_1');
+            $collection->dropIndex('client_id_1');
         });
     }
 }

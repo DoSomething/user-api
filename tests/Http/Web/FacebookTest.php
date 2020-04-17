@@ -79,11 +79,11 @@ class FacebookTest extends BrowserKitTestCase
 
     /**
      * Test that a user is redirected to Facebook
-     * @expectedException \Laravel\BrowserKitTesting\HttpException
-     * @expectedExceptionMessageRegExp /www\.facebook\.com/
      */
     public function testFacebookRedirect()
     {
+        $this->expectException(\Laravel\BrowserKitTesting\HttpException::class);
+
         // @TODO: Why do we need these two magic annotations?
         $this->visit('/facebook/continue');
         $this->assertRedirectedTo('https://www.facebook.com/');

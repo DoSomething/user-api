@@ -26,7 +26,7 @@ class AddIndexToDeletionRequestedAt extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $collection) {
-            $collection->dropIndex('deletion_requested_at');
+            $collection->dropIndex('deletion_requested_at_1');
         });
     }
 }

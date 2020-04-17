@@ -1,6 +1,5 @@
 <?php
 
-use Carbon\Carbon;
 use Northstar\Models\User;
 use Northstar\Services\Rogue;
 use Northstar\Services\Gambit;
@@ -593,34 +592,6 @@ class UserTest extends BrowserKitTestCase
 
         $this->assertResponseStatus(200);
         $this->assertEquals('2017-11-02T18:42:00+00:00', $user->fresh()->last_messaged_at->toIso8601String());
-    }
-
-    /**
-     * Test that users get created_at & updated_at fields.
-     * POST /v2/users/
-     *
-     * @return void
-     */
-    public function testV2SetCreatedAtField()
-    {
-        $this->asAdminUser()->json('POST', 'v2/users', [
-            'email' => 'alejandro@example.com',
-        ]);
-
-        $this->assertResponseStatus(201);
-
-        // Let's see what 'created_at' is returned in the response
-        $response = $this->decodeResponseJson();
-        $date = new Carbon($response['data']['created_at']);
-
-        // It should be today!
-        $this->assertTrue($date->isSameDay(Carbon::now()));
-
-        // And it should be stored as a ISODate in the actual database.
-        $this->seeInDatabase('users', [
-            'email' => 'alejandro@example.com',
-            'created_at' => new MongoDB\BSON\UTCDateTime($date->getTimestamp() * 1000),
-        ]);
     }
 
     /**

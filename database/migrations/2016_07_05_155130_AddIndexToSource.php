@@ -25,7 +25,7 @@ class AddIndexToSource extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $collection) {
-            $collection->dropIndex('source');
+            $collection->dropIndex('source_1');
         });
     }
 }

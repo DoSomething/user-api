@@ -1,6 +1,7 @@
 <?php
 
 use Northstar\Models\User;
+use Illuminate\Support\Facades\Artisan;
 
 class CommunityTopicBackfillTest extends BrowserKitTestCase
 {
@@ -10,7 +11,7 @@ class CommunityTopicBackfillTest extends BrowserKitTestCase
         $user = factory(User::class)->create(['email_subscription_status' => false, 'email_subscription_topics' => []]);
 
         // Run the community backfill command.
-        $this->artisan('northstar:community');
+        Artisan::call('northstar:community');
 
         // Make sure no updates were made to this user
         $this->seeInDatabase('users', [
@@ -26,7 +27,7 @@ class CommunityTopicBackfillTest extends BrowserKitTestCase
         $user = factory(User::class)->create(['email_subscription_status' => true, 'email_subscription_topics' => ['community']]);
 
         // Run the community backfill command.
-        $this->artisan('northstar:community');
+        Artisan::call('northstar:community');
 
         // Make sure no updates were made to this user
         $this->seeInDatabase('users', [
@@ -42,7 +43,7 @@ class CommunityTopicBackfillTest extends BrowserKitTestCase
         $user = factory(User::class)->create(['email_subscription_status' => true, 'email_subscription_topics' => []]);
 
         // Run the community backfill command.
-        $this->artisan('northstar:community');
+        Artisan::call('northstar:community');
 
         // Make sure community was added to this user
         $this->seeInDatabase('users', [
@@ -60,7 +61,7 @@ class CommunityTopicBackfillTest extends BrowserKitTestCase
         $user3 = factory(User::class)->create(['email_subscription_status' => true, 'email_subscription_topics' => ['news', 'scholarships', 'lifestyle']]);
 
         // Run the community backfill command.
-        $this->artisan('northstar:community');
+        Artisan::call('northstar:community');
 
         // Make sure the updates were made
         $this->seeInDatabase('users', [

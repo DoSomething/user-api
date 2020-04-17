@@ -25,7 +25,7 @@ class AddIndexToRole extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $collection) {
-            $collection->dropIndex('role');
+            $collection->dropIndex('role_1');
         });
     }
 }

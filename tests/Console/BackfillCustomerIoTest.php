@@ -1,6 +1,7 @@
 <?php
 
 use Northstar\Models\User;
+use Illuminate\Support\Facades\Artisan;
 
 class BackfillCustomerIoTest extends BrowserKitTestCase
 {
@@ -10,7 +11,7 @@ class BackfillCustomerIoTest extends BrowserKitTestCase
         $users = factory(User::class, 5)->create();
 
         // Run the Customer.io backfill command.
-        $this->artisan('northstar:cio');
+        Artisan::call('northstar:cio');
 
         // Make sure we send to Customer.io the expected number of times (5 times when created, 5 times when we call the command)
         $this->blinkMock->shouldHaveReceived('userCreate')->times(10);

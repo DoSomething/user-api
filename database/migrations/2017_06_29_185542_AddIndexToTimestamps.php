@@ -26,8 +26,8 @@ class AddIndexToTimestamps extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $collection) {
-            $collection->dropIndex('created_at');
-            $collection->dropIndex('updated_at');
+            $collection->dropIndex('created_at_1');
+            $collection->dropIndex('updated_at_1');
         });
     }
 }

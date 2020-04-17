@@ -124,7 +124,7 @@ function client_id()
  */
 function get_countries()
 {
-    $iso = (new League\ISO3166\ISO3166)->getAll();
+    $iso = (new League\ISO3166\ISO3166)->all();
 
     return collect($iso)->pluck('name', 'alpha2');
 }

@@ -24,7 +24,7 @@ class AddDrupalIDIndex extends Migration
     public function down()
     {
         Schema::table('users', function ($collection) {
-            $collection->dropIndex('drupal_id');
+            $collection->dropIndex('drupal_id_1');
         });
     }
 }

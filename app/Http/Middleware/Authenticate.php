@@ -37,7 +37,7 @@ class Authenticate
      */
     public function handle($request, Closure $next, ...$guards)
     {
-        $this->authenticate($guards);
+        $this->authenticate($request, $guards);
 
         return $next($request);
     }
@@ -45,12 +45,13 @@ class Authenticate
     /**
      * Determine if the user is logged in to any of the given guards.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  array  $guards
      * @return void
      *
      * @throws \Illuminate\Auth\AuthenticationException
      */
-    protected function authenticate(array $guards)
+    protected function authenticate($request, array $guards)
     {
         if (empty($guards)) {
             $guards = ['api'];

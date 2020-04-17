@@ -155,13 +155,13 @@ class Registrar
     public function validateCredentials($user, array $credentials)
     {
         if (! $user) {
-            event(new \Illuminate\Auth\Events\Failed($user, $credentials));
+            event(new \Illuminate\Auth\Events\Failed('web', $user, $credentials));
 
             return false;
         }
 
         if ($this->hasher->check($credentials['password'], $user->password)) {
-            event(new \Illuminate\Auth\Events\Login($user, false));
+            event(new \Illuminate\Auth\Events\Login('web', $user, false));
 
             return true;
         }
@@ -172,13 +172,13 @@ class Registrar
             $user->password = $credentials['password'];
             $user->save();
 
-            event(new \Illuminate\Auth\Events\Login($user, false));
+            event(new \Illuminate\Auth\Events\Login('web', $user, false));
 
             return true;
         }
 
         // Well, looks like we couldn't authenticate...
-        event(new \Illuminate\Auth\Events\Failed($user, $credentials));
+        event(new \Illuminate\Auth\Events\Failed('web', $user, $credentials));
 
         return false;
     }
