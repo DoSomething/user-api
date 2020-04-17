@@ -20,8 +20,8 @@ jobs:
       - run:
           name: install php extensions
           command: |
-            sudo pecl install mongodb
-            sudo docker-php-ext-enable mongodb
+            sudo pecl install mongodb redis
+            sudo docker-php-ext-enable mongodb redis
             sudo docker-php-ext-install bcmath
       - restore_cache:
           keys:
