@@ -152,7 +152,7 @@ class LegacyUserTest extends BrowserKitTestCase
         // Check that public & private profile fields are visible
         $this->seeJsonStructure([
             'data' => [
-                'id', 'email', 'first_name', 'last_name',
+                'id', 'email', 'first_name', 'last_name', 'sms_subscription_topics',
             ],
         ]);
     }

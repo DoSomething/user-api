@@ -87,6 +87,7 @@ class UserTransformer extends TransformerAbstract
         // SMS subscription status
         $response['sms_status'] = $user->sms_status;
         $response['sms_paused'] = (bool) $user->sms_paused;
+        $response['sms_subscription_topics'] = $user->sms_subscription_topics;
 
         if (Gate::allows('view-full-profile', $user)) {
             $response['last_accessed_at'] = iso8601($user->last_accessed_at);
