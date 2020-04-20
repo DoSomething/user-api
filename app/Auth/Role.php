@@ -2,6 +2,7 @@
 
 namespace Northstar\Auth;
 
+use Illuminate\Support\Facades\Log;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -83,7 +84,7 @@ class Role
     public static function gate(array $allowedRoles)
     {
         if (! static::allows($allowedRoles)) {
-            app('stathat')->ezCount('invalid role error');
+            Log::warning('invalid_role_error');
 
             // If request is authenticated by a JWT access token or we are looking at a v2 endpoint,
             // use OAuth access denied exception to return a 401 error.

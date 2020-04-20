@@ -2,27 +2,10 @@
 
 namespace Northstar\Listeners;
 
-use DoSomething\StatHat\Client as StatHat;
+use Illuminate\Support\Facades\Log;
 
 class ReportFailedAuthenticationAttempt
 {
-    /**
-     * The StatHat client.
-     *
-     * @var StatHat
-     */
-    protected $stathat;
-
-    /**
-     * Create the event listener.
-     *
-     * @param StatHat $stathat
-     */
-    public function __construct(StatHat $stathat)
-    {
-        $this->stathat = $stathat;
-    }
-
     /**
      * Handle the event.
      *
@@ -30,6 +13,6 @@ class ReportFailedAuthenticationAttempt
      */
     public function handle()
     {
-        $this->stathat->ezCount('failed user authentication attempt');
+        Log::warning('failed user authentication attempt');
     }
 }

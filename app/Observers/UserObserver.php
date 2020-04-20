@@ -4,6 +4,7 @@ namespace Northstar\Observers;
 
 use Northstar\Models\User;
 use Northstar\Models\RefreshToken;
+use Illuminate\Support\Facades\Log;
 use Northstar\Jobs\SendUserToCustomerIo;
 use Northstar\Jobs\DeleteUserFromOtherServices;
 
@@ -45,8 +46,7 @@ class UserObserver
         SendUserToCustomerIo::dispatch($user)->onQueue($queue);
 
         // Send metrics to StatHat.
-        app('stathat')->ezCount('user created');
-        app('stathat')->ezCount('user created - '.$user->source);
+        Log::info('user_created', ['source' => $user->source]);
     }
 
     /**

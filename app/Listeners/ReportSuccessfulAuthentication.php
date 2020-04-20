@@ -3,29 +3,12 @@
 namespace Northstar\Listeners;
 
 use Carbon\Carbon;
-use DoSomething\StatHat\Client as StatHat;
-use Illuminate\Auth\Events\Login;
 use Northstar\Models\User;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Support\Facades\Log;
 
 class ReportSuccessfulAuthentication
 {
-    /**
-     * The StatHat client.
-     *
-     * @var StatHat
-     */
-    protected $stathat;
-
-    /**
-     * Create the event listener.
-     *
-     * @param StatHat $stathat
-     */
-    public function __construct(StatHat $stathat)
-    {
-        $this->stathat = $stathat;
-    }
-
     /**
      * Handle the event.
      *
@@ -42,7 +25,7 @@ class ReportSuccessfulAuthentication
         $user->last_authenticated_at = Carbon::now();
         $user->save();
 
-        // Update counter in StatHat
-        $this->stathat->ezCount('user authentication');
+        // Write this event to the log.
+        Log::info('user authenticated', ['id' => $user->id]);
     }
 }

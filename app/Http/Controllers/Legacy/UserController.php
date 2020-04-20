@@ -6,6 +6,7 @@ use Northstar\Auth\Role;
 use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
+use Illuminate\Support\Facades\Log;
 use Northstar\Http\Controllers\Controller;
 use Northstar\Http\Transformers\Legacy\UserTransformer;
 use Northstar\Exceptions\NorthstarValidationException;
@@ -103,8 +104,7 @@ class UserController extends Controller
         // @TODO: There must be a better way to do this...
         foreach (User::$uniqueIndexes as $index) {
             if ($request->has($index) && ! empty($existingUser->{$index}) && $request->input($index) !== $existingUser->{$index}) {
-                app('stathat')->ezCount('upsert conflict');
-                logger('attempted to upsert an existing index', [
+                Log::warning('attempted to upsert an existing index', [
                     'index' => $index,
                     'new' => $request->input($index),
                     'existing' => $existingUser->{$index},
