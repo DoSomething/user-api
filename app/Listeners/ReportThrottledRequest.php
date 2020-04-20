@@ -2,27 +2,10 @@
 
 namespace Northstar\Listeners;
 
-use DoSomething\StatHat\Client as StatHat;
+use Illuminate\Support\Facades\Log;
 
 class ReportThrottledRequest
 {
-    /**
-     * The StatHat client.
-     *
-     * @var StatHat
-     */
-    protected $stathat;
-
-    /**
-     * Create the event listener.
-     *
-     * @param StatHat $stathat
-     */
-    public function __construct(StatHat $stathat)
-    {
-        $this->stathat = $stathat;
-    }
-
     /**
      * Handle the event.
      *
@@ -30,6 +13,6 @@ class ReportThrottledRequest
      */
     public function handle()
     {
-        $this->stathat->ezCount('rate limited request');
+        Log::warning('rate_limited_request');
     }
 }

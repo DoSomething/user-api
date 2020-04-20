@@ -104,7 +104,6 @@ class Handler extends ExceptionHandler
      */
     protected function rateLimited($exception)
     {
-        // Report the rate-limited request to StatHat.
         event(new \Northstar\Events\Throttled());
 
         $retryAfter = $exception->getHeaders()['Retry-After'];
@@ -199,7 +198,7 @@ class Handler extends ExceptionHandler
      */
     protected function context()
     {
-        // We handle adding context in AppServiceProvider, and specifically
+        // We handle adding context in ContextFormatter, and specifically
         // want to disable Laravel's default behavior of appending email here.
         return [];
     }

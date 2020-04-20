@@ -5,7 +5,6 @@ namespace Northstar\Providers;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Routing\Events\RouteMatched;
 use Northstar\Events\PasswordUpdated;
 use Northstar\Events\Throttled;
 use Northstar\Listeners\ReportFailedAuthenticationAttempt;
@@ -36,12 +35,5 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-
-        // Update count on StatHat every time a route is hit.
-        // e.g. will increment the "northstar - v1/users/{term}/{id}" stat each
-        // time a client attempts to view a user profile through that route.
-        Event::listen(RouteMatched::class, function (RouteMatched $match) {
-            app('stathat')->ezCount('route: '.$match->route->uri());
-        });
     }
 }

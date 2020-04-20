@@ -99,6 +99,7 @@ return [
     */
 
     'failed' => [
+        'driver' => 'mongodb',
         'database' => 'mongodb',
         'table' => 'failed_jobs',
     ],

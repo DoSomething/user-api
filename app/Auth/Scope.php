@@ -2,8 +2,9 @@
 
 namespace Northstar\Auth;
 
-use League\OAuth2\Server\Exception\OAuthServerException;
 use Northstar\Models\Client;
+use Illuminate\Support\Facades\Log;
+use League\OAuth2\Server\Exception\OAuthServerException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class Scope
@@ -120,7 +121,7 @@ class Scope
         }
 
         if (! static::allows($scope)) {
-            app('stathat')->ezCount('invalid client scope error');
+            Log::warning('invalid_scope_error');
 
             // If scopes have been parsed from a provided JWT access token or we are looking at a v2 endpoint,
             // use OAuth access denied exception to return a 401 error.
