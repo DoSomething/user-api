@@ -56,7 +56,8 @@
         </div>
 
         <div id="vr-details" class="pb-4 hidden">
-            <p>Make your voice heard on the issues that matter to you. Take 2 minutes and <a href="#">register to vote at your current address!</a></p>
+            <p>Make your voice heard on the issues that matter to you. Take 2 minutes and 
+                <a target="_blank" rel="noopener noreferrer" href="https://register.rockthevote.com/registrants/new?partner=37187&email_address={{$user->email}}&home_zip_code={{$user->addr_zip}}&source=user:{{$user->id}},source:web,source_details:NewAccountCreationFlow">register to vote at your current address!</a></p>
         </div>
 
         <div class="form-item">
