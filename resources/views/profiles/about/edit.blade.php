@@ -32,21 +32,21 @@
 
         <div class="form-item flex flex-wrap justify-between md:justify-start">
             <label for="voter_registration_status" class="field-label height-auto w-full">Are you registered to vote at your current address?</label>
-            <div class="form-item -reduced w-1/5">
+            <div class="vr-status form-item -reduced w-1/5">
                 <label class="option -radio">
                     <input type="radio" name="voter_registration_status" value="confirmed" {{ (old('voter_registration_status') ?: $user->voter_registration_status) === 'confirmed' ? 'checked' : '' }}>
                     <span class="option__indicator"></span>
                     <span>Yes</span>
                 </label>
             </div>
-            <div class="form-item -reduced w-1/5">
+            <div class="vr-status form-item -reduced w-1/5">
                 <label class="option -radio">
                     <input type="radio" name="voter_registration_status" value="unregistered" {{ (old('voter_registration_status') ?: $user->voter_registration_status) === 'unregistered' ? 'checked' : '' }}>
                     <span class="option__indicator"></span>
                     <span>No</span>
                 </label>
             </div>
-            <div class="form-item -reduced w-3/5 pr-0">
+            <div class="vr-status form-item -reduced w-3/5 pr-0">
                 <label class="option -radio">
                     <input type="radio" name="voter_registration_status" value="uncertain" {{ (old('voter_registration_status') ?: $user->voter_registration_status) === 'uncertain' ? 'checked' : '' }}>
                     <span class="option__indicator"></span>
@@ -55,7 +55,7 @@
             </div>
         </div>
 
-        <div class="pb-4">
+        <div id="vr-details" class="pb-4 hidden">
             <p>Make your voice heard on the issues that matter to you. Take 2 minutes and <a href="#">register to vote at your current address!</a></p>
         </div>
 

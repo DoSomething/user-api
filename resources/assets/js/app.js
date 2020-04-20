@@ -18,6 +18,7 @@ window.Drupal = {
 
 // Utilities
 import Analytics from './utilities/Analytics';
+import ContentVisibility from './utilities/ContentVisibility';
 import DeLorean from './utilities/DeLorean';
 import PasswordVisibility from './utilities/PasswordVisibility';
 import './validators/auth';
@@ -33,6 +34,9 @@ if (document.documentElement.lang !== 'en') {
 
 // Initialize analytics.
 Analytics.init();
+
+//Initialize content visibility toggle.
+ContentVisibility.init();
 
 // Initialize routing back to last page.
 DeLorean.init();
