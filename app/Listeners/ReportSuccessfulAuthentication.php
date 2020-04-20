@@ -26,6 +26,6 @@ class ReportSuccessfulAuthentication
         $user->save();
 
         // Write this event to the log.
-        Log::info('user authenticated', ['id' => $user->id]);
+        Log::info('user_authenticated', ['id' => $user->id]);
     }
 }

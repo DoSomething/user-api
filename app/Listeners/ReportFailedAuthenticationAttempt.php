@@ -13,6 +13,6 @@ class ReportFailedAuthenticationAttempt
      */
     public function handle()
     {
-        Log::warning('failed user authentication attempt');
+        Log::warning('failed_authentication_attempt');
     }
 }

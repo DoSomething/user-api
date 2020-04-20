@@ -105,7 +105,7 @@ class UserController extends Controller
             // @TODO: There must be a better way to do this...
             foreach (User::$uniqueIndexes as $index) {
                 if ($request->has($index) && ! empty($existingUser->{$index}) && $request->input($index) !== $existingUser->{$index}) {
-                    Log::warning('attempted to upsert an existing index', [
+                    Log::warning('upsert_index_conflict', [
                         'index' => $index,
                         'new' => $request->input($index),
                         'existing' => $existingUser->{$index},
