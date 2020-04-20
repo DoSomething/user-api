@@ -198,7 +198,7 @@ class Handler extends ExceptionHandler
      */
     protected function context()
     {
-        // We handle adding context in AppServiceProvider, and specifically
+        // We handle adding context in ContextFormatter, and specifically
         // want to disable Laravel's default behavior of appending email here.
         return [];
     }
