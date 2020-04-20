@@ -150,6 +150,7 @@ return [
          */
         Fideloper\Proxy\TrustedProxyServiceProvider::class,
         Jenssegers\Mongodb\MongodbServiceProvider::class,
+        Jenssegers\Mongodb\MongodbQueueServiceProvider::class,
         Jenssegers\Mongodb\Auth\PasswordResetServiceProvider::class,
         DoSomething\Gateway\Laravel\GatewayServiceProvider::class,
         DoSomething\StatHat\StatHatServiceProvider::class,
