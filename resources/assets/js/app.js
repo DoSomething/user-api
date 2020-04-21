@@ -18,9 +18,9 @@ window.Drupal = {
 
 // Utilities
 import Analytics from './utilities/Analytics';
-import ContentVisibility from './utilities/ContentVisibility';
 import DeLorean from './utilities/DeLorean';
 import PasswordVisibility from './utilities/PasswordVisibility';
+import VoterRegistrationContent from './utilities/VoterRegistrationContent';
 import './validators/auth';
 
 // Display environment badge on local, dev, or QA:
@@ -35,8 +35,8 @@ if (document.documentElement.lang !== 'en') {
 // Initialize analytics.
 Analytics.init();
 
-//Initialize content visibility toggle.
-ContentVisibility.init();
+//Initialize Voter Registration Content Toggle.
+VoterRegistrationContent.init();
 
 // Initialize routing back to last page.
 DeLorean.init();

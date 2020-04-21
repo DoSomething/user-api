@@ -1,7 +1,7 @@
 const $ = require('jquery');
 
 /**
- * Utility script to enable content visibility toggling
+ * Utility script to enable toggling visibility of voter registration content
  */
 
 function clickHandlerToggleContent(event) {
@@ -18,8 +18,8 @@ function clickHandlerToggleContent(event) {
 
 const init = () => {
     $(document).ready(() => {
-        const vrStatusInputs = document.getElementsByClassName('voter-reg-status')
-        vrStatusInputs.forEach(inputField => {
+        const voterRegStatusInputs = document.getElementsByClassName('voter-reg-status')
+        voterRegStatusInputs.forEach(inputField => {
             inputField.addEventListener('click', clickHandlerToggleContent)
         })
       });

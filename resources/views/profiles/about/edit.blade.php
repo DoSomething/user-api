@@ -63,7 +63,7 @@
         </div>
 
         <div class="form-item">
-            <p class="font-bold mt-2">What cause areas do you care about most?</p>
+            <p class="font-bold">What cause areas do you care about most?</p>
             <div class="flex flex-wrap" >
                 <div class="w-full md:w-1/2">
                     @foreach ( $causes1 as $value => $label )
