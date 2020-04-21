@@ -13,7 +13,7 @@ class SetDefaultSmsSubscriptionTopics extends Command
      *
      * @var string
      */
-    protected $signature = 'northstar:default-sms-topics {status}';
+    protected $signature = 'northstar:default-sms-topics {smsStatus}';
 
     /**
      * The console command description.
@@ -46,10 +46,10 @@ class SetDefaultSmsSubscriptionTopics extends Command
      */
     public function handle()
     {
-        $smsStatus = $this->argument('status');
+        $smsStatus = $this->argument('smsStatus');
 
         if (! in_array($smsStatus, ['active', 'less', 'pending'])) {
-            $this->line('northstar:default-sms-topics - Invalid status argument: '.$smsStatus);
+            $this->line('northstar:default-sms-topics - Invalid smsStatus argument "'.$smsStatus.'".');
 
             return;
         }
@@ -65,13 +65,13 @@ class SetDefaultSmsSubscriptionTopics extends Command
         $totalCount = $query->count();
 
         if ($totalCount === 0) {
-            $this->line('northstar:default-sms-topics - No users need updating.');
+            $this->line('northstar:default-sms-topics - No users with smsStatus "'.$smsStatus.'" need updating.');
 
             return;
         }
 
-        $query->chunkById(200, function (Collection $users) use ($totalCount) {
-            $users->each(function (User $user) use ($totalCount) {
+        $query->chunkById(200, function (Collection $users) use ($totalCount, $smsStatus) {
+            $users->each(function (User $user) use ($totalCount, $smsStatus) {
                 $user->sms_subscription_topics = ['general', 'voting'];
                 $user->save();
             });
@@ -79,9 +79,9 @@ class SetDefaultSmsSubscriptionTopics extends Command
             // Logging to track progress (may read over 100% at the end when there are less than 200 users in the last chunk)
             $this->currentCount += 200;
             $percentDone = ($this->currentCount / $totalCount) * 100;
-            $this->line('northstar:default-sms-topics - status update - '.$this->currentCount.'/'.$totalCount.' - '.$percentDone.'% done');
+            $this->line('northstar:default-sms-topics - smsStatus "'.$smsStatus.'" - '.$this->currentCount.'/'.$totalCount.' - '.$percentDone.'% done');
         });
 
-        $this->line('northstar:default-sms-topics - Added "general" and "voting" to each appropriate user.');
+        $this->line('northstar:default-sms-topics - Added "general" and "voting" to each appropriate user with smsStatus "'.$smsStatus.'".');
     }
 }
