@@ -13,14 +13,14 @@ class SetDefaultSmsSubscriptionTopics extends Command
      *
      * @var string
      */
-    protected $signature = 'northstar:default-sms-topics';
+    protected $signature = 'northstar:default-sms-topics {status}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Add "general" and "voting" SMS topics for each user who is subscribed to SMS.';
+    protected $description = 'Add "general" and "voting" SMS topics for each user who does not have topics set and has the given SMS status.';
 
     /**
      * The number of users updated so far.
@@ -46,12 +46,20 @@ class SetDefaultSmsSubscriptionTopics extends Command
      */
     public function handle()
     {
+        $smsStatus = $this->argument('status');
+
+        if (! in_array($smsStatus, ['active', 'less', 'pending'])) {
+            $this->line('northstar:default-sms-topics - Invalid status argument: '.$smsStatus);
+
+            return;
+        }
+
         // Use low priority queue for these updates
         config(['queue.jobs.users' => 'low']);
 
-        // Grab users who are subscribers and do not have topics set.
+        // Grab users who have our status argument and do not have topics set.
         $query = (new User)->newQuery();
-        $query = $query->whereIn('sms_status', ['active', 'less', 'pending']);
+        $query = $query->where('sms_status', $smsStatus);
         $query = $query->where('sms_subscription_topics', null);
 
         $totalCount = $query->count();
