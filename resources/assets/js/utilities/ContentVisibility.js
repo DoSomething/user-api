@@ -6,7 +6,7 @@ const $ = require('jquery');
 
 function clickHandlerToggleContent(event) {
     const target = event.target;
-    const content = document.getElementById('vr-details');
+    const content = document.getElementById('voter-reg-cta');
 
     if(target.value === 'unregistered') {
         content.classList.remove('hidden')
@@ -18,7 +18,7 @@ function clickHandlerToggleContent(event) {
 
 const init = () => {
     $(document).ready(() => {
-        const vrStatusInputs = document.getElementsByClassName('vr-status')
+        const vrStatusInputs = document.getElementsByClassName('voter-reg-status')
         vrStatusInputs.forEach(inputField => {
             inputField.addEventListener('click', clickHandlerToggleContent)
         })
