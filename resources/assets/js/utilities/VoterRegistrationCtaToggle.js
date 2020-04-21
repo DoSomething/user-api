@@ -1,14 +1,14 @@
 const $ = require('jquery');
 
 /**
- * Utility script to enable toggling visibility of voter registration content
+ * Utility script to enable toggling visibility of voter registration 
+ * call to action on '/profile/about' form
  */
 
 function clickHandlerToggleContent(event) {
-    const target = event.target;
     const content = document.getElementById('voter-reg-cta');
 
-    if(target.value === 'unregistered') {
+    if(event.target.value === 'unregistered') {
         content.classList.remove('hidden')
     } else {
         content.classList.add('hidden')

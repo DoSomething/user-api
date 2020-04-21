@@ -20,7 +20,7 @@ window.Drupal = {
 import Analytics from './utilities/Analytics';
 import DeLorean from './utilities/DeLorean';
 import PasswordVisibility from './utilities/PasswordVisibility';
-import VoterRegistrationContent from './utilities/VoterRegistrationContent';
+import VoterRegistrationCtaToggle from './utilities/VoterRegistrationCtaToggle';
 import './validators/auth';
 
 // Display environment badge on local, dev, or QA:
@@ -36,7 +36,7 @@ if (document.documentElement.lang !== 'en') {
 Analytics.init();
 
 //Initialize Voter Registration Content Toggle.
-VoterRegistrationContent.init();
+VoterRegistrationCtaToggle.init();
 
 // Initialize routing back to last page.
 DeLorean.init();
