@@ -30,23 +30,23 @@
             </div>
         </div>
 
-        <div class="form-item flex flex-wrap justify-between md:justify-start">
+        <div class="flex flex-wrap justify-between md:justify-start">
             <label for="voter_registration_status" class="field-label height-auto w-full">Are you registered to vote at your current address?</label>
-            <div class="voter-reg-status form-item -reduced w-1/5">
+            <div class="voter-reg-status w-1/5">
                 <label class="option -radio">
                     <input type="radio" name="voter_registration_status" value="confirmed" {{ (old('voter_registration_status') ?: $user->voter_registration_status) === 'confirmed' ? 'checked' : '' }}>
                     <span class="option__indicator"></span>
                     <span>Yes</span>
                 </label>
             </div>
-            <div class="voter-reg-status form-item -reduced w-1/5">
+            <div class="voter-reg-status w-1/5">
                 <label class="option -radio">
                     <input type="radio" name="voter_registration_status" value="unregistered" {{ (old('voter_registration_status') ?: $user->voter_registration_status) === 'unregistered' ? 'checked' : '' }}>
                     <span class="option__indicator"></span>
                     <span>No</span>
                 </label>
             </div>
-            <div class="voter-reg-status form-item -reduced w-3/5 pr-0">
+            <div class="voter-reg-status w-3/5 pr-0">
                 <label class="option -radio">
                     <input type="radio" name="voter_registration_status" value="uncertain" {{ (old('voter_registration_status') ?: $user->voter_registration_status) === 'uncertain' ? 'checked' : '' }}>
                     <span class="option__indicator"></span>
@@ -55,7 +55,7 @@
             </div>
         </div>
 
-        <div id="voter-reg-cta" class="pb-4 hidden">
+        <div id="voter-reg-cta" class="form-item hidden">
             <p>Make your voice heard on the issues that matter to you. Take 2 minutes and 
                 <a id="voter-reg-link" target="_blank" rel="noopener noreferrer" href="https://register.rockthevote.com/registrants/new?partner=37187&email_address={{$user->email}}&home_zip_code={{$user->addr_zip}}&source=user:{{$user->id}},source:web,source_details:NewAccountCreationFlow">
                 register to vote at your current address!</a>
