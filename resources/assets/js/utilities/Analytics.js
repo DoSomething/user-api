@@ -521,6 +521,19 @@ function init() {
       });
     });
 
+    $('#voter-reg-link').on('click', () => {
+      // Tracks clicking on the Voter Registration Link in the Onboarding flow.
+      trackAnalyticsEvent({
+        metadata: {
+          adjective: 'register_to_vote',
+          category: 'onboarding',
+          noun: 'link_action',
+          target: 'link',
+          verb: 'clicked',
+        },
+      });
+    });
+
     // Check for and track validation errors returned from the backend after form submission.
     const $validationErrors = $('.validation-error');
     if ($validationErrors && $validationErrors.length) {
