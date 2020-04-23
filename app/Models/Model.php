@@ -3,6 +3,8 @@
 namespace Northstar\Models;
 
 use Carbon\Carbon;
+use MongoDB\BSON\UTCDateTime;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Database\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\Model as BaseModel;
 
@@ -140,5 +142,25 @@ class Model extends BaseModel
         $this->save($options);
 
         self::setEventDispatcher($dispatcher);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function asDateTime($value)
+    {
+        // Fixes an issue where 'jenssegers/laravel-mongodb' would incorrectly parse
+        // millisecond timestamps for dates before 1970 <https://git.io/JfIfu>:
+        if ($value instanceof UTCDateTime) {
+            $date = $value->toDateTime();
+
+            $seconds = $date->format('U');
+            $milliseconds = abs($date->format('v'));
+            $timestampMs = sprintf('%d%03d', $seconds, $milliseconds);
+
+            return Date::createFromTimestampMs($timestampMs);
+        }
+
+        return parent::asDateTime($value);
     }
 }
