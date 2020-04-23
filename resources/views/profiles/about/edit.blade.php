@@ -30,7 +30,7 @@
             </div>
         </div>
 
-        <div class="flex flex-wrap justify-between md:justify-start">
+        <div id="voter-reg-wrapper" class="form-item flex flex-wrap justify-between md:justify-start">
             <label for="voter_registration_status" class="field-label height-auto w-full">Are you registered to vote at your current address?</label>
             <div class="voter-reg-status w-1/5">
                 <label class="option -radio">
