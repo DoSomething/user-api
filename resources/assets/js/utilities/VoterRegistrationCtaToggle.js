@@ -7,14 +7,11 @@ const $ = require('jquery');
 
 function clickHandlerToggleContent(event) {
     const content = document.getElementById('voter-reg-cta');
-    const voterRegWrapper = document.getElementById('voter-reg-wrapper');
 
     if(event.target.value === 'unregistered') {
         content.classList.remove('hidden')
-        voterRegWrapper.classList.remove('form-item')
     } else {
         content.classList.add('hidden')
-        voterRegWrapper.classList.add('form-item')
     }
 
 }

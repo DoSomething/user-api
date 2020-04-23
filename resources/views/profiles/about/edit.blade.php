@@ -30,7 +30,7 @@
             </div>
         </div>
 
-        <div id="voter-reg-wrapper" class="form-item flex flex-wrap justify-between md:justify-start">
+        <div class="form-item flex flex-wrap justify-between md:justify-start">
             <label for="voter_registration_status" class="field-label height-auto w-full">Are you registered to vote at your current address?</label>
             <div class="voter-reg-status w-1/5">
                 <label class="option -radio">
@@ -53,14 +53,13 @@
                     <span>I'm not sure</span>
                 </label>
             </div>
-        </div>
-
-        <div id="voter-reg-cta" class="form-item hidden">
-            <p>Make your voice heard on the issues that matter to you. Take 2 minutes and 
-                <a id="voter-reg-link" target="_blank" rel="noopener noreferrer" href="https://register.rockthevote.com/registrants/new?partner=37187&email_address={{$user->email}}&home_zip_code={{$user->addr_zip}}&source=user:{{$user->id}},source:web,source_details:NewAccountCreationFlow">
-                register to vote at your current address!</a>
-            </p>
-        </div>
+            <div id="voter-reg-cta" class="w-full hidden">
+                <p>Make your voice heard on the issues that matter to you. Take 2 minutes and 
+                    <a target="_blank" rel="noopener noreferrer" href="https://register.rockthevote.com/registrants/new?partner=37187&email_address={{$user->email}}&home_zip_code={{$user->addr_zip}}&source=user:{{$user->id}},source:web,source_details:NewAccountCreationFlow">
+                    register to vote at your current address!</a>
+                </p>
+            </div>
+        </div>        
 
         <div class="form-item">
             <p class="font-bold">What cause areas do you care about most?</p>
