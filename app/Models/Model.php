@@ -3,8 +3,6 @@
 namespace Northstar\Models;
 
 use Carbon\Carbon;
-use MongoDB\BSON\UTCDateTime;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Database\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\Model as BaseModel;
 
