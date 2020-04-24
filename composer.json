@@ -37,6 +37,7 @@
   "require-dev": {
     "facade/ignition": "^1.4",
     "fzaninotto/faker": "^1.9.1",
+    "itsgoingd/clockwork": "^3.0",
     "laravel/tinker": "^2.0",
     "mockery/mockery": "^1.0",
     "nunomaduro/collision": "^3.0",
