@@ -50,9 +50,8 @@ class CauseUpdateController extends Controller
         }
 
         $causesArray = $user->causes;
-        collect($causesArray)->pull($cause);
 
-        $user->causes = $causesArray;
+        $user->causes = array_diff($causesArray, array($cause));
 
         $user->save();
 
