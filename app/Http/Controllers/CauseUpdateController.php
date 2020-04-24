@@ -53,7 +53,7 @@ class CauseUpdateController extends Controller
         $causesArray = $user->causes;
 
         // reassigning it to be an array with the item removed
-        $user->causes = array_diff($causesArray, array($cause));
+        $user->causes = array_diff($causesArray, [$cause]);
 
         $user->save();
 
