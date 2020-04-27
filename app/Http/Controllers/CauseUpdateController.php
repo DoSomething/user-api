@@ -49,10 +49,10 @@ class CauseUpdateController extends Controller
             abort(404, 'That cause does not exist.');
         }
 
-        //using the getter method to pull the array of causes rather than stored obj
+        // Using the getter method to pull the array of causes rather than stored obj
         $causesArray = $user->causes;
 
-        // reassigning it to be an array with the item removed
+        // Reassigning it to be an array with the item removed
         $user->causes = array_diff($causesArray, [$cause]);
 
         $user->save();
