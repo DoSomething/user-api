@@ -176,9 +176,8 @@ class AuthController extends Controller
      */
     public function getRegister()
     {
-        $positionSocialAuth = participate('social-auth-position', ['position_top']);
 
-        return view('auth.register-beta', ['social_auth_position' => $positionSocialAuth]);
+        return view('auth.register-beta');
     }
     /**
      * Handle submissions of the registration form.
