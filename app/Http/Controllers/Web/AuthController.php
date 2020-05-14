@@ -176,9 +176,9 @@ class AuthController extends Controller
      */
     public function getRegister()
     {
-
         return view('auth.register-beta');
     }
+    
     /**
      * Handle submissions of the registration form.
      *
