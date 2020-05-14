@@ -199,8 +199,6 @@ class AuthController extends Controller
         $editableFields = $request->except(User::$internal);
         $user = $this->registrar->registerViaWeb($editableFields);
 
-        convert('social-auth-position');
-
         $this->cleanupSession();
 
         Auth::login($user, true);
