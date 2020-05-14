@@ -18,7 +18,6 @@
         @include('forms.errors', ['errors' => $errors])
     @endif
 
-    @if ($social_auth_position === 'position_top')
         <div class="md:flex items-start">
             <div class="mb-4 md:m-0 md:w-1/2">
                 @include('auth.google')
@@ -32,7 +31,6 @@
             <p class="ml-2 footnote">or</p>
             <hr class="ml-2 mt-2 w-full border-gray-600 border-t-2 border-solid">
         </div>
-    @endif
 
     <form id="profile-register-form" method="POST" action="{{ url('register')}}">
         {{ csrf_field() }}
