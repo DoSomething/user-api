@@ -127,8 +127,6 @@ class GoogleController extends Controller
 
             $northstarUser = $this->registrar->registerViaWeb($fields, 'google');
 
-            convert('social-auth-position');
-
             Auth::login($northstarUser, true);
             logger()->info('google_authentication');
 

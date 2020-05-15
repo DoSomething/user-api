@@ -98,8 +98,6 @@ class FacebookController extends Controller
 
             $northstarUser = $this->registrar->registerViaWeb($fields, 'facebook');
 
-            convert('social-auth-position');
-
             Auth::login($northstarUser, true);
             logger()->info('facebook_authentication');
 

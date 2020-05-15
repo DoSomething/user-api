@@ -176,9 +176,7 @@ class AuthController extends Controller
      */
     public function getRegister()
     {
-        $positionSocialAuth = participate('social-auth-position', ['position_bottom', 'position_top']);
-
-        return view('auth.register-beta', ['social_auth_position' => $positionSocialAuth]);
+        return view('auth.register-beta');
     }
 
     /**
@@ -200,8 +198,6 @@ class AuthController extends Controller
         // Register and login the user.
         $editableFields = $request->except(User::$internal);
         $user = $this->registrar->registerViaWeb($editableFields);
-
-        convert('social-auth-position');
 
         $this->cleanupSession();
 
