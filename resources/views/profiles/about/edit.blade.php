@@ -55,7 +55,7 @@
             </div>
             <div id="voter-reg-cta" class="w-full hidden">
                 <p>Make your voice heard on the issues that matter to you. Take 2 minutes and 
-                    <a target="_blank" rel="noopener noreferrer" href="https://register.rockthevote.com/registrants/new?partner=37187&email_address={{$user->email}}&home_zip_code={{$user->addr_zip}}&source=user:{{$user->id}},source:web,source_details:NewAccountCreationFlow">
+                    <a id="voter-reg-link" target="_blank" rel="noopener noreferrer" href="https://register.rockthevote.com/registrants/new?partner=37187&email_address={{$user->email}}&home_zip_code={{$user->addr_zip}}&source=user:{{$user->id}},source:web,source_details:NewAccountCreationFlow">
                     register to vote at your current address!</a>
                 </p>
             </div>
