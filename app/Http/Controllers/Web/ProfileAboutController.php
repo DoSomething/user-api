@@ -38,7 +38,6 @@ class ProfileAboutController extends Controller
      */
     public function edit()
     {
-
         return view('profiles.about.edit', [
             'user' => auth()->guard('web')->user(),
             'causes1' => array_slice($this->causes, 0, count($this->causes) / 2),
