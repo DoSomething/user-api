@@ -12,14 +12,11 @@ function clickHandlerToggleContent(event) {
 
     if(value === 'unregistered') {
         unregisteredContent.classList.remove('hidden')
-        if(!uncertainContent.classList.contains('hidden')) {
-            uncertainContent.classList.add('hidden')
-        }
+        uncertainContent.classList.add('hidden')
+    
     } else if(value === 'uncertain') {
         uncertainContent.classList.remove('hidden')
-        if(!unregisteredContent.classList.contains('hidden')) {
-            unregisteredContent.classList.add('hidden')
-        }
+        unregisteredContent.classList.add('hidden')
     } else {
         unregisteredContent.classList.add('hidden');
         uncertainContent.classList.add('hidden');
