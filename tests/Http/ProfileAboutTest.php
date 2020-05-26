@@ -66,7 +66,6 @@ class ProfileAboutTest extends BrowserKitTestCase
             ->select('confirmed', 'voter_registration_status')
             ->dontSee('Not sure? We can help! Take 2 minutes and check your voter registration status with Rock The Vote!')
             ->dontSee('Make your voice heard on the issues that matter to you. Take 2 minutes and register to vote at your current address!');
-
     }
 
     /**
