@@ -6,23 +6,23 @@ const $ = require('jquery');
  */
 
 function clickHandlerToggleContent(event) {
-    const unRegisteredContent = document.getElementById('voter-reg-cta-unregistered');
-    const unCertainContent = document.getElementById('voter-reg-cta-uncertain');
+    const unregisteredContent = document.getElementById('voter-reg-cta-unregistered');
+    const uncertainContent = document.getElementById('voter-reg-cta-uncertain');
     const value = event.target.value
 
     if(value === 'unregistered') {
-        unRegisteredContent.classList.remove('hidden')
-        if(!unCertainContent.classList.contains('hidden')) {
-            unCertainContent.classList.add('hidden')
+        unregisteredContent.classList.remove('hidden')
+        if(!uncertainContent.classList.contains('hidden')) {
+            uncertainContent.classList.add('hidden')
         }
     } else if(value === 'uncertain') {
-        unCertainContent.classList.remove('hidden')
-        if(!unRegisteredContent.classList.contains('hidden')) {
-            unRegisteredContent.classList.add('hidden')
+        uncertainContent.classList.remove('hidden')
+        if(!unregisteredContent.classList.contains('hidden')) {
+            unregisteredContent.classList.add('hidden')
         }
     } else {
-        unRegisteredContent.classList.add('hidden');
-        unCertainContent.classList.add('hidden');
+        unregisteredContent.classList.add('hidden');
+        uncertainContent.classList.add('hidden');
     }
 
 }
