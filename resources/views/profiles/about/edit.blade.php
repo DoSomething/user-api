@@ -62,7 +62,7 @@
             <div id="voter-reg-cta-uncertain" class="w-full hidden"> 
                 <p>
                     Not sure? We can help! Take 2 minutes and 
-                    <a target="_blank" rel="noopener noreferrer" href="https://am-i-registered-to-vote.org/dosomething/" >
+                    <a id="voter-reg-status-link" target="_blank" rel="noopener noreferrer" href="https://am-i-registered-to-vote.org/dosomething/" >
                     check your voter registration status with Rock The Vote!</a>
                 </p>
             </div>

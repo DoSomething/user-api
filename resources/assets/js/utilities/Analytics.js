@@ -533,6 +533,19 @@ function init() {
         },
       });
     });
+    
+    $('#voter-reg-status-link').on('click', () => {
+      // Tracks clicking on the Check Registration Status Link in the Onboarding flow.
+      trackAnalyticsEvent({
+        metadata: {
+          adjective: 'register_not_sure',
+          category: 'onboarding',
+          noun: 'link_action',
+          target: 'link',
+          verb: 'clicked',
+        },
+      });
+    });
 
     // Check for and track validation errors returned from the backend after form submission.
     const $validationErrors = $('.validation-error');
