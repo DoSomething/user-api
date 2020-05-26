@@ -32,6 +32,44 @@ class ProfileAboutTest extends BrowserKitTestCase
     }
 
     /**
+     * Test that users will see the Rock the Vote prompt if they select "No" on Voter Registration
+     */
+    public function testVoterRegistrationPrompt()
+    {
+        $user = $this->makeAuthWebUser();
+
+        $this->visit('/profile/about')
+            ->select('unregistered', 'voter_registration_status')
+            ->see('Make your voice heard on the issues that matter to you. Take 2 minutes and register to vote at your current address!');
+    }
+
+    /**
+     * Test that users will see the Check Registration Status prompt if they select "Not Sure" on Voter Registration
+     */
+    public function testVoterRegistrationStatusPrompt()
+    {
+        $user = $this->makeAuthWebUser();
+
+        $this->visit('/profile/about')
+            ->select('uncertain', 'voter_registration_status')
+            ->see('Not sure? We can help! Take 2 minutes and check your voter registration status with Rock The Vote!');
+    }
+
+    /**
+     * Test that users will not see any prompts if they select "Yes" on Voter Registration
+     */
+    public function testVoterRegistrationStatusPromptHidden()
+    {
+        $user = $this->makeAuthWebUser();
+
+        $this->visit('/profile/about')
+            ->select('confirmed', 'voter_registration_status')
+            ->dontSee('Not sure? We can help! Take 2 minutes and check your voter registration status with Rock The Vote!')
+            ->dontSee('Make your voice heard on the issues that matter to you. Take 2 minutes and register to vote at your current address!');
+
+    }
+
+    /**
      * Test that users can't update their birthday to an invalid date (backend validation)
      */
     public function testBirthdateError()

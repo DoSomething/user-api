@@ -13,7 +13,6 @@ function clickHandlerToggleContent(event) {
     if(value === 'unregistered') {
         unregisteredContent.classList.remove('hidden')
         uncertainContent.classList.add('hidden')
-    
     } else if(value === 'uncertain') {
         uncertainContent.classList.remove('hidden')
         unregisteredContent.classList.add('hidden')
