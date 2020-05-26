@@ -30,7 +30,7 @@ class ProfileAboutTest extends BrowserKitTestCase
             ->press('Next')
             ->seePageIs('/profile/subscriptions');
     }
-    
+
     /**
      * Test that users will not see any prompts if they select "Yes" on Voter Registration
      */
