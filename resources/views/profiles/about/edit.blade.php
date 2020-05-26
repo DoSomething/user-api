@@ -53,10 +53,17 @@
                     <span>I'm not sure</span>
                 </label>
             </div>
-            <div id="voter-reg-cta" class="w-full hidden">
+            <div id="voter-reg-cta-unregistered" class="w-full hidden">
                 <p>Make your voice heard on the issues that matter to you. Take 2 minutes and 
                     <a id="voter-reg-link" target="_blank" rel="noopener noreferrer" href="https://register.rockthevote.com/registrants/new?partner=37187&email_address={{$user->email}}&home_zip_code={{$user->addr_zip}}&source=user:{{$user->id}},source:web,source_details:NewAccountCreationFlow">
                     register to vote at your current address!</a>
+                </p>
+            </div>
+            <div id="voter-reg-cta-uncertain" class="w-full hidden"> 
+                <p>
+                    Not sure? We can help! Take 2 minutes and 
+                    <a id="voter-reg-status-link" target="_blank" rel="noopener noreferrer" href="https://am-i-registered-to-vote.org/dosomething/" >
+                    check your voter registration status with Rock The Vote!</a>
                 </p>
             </div>
         </div>        

@@ -6,12 +6,19 @@ const $ = require('jquery');
  */
 
 function clickHandlerToggleContent(event) {
-    const content = document.getElementById('voter-reg-cta');
+    const unregisteredContent = document.getElementById('voter-reg-cta-unregistered');
+    const uncertainContent = document.getElementById('voter-reg-cta-uncertain');
+    const value = event.target.value
 
-    if(event.target.value === 'unregistered') {
-        content.classList.remove('hidden')
+    if(value === 'unregistered') {
+        unregisteredContent.classList.remove('hidden')
+        uncertainContent.classList.add('hidden')
+    } else if(value === 'uncertain') {
+        uncertainContent.classList.remove('hidden')
+        unregisteredContent.classList.add('hidden')
     } else {
-        content.classList.add('hidden')
+        unregisteredContent.classList.add('hidden');
+        uncertainContent.classList.add('hidden');
     }
 
 }
