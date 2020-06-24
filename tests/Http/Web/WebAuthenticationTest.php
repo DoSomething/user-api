@@ -198,7 +198,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that a referrar_user_id in session is attached to the registering user.
+     * Test that a referrer_user_id in session is attached to the registering user.
      */
     public function testRegisterBetaWithReferrerUserId()
     {
