@@ -233,6 +233,11 @@ class Registrar
         }
 
         $user->setSource(null, $sourceDetail ? stringify_object($sourceDetail) : null);
+
+        if (session('referrer_user_id')) {
+            $user->referrer_user_id = session('referrer_user_id');
+        }
+
         // Set the user's country code by Fastly geo-location header.
         $user->country = country_code();
         // Set the user's zip code by Fastly geo-location header.

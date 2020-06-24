@@ -67,14 +67,15 @@ class AuthController extends Controller
                 'title' => request()->query('title', trans('auth.get_started.create_account')),
                 'callToAction' => request()->query('callToAction', trans('auth.get_started.call_to_action')),
                 'coverImage' => request()->query('coverImage', asset('members.jpg')),
-                // Store any provided UTMs, Referrer User ID, or Contentful ID for user's source_detail:
+                // Store any provided UTMs or Contentful ID for user's source_detail:
                 'source_detail' => array_filter([
                     'contentful_id' => request()->query('contentful_id'),
-                    'referrer_user_id' => request()->query('referrer_user_id'),
                     'utm_source' => request()->query('utm_source'),
                     'utm_medium' => request()->query('utm_medium'),
                     'utm_campaign' => request()->query('utm_campaign'),
                 ]),
+                // Store the provided Referrer User ID for user's referrer_user_id field:
+                'referrer_user_id' => request()->query('referrer_user_id'),
             ]);
 
             // Optionally, we can override the default authorization page using `?mode=login`.
