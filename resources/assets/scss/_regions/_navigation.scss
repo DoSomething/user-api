@@ -5,10 +5,3 @@ nav.navigation {
 .navigation__logo {
   padding-bottom: $base-spacing * 2;
 }
-
-// @TODO: remove July 1, 2020
-// https://www.pivotaltracker.com/story/show/173086102
-.navigation__logo:after {
-  background: url("./rainbow-logo.svg");
-  background-repeat: no-repeat;
-}
