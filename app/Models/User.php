@@ -719,6 +719,17 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
+     * Mutator to ensure null is not returned when user re-subscribes.
+     * 
+     * @param array $value
+     */
+    public function getEmailSubscriptionTopicsAttribute($value)
+    {   
+        //Set empty value equal to array of email_subscription_topics
+        return empty($value) ? [] : $value;
+    }
+
+    /**
      * Mutator to ensure no duplicates in the SMS topics array.
      *
      * @param array $value
