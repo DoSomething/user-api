@@ -725,7 +725,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function getEmailSubscriptionTopicsAttribute($value)
     {
-        //Set empty value equal to array of email_subscription_topics
+        //Ensure we always return an array value for the email_subscription_topics attribute.
         return empty($value) ? [] : $value;
     }
 
