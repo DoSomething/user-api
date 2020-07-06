@@ -547,6 +547,20 @@ function init() {
       });
     });
 
+    $('#voter-reg-status-link-confirmed').on('click', () => {
+      // Tracks clicking on the Check Registration Status Link in the Onboarding flow for confirmed users.
+      trackAnalyticsEvent({
+        metadata: {
+          adjective: 'double_check_voter_registration',
+          category: 'onboarding',
+          noun: 'link_action',
+          target: 'link',
+          verb: 'clicked',
+          label: 'voter_registration',
+        },
+      });
+    });
+
     // Check for and track validation errors returned from the backend after form submission.
     const $validationErrors = $('.validation-error');
     if ($validationErrors && $validationErrors.length) {
