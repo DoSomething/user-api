@@ -10,7 +10,7 @@
     <h2 class="text-black">Create your account</h2>
 @endsection
 @section('profile-subtitle')
-    <p>Ready to officially become a DoSomething member? You’ll make an impact alongside millions of young people, and earn easy scholarships for volunteering.<p>
+    <p>Ready to officially become a DoSomething member? You’ll make an impact alongside millions of young people, and earn easy scholarships for volunteering.<em>*=required fields</em><p>
 @endsection
 
 @section('profile-form')
@@ -37,23 +37,23 @@
 
         <div class="md:flex md:flex-wrap md:justify-between">
             <div class="form-item md:w-1/2 md:pr-4">
-                <label for="first_name" class="field-label">First Name</label>
+                <label for="first_name" class="field-label">First Name*</label>
                 <input name="first_name" type="text" id="first_name" class="text-field required js-validate" placeholder="First Name" value="{{ old('first_name') }}" autofocus data-validate="first_name" data-validate-required />
             </div>
 
             <div class="form-item md:w-1/2">
-                <label for="last_name" class="field-label">Last Name</label>
+                <label for="last_name" class="field-label">Last Name*</label>
                 <input name="last_name" type="text" id="last_name" class="text-field required js-validate" placeholder="Last Name" value="{{ old('last_name') }}" data-validate="last_name" data-validate-required />
             </div>
         </div>
 
         <div class="form-item">
-            <label for="email" class="field-label">Email Address</label>
+            <label for="email" class="field-label">Email Address*</label>
             <input name="email" type="text" id="email" class="text-field required js-validate" placeholder="puppet-sloth@example.org" value="{{ old('email') }}" data-validate="email" data-validate-required />
         </div>
 
         <div class="form-item password-visibility">
-            <label for="password" class="field-label">Password</label>
+            <label for="password" class="field-label">Password*</label>
             <input name="password" type="password" id="password" class="text-field required js-validate" placeholder="6+ characters... make it tricky!" data-validate="password" data-validate-required />
             <span class="password-visibility__toggle -hide"></span>
         </div>
