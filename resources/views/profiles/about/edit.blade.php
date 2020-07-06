@@ -62,8 +62,15 @@
             <div id="voter-reg-cta-uncertain" class="w-full hidden"> 
                 <p>
                     Not sure? We can help! Take 2 minutes and 
-                    <a id="voter-reg-status-link" target="_blank" rel="noopener noreferrer" href="https://am-i-registered-to-vote.org/dosomething/" >
+                    <a id="voter-reg-status-link-uncertain" target="_blank" rel="noopener noreferrer" href="https://am-i-registered-to-vote.org/dosomething/" >
                     check your voter registration status with Rock The Vote!</a>
+                </p>
+            </div>
+             <div id="voter-reg-cta-confirmed" class="w-full hidden"> 
+                <p>
+                    Moved recently? Haven't voted before or in the past few years? 
+                    <a id="voter-reg-status-link-confirmed" target="_blank" rel="noopener noreferrer" href="https://am-i-registered-to-vote.org/dosomething/" >
+                    Check to make sure you’re still on the voting rolls!</a>
                 </p>
             </div>
         </div>        

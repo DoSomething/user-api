@@ -534,8 +534,8 @@ function init() {
       });
     });
     
-    $('#voter-reg-status-link').on('click', () => {
-      // Tracks clicking on the Check Registration Status Link in the Onboarding flow.
+    $('#voter-reg-status-link-uncertain').on('click', () => {
+      // Tracks clicking on the Check Registration Status Link in the Onboarding flow for uncertain users.
       trackAnalyticsEvent({
         metadata: {
           adjective: 'register_not_sure',
