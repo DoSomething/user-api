@@ -556,7 +556,6 @@ function init() {
           noun: 'link_action',
           target: 'link',
           verb: 'clicked',
-          label: 'voter_registration',
         },
       });
     });
