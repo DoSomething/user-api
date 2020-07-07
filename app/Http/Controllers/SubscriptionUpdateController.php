@@ -34,7 +34,7 @@ class SubscriptionUpdateController extends Controller
             abort(404, 'That subscription does not exist.');
         }
 
-        $user->push('email_subscription_topics', $topic, true);
+        $user->addEmailSubscriptionTopic($topic);
 
         return $this->item($user);
     }
