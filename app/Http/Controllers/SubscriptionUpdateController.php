@@ -36,6 +36,8 @@ class SubscriptionUpdateController extends Controller
 
         $user->addEmailSubscriptionTopic($topic);
 
+        $user->save();
+
         return $this->item($user);
     }
 
