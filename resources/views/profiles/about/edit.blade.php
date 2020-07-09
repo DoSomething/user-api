@@ -68,9 +68,9 @@
             </div>
              <div id="voter-reg-cta-confirmed" class="w-full hidden"> 
                 <p>
-                    Moved recently? Haven't voted before or in the past few years? 
+                    If you’ve changed addresses, you may not be registered. 
                     <a id="voter-reg-status-link-confirmed" target="_blank" rel="noopener noreferrer" href="https://am-i-registered-to-vote.org/dosomething/" >
-                    Check to make sure you’re still on the voting rolls!</a>
+                    Check your status just in case!</a>
                 </p>
             </div>
         </div>        
