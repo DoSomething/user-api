@@ -18,6 +18,7 @@ class SubscriptionUpdateTest extends BrowserKitTestCase
 
         $this->assertResponseStatus(200);
         $this->seeJsonField('data.email_subscription_topics', ['news']);
+        $this->assertEquals(['news'], $user->fresh()->email_subscription_topics);
     }
 
     /**
@@ -36,6 +37,7 @@ class SubscriptionUpdateTest extends BrowserKitTestCase
 
         $this->assertResponseStatus(200);
         $this->seeJsonField('data.email_subscription_topics', ['news']);
+        $this->assertEquals(['news'], $user->fresh()->email_subscription_topics);
     }
 
     /**
@@ -54,7 +56,7 @@ class SubscriptionUpdateTest extends BrowserKitTestCase
 
         $this->assertResponseStatus(200);
         $this->seeJsonField('data.email_subscription_topics', []);
-        $this->assertEquals(['news'], $user->fresh()->email_subscription_topics);
+        $this->assertEquals([], $user->fresh()->email_subscription_topics);
     }
 
     /**
