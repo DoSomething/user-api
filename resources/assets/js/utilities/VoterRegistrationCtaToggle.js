@@ -17,7 +17,6 @@ function togglePreregistrationPrompt() {
     if(birthdate.length === 10 && new Date(birthdate)) {
         const newBirthdate = new Date(birthdate);
         const age = calculateAge(newBirthdate);
-        console.log('this is the age', age)
         if(16 <= age && age < 18) {
             preRegisteredContent.classList.remove('hidden');
         }
