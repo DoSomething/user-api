@@ -5,8 +5,8 @@ const $ = require('jquery');
  * based on birthdate on '/profile/about' form
  */
 
-function togglePreregistrationPrompt() {
-    const birthdate = document.getElementById('birthdate').value;
+function togglePreregistrationPrompt(event) {
+    const birthdate = event.target.value;
     const preRegisteredContent = document.getElementById('voter-reg-cta-pre-registration');
 
     const calculateAge = (date) => {
@@ -17,6 +17,7 @@ function togglePreregistrationPrompt() {
     if(birthdate.length === 10 && new Date(birthdate)) {
         const newBirthdate = new Date(birthdate);
         const age = calculateAge(newBirthdate);
+
         if(16 <= age && age < 18) {
             preRegisteredContent.classList.remove('hidden');
         }
@@ -66,7 +67,10 @@ const init = () => {
         })
 
         const birthdateInput = document.getElementById('birthdate');
-        birthdateInput.addEventListener('input', togglePreregistrationPrompt);
+
+        if(birthdateInput) {
+            birthdateInput.addEventListener('input', togglePreregistrationPrompt);
+        }
       });
 }
 
