@@ -39,7 +39,7 @@ function clickHandlerToggleContent(event) {
     const preRegisteredContent = document.getElementById('voter-reg-cta-pre-registration');
     const value = event.target.value
 
-    if(value === 'unregistered' && window.getComputedStyle(preRegisteredContent).display === 'none') {
+    if(value === 'unregistered' && preRegisteredContent.classList.contains('hidden')) {
         unregisteredContent.classList.remove('hidden')
         uncertainContent.classList.add('hidden')
         confirmedContent.classList.add('hidden')
