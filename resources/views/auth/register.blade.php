@@ -1,112 +1,73 @@
-@extends('layouts.app', ['extended' => true])
+@extends('profiles.profile')
 
 @section('title', 'Create Account | DoSomething.org')
 
-@section('content')
-    <div class="container__block">
-        <h2>{{ session('title', trans('auth.get_started.create_account')) }}</h2>
-        <p>{{ session('callToAction', trans('auth.get_started.call_to_action')) }}
-    </div>
+@section('form-image-url')
+    '/images/welcome-form-bg.png'
+@endsection
 
-    <div class="container__block">
-        <ul class="form-actions -inline">
-            <li>@include('auth.facebook')</li>
-            <li><a href="{{ url('login') }}" class="button login-link">{{ trans('auth.log_in.default') }}</a></li>
-        </ul>
-        <span class="divider"></span>
-    </div>
+@section('profile-title')
+    <h2 class="text-black">Create your account</h2>
+@endsection
+@section('profile-subtitle')
+    <p>Ready to officially become a DoSomething member? You’ll make an impact alongside millions of young people, and earn easy scholarships for volunteering.<em>*=required fields</em><p>
+@endsection
 
-    <div class="container__block -centered">
-        @if (count($errors) > 0)
-            <div class="validation-error fade-in-up">
-                <h4>{{ trans('auth.validation.issues') }}</h4>
-                <ul class="list -compacted">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+@section('profile-form')
+    @if (count($errors) > 0)
+        @include('forms.errors', ['errors' => $errors])
+    @endif
+
+        <div class="md:flex items-start">
+            <div class="mb-4 md:m-0 md:w-1/2">
+                @include('auth.google')
             </div>
-        @endif
+            <div class="md:w-1/2">
+                @include('auth.facebook')
+            </div>
+        </div>
 
-        <form id="profile-register-form" method="POST" action="{{ url('register') }}">
-            <input name="_token" type="hidden" value="{{ csrf_token() }}">
+        <div class="my-6 flex">
+            <p class="ml-2 footnote">or</p>
+            <hr class="ml-2 mt-2 w-full border-gray-600 border-t-2 border-solid">
+        </div>
 
-            <div>
-                <div class="form-item -reduced">
-                    <label for="first_name" class="field-label">{{ trans('auth.fields.first_name') }}</label>
-                    <input name="first_name" type="text" id="first_name" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.first_name') }}" value="{{ old('first_name') }}" autofocus data-validate="first_name" data-validate-required />
-                </div>
+    <form id="profile-register-form" method="POST" action="{{ url('register')}}">
+        {{ csrf_field() }}
 
-                <div class="form-item -reduced">
-                    <label for="last_name" class="field-label">{{ trans('auth.fields.last_name') }}</label>
-                    <input name="last_name" type="text" id="last_name" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.last_name') }}" value="{{ old('last_name') }}" autofocus data-validate="last_name" data-validate-required />
-                </div>
-
-
+        <div class="md:flex md:flex-wrap md:justify-between">
+            <div class="form-item md:w-1/2 md:pr-4">
+                <label for="first_name" class="field-label">First Name*</label>
+                <input name="first_name" type="text" id="first_name" class="text-field required js-validate" placeholder="First Name" value="{{ old('first_name') }}" autofocus data-validate="first_name" data-validate-required />
             </div>
 
-            <div class="form-item">
-                <label for="birthdate" class="field-label">{{ trans('auth.fields.birthday') }}</label>
-                <input name="birthdate" type="text" id="birthdate" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.birthday') }}" value="{{ old('birthdate') }}" data-validate="birthday" data-validate-required />
+            <div class="form-item md:w-1/2">
+                <label for="last_name" class="field-label">Last Name*</label>
+                <input name="last_name" type="text" id="last_name" class="text-field required js-validate" placeholder="Last Name" value="{{ old('last_name') }}" data-validate="last_name" data-validate-required />
             </div>
+        </div>
 
-            <div class="form-item">
-                <label for="email" class="field-label">{{ trans('auth.fields.email') }}</label>
-                <input name="email" type="text" id="email" class="text-field required js-validate" placeholder="puppet-sloth@example.org" value="{{ old('email') }}" data-validate="email" data-validate-required />
-            </div>
+        <div class="form-item">
+            <label for="email" class="field-label">Email Address*</label>
+            <input name="email" type="text" id="email" class="text-field required js-validate" placeholder="puppet-sloth@example.org" value="{{ old('email') }}" data-validate="email" data-validate-required />
+        </div>
 
-            @if (App::getLocale() === 'en')
-                <div class="form-item">
-                    <label for="mobile" class="field-label">{{ trans('auth.fields.mobile') }} <em>{{ trans('auth.validation.optional') }}</em></label>
-                    <input name="mobile" type="text" id="mobile" class="text-field js-validate" placeholder="(555) 555-5555" value="{{ old('mobile') }}" data-validate="phone" />
-                </div>
-                <div class="form-item">
-                    <p class="footnote"><em>DoSomething.org will send you updates about different social change actions and scholarship opportunities from our number, 38383. You can expect to receive up to 8 messages per month from us. Message and data rates may apply. Text <strong>HELP</strong> to 38383 for help. Text <strong>STOP</strong> to 38383 to opt out. Please review our <a href="https://www.dosomething.org/us/about/terms-service">Terms of Service​</a> and <a href="https://www.dosomething.org/us/about/privacy-policy">Privacy Policy</a> pages.
-                    <br>
-                    T-Mobile is not liable for delayed or undelivered messages.</em></p>
-                </div>
-            @endif
+        <div class="form-item password-visibility">
+            <label for="password" class="field-label">Password*</label>
+            <input name="password" type="password" id="password" class="text-field required js-validate" placeholder="6+ characters... make it tricky!" data-validate="password" data-validate-required />
+            <span class="password-visibility__toggle -hide"></span>
+        </div>
 
-            <div class="form-item password-visibility">
-                <label for="password" class="field-label">{{ trans('auth.fields.password') }}</label>
-                <input name="password" type="password" id="password" class="text-field required js-validate" placeholder="{{ trans('auth.validation.placeholder.password') }}" data-validate="password" data-validate-required />
-                <span class="password-visibility__toggle -hide"></span>
-            </div>
+        <div class="form-item -padded">
+            <input type="submit" id='register-submit' class="button capitalize" value="Create Account">
+        </div>
 
-            <div class="form-item">
-                <label for="voter_registration_status" class="field-label height-auto">{{ "Are you registered to vote at your current address?"}}</label>
-                <div class="form-item -reduced">
-                    <label class="option -radio">
-                      <input type="radio" name="voter_registration_status" value="confirmed" {{ old('voter_registration_status') === 'confirmed' ? 'checked' : '' }}>
-                      <span class="option__indicator"></span>
-                      <span>Yes</span>
-                    </label>
-                </div>
-                <div class="form-item -reduced">
-                    <label class="option -radio">
-                      <input type="radio" name="voter_registration_status" value="unregistered" {{ old('voter_registration_status') === 'unregistered' ? 'checked' : '' }}>
-                      <span class="option__indicator"></span>
-                      <span>No</span>
-                    </label>
-                </div>
-                <div class="form-item -reduced">
-                    <label class="option -radio">
-                      <input type="radio" name="voter_registration_status" value="uncertain" {{ old('voter_registration_status') === 'uncertain' ? 'checked' : '' }}>
-                      <span class="option__indicator"></span>
-                      <span>I'm not sure</span>
-                    </label>
-                </div>
-            </div>
+        <div class="form-item">
+            <p class="footnote"><em>Creating an account means you agree to the <a href="https://www.dosomething.org/us/about/terms-service">Terms of Service​</a>, <a href="https://www.dosomething.org/us/about/privacy-policy">Privacy Policy</a> and our default <a href="https://www.dosomething.org/us/about/default-notifications">Notification Settings</a>. DoSomething.org will send you communications; you may change your preferences in your account settings.</em></p>
+        </div>
+    </form>
 
-            <div class="form-actions -padded -left">
-                <input type="submit" id="register-submit" class="button" value="{{ trans('auth.log_in.submit') }}">
-            </div>
-        </form>
-    </div>
-
-    <div class="container__block -centered">
-        <p class="footnote">{{ trans('auth.footnote.create') }} <a href="https://www.dosomething.org/us/about/terms-service">{{ trans('auth.footnote.terms_of_service') }}</a>
-            &amp; <a href="https://www.dosomething.org/us/about/privacy-policy">{{ trans('auth.footnote.privacy_policy') }}</a> {{ trans('auth.footnote.messaging') }}</p>
-    </div>
-
-@stop
+    <p class="text-gray-500 mt-5">
+        Already have an account? <a class="login-link" href="{{ url('login') }}" data-target="link">Log In</a>
+    </p>
+@endsection

@@ -87,8 +87,6 @@ const getCategoryFromPath = () => {
     '/register': 'authentication',
     '/profile/about': 'onboarding',
     '/profile/subscriptions': 'onboarding',
-    // Temporary:
-    '/register-beta': 'authentication',
   };
 
   return pathToCategoryMap[window.location.pathname] || 'authentication';
