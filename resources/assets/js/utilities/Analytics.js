@@ -560,6 +560,19 @@ function init() {
       });
     });
 
+    $('#voter-reg-pre-registration').on('click', () => {
+      // Tracks clicking on the Learn More Link in the Onboarding flow for users eligible for pre-registration.
+      trackAnalyticsEvent({
+        metadata: {
+          adjective: 'pre_registration',
+          category: 'onboarding',
+          noun: 'link_action',
+          target: 'link',
+          verb: 'clicked',
+        },
+      });
+    });
+
     // Check for and track validation errors returned from the backend after form submission.
     const $validationErrors = $('.validation-error');
     if ($validationErrors && $validationErrors.length) {
