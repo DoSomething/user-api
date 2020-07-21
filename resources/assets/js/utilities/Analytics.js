@@ -561,7 +561,7 @@ function init() {
     });
 
     $('#voter-reg-pre-registration').on('click', () => {
-      // Tracks clicking on the Check Registration Status Link in the Onboarding flow for confirmed users.
+      // Tracks clicking on the Learn More Link in the Onboarding flow for users eligible for pre-registration.
       trackAnalyticsEvent({
         metadata: {
           adjective: 'pre_registration',
