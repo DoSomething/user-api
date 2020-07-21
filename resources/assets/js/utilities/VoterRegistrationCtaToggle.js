@@ -1,17 +1,45 @@
 const $ = require('jquery');
 
 /**
+ * Utility script to enable toggling visibility of pre registration for voting 
+ * based on birthdate on '/profile/about' form
+ */
+
+function togglePreregistrationPrompt(event) {
+    const birthdate = event.target.value;
+    const preRegisteredContent = document.getElementById('voter-reg-cta-pre-registration');
+
+    const calculateAge = (date) => {
+        const now = new Date();
+        return now.getFullYear() - date.getFullYear();
+    }
+
+    if(birthdate.length === 10 && new Date(birthdate)) {
+        const newBirthdate = new Date(birthdate);
+        const age = calculateAge(newBirthdate);
+
+        if(16 <= age && age < 18) {
+            preRegisteredContent.classList.remove('hidden');
+        }
+    }
+    else {
+        preRegisteredContent.classList.add('hidden');
+    }
+}
+
+/**
  * Utility script to enable toggling visibility of voter registration 
- * call to action on '/profile/about' form
+ * call to actions on '/profile/about' form
  */
 
 function clickHandlerToggleContent(event) {
     const confirmedContent = document.getElementById('voter-reg-cta-confirmed');
     const uncertainContent = document.getElementById('voter-reg-cta-uncertain');
     const unregisteredContent = document.getElementById('voter-reg-cta-unregistered');
+    const preRegisteredContent = document.getElementById('voter-reg-cta-pre-registration');
     const value = event.target.value
 
-    if(value === 'unregistered') {
+    if(value === 'unregistered' && preRegisteredContent.classList.contains('hidden')) {
         unregisteredContent.classList.remove('hidden')
         uncertainContent.classList.add('hidden')
         confirmedContent.classList.add('hidden')
@@ -37,6 +65,12 @@ const init = () => {
         voterRegStatusInputs.forEach(inputField => {
             inputField.addEventListener('click', clickHandlerToggleContent)
         })
+
+        const birthdateInput = document.getElementById('birthdate');
+
+        if(birthdateInput) {
+            birthdateInput.addEventListener('input', togglePreregistrationPrompt);
+        }
       });
 }
 

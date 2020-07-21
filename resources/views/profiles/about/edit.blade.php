@@ -28,6 +28,13 @@
                 <label for="birthdate" class="field-label">Birthday (MM/DD/YYYY)</label>
                 <input name="birthdate" type="text" id="birthdate" class="text-field js-validate" placeholder="MM/DD/YYYY" value="{{ old('birthdate') ?: format_date($user->birthdate, "m/d/Y") }}" data-validate="birthday" autofocus />
             </div>
+            <div id="voter-reg-cta-pre-registration" class="w-full pt-3 hidden"> 
+                <p>
+                    Did you know you can pre-register to vote in some states before you're 18? 
+                    <a id="voter-reg-pre-registration" target="_blank" rel="noopener noreferrer" href="https://vote.dosomething.org/preregister?r=user:{{$user->id}},source:web,source_details:MembershipFlow_PreReg" >
+                    Learn more and pre-register</a>
+                </p>
+            </div>
         </div>
 
         <div class="form-item flex flex-wrap justify-between md:justify-start">
