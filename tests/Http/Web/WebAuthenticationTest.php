@@ -215,6 +215,21 @@ class WebAuthenticationTest extends BrowserKitTestCase
     }
 
     /**
+     * Test that an invalid referrer_user_id in session is not attached to the registering user.
+     */
+    public function testRegisterBetaWithInvalidReferrerUserId()
+    {
+        // Mock a session for the user with ?referrer_user_id=x param, indicating a referred user.
+        $this->withSession(['referrer_user_id' => '123'])->registerUpdated();
+
+        $this->seeIsAuthenticated('web');
+
+        $user = auth()->user();
+
+        $this->assertEquals(null, $user->referrer_user_id);
+    }
+
+    /**
      * Test that users get feature_flags values when tests are on.
      */
     public function testRegisterBetaWithFeatureFlagsTest()
