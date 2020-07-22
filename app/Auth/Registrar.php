@@ -234,8 +234,15 @@ class Registrar
 
         $user->setSource(null, $sourceDetail ? stringify_object($sourceDetail) : null);
 
-        if (session('referrer_user_id')) {
-            $user->referrer_user_id = session('referrer_user_id');
+        if ($referrerUserId = session('referrer_user_id')) {
+            if (is_valid_objectid($referrerUserId)) {
+                $user->referrer_user_id = $referrerUserId;
+            } else {
+                logger()->warning('invalid_referrer_user_id', [
+                    'referrer_user_id' => $referrerUserId,
+                    'id' => $user->id,
+                ]);
+            }
         }
 
         // Set the user's country code by Fastly geo-location header.
