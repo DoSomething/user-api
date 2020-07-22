@@ -381,3 +381,14 @@ function machine_token(...$scopes)
 
     return 'Bearer '.(string) $accessToken;
 }
+
+/**
+ * Check if the given string is a valid Mongo ObjectID.
+ *
+ * @param  string
+ * @return bool
+ */
+function is_valid_objectid(string $string): bool
+{
+    return (bool) preg_match('/^[a-f\d]{24}$/i', $string);
+}
