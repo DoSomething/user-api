@@ -11,7 +11,12 @@ function togglePreregistrationPrompt(event) {
 
     const calculateAge = (date) => {
         const now = new Date();
-        return now.getFullYear() - date.getFullYear();
+        let age = now.getFullYear() - date.getFullYear();
+        const m = now.getMonth() - date.getMonth();
+        if (m < 0 || (m === 0 && now.getDate() < date.getDate())) {
+            age--;
+        }
+        return age;
     }
 
     if(birthdate.length === 10 && new Date(birthdate)) {
