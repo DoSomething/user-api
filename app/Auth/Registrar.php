@@ -240,7 +240,6 @@ class Registrar
             } else {
                 logger()->warning('invalid_referrer_user_id', [
                     'referrer_user_id' => $referrerUserId,
-                    'id' => $user->id,
                 ]);
             }
         }
