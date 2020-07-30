@@ -63,7 +63,7 @@ class SetCommunityTopic extends Command
         }
 
         $query->chunkById(200, function (Collection $users) use ($totalCount) {
-            $users->each(function (User $user) use ($totalCount) {
+            $users->each(function (User $user) {
                 // Add "community" for each user here
                 $user->addEmailSubscriptionTopic('community');
                 $user->save();
