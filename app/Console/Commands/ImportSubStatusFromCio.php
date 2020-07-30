@@ -73,7 +73,7 @@ class ImportSubStatusFromCio extends Command
             $totalCount = $query->count();
 
             $query->chunkById(200, function (Collection $users) use ($totalCount) {
-                $users->each(function (User $user) use ($totalCount) {
+                $users->each(function (User $user) {
                     dispatch(new GetEmailSubStatusFromCustomerIo($user))->onQueue(config('queue.names.low'));
                 });
 
