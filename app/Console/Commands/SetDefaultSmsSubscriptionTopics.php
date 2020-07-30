@@ -71,7 +71,7 @@ class SetDefaultSmsSubscriptionTopics extends Command
         }
 
         $query->chunkById(200, function (Collection $users) use ($totalCount, $smsStatus) {
-            $users->each(function (User $user) use ($totalCount, $smsStatus) {
+            $users->each(function (User $user) {
                 $user->sms_subscription_topics = ['general', 'voting'];
                 $user->save();
             });
