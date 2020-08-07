@@ -1,7 +1,7 @@
 # Northstar [![wercker status](https://app.wercker.com/status/109bce734be9a06703562876265f5bd9/s/dev "wercker status")](https://app.wercker.com/project/byKey/109bce734be9a06703562876265f5bd9) [![StyleCI](https://styleci.io/repos/26884886/shield?style=flat-rounded)](https://styleci.io/repos/26884886)
 
 This is **Northstar**, the DoSomething.org user & identity service. It's our single "source of truth" for member information.
-Northstar is built using [Laravel 5.5](https://laravel.com/docs/5.5), [OAuth 2.0 Server](https://oauth2.thephpleague.com), and [MongoDB](https://www.mongodb.com).
+Northstar is built using [Laravel 6.0](https://laravel.com/docs/6.x), [OAuth 2.0 Server](https://oauth2.thephpleague.com), and [MongoDB](https://www.mongodb.com).
 
 ### Getting Started
 
