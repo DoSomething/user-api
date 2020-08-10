@@ -4,7 +4,7 @@
   "license": "MIT",
   "type": "project",
   "require": {
-    "php": "~7.3.0",
+    "php": "~7.4.0",
     "ext-newrelic": "*",
     "ext-redis": "*",
     "aws/aws-sdk-php": "^3.134",
