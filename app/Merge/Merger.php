@@ -2,13 +2,14 @@
 
 namespace Northstar\Merge;
 
+use Illuminate\Support\Str;
 use Northstar\Exceptions\NorthstarValidationException;
 
 class Merger
 {
     public function merge($field, $target, $duplicate)
     {
-        $mergeMethod = 'merge'.studly_case($field);
+        $mergeMethod = 'merge'.Str::studly($field);
 
         if (! method_exists($this, $mergeMethod)) {
             throw new NorthstarValidationException(['Unable to merge '.$field.' field. No merge instructions found.'], ['target' => $target, 'duplicate' => $duplicate]);

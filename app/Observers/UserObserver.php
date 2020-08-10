@@ -3,6 +3,7 @@
 namespace Northstar\Observers;
 
 use Northstar\Models\User;
+use Illuminate\Support\Arr;
 use Northstar\Models\RefreshToken;
 use Illuminate\Support\Facades\Log;
 use Northstar\Jobs\SendUserToCustomerIo;
@@ -121,7 +122,7 @@ class UserObserver
         }
 
         // Remove all fields except some non-identifiable demographics:
-        $fields = array_keys(array_except($user->getAttributes(), [
+        $fields = array_keys(Arr::except($user->getAttributes(), [
             '_id', 'birthdate', 'language', 'source', 'source_detail',
             'addr_city', 'addr_state', 'addr_zip', 'country',
             'created_at', 'updated_at',

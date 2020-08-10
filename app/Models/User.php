@@ -4,8 +4,9 @@ namespace Northstar\Models;
 
 use Carbon\Carbon;
 use Northstar\Auth\Role;
-use Northstar\Services\GraphQL;
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
+use Northstar\Services\GraphQL;
 use Email\Parse as EmailParser;
 use Northstar\PasswordResetType;
 use Illuminate\Auth\Authenticatable;
@@ -277,8 +278,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
         $domain = $email['domain'];
 
-        $previewedMailbox = str_limit($email['local_part'], 3);
-        $previewedDomain = in_array($domain, $allowedDomains) ? $domain : str_limit($domain, 4);
+        $previewedMailbox = Str::limit($email['local_part'], 3);
+        $previewedDomain = in_array($domain, $allowedDomains) ? $domain : Str::limit($domain, 4);
 
         return $previewedMailbox.'@'.$previewedDomain;
     }
@@ -504,7 +505,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function indexes()
     {
-        return array_only($this->toArray(), static::$uniqueIndexes);
+        return Arr::only($this->toArray(), static::$uniqueIndexes);
     }
 
     /**

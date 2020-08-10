@@ -5,6 +5,7 @@ namespace Northstar\Auth;
 use Closure;
 use Exception;
 use Northstar\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Validation\Factory as Validation;
@@ -256,11 +257,11 @@ class Registrar
         $user->addEmailSubscriptionTopic('community');
 
         // Exclude any 'clubs' referrals from our feature flag tests.
-        if (! str_contains($user->source_detail, 'utm_source:clubs')) {
+        if (! Str::contains($user->source_detail, 'utm_source:clubs')) {
             $feature_flags = [];
 
             // If the badges test is running & the user is eligible, sort users into badges group & control group
-            if (config('features.badges') && ! str_contains($user->source_detail, config('features.no-badge-campaigns'))) {
+            if (config('features.badges') && ! Str::contains($user->source_detail, config('features.no-badge-campaigns'))) {
                 // Give 70% users the badges flag (1-7), 30% in control (8-10)
                 $feature_flags['badges'] = (rand(1, 10) < 8);
             }

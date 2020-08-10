@@ -20,7 +20,6 @@
     "laminas/laminas-diactoros": "^2.2",
     "laravel/browser-kit-testing": "5.*",
     "laravel/framework": "^6.2",
-    "laravel/helpers": "^1.2",
     "laravel/socialite": "^4.0.0",
     "league/csv": "^9.0",
     "league/flysystem-aws-s3-v3": "~1.0",

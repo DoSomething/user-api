@@ -4,6 +4,7 @@ namespace Northstar\Http\Controllers\Legacy;
 
 use Northstar\Models\User;
 use Northstar\Merge\Merger;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Northstar\Http\Controllers\Controller;
 use Northstar\Http\Transformers\Legacy\UserTransformer;
@@ -59,14 +60,14 @@ class MergeController extends Controller
 
         // Get all profile fields from the duplicate (except metadata like ID or source).
         $metadata = ['_id', 'updated_at', 'created_at', 'drupal_id', 'source', 'source_detail', 'role', 'audit'];
-        $duplicateFields = array_except($duplicate->toArray(), $metadata);
+        $duplicateFields = Arr::except($duplicate->toArray(), $metadata);
         $duplicateFieldNames = array_keys($duplicateFields);
 
         // Find out which fields we need to handle merging
         $intersectedFields = array_intersect_key($target->toArray(), array_flip($duplicateFieldNames));
 
         // Fields that we can automatically merge
-        $fieldsToMerge = array_except($duplicateFields, array_keys($intersectedFields));
+        $fieldsToMerge = Arr::except($duplicateFields, array_keys($intersectedFields));
 
         // Call merge on intersecting fields
         foreach ($intersectedFields as $field => $value) {
