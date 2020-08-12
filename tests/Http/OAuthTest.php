@@ -54,6 +54,7 @@ class OAuthTest extends BrowserKitTestCase
             'response_type' => 'code',
             'client_id' => $client->client_id,
             'client_secret' => $client->client_secret,
+            'redirect_uri' => $client->redirect_uri,
             'scope' => 'user role:staff',
             'state' => csrf_token(),
         ]));
@@ -71,7 +72,7 @@ class OAuthTest extends BrowserKitTestCase
             'grant_type' => 'authorization_code',
             'client_id' => $client->client_id,
             'client_secret' => $client->client_secret,
-            'redirect_uri' => 'http://example.com/',
+            'redirect_uri' => $client->redirect_uri,
             'code' => $code,
         ]);
 
