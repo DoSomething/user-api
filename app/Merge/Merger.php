@@ -67,8 +67,8 @@ class Merger
 
     public function chooseMostRecentFromAudit($field, $target, $duplicate)
     {
-        $targetUpdatedTimestamp = $target->audit[$field]['updated_at']['date'];
-        $duplicateUpdatedTimestamp = $duplicate->audit[$field]['updated_at']['date'];
+        $targetUpdatedTimestamp = $target->audit[$field]['updated_at'];
+        $duplicateUpdatedTimestamp = $duplicate->audit[$field]['updated_at'];
 
         // If we have no audit information return the field from the accound that was accessed most recently
         if (! $targetUpdatedTimestamp && ! $duplicateUpdatedTimestamp) {
