@@ -91,7 +91,7 @@ class GoogleController extends Controller
 
         $birthday = null;
         // If birthdate is not set on the google profile, we won't receive a 'birthdays' field.
-        if (array_key_exists('birthdays', $googleProfile)) {
+        if (property_exists($googleProfile, 'birthdays')) {
             // Some date properties in this array may not contain a year property.
             $birthdaysWithYear = array_filter($googleProfile->birthdays, function ($item) {
                 return isset($item->date->year);
