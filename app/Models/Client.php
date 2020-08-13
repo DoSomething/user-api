@@ -2,6 +2,8 @@
 
 namespace Northstar\Models;
 
+use Illuminate\Support\Str;
+
 /**
  * The Client model. These identify the "client application" making
  * a request, and their maximum allowed scopes.
@@ -67,18 +69,18 @@ class Client extends Model
         // set when seeding the database, so we first check if empty.
         static::creating(function (self $client) {
             if (empty($client->client_secret)) {
-                $client->client_secret = str_random(32);
+                $client->client_secret = Str::random(32);
             }
         });
     }
 
-    /**
+    /*
      * Mutator for 'client_id' attribute.
      * @return string
      */
     public function setClientIdAttribute($value)
     {
-        $this->attributes['client_id'] = snake_case($value);
+        $this->attributes['client_id'] = Str::snake($value);
     }
 
     /**

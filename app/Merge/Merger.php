@@ -2,13 +2,14 @@
 
 namespace Northstar\Merge;
 
+use Illuminate\Support\Str;
 use Northstar\Exceptions\NorthstarValidationException;
 
 class Merger
 {
     public function merge($field, $target, $duplicate)
     {
-        $mergeMethod = 'merge'.studly_case($field);
+        $mergeMethod = 'merge'.Str::studly($field);
 
         if (! method_exists($this, $mergeMethod)) {
             throw new NorthstarValidationException(['Unable to merge '.$field.' field. No merge instructions found.'], ['target' => $target, 'duplicate' => $duplicate]);
@@ -66,8 +67,8 @@ class Merger
 
     public function chooseMostRecentFromAudit($field, $target, $duplicate)
     {
-        $targetUpdatedTimestamp = $target->audit[$field]['updated_at']['date'];
-        $duplicateUpdatedTimestamp = $duplicate->audit[$field]['updated_at']['date'];
+        $targetUpdatedTimestamp = $target->audit[$field]['updated_at'];
+        $duplicateUpdatedTimestamp = $duplicate->audit[$field]['updated_at'];
 
         // If we have no audit information return the field from the accound that was accessed most recently
         if (! $targetUpdatedTimestamp && ! $duplicateUpdatedTimestamp) {

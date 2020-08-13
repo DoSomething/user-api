@@ -2,6 +2,7 @@
 
 namespace Northstar\Http\Controllers\Web;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Northstar\Events\PasswordUpdated;
@@ -45,7 +46,7 @@ class ResetPasswordController extends Controller
     {
         $user->forceFill([
             'password' => $password,
-            'remember_token' => str_random(60),
+            'remember_token' => Str::random(60),
         ])->save();
 
         // Pass along the password reset type route parameter as the source of password update.
@@ -84,7 +85,7 @@ class ResetPasswordController extends Controller
             'display_footer' => true,
         ];
 
-        if (str_contains($type, 'activate-account')) {
+        if (Str::contains($type, 'activate-account')) {
             $data = [
                 'title' => 'Activate Account',
                 'header' => trans('auth.activate_account.header'),

@@ -237,7 +237,7 @@ function is_dosomething_domain($url)
         return false;
     }
 
-    return ends_with($parsed['host'], 'dosomething.org') !== false;
+    return Str::endsWith($parsed['host'], 'dosomething.org') !== false;
 }
 
 /**

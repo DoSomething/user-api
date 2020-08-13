@@ -2,6 +2,7 @@
 
 namespace Northstar\Http\Transformers;
 
+use Illuminate\Support\Str;
 use Northstar\Models\Client;
 use League\Fractal\TransformerAbstract;
 
@@ -14,7 +15,7 @@ class ClientTransformer extends TransformerAbstract
     public function transform(Client $client)
     {
         return [
-            'title' => ! empty($client->title) ? $client->title : title_case($client->client_id),
+            'title' => ! empty($client->title) ? $client->title : Str::title($client->client_id),
             'description' => $client->description,
 
             'client_id' => $client->client_id,

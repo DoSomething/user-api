@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Arr;
 use Tests\CreatesApplication;
 use Tests\WithMocks;
 use Tests\WithAuthentication;
@@ -97,7 +98,7 @@ abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
     {
         $responseData = $this->decodeResponseJson();
 
-        if (array_has($responseData, $key)) {
+        if (Arr::has($responseData, $key)) {
             Assert::fail('Did not expect to find JSON response at '.$key);
         }
 
@@ -115,11 +116,11 @@ abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
     {
         $responseData = $this->decodeResponseJson();
 
-        if (! array_has($responseData, $key)) {
+        if (! Arr::has($responseData, $key)) {
             Assert::fail('Expected to find JSON response at '.$key);
         }
 
-        $actual = array_get($responseData, $key);
+        $actual = Arr::get($responseData, $key);
         if ($expected !== null && $actual !== $expected) {
             Assert::fail('Expected to find "'.$expected.'" in response at '.$key.', found: '.$actual);
         }
