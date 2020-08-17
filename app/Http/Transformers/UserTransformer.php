@@ -90,7 +90,7 @@ class UserTransformer extends BaseTransformer
             // Email subscription status
             $response['email_subscription_status'] = (bool) $user->email_subscription_status;
 
-            //Cause Areas
+            // Cause Areas
             $response['causes'] = $user->causes;
 
             // Voter registration status
