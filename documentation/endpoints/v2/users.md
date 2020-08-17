@@ -149,6 +149,7 @@ Either a mobile number or email is required.
   addr_zip: String;
   country: String; // two character country code
   language: String;
+  club_id: Number;
   agg_id: Number;
   cgg_id: Number;
   slack_id: String;
@@ -394,6 +395,7 @@ PUT /v2/users/:user_id
   addr_zip: String;
   country: String; // two character country code
   language: String;
+  club_id: Number;
   agg_id: Number;
   cgg_id: Number;
   slack_id: String;
