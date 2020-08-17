@@ -36,6 +36,8 @@ class UserTransformer extends TransformerAbstract
             $response['interests'] = [];
             $response['birthdate'] = format_date($user->birthdate, 'Y-m-d');
 
+            $response['club_id'] = $user->club_id;
+
             $response['addr_street1'] = $user->addr_street1;
             $response['addr_street2'] = $user->addr_street2;
             $response['addr_city'] = $user->addr_city;
