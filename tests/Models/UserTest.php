@@ -51,6 +51,7 @@ class UserModelTest extends BrowserKitTestCase
             'lifestyle_email_subscription_status' => isset($user->email_subscription_topics) ? in_array('lifestyle', $user->email_subscription_topics) : false,
             'community_email_subscription_status' => isset($user->email_subscription_topics) ? in_array('community', $user->email_subscription_topics) : false,
             'scholarship_email_subscription_status' => isset($user->email_subscription_topics) ? in_array('scholarships', $user->email_subscription_topics) : false,
+            'clubs_email_subscription_status' => isset($user->email_subscription_topics) ? in_array('clubs', $user->email_subscription_topics) : false,
             'general_sms_subscription_status' => isset($user->sms_subscription_topics) ? in_array('general', $user->sms_subscription_topics) : false,
             'voting_sms_subscription_status' => isset($user->sms_subscription_topics) ? in_array('voting', $user->sms_subscription_topics) : false,
             'animal_welfare' => true,
