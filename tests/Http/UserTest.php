@@ -101,6 +101,7 @@ class UserTest extends BrowserKitTestCase
         $this->assertArrayNotHasKey('mobile', $data);
         $this->assertArrayNotHasKey('facebook_id', $data);
         $this->assertArrayNotHasKey('school_id', $data);
+        $this->assertArrayNotHasKey('club_id', $data);
     }
 
     /**
@@ -130,6 +131,7 @@ class UserTest extends BrowserKitTestCase
         $this->dontSeeJsonField('data.mobile');
         $this->dontSeeJsonField('data.facebook_id');
         $this->dontSeeJsonField('data.school_id');
+        $this->dontSeeJsonField('data.club_id');
     }
 
     /**
@@ -164,6 +166,7 @@ class UserTest extends BrowserKitTestCase
         $this->seeJsonField('data.mobile_preview', '(860) 203-XXXX');
         $this->seeJsonField('data.school_id', '12500012');
         $this->seeJsonField('data.school_id_preview', '125XXXXX');
+        $this->seeJsonField('data.club_id', 1);
         $this->seeJsonField('data.referrer_user_id', '559442cca59dbfca578b4bed');
     }
 
@@ -184,7 +187,7 @@ class UserTest extends BrowserKitTestCase
         // Check that public & private profile fields are visible
         $this->seeJsonStructure([
             'data' => [
-                'id', 'email', 'first_name', 'last_name', 'facebook_id', 'school_id',
+                'id', 'email', 'first_name', 'last_name', 'facebook_id', 'school_id', 'club_id',
             ],
         ]);
     }
@@ -247,6 +250,7 @@ class UserTest extends BrowserKitTestCase
         $this->asUser($staff, ['user', 'role:staff', 'write'])->json('PUT', 'v2/users/'.$user->id, [
             'first_name' => 'Alexander',
             'last_name' => 'Hamilton',
+            'club_id' => 2,
         ]);
 
         $this->assertResponseStatus(200);
@@ -255,6 +259,7 @@ class UserTest extends BrowserKitTestCase
         $this->seeInDatabase('users', [
             'first_name' => 'Alexander',
             'last_name' => 'Hamilton',
+            'club_id' => 2,
             '_id' => $user->id,
         ]);
     }
@@ -273,6 +278,7 @@ class UserTest extends BrowserKitTestCase
             'first_name' => 'Pepper',
             'last_name' => 'Puppy',
             'school_id' => '7110001',
+            'club_id' => 2,
         ]);
 
         $this->assertResponseStatus(200);
@@ -283,6 +289,7 @@ class UserTest extends BrowserKitTestCase
             'last_name' => 'Puppy',
             '_id' => $user->id,
             'school_id' => '7110001',
+            'club_id' => 2,
         ]);
     }
 
@@ -351,6 +358,7 @@ class UserTest extends BrowserKitTestCase
             'first_name' => 'Wilhelmina',
             'last_name' => 'Grubbly-Plank',
             'school_id' => '11122019',
+            'club_id' => 2,
             'referrer_user_id' => '5e7aa023fdce2754fc584dea',
         ]);
 
@@ -362,6 +370,7 @@ class UserTest extends BrowserKitTestCase
             'last_name' => 'Grubbly-Plank',
             '_id' => $user->id,
             'school_id' => '11122019',
+            'club_id' => 2,
             'referrer_user_id' => '5e7aa023fdce2754fc584dea',
         ]);
     }

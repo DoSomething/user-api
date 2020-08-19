@@ -39,6 +39,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
  * @property string $referrer_user_id
  * @property string $voter_registration_status
  * @property string $school_id
+ * @property string $club_id - The Rogue Club ID that the user is a part of
  * @property string $role - The user's role, e.g. 'user', 'staff', or 'admin'
  *
  * @property string $addr_street1
@@ -104,7 +105,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'email', 'mobile', 'password', 'role',
 
         // Profile:
-        'first_name', 'last_name', 'birthdate', 'voter_registration_status', 'causes', 'school_id',
+        'first_name', 'last_name', 'birthdate', 'voter_registration_status', 'causes', 'school_id', 'club_id',
 
         // Address:
         'addr_street1', 'addr_street2', 'addr_city', 'addr_state', 'addr_zip',
@@ -162,7 +163,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     public static $indexes = [
-        '_id', 'drupal_id', 'email', 'mobile', 'source', 'role', 'facebook_id', 'google_id',
+        '_id', 'drupal_id', 'email', 'mobile', 'source', 'role', 'facebook_id', 'google_id', 'club_id',
     ];
 
     /**
@@ -535,6 +536,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'language' => $this->language,
             'country' => $this->country,
             'school_id' => $this->school_id,
+            'club_id' => $this->club_id,
             'voter_registration_status' => $this->voter_registration_status,
             'source' => $this->source,
             'source_detail' => $this->source_detail,

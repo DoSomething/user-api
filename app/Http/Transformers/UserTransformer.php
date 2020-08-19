@@ -56,7 +56,6 @@ class UserTransformer extends BaseTransformer
             'id' => $user->_id,
             'display_name' => $user->display_name,
             'first_name' => $user->first_name,
-            'display_name' => $user->display_name,
             'last_initial' => $user->last_initial,
             'photo' => null,
         ];
@@ -74,6 +73,7 @@ class UserTransformer extends BaseTransformer
             $response['interests'] = [];
             $response['age'] = $user->age;
             $response['school_id_preview'] = $user->school_id_preview;
+            $response['club_id'] = $user->club_id;
 
             $response['addr_city'] = $user->addr_city;
             $response['addr_state'] = $user->addr_state;
@@ -90,7 +90,7 @@ class UserTransformer extends BaseTransformer
             // Email subscription status
             $response['email_subscription_status'] = (bool) $user->email_subscription_status;
 
-            //Cause Areas
+            // Cause Areas
             $response['causes'] = $user->causes;
 
             // Voter registration status

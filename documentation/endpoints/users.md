@@ -151,6 +151,7 @@ Either a mobile number or email is required.
   country: String; // two character country code
   language: String;
   school_id: String;
+  club_id: Number;
   agg_id: Number;
   cgg_id: Number;
   drupal_id: String;
