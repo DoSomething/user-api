@@ -15,7 +15,7 @@ class SubscriptionUpdateController extends Controller
     /**
      * @var array
      */
-    protected $emailSubscriptionTopics = ['news', 'scholarships', 'community', 'lifestyle'];
+    protected $emailSubscriptionTopics = ['news', 'scholarships', 'community', 'lifestyle', 'clubs'];
 
     /**
      * Make a new SubpscriptionUpdateController, inject dependencies,
