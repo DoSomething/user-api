@@ -68,7 +68,7 @@ class Registrar
             'sms_subscription_topics.*' => 'in:general,voting',
             'last_messaged_at' => 'date',
             'email_subscription_status' => 'boolean',
-            'email_subscription_topics.*' => 'in:news,scholarships,lifestyle,community',
+            'email_subscription_topics.*' => 'in:news,scholarships,lifestyle,community,clubs',
             /**
              * Includes current values sent from Rock The Vote import, as well as older values for
              * backwards compatability.
