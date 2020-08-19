@@ -655,6 +655,29 @@ class UserTest extends BrowserKitTestCase
     }
 
     /**
+     * Test that the `club_id` field is validated.
+     * POST /v2/users
+     *
+     * @return void
+     */
+    public function testV2ValidatesClubId()
+    {
+        $this->asAdminUser()->json('POST', 'v2/users', [
+            'email' => 'test@example.com',
+            'club_id' => 'something bad',
+        ]);
+
+        $this->assertResponseStatus(422);
+
+        $this->asAdminUser()->json('POST', 'v2/users', [
+            'email' => 'test@example.com',
+            'club_id' => 1,
+        ]);
+
+        $this->assertResponseStatus(201);
+    }
+
+    /**
      * Test that we can only upsert with the ?upsert=true param
      * POST /v2/users/
      *
