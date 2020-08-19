@@ -41,6 +41,23 @@ class SubscriptionUpdateTest extends BrowserKitTestCase
     }
 
     /**
+     * Test that a user cannot add an invalid email subscription.
+     * POST /v2/users/:id/subscriptions/:topic
+     *
+     * @return void
+     */
+    public function testCantAddInvalidSubscription()
+    {
+        $user = factory(User::class)->create();
+
+        $this->asUser($user, ['user', 'write'])->post('v2/users/'.$user->id.'/subscriptions/invalid');
+
+        // This route won't exist since the topic is invalid.
+        $this->assertResponseStatus(404);
+        $this->assertEquals([], $user->fresh()->email_subscription_topics);
+    }
+
+    /**
      * Test that a user can mark remove email subscriptions.
      * DELETE /v2/users/:id/subscriptions/:topic
      *
