@@ -158,7 +158,7 @@ Either a mobile number or email is required.
   sms_paused: Boolean; // Whether a user is in a support conversation.
   sms_subscription_topics: Array; // Valid values: 'general', voting'
   email_subscription_status: Boolean; // Whether a user is subscribed to receive emails.
-  email_subscription_topics: Array; // Valid values: 'news', 'scholarships', 'lifestyle', 'community'
+  email_subscription_topics: Array; // Valid values: 'news', 'scholarships', 'lifestyle', 'community', 'clubs'
   source: String; // Immutable. Will only be set on new records.
   source_detail: String; // Only accepted alongside a valid 'source'.
   created_at: Number; // timestamp

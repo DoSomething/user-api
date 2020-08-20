@@ -551,6 +551,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'lifestyle_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('lifestyle', $this->email_subscription_topics) : false,
             'community_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('community', $this->email_subscription_topics) : false,
             'scholarship_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('scholarships', $this->email_subscription_topics) : false,
+            'clubs_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('clubs', $this->email_subscription_topics) : false,
             // SMS subscription topics:
             'general_sms_subscription_status' => isset($this->sms_subscription_topics) ? in_array('general', $this->sms_subscription_topics) : false,
             'voting_sms_subscription_status' => isset($this->sms_subscription_topics) ? in_array('voting', $this->sms_subscription_topics) : false,
