@@ -47,7 +47,7 @@ class GraphQL
         query GetSchoolById($schoolId: String!) {
           school(id: $schoolId) {
             name
-            state
+            location
           }
         }';
 

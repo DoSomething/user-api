@@ -61,7 +61,7 @@ trait CreatesApplication
         $this->graphqlMock = $this->mock(\Northstar\Services\GraphQL::class);
         $this->graphqlMock->shouldReceive('getSchoolById')->andReturn([
             'name' => 'San Dimas High School',
-            'state' => 'CA',
+            'location' => 'US-CA',
         ]);
 
         return $app;
