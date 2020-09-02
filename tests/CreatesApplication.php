@@ -4,6 +4,7 @@ namespace Tests;
 
 use Carbon\Carbon;
 use FakerPhoneNumber;
+use Northstar\Models\User;
 use DoSomething\Gateway\Blink;
 use Illuminate\Contracts\Console\Kernel;
 
@@ -62,6 +63,10 @@ trait CreatesApplication
         $this->graphqlMock->shouldReceive('getSchoolById')->andReturn([
             'name' => 'San Dimas High School',
             'location' => 'US-CA',
+        ]);
+        $this->graphqlMock->shouldReceive('getClubById')->andReturn([
+            'name' => 'DoSomething Staffers Club',
+            'leaderId' => factory(User::class)->create()->id,
         ]);
 
         return $app;
