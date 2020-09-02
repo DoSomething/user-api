@@ -60,7 +60,6 @@ class Registrar
             'mobile' => 'mobile|nullable|unique:users,mobile,'.$existingId.',_id|required_without:email',
             'birthdate' => 'nullable|date',
             'country' => 'nullable|country',
-            'password' => 'nullable|min:6|max:512',
             'club_id' => 'nullable|integer',
             'mobilecommons_status' => 'in:active,undeliverable,unknown', // for backwards compatibility.
             'sms_status' => 'nullable|in:active,less,stop,undeliverable,unknown,pending',
