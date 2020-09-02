@@ -141,7 +141,7 @@ abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'email' => $this->faker->unique->email,
-            'password' => 'secret456',
+            'password' => 'my-top-secret-passphrase',
         ]);
     }
 }

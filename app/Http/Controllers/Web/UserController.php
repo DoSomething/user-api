@@ -7,6 +7,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Northstar\Events\PasswordUpdated;
 use Northstar\Auth\Registrar;
 use Northstar\Models\User;
+use Northstar\Auth\PasswordRules;
 use Northstar\Http\Controllers\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -93,7 +94,7 @@ class UserController extends BaseController
             'first_name' => 'required|max:50',
             'last_name' => 'nullable|max:50',
             'birthdate' => 'nullable|required|date',
-            'password' => 'nullable|min:6|max:512|confirmed', // @TODO: Split into separate form.
+            'password' => PasswordRules::optionallyChangePassword($request->email), // @TODO: Split into separate form.
         ]);
 
         // Remove fields with empty values.

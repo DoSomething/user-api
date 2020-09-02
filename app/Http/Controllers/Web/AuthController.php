@@ -5,6 +5,7 @@ namespace Northstar\Http\Controllers\Web;
 use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
+use Northstar\Auth\PasswordRules;
 use Illuminate\Support\Facades\Auth;
 use Psr\Http\Message\ResponseInterface;
 use Northstar\Auth\Entities\UserEntity;
@@ -114,7 +115,7 @@ class AuthController extends Controller
     {
         $credentials = $this->validate($request, [
             'username' => 'required',
-            'password' => 'required',
+            'password' => PasswordRules::login(),
         ]);
 
         // Check if the user needs to reset their password in order to log in:
@@ -193,7 +194,7 @@ class AuthController extends Controller
             'first_name' => 'required|max:50',
             'last_name' => 'required|max:50',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|max:512',
+            'password' => PasswordRules::register($request->email),
         ]);
 
         // Register and login the user.

@@ -18,6 +18,7 @@
     "guzzlehttp/guzzle": "^6.3.0",
     "jenssegers/mongodb": "3.6.*",
     "laminas/laminas-diactoros": "^2.2",
+    "langleyfoxall/laravel-nist-password-rules": "^4.2",
     "laravel/browser-kit-testing": "5.*",
     "laravel/framework": "^6.2",
     "laravel/socialite": "^4.0.0",
