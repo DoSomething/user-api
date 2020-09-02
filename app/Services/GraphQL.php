@@ -44,7 +44,7 @@ class GraphQL
     public function getClubById($clubId)
     {
         $query = '
-        query GetClubById($clubId: Int!) {
+        query GetClubQuery($clubId: Int!) {
           club(id: $clubId) {
             name
             leaderId
