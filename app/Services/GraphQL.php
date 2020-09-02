@@ -18,7 +18,9 @@ class GraphQL
      */
     public function __construct()
     {
-        $this->client = ClientBuilder::build(config('services.graphql.url'));
+        $this->client = ClientBuilder::build(config('services.graphql.url'), [
+            'headers' => [ 'apollographql-client-name' => 'northstar' ]
+        ]);
     }
 
     /**
