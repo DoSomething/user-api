@@ -66,7 +66,7 @@ trait CreatesApplication
         ]);
         $this->graphqlMock->shouldReceive('getClubById')->andReturn([
             'name' => 'DoSomething Staffers Club',
-            'leaderId' => factory(User::class)->create()->id,
+            'leaderId' => new \MongoDB\BSON\ObjectId(),
         ]);
 
         return $app;
