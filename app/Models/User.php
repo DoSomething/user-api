@@ -615,7 +615,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function getClubIdUpdatedEventPayload($clubId)
     {
         $club = app(GraphQL::class)->getClubById($clubId);
-        $clubLeader = app(User::class)->find(array_get($club, 'leaderId'));
+        $clubLeader = app(User::class)->find(Arr::get($club, 'leaderId'));
 
         if (! $club || ! $clubLeader) {
             return;
