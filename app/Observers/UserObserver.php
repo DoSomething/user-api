@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use Northstar\Models\RefreshToken;
 use Illuminate\Support\Facades\Log;
 use Northstar\Jobs\SendUserToCustomerIo;
+use Northstar\Jobs\CreateCustomerIoEvent;
 use Northstar\Jobs\DeleteUserFromOtherServices;
 
 class UserObserver
@@ -85,6 +86,16 @@ class UserObserver
             // If resubscribing and not adding topics, add the default topics if user has none.
             } elseif (User::isSubscribedSmsStatus($changed['sms_status']) && ! isset($changed['sms_subscription_topics']) && ! $user->hasSmsSubscriptionTopics()) {
                 $user->addDefaultSmsSubscriptionTopics();
+            }
+        }
+
+        // If we're updating a user's club, dispatch a Customer.io event.
+        if (isset($changed['club_id'])) {
+            $customerIoPayload = $user->getClubIdUpdatedEventPayload($changed['club_id']);
+
+            // We'll only dispatch the event if the club is valid and we have the expected event payload.
+            if ($customerIoPayload) {
+                CreateCustomerIoEvent::dispatch($user, 'club_id_updated', $customerIoPayload);
             }
         }
 

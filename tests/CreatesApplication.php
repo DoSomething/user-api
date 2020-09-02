@@ -63,6 +63,10 @@ trait CreatesApplication
             'name' => 'San Dimas High School',
             'location' => 'US-CA',
         ]);
+        $this->graphqlMock->shouldReceive('getClubById')->andReturn([
+            'name' => 'DoSomething Staffers Club',
+            'leaderId' => new \MongoDB\BSON\ObjectId(),
+        ]);
 
         return $app;
     }

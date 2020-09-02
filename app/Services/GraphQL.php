@@ -18,7 +18,9 @@ class GraphQL
      */
     public function __construct()
     {
-        $this->client = ClientBuilder::build(config('services.graphql.url'));
+        $this->client = ClientBuilder::build(config('services.graphql.url'), [
+            'headers' => ['apollographql-client-name' => 'northstar'],
+        ]);
     }
 
     /**
@@ -33,6 +35,29 @@ class GraphQL
         $response = $this->client->query($query, $variables);
 
         return $response ? $response->getData() : [];
+    }
+
+    /**
+     * Query for a Club by ID.
+     *
+     * @param  $clubId Int
+     * @return array
+     */
+    public function getClubById($clubId)
+    {
+        $query = '
+        query GetClubQuery($clubId: Int!) {
+          club(id: $clubId) {
+            name
+            leaderId
+          }
+        }';
+
+        $variables = [
+            'clubId' => $clubId,
+        ];
+
+        return $this->query($query, $variables)['club'];
     }
 
     /**

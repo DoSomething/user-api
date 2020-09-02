@@ -1,6 +1,8 @@
 <?php
 
 use Northstar\Models\User;
+use Northstar\Services\GraphQL;
+use Northstar\Services\CustomerIo;
 
 class UserModelTest extends BrowserKitTestCase
 {
@@ -233,5 +235,60 @@ class UserModelTest extends BrowserKitTestCase
         $user->save();
 
         $this->assertEquals($user->sms_subscription_topics, ['general', 'voting']);
+    }
+
+    /**
+     * Test that an event is dispatched to Customer.io with the expected attributes when a user's club_id is updated.
+     *
+     * @return void
+     */
+    public function testUpdatingClubId()
+    {
+        $user = factory(User::class)->create();
+        $clubLeader = factory(User::class)->create();
+
+        $newClubId = 2;
+        $newClubName = 'DoSomething Staffers Club';
+
+        // Ensure we query this Rogue club via GraphQL.
+        $this->graphqlMock = $this->mock(GraphQL::class);
+        $this->graphqlMock->shouldReceive('getClubById')->with($newClubId)->andReturn([
+            'name' => $newClubName,
+            'leaderId' => $clubLeader->id,
+        ]);
+        $this->graphqlMock->shouldReceive('getSchoolById')->andReturn(null);
+
+        // Ensure that when we look up the Club Leader our defined mock is returned.
+        $this->mock(User::class)->shouldReceive('find')->andReturn($clubLeader);
+
+        $eventPayload = $user->getClubIdUpdatedEventPayload($newClubId);
+
+        // Our event payload attributes should contain the club and club leader values.
+        $this->assertEquals($eventPayload['club_name'], $newClubName);
+        $this->assertEquals($eventPayload['club_leader_first_name'], $clubLeader->first_name);
+        $this->assertEquals($eventPayload['club_leader_display_name'], $clubLeader->display_name);
+        $this->assertEquals($eventPayload['club_leader_email'], $clubLeader->email);
+
+        $this->mock(CustomerIo::class)->shouldReceive('trackEvent')->once()->withSomeOfArgs('club_id_updated', $eventPayload);
+
+        $user->update(['club_id' => $newClubId]);
+    }
+
+    /**
+     * Test that an event is not dispatched to Customer.io if a user is updated with a club_id with no matching club in Rogue.
+     *
+     * @return void
+     */
+    public function testUpdatingClubIdWithInvalidClub()
+    {
+        $user = factory(User::class)->create();
+
+        // Ensure we don't find a Rogue club via GraphQL.
+        $this->mock(GraphQL::class)->shouldReceive('getClubById', 'getSchoolById')->andReturn(null);
+
+        // The Customer.io event shoud not be dispatched.
+        $this->mock(CustomerIo::class)->shouldNotReceive('trackEvent');
+
+        $user->update(['club_id' => 123]);
     }
 }
