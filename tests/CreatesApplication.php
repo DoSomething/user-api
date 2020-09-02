@@ -4,7 +4,6 @@ namespace Tests;
 
 use Carbon\Carbon;
 use FakerPhoneNumber;
-use Northstar\Models\User;
 use DoSomething\Gateway\Blink;
 use Illuminate\Contracts\Console\Kernel;
 
