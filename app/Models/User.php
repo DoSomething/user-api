@@ -607,6 +607,30 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
+     * Get payload for a club_id_updated event.
+     *
+     * @param  number $clubId
+     * @return array
+     */
+    public function getClubIdUpdatedEventPayload($clubId)
+    {
+        $club = app(GraphQL::class)->getClubById($clubId);
+        $clubLeader = app(User::class)->find(array_get($club, 'leaderId'));
+
+        if (!$club || !$clubLeader) {
+            return;
+        }
+
+        return [
+            'club_name' => $club['name'],
+            'club_leader_id' => $club['leaderId'],
+            'club_leader_first_name' => $clubLeader->first_name,
+            'club_leader_display_name' => $clubLeader->display_name,
+            'club_leader_email' => $clubLeader->email,
+        ];
+    }
+
+    /**
      * Scope a query to get all of the users in a group.
      *
      * @return \Illuminate\Database\Eloquent\Builder
