@@ -32,7 +32,6 @@ class Handler extends ExceptionHandler
         HttpException::class,
         OAuthServerException::class,
         ModelNotFoundException::class,
-        ValidationException::class,
         NorthstarValidationException::class,
     ];
 
@@ -46,6 +45,13 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
+        // If we throw a 422 Validation Exception, write something to the log for later review:
+        if ($e instanceof ValidationException || $e instanceof NorthstarValidationException) {
+            info('Validation failed.', ['url' => request()->path(), 'errors' => $e->errors()]);
+
+            return;
+        }
+
         parent::report($e);
     }
 
