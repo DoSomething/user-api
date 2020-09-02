@@ -36,6 +36,29 @@ class GraphQL
     }
 
     /**
+     * Query for a Club by ID.
+     *
+     * @param  $clubId Int
+     * @return array
+     */
+    public function getClubById($clubId)
+    {
+        $query = '
+        query GetClubById($clubId: Int!) {
+          club(id: $clubId) {
+            name
+            leaderId
+          }
+        }';
+
+        $variables = [
+            'clubId' => $clubId,
+        ];
+
+        return $this->query($query, $variables)['club'];
+    }
+
+    /**
      * Query for a School by ID.
      *
      * @param  $schoolId String
