@@ -45,16 +45,17 @@ class PasswordResetTest extends BrowserKitTestCase
         // The user should visit the link that was sent via email & set a new password.
         $this->visit($resetPasswordUrl);
         $this->postForm('Reset Password', [
-            'password' => 'top_secret',
-            'password_confirmation' => 'top_secret',
+            'password' => 'new-top-secret-passphrase',
+            'password_confirmation' => 'new-top-secret-passphrase',
         ]);
 
         // The user should be logged-in to Northstar, and redirected to Phoenix's OAuth flow.
+        $this->seeIsAuthenticated();
         $this->seeIsAuthenticatedAs($user, 'web');
         $this->assertRedirectedTo(config('services.phoenix.url').'/next/login');
 
         // And their account should be updated with their new password.
-        $this->assertTrue(app(Registrar::class)->validateCredentials($user->fresh(), ['password' => 'top_secret']));
+        $this->assertTrue(app(Registrar::class)->validateCredentials($user->fresh(), ['password' => 'new-top-secret-passphrase']));
     }
 
     /**
@@ -114,15 +115,16 @@ class PasswordResetTest extends BrowserKitTestCase
         $this->see('Create a password to join a movement of young people dedicated to making their communities a better place for everyone.');
 
         $this->postForm('Activate Account', [
-            'password' => 'top_secret',
-            'password_confirmation' => 'top_secret',
+            'password' => 'new-top-secret-passphrase',
+            'password_confirmation' => 'new-top-secret-passphrase',
         ]);
 
         // The user should be logged-in to Northstar, and redirected to Phoenix's OAuth flow.
+        $this->seeIsAuthenticated();
         $this->seeIsAuthenticatedAs($user, 'web');
         $this->assertRedirectedTo(config('services.phoenix.url').'/next/login');
 
         // And their account should be updated with their new password.
-        $this->assertTrue(app(Registrar::class)->validateCredentials($user->fresh(), ['password' => 'top_secret']));
+        $this->assertTrue(app(Registrar::class)->validateCredentials($user->fresh(), ['password' => 'new-top-secret-passphrase']));
     }
 }

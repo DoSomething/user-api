@@ -8,7 +8,6 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Foundation\Validation\ValidationException as LegacyValidationException;
 use Illuminate\Validation\ValidationException;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Psr\Http\Message\ResponseInterface;
@@ -33,9 +32,7 @@ class Handler extends ExceptionHandler
         HttpException::class,
         OAuthServerException::class,
         ModelNotFoundException::class,
-        ValidationException::class,
         NorthstarValidationException::class,
-        LegacyValidationException::class,
     ];
 
     /**
@@ -48,6 +45,13 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
+        // If we throw a 422 Validation Exception, write something to the log for later review:
+        if ($e instanceof ValidationException || $e instanceof NorthstarValidationException) {
+            info('Validation failed.', ['url' => request()->path(), 'errors' => $e->errors()]);
+
+            return;
+        }
+
         parent::report($e);
     }
 
