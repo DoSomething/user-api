@@ -5,6 +5,7 @@ namespace Northstar\Http\Controllers\Web;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Northstar\Auth\PasswordRules;
 use Northstar\Events\PasswordUpdated;
 use Northstar\PasswordResetType;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +34,20 @@ class ResetPasswordController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+    }
+
+    /**
+     * Get the password reset validation rules.
+     *
+     * @return array
+     */
+    protected function rules()
+    {
+        return [
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => PasswordRules::changePassword(request()->email),
+        ];
     }
 
     /**
