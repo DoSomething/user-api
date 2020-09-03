@@ -48,6 +48,9 @@ Route::patch('profile/about', 'ProfileAboutController@update');
 Route::get('profile/subscriptions', 'ProfileSubscriptionsController@edit');
 Route::patch('profile/subscriptions', 'ProfileSubscriptionsController@update');
 
+// Change Password
+Route::patch('users/{id}/password', 'PasswordController@update')->name('passwords.update');
+
 // Password Reset
 Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm');
 Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail');

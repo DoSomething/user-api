@@ -91,11 +91,27 @@
         </div>
 
         <div class="container__block">
+            <div class="form-actions -padded">
+                <input type="submit" class="button" value="Save">
+            </div>
+        </div>
+    </form>
+
+    <form id="profile-edit-form" method="POST" action="{{ route('passwords.update', $user->id) }}">
+        {{ method_field('PATCH') }}
+        {{ csrf_field() }}
+
+        <div class="container__block">
             <h3 class="heading">Change Password</h3>
 
             <div class="form-item">
+                <label for="password" class="field-label">Current Password</label>
+                <input type="password" id="current_password" class="text-field" name="current_password" placeholder="• • • • • • • •">
+            </div>
+
+            <div class="form-item">
                 <label for="password" class="field-label">New Password</label>
-                <input type="password" id="password" class="text-field" name="password" placeholder="6+ characters... make it tricky!">
+                <input type="password" id="password" class="text-field" name="password" placeholder="8+ characters... make it tricky!">
             </div>
 
             <div class="form-item">
@@ -106,7 +122,7 @@
 
         <div class="container__block">
             <div class="form-actions">
-                <input type="submit" class="button" value="Save">
+                <input type="submit" class="button" value="Change Password">
             </div>
             <ul class="form-actions">
                 <li><a href="{{ url('users/'.$user->id) }}">Cancel</a></li>

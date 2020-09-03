@@ -56,6 +56,7 @@ return [
     ],
     'not_in' => 'The selected :attribute is invalid.',
     'numeric' => 'The :attribute must be a number.',
+    'password' => 'The provided current password is incorrect.',
     'regex' => 'The :attribute format is invalid.',
     'required' => 'The :attribute field is required.',
     'required_if' => 'The :attribute field is required when :other is :value.',
