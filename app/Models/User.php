@@ -102,7 +102,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     protected $fillable = [
         // Unique identifiers & role:
-        'email', 'mobile', 'password', 'role',
+        'email', 'mobile', 'role',
 
         // Profile:
         'first_name', 'last_name', 'birthdate', 'voter_registration_status', 'causes', 'school_id', 'club_id',

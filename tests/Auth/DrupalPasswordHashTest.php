@@ -48,9 +48,8 @@ class DrupalPasswordHashTest extends BrowserKitTestCase
             'drupal_password' => '$S$DOQoztwlGzTeaobeBZKNzlDttbZscuCkkZPv8yeoEvrn26H/GN5b',
         ]);
 
-        $user->update([
-            'password' => 'secret',
-        ]);
+        $user->password = 'secret';
+        $user->save();
 
         // Assert user has been updated in the database with a newly hashed password.
         $attributes = $user->fresh()->getAttributes();
