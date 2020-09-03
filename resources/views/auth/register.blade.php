@@ -54,7 +54,7 @@
 
         <div class="form-item password-visibility">
             <label for="password" class="field-label">Password*</label>
-            <input name="password" type="password" id="password" class="text-field required js-validate" placeholder="6+ characters... make it tricky!" data-validate="password" data-validate-required />
+            <input name="password" type="password" id="password" class="text-field required js-validate" placeholder="8+ characters... make it tricky!" data-validate="password" data-validate-required />
             <span class="password-visibility__toggle -hide"></span>
         </div>
 
