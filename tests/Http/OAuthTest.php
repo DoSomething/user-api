@@ -483,8 +483,8 @@ class OAuthTest extends BrowserKitTestCase
      */
     public function testCantRevokeAnotherUsersRefreshToken()
     {
-        $user1 = User::create(['email' => 'login-test@dosomething.org', 'password' => 'secret']);
-        $user2 = User::create(['email' => 'evil-user@dosomething.org', 'password' => 'secret']);
+        $user1 = factory(User::class)->create(['password' => 'rather-secret-phrase']);
+        $user2 = factory(User::class)->create(['password' => 'another-secret-code']);
         $client = factory(Client::class, 'password')->create();
 
         // Make token for user #1.
@@ -493,7 +493,7 @@ class OAuthTest extends BrowserKitTestCase
             'client_id' => $client->client_id,
             'client_secret' => $client->client_secret,
             'username' => $user1->email,
-            'password' => 'secret',
+            'password' => 'rather-secret-phrase',
             'scope' => 'user',
         ])->decodeResponseJson();
 
@@ -506,7 +506,7 @@ class OAuthTest extends BrowserKitTestCase
             'client_id' => $client->client_id,
             'client_secret' => $client->client_secret,
             'username' => $user2->email,
-            'password' => 'secret',
+            'password' => 'another-secret-code',
             'scope' => 'user',
         ])->decodeResponseJson();
 
