@@ -69,7 +69,7 @@ class GraphQL
     public function getSchoolById($schoolId)
     {
         $query = '
-        query GetSchoolById($schoolId: String!) {
+        query GetSchoolQuery($schoolId: String!) {
           school(id: $schoolId) {
             name
             location
