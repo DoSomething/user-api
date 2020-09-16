@@ -229,15 +229,22 @@ function format_legacy_mobile($mobile)
  * @param  string  $url
  * @return bool
  */
-function is_dosomething_domain($url)
+function is_dosomething_domain(string $url): bool
 {
-    $parsed = parse_url($url);
+    $host = parse_url($url, PHP_URL_HOST);
 
-    if (! array_key_exists('host', $parsed)) {
+    if (! $host) {
         return false;
     }
 
-    return Str::endsWith($parsed['host'], 'dosomething.org') !== false;
+    // Reject any URLs that include HTTP basic authentication, as this
+    // can be used for a "redirect hijack" attack, since some browsers
+    // will improperly read a URL-like username as the URL:
+    if (parse_url($url, PHP_URL_USER)) {
+        return false;
+    }
+
+    return (bool) preg_match('/(^|\.)dosomething\.org$/', $host);
 }
 
 /**
