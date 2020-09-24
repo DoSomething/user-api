@@ -24,8 +24,13 @@
                 @if (strpos($error , 'expired'))
                     <a href="/password/reset">Get a new password link</a>'
                 @else
-                        <li>{{ $error }}</li>
+                    <ul class="list -compacted">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 @endif
+                
                 <form id="password-reset-form" role="form" method="POST" action="{{ url('/password/reset/'.$type) }}">
                     {{ csrf_field() }}
 
