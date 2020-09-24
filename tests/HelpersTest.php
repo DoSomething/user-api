@@ -74,5 +74,6 @@ class HelpersTest extends BrowserKitTestCase
         $this->assertFalse(is_dosomething_domain('https://dosomething.org.evil.com'), 'It should reject a non-DoSomething hostname with valid "prefix".');
         $this->assertFalse(is_dosomething_domain('https://www.dontdosomething.org'), 'It should reject a non-DoSomething hostname with valid "suffix".');
         $this->assertFalse(is_dosomething_domain('https://cobalt.io\@admin.dosomething.org'), 'It should reject a URL with username hack.');
+        $this->assertFalse(is_dosomething_domain('https://cobalt.io\.admin.dosomething.org'), 'It should reject hostname with escaped dot.');
     }
 }

@@ -244,6 +244,12 @@ function is_dosomething_domain(string $url): bool
         return false;
     }
 
+    // Reject a host that includes an escaped '.', which could be used to
+    // bypass our domain check below (e.g. 'cobalt.io\.dosomething.org'):
+    if (str_contains($host, '\.')) {
+        return false;
+    }
+
     return (bool) preg_match('/(^|\.)dosomething\.org$/', $host);
 }
 
