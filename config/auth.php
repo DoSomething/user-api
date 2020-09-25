@@ -101,21 +101,12 @@ return [
     |
     */
 
-    /*
-    |--------------------------------------------------------------------------
-    | Users requested token lifespan
-    |--------------------------------------------------------------------------
-    | 'expire' => 1440 // requested token will expire in 1440 minutes/ 24 hours
-    | 'expire' => 4320 // requested token will expire in 4320 minutes/ 72 hours
-    |
-    */
-
     'passwords' => [
         'users' => [
             'provider' => 'users',
             'email' => 'auth.emails.password',
             'table' => 'password_resets',
-            'expire' => 4320,
+            'expire' => 4320, // requested token will expire in 4320 minutes / 72 hours
         ],
     ],
 
