@@ -520,7 +520,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $payload = [
             'id' => $this->id,
             'email' => $this->email,
-            'mobile' => $this->mobile, // TODO: Update Blink to just accept 'phone' field.
+            'phone' => $this->mobile,
             'sms_status' => $this->sms_status,
             'sms_status_source' => (isset($this->audit['sms_status']['source'])) ? $this->audit['sms_status']['source'] : null,
             'sms_paused' => (bool) $this->sms_paused,
@@ -543,9 +543,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'referrer_user_id' => $this->referrer_user_id,
             'deletion_requested_at' => optional($this->deletion_requested_at)->timestamp,
             'last_messaged_at' => optional($this->last_messaged_at)->timestamp,
-            'last_authenticated_at' => iso8601($this->last_authenticated_at), // TODO: Update Blink to just accept timestamp.
-            'updated_at' => iso8601($this->updated_at), // TODO: Update Blink to just accept timestamp.
-            'created_at' => iso8601($this->created_at), // TODO: Update Blink to just accept timestamp.
+            'last_authenticated_at' => optional($this->last_authenticated_at)->timestamp,
+            'updated_at' => optional($this->updated_at)->timestamp,
+            'created_at' => optional($this->created_at)->timestamp,
             // Email subscription topics:
             'news_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('news', $this->email_subscription_topics) : false,
             'lifestyle_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('lifestyle', $this->email_subscription_topics) : false,
