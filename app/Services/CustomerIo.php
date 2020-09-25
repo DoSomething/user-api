@@ -2,6 +2,8 @@
 
 namespace Northstar\Services;
 
+use Northstar\Models\User;
+
 class CustomerIo
 {
     /**
@@ -25,6 +27,16 @@ class CustomerIo
     }
 
     /**
+     * Is Customer.io enabled for this app?
+     *
+     * @return bool
+     */
+    protected function enabled(): bool
+    {
+        return config('features.blink');
+    }
+
+    /**
      * Track Customer.io event for given user with given name and data.
      * @see https://customer.io/docs/api/#apitrackeventsevent_add
      *
@@ -43,6 +55,34 @@ class CustomerIo
         return $this->client->post('customers/'.$user->id.'/events', [
             'form_params' => $payload,
         ]);
+    }
+
+    /**
+     * Create or update the given customer's profile in Customer.io.
+     * @see https://customer.io/docs/api/#apitrackcustomerscustomers_update
+     *
+     * @param User $user
+     */
+    public function updateCustomer(User $user)
+    {
+        $payload = $user->toCustomerIoPayload();
+
+        if (! $this->enabled()) {
+            info('User would have been sent to Customer.io', ['id' => $user->id, 'payload' => $payload]);
+
+            return;
+        }
+
+        $response = $this->client->put('customers/'.$user->id, [
+            'json' => $payload,
+        ]);
+
+        // For this endpoint, any status besides 200 means something is wrong:
+        if ($response->getStatusCode() !== 200) {
+            throw new Exception('Customer.io error: '.(string) $response->getBody());
+        }
+
+        info('User sent to Customer.io', ['id' => $user->id]);
     }
 
     /**
