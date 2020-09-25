@@ -50,11 +50,11 @@ trait CreatesApplication
 
         // Configure a mock for Blink model events.
         $this->blinkMock = $this->mock(Blink::class);
-        $this->blinkMock->shouldReceive('userCreate')->andReturn(true);
         $this->blinkMock->shouldReceive('userCallToActionEmail')->andReturn(true);
 
         // Configure a mock for any Customer.io API calls.
         $this->customerIoMock = $this->mock(\Northstar\Services\CustomerIo::class);
+        $this->customerIoMock->shouldReceive('updateCustomer');
         $this->customerIoMock->shouldReceive('trackEvent');
 
         // Configure a mock for GraphQL calls.

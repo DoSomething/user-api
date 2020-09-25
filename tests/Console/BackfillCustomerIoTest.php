@@ -14,6 +14,6 @@ class BackfillCustomerIoTest extends BrowserKitTestCase
         Artisan::call('northstar:cio');
 
         // Make sure we send to Customer.io the expected number of times (5 times when created, 5 times when we call the command)
-        $this->blinkMock->shouldHaveReceived('userCreate')->times(10);
+        $this->customerIoMock->shouldHaveReceived('updateCustomer')->times(10);
     }
 }

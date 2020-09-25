@@ -7,7 +7,7 @@ use Northstar\Services\CustomerIo;
 class UserModelTest extends BrowserKitTestCase
 {
     /** @test */
-    public function it_should_send_new_users_to_blink()
+    public function it_should_send_new_users_to_customer_io()
     {
         config(['features.blink' => true]);
 
@@ -18,7 +18,7 @@ class UserModelTest extends BrowserKitTestCase
         ]);
 
         // We should have made one "create" request to Blink.
-        $this->blinkMock->shouldHaveReceived('userCreate')->once()->with([
+        $this->customerIoMock->shouldHaveReceived('updateCustomer')->once()->with([
             'id' => $user->id,
             'first_name' => $user->first_name,
             'display_name' => $user->display_name,
@@ -76,7 +76,7 @@ class UserModelTest extends BrowserKitTestCase
     }
 
     /** @test */
-    public function it_should_send_updated_users_to_blink()
+    public function it_should_send_updated_users_to_customer_io()
     {
         config(['features.blink' => true]);
 
@@ -86,7 +86,7 @@ class UserModelTest extends BrowserKitTestCase
 
         // We should have made one "create" request to Blink,
         // and a second "update" request afterwards.
-        $this->blinkMock->shouldHaveReceived('userCreate')->twice();
+        $this->customerIoMock->shouldHaveReceived('updateCustomer')->twice();
     }
 
     /** @test */
