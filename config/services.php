@@ -65,7 +65,7 @@ return [
     ],
 
     'customerio' => [
-        'url' => env('CUSTOMER_IO_URL'),
+        'url' => 'https://track.customer.io/api/v1/',
         'username' => env('CUSTOMER_IO_USERNAME'),
         'password' => env('CUSTOMER_IO_PASSWORD'),
     ],
