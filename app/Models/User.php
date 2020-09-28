@@ -123,8 +123,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         // Email Subscription:
         'email_subscription_status', 'email_subscription_topics',
 
-        // Voting Plan:
-        'voting_plan_status', 'voting_plan_method_of_transport', 'voting_plan_time_of_day', 'voting_plan_attending_with',
+        // Voting Method/Plan field:
+        'voting_method',
+        'voting_plan_attending_with',
+        'voting_plan_status',
+        'voting_plan_method_of_transport',
+        'voting_plan_time_of_day',
 
         // Feature flags:
         'feature_flags',
