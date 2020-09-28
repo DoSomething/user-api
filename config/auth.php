@@ -106,7 +106,7 @@ return [
             'provider' => 'users',
             'email' => 'auth.emails.password',
             'table' => 'password_resets',
-            'expire' => 4320, // requested token will expire in 4320 minutes / 72 hours
+            'expire' => 60 * 24 * 3, // reset link will expire in 3 days (4320 minutes)
         ],
     ],
 
