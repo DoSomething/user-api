@@ -4,7 +4,6 @@ use Carbon\Carbon;
 use Northstar\Models\User;
 use Northstar\Services\Rogue;
 use Northstar\Services\Gambit;
-use Northstar\Services\CustomerIo;
 use Illuminate\Support\Facades\Artisan;
 
 class ProcessDeletionsCommandTest extends TestCase

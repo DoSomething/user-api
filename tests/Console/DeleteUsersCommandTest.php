@@ -3,7 +3,6 @@
 use Northstar\Models\User;
 use Northstar\Services\Rogue;
 use Northstar\Services\Gambit;
-use Northstar\Services\CustomerIo;
 use Illuminate\Support\Facades\Artisan;
 
 class DeleteUsersCommandTest extends TestCase

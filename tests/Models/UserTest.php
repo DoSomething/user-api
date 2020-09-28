@@ -2,7 +2,6 @@
 
 use Northstar\Models\User;
 use Northstar\Services\GraphQL;
-use Northstar\Services\CustomerIo;
 
 class UserModelTest extends BrowserKitTestCase
 {

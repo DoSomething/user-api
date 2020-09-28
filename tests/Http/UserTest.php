@@ -3,7 +3,6 @@
 use Northstar\Models\User;
 use Northstar\Services\Rogue;
 use Northstar\Services\Gambit;
-use Northstar\Services\CustomerIo;
 
 class UserTest extends BrowserKitTestCase
 {
