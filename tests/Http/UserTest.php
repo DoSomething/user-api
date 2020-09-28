@@ -3,7 +3,6 @@
 use Northstar\Models\User;
 use Northstar\Services\Rogue;
 use Northstar\Services\Gambit;
-use Northstar\Services\CustomerIo;
 
 class UserTest extends BrowserKitTestCase
 {
@@ -894,7 +893,7 @@ class UserTest extends BrowserKitTestCase
 
         $this->mock(Rogue::class)->shouldReceive('deleteUser')->once();
         $this->mock(Gambit::class)->shouldReceive('deleteUser')->once();
-        $this->mock(CustomerIo::class)->shouldReceive('deleteUser')->once();
+        $this->customerIoMock->shouldReceive('deleteUser')->once();
 
         $response = $this->asAdminUser()->json('DELETE', 'v2/users/'.$userToDelete->id, [
             'first_name' => 'Hercules',

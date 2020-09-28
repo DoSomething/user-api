@@ -2,12 +2,11 @@
 
 use Northstar\Models\User;
 use Northstar\Services\GraphQL;
-use Northstar\Services\CustomerIo;
 
 class UserModelTest extends BrowserKitTestCase
 {
     /** @test */
-    public function it_should_send_new_users_to_blink()
+    public function it_should_send_new_users_to_customer_io()
     {
         config(['features.blink' => true]);
 
@@ -17,15 +16,18 @@ class UserModelTest extends BrowserKitTestCase
             'causes' => ['animal_welfare', 'education', 'lgbtq_rights_equality', 'sexual_harassment_assault'],
         ]);
 
-        // We should have made one "create" request to Blink.
-        $this->blinkMock->shouldHaveReceived('userCreate')->once()->with([
+        // We should have made one "update" request to Customer.io when creating this user.
+        $this->customerIoMock->shouldHaveReceived('updateCustomer')->once();
+
+        // The Customer.io payload should be serialized correctly:
+        $this->assertEquals($user->toCustomerIoPayload(), [
             'id' => $user->id,
             'first_name' => $user->first_name,
             'display_name' => $user->display_name,
             'last_name' => null,
             'birthdate' => '631238400',
             'email' => $user->email,
-            'mobile' => $user->mobile,
+            'phone' => $user->mobile,
             'sms_status' => $user->sms_status,
             'sms_paused' => (bool) $user->sms_paused,
             'sms_status_source' => 'northstar',
@@ -47,8 +49,8 @@ class UserModelTest extends BrowserKitTestCase
             'deletion_requested_at' => null,
             'last_authenticated_at' => null,
             'last_messaged_at' => null,
-            'updated_at' => $user->updated_at->toIso8601String(),
-            'created_at' => $user->created_at->toIso8601String(),
+            'updated_at' => $user->updated_at->timestamp,
+            'created_at' => $user->created_at->timestamp,
             'news_email_subscription_status' => isset($user->email_subscription_topics) ? in_array('news', $user->email_subscription_topics) : false,
             'lifestyle_email_subscription_status' => isset($user->email_subscription_topics) ? in_array('lifestyle', $user->email_subscription_topics) : false,
             'community_email_subscription_status' => isset($user->email_subscription_topics) ? in_array('community', $user->email_subscription_topics) : false,
@@ -76,7 +78,7 @@ class UserModelTest extends BrowserKitTestCase
     }
 
     /** @test */
-    public function it_should_send_updated_users_to_blink()
+    public function it_should_send_updated_users_to_customer_io()
     {
         config(['features.blink' => true]);
 
@@ -84,9 +86,9 @@ class UserModelTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $user->update(['birthdate' => '1/15/1990']);
 
-        // We should have made one "create" request to Blink,
-        // and a second "update" request afterwards.
-        $this->blinkMock->shouldHaveReceived('userCreate')->twice();
+        // We should have made one request to Customer.io when we created this
+        // user, and a second "update" request when we called 'update()'.
+        $this->customerIoMock->shouldHaveReceived('updateCustomer')->twice();
     }
 
     /** @test */
@@ -269,9 +271,9 @@ class UserModelTest extends BrowserKitTestCase
         $this->assertEquals($eventPayload['club_leader_display_name'], $clubLeader->display_name);
         $this->assertEquals($eventPayload['club_leader_email'], $clubLeader->email);
 
-        $this->mock(CustomerIo::class)->shouldReceive('trackEvent')->once()->withSomeOfArgs('club_id_updated', $eventPayload);
-
         $user->update(['club_id' => $newClubId]);
+
+        $this->customerIoMock->shouldHaveReceived('trackEvent')->once();
     }
 
     /**
@@ -287,7 +289,7 @@ class UserModelTest extends BrowserKitTestCase
         $this->mock(GraphQL::class)->shouldReceive('getClubById', 'getSchoolById')->andReturn(null);
 
         // The Customer.io event shoud not be dispatched.
-        $this->mock(CustomerIo::class)->shouldNotReceive('trackEvent');
+        $this->customerIoMock->shouldNotReceive('trackEvent');
 
         $user->update(['club_id' => 123]);
     }

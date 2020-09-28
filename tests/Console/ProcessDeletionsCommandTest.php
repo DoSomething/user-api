@@ -4,7 +4,6 @@ use Carbon\Carbon;
 use Northstar\Models\User;
 use Northstar\Services\Rogue;
 use Northstar\Services\Gambit;
-use Northstar\Services\CustomerIo;
 use Illuminate\Support\Facades\Artisan;
 
 class ProcessDeletionsCommandTest extends TestCase
@@ -21,7 +20,7 @@ class ProcessDeletionsCommandTest extends TestCase
         // Mock the external service APIs & assert that we make two "delete" requests:
         $this->mock(Rogue::class)->shouldReceive('deleteUser')->twice();
         $this->mock(Gambit::class)->shouldReceive('deleteUser')->twice();
-        $this->mock(CustomerIo::class)->shouldReceive('deleteUser')->twice();
+        $this->customerIoMock->shouldReceive('deleteUser')->twice();
 
         // Run the 'northstar:delete' command on the 'example-identify-output.csv' file:
         Artisan::call('northstar:process-deletions');
