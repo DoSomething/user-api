@@ -70,6 +70,7 @@ class UserModelTest extends BrowserKitTestCase
             'physical_health' => false,
             'racial_justice_equity' => false,
             'sexual_harassment_assault' => true,
+            'voting_method' => null,
             'voting_plan_status' => null,
             'voting_plan_method_of_transport' => null,
             'voting_plan_time_of_day' => null,

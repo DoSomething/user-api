@@ -573,6 +573,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'racial_justice_equity' => in_array('racial_justice_equity', $this->causes) ? true : false,
             'sexual_harassment_assault' => in_array('sexual_harassment_assault', $this->causes) ? true : false,
             // Voting plan:
+            'voting_method' => $this->voting_method,
             'voting_plan_status' => $this->voting_plan_status,
             'voting_plan_method_of_transport' => $this->voting_plan_method_of_transport,
             'voting_plan_time_of_day' => $this->voting_plan_time_of_day,
