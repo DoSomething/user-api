@@ -54,7 +54,7 @@ trait CreatesApplication
 
         // Configure a mock for any Customer.io API calls.
         $this->customerIoMock = $this->mock(\Northstar\Services\CustomerIo::class);
-        $this->customerIoMock->shouldReceive('updateCustomer');
+        $this->customerIoMock->shouldReceive('updateCustomer')->andReturn(null);
         $this->customerIoMock->shouldReceive('trackEvent');
 
         // Configure a mock for GraphQL calls.

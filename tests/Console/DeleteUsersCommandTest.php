@@ -21,7 +21,7 @@ class DeleteUsersCommandTest extends TestCase
         // Mock the external service APIs & assert that we make two "delete" requests:
         $this->mock(Rogue::class)->shouldReceive('deleteUser')->twice();
         $this->mock(Gambit::class)->shouldReceive('deleteUser')->twice();
-        $this->mock(CustomerIo::class)->shouldReceive('deleteUser')->twice();
+        $this->customerIoMock->shouldReceive('deleteUser')->twice();
 
         // Run the 'northstar:delete' command on the 'example-identify-output.csv' file:
         Artisan::call('northstar:delete', ['input' => $input]);
