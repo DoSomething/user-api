@@ -15,12 +15,16 @@
                         <h4>{{ trans('auth.validation.issues') }}</h4>
                         <ul class="list -compacted">
                             @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
+                                <li>
+                                    {{ $error }} 
+                                    @if (strpos($error, 'create-password'))
+                                        <a href="/password/reset">Resend email to create/reset password</a>
+                                    @endif
+                                </li>
                             @endforeach
                         </ul>
                     </div>
-                @endif
-
+                @endif                             
                 <form id="password-reset-form" role="form" method="POST" action="{{ url('/password/reset/'.$type) }}">
                     {{ csrf_field() }}
 

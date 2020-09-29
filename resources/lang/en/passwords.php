@@ -15,7 +15,7 @@ return [
 
     'password' => 'Passwords must be at least six characters and match the confirmation.',
     'user' => "We can't find a user with that e-mail address.",
-    'token' => 'Your password reset link is invalid or has expired. Please reset your password again and use the new password reset link.',
+    'token' => "It's been longer than 72 hours since your create-password link was sent.",
     'sent' => 'We have e-mailed your password reset link!',
     'reset' => 'Your password has been reset!',
 
