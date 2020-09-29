@@ -15,13 +15,12 @@
                         <h4>{{ trans('auth.validation.issues') }}</h4>
                         <ul class="list -compacted">
                             @foreach ($errors->all() as $error)
-                                @if (strpos($error, 'create-password'))
                                 <li>
-                                {{ $error }} 
-                                <a href="/password/reset">Get a new password link</a>
+                                    {{ $error }} 
+                                    @if (strpos($error, 'create-password'))
+                                        <a href="/password/reset">Get a new password link</a>
+                                    @endif
                                 </li>
-                                 @else <li>{{ $error }}</li>
-                                 @endif
                             @endforeach
                         </ul>
                     </div>
