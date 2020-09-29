@@ -24,7 +24,8 @@
                             @endforeach
                         </ul>
                     </div>
-                @endif              
+                @endif
+                              
                 <form id="password-reset-form" role="form" method="POST" action="{{ url('/password/reset/'.$type) }}">
                     {{ csrf_field() }}
 
