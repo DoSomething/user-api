@@ -18,7 +18,7 @@
                                 <li>
                                     {{ $error }} 
                                     @if (strpos($error, 'create-password'))
-                                        <a href="/password/reset">Get a new password link</a>
+                                        <a href="/password/reset">Resent email to create/reset password</a>
                                     @endif
                                 </li>
                             @endforeach
