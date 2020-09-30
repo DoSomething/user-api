@@ -123,8 +123,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         // Email Subscription:
         'email_subscription_status', 'email_subscription_topics',
 
-        // Voting Plan:
-        'voting_plan_status', 'voting_plan_method_of_transport', 'voting_plan_time_of_day', 'voting_plan_attending_with',
+        // Voting Method/Plan fields:
+        'voting_method',
+        'voting_plan_attending_with',
+        'voting_plan_status',
+        'voting_plan_method_of_transport',
+        'voting_plan_time_of_day',
 
         // Feature flags:
         'feature_flags',
@@ -568,7 +572,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'physical_health' => in_array('physical_health', $this->causes) ? true : false,
             'racial_justice_equity' => in_array('racial_justice_equity', $this->causes) ? true : false,
             'sexual_harassment_assault' => in_array('sexual_harassment_assault', $this->causes) ? true : false,
-            // Voting plan:
+            // Voting method/plan:
+            'voting_method' => $this->voting_method,
             'voting_plan_status' => $this->voting_plan_status,
             'voting_plan_method_of_transport' => $this->voting_plan_method_of_transport,
             'voting_plan_time_of_day' => $this->voting_plan_time_of_day,
