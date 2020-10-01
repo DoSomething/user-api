@@ -105,7 +105,7 @@ class SubscriptionsTest extends BrowserKitTestCase
         ]);
 
         $this->assertResponseStatus(201);
-        $this->blinkMock->shouldHaveReceived('userCallToActionEmail')->once();
+        $this->customerIoMock->shouldHaveReceived('trackEvent')->once();
 
         $this->seeInDatabase('password_resets', ['email' => 'topics@dosomething.org']);
     }
