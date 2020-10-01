@@ -510,8 +510,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * Transform the user model for Blink.
-     * WARNING: THIS PAYLOAD CAN ONLY INCLUDE 300 ATTRIBUTES!!
+     * Transform the user model for Customer.io's profile schema.
+     * 
+     * These values must be simple strings or integers (no objects or arrays).
+     * Dates should be represented as UNIX timestamps (other) in order to use
+     * them in triggers. (Note: this payload is limited to 300 attributes).
      *
      * @return array
      */
