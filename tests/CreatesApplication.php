@@ -4,18 +4,10 @@ namespace Tests;
 
 use Carbon\Carbon;
 use FakerPhoneNumber;
-use DoSomething\Gateway\Blink;
 use Illuminate\Contracts\Console\Kernel;
 
 trait CreatesApplication
 {
-    /**
-     * The Blink API client mock.
-     *
-     * @var \Mockery\MockInterface
-     */
-    protected $blinkMock;
-
     /**
      * The Customer.io API client mock.
      *
@@ -47,10 +39,6 @@ trait CreatesApplication
         $app = require __DIR__.'/../bootstrap/app.php';
 
         $app->make(Kernel::class)->bootstrap();
-
-        // Configure a mock for Blink model events.
-        $this->blinkMock = $this->mock(Blink::class);
-        $this->blinkMock->shouldReceive('userCallToActionEmail')->andReturn(true);
 
         // Configure a mock for any Customer.io API calls.
         $this->customerIoMock = $this->mock(\Northstar\Services\CustomerIo::class);
