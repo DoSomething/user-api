@@ -71,7 +71,7 @@ class SendPasswordResetToCustomerIo implements ShouldQueue
         // Rate limit Customer.io API requests to 10/s.
         $throttler = Redis::throttle('customerio')->allow(10)->every(1);
         $throttler->then(function () use ($customerIo) {
-            $customerIo->trackEvent($this->user, 'track_call_to_action_email', [
+            $customerIo->trackEvent($this->user, 'call_to_action_email', [
                 'actionUrl' => $this->getUrl(),
                 'type' => $this->type,
                 'userId' => $this->user->id,
