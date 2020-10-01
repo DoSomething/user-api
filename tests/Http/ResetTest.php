@@ -40,7 +40,7 @@ class ResetTest extends BrowserKitTestCase
         ]);
         $this->assertResponseStatus(200);
         $this->seeJsonStructure(['success']);
-        $this->blinkMock->shouldHaveReceived('userCallToActionEmail')->once();
+        $this->customerIoMock->shouldHaveReceived('trackEvent')->once();
 
         $this->seeInDatabase('password_resets', ['email' => $user->email]);
     }

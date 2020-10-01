@@ -58,12 +58,6 @@ return [
         'password' => env('GAMBIT_PASSWORD'),
     ],
 
-    'blink' => [
-        'url' => env('BLINK_URL'),
-        'user' => env('BLINK_USERNAME'),
-        'password' => env('BLINK_PASSWORD'),
-    ],
-
     'customerio' => [
         'url' => 'https://track.customer.io/api/v1/',
         'username' => env('CUSTOMER_IO_USERNAME'),
