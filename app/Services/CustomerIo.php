@@ -46,15 +46,24 @@ class CustomerIo
      */
     public function trackEvent($user, $eventName, $eventData = [])
     {
-        $payload = ['name' => $eventName];
+        $payload = ['name' => $eventName, 'data' => $eventData];
 
-        foreach ($eventData as $key => $value) {
-            $payload["data[$key]"] = $value;
+        if (! $this->enabled()) {
+            info('Event "' . $eventName . '" would have been sent to Customer.io', ['id' => $user->id, 'payload' => $payload]);
+
+            return;
         }
 
-        return $this->client->post('customers/'.$user->id.'/events', [
-            'form_params' => $payload,
+        $response = $this->client->post('customers/'.$user->id.'/events', [
+            'json' => $payload,
         ]);
+
+        // For this endpoint, any status besides 200 means something is wrong:
+        if ($response->getStatusCode() !== 200) {
+            throw new Exception('Customer.io error: '.(string) $response->getBody());
+        }
+
+        info('Event "' . $eventName . '" sent to Customer.io', ['id' => $user->id]);
     }
 
     /**
