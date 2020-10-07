@@ -137,9 +137,8 @@ class ResetPasswordController extends Controller
     public function redirectPath()
     {
         if (Str::contains(request()->type, 'activate-account')) {
-            return 'profile/about';
+        return 'profile/about';
         }
-        
         return config('services.phoenix.url').'/next/login';
     }
 }
