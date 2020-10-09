@@ -122,7 +122,7 @@ class PasswordResetTest extends BrowserKitTestCase
         // The user should be logged-in to Northstar, and redirected to Phoenix's OAuth flow.
         $this->seeIsAuthenticated();
         $this->seeIsAuthenticatedAs($user, 'web');
-        $this->assertRedirectedTo(config('services.phoenix.url').'/next/login');
+        $this->assertRedirectedTo('profile/about');
 
         // And their account should be updated with their new password.
         $this->assertTrue(app(Registrar::class)->validateCredentials($user->fresh(), ['password' => 'new-top-secret-passphrase']));
