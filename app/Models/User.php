@@ -516,30 +516,33 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     /**
      * Transform the user model for Customer.io's profile schema.
      *
-     * These values must be simple strings or integers (no objects or arrays).
-     * Dates should be represented as UNIX timestamps (other) in order to use
-     * them in triggers. (Note: this payload is limited to 300 attributes).
-     *
      * @return array
      */
     public function toCustomerIoPayload()
     {
+        // Please keep in mind the following restrictions when adding fields:
+        //
+        //  - These values may only be strings or integers (no objects or arrays).
+        //  - Any user-provided strings must be sanitized by 'strip_tags'.
+        //  - All dates should be formatted as UNIX timestamps.
+        // 
+        // (Note: this payload is limited to 300 attributes).
         $payload = [
             'id' => $this->id,
             'email' => $this->email,
             'phone' => $this->mobile,
             'sms_status' => $this->sms_status,
-            'sms_status_source' => (isset($this->audit['sms_status']['source'])) ? $this->audit['sms_status']['source'] : null,
+            'sms_status_source' => data_get($this->audit, 'sms_status.source'),
             'sms_paused' => (bool) $this->sms_paused,
             'facebook_id' => $this->facebook_id,
             'google_id' => $this->google_id,
-            'first_name' => $this->first_name,
-            'display_name' => $this->display_name,
+            'first_name' => strip_tags($this->first_name),
+            'display_name' => strip_tags($this->display_name),
             'last_name' => null, // We want to unset this on Customer.io profiles.
             'birthdate' => optional($this->birthdate)->timestamp,
-            'addr_city' => $this->addr_city,
-            'addr_state' => $this->addr_state,
-            'addr_zip' => $this->addr_zip,
+            'addr_city' => strip_tags($this->addr_city),
+            'addr_state' => strip_tags($this->addr_state),
+            'addr_zip' => strip_tags($this->addr_zip),
             'language' => $this->language,
             'country' => $this->country,
             'school_id' => $this->school_id,
@@ -553,15 +556,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'last_authenticated_at' => optional($this->last_authenticated_at)->timestamp,
             'updated_at' => optional($this->updated_at)->timestamp,
             'created_at' => optional($this->created_at)->timestamp,
+
             // Email subscription topics:
             'news_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('news', $this->email_subscription_topics) : false,
             'lifestyle_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('lifestyle', $this->email_subscription_topics) : false,
             'community_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('community', $this->email_subscription_topics) : false,
             'scholarship_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('scholarships', $this->email_subscription_topics) : false,
             'clubs_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('clubs', $this->email_subscription_topics) : false,
+
             // SMS subscription topics:
             'general_sms_subscription_status' => isset($this->sms_subscription_topics) ? in_array('general', $this->sms_subscription_topics) : false,
             'voting_sms_subscription_status' => isset($this->sms_subscription_topics) ? in_array('voting', $this->sms_subscription_topics) : false,
+
             // Causes:
             'animal_welfare' => in_array('animal_welfare', $this->causes) ? true : false,
             'bullying' => in_array('bullying', $this->causes) ? true : false,
@@ -575,12 +581,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'physical_health' => in_array('physical_health', $this->causes) ? true : false,
             'racial_justice_equity' => in_array('racial_justice_equity', $this->causes) ? true : false,
             'sexual_harassment_assault' => in_array('sexual_harassment_assault', $this->causes) ? true : false,
+
             // Voting method/plan:
-            'voting_method' => $this->voting_method,
-            'voting_plan_status' => $this->voting_plan_status,
-            'voting_plan_method_of_transport' => $this->voting_plan_method_of_transport,
-            'voting_plan_time_of_day' => $this->voting_plan_time_of_day,
-            'voting_plan_attending_with' => $this->voting_plan_attending_with,
+            'voting_method' => strip_tags($this->voting_method),
+            'voting_plan_status' => strip_tags($this->voting_plan_status),
+            'voting_plan_method_of_transport' => strip_tags($this->voting_plan_method_of_transport),
+            'voting_plan_time_of_day' => strip_tags($this->voting_plan_time_of_day),
+            'voting_plan_attending_with' => strip_tags($this->voting_plan_attending_with),
         ];
 
         // Only include email subscription status if we have that information.
