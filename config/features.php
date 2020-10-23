@@ -12,7 +12,7 @@ return [
     |
     */
 
-    'blink' => env('DS_ENABLE_BLINK'),
+    'customer_io' => env('DS_ENABLE_CUSTOMER_IO'),
 
     'password-grant' => env('DS_ENABLE_PASSWORD_GRANT', true),
 
