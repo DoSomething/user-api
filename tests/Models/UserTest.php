@@ -294,4 +294,16 @@ class UserModelTest extends BrowserKitTestCase
 
         $user->update(['club_id' => 123]);
     }
+
+    /** @test */
+    public function it_should_sanitize_user_input()
+    {
+        $evildoer = factory(User::class)->create([
+            'first_name' => '<a href="evil.com">click here</a>',
+        ]);
+
+        $payload = $evildoer->toCustomerIoPayload();
+
+        $this->assertEquals('click here', $payload['first_name']);
+    }
 }
