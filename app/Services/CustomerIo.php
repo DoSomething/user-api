@@ -33,7 +33,7 @@ class CustomerIo
      */
     protected function enabled(): bool
     {
-        return config('features.blink');
+        return config('features.customer_io');
     }
 
     /**
