@@ -299,7 +299,7 @@ class UserModelTest extends BrowserKitTestCase
     public function it_should_sanitize_user_input()
     {
         $evildoer = factory(User::class)->create([
-            'first_name' => '<a href="evil.com">click here</a>'
+            'first_name' => '<a href="evil.com">click here</a>',
         ]);
 
         $payload = $evildoer->toCustomerIoPayload();

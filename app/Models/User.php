@@ -525,7 +525,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         //  - These values may only be strings or integers (no objects or arrays).
         //  - Any user-provided strings must be sanitized by 'strip_tags'.
         //  - All dates should be formatted as UNIX timestamps.
-        // 
+        //
         // (Note: this payload is limited to 300 attributes).
         $payload = [
             'id' => $this->id,
