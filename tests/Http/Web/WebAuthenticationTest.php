@@ -198,6 +198,33 @@ class WebAuthenticationTest extends BrowserKitTestCase
     }
 
     /**
+     * Test that users can register & then log in with the same credentials.
+     */
+    public function testRegisterAndLogin()
+    {
+        $this->visit('register');
+
+        $this->submitForm('register-submit', [
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'email' => 'register-and-login@example.org',
+            'password' => 'my-top-secret-passphrase',
+        ]);
+
+        $this->seeIsAuthenticated('web');
+        auth('web')->logout();
+
+        $this->visit('login');
+
+        $this->submitForm('login-submit', [
+            'username' => 'register-and-login@example.org',
+            'password' => 'my-top-secret-passphrase',
+        ]);
+
+        $this->seeIsAuthenticated('web');
+    }
+
+    /**
      * Test that a referrer_user_id in session is attached to the registering user.
      */
     public function testRegisterBetaWithReferrerUserId()
