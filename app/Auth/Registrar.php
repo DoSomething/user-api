@@ -245,6 +245,11 @@ class Registrar
             }
         }
 
+        // Set the user's password, if provided:
+        if (! empty($input['password'])) {
+            $user->password = $input['password'];
+        }
+
         // Set the user's country code by Fastly geo-location header.
         $user->country = country_code();
         // Set the user's zip code by Fastly geo-location header.
