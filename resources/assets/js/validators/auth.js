@@ -195,10 +195,10 @@ Validation.registerValidationFunction('email', function(string, done) {
 });
 
 // ## Password
-// Checks that password is 6 or more characters long.
+// Checks that password is 8 or more characters long.
 // Matches validation performed in dosomething_user.module.
 Validation.registerValidationFunction('password', function(string, done) {
-  if(string.length >= 6) {
+  if(string.length >= 8) {
     return done({
       success: true,
       message: 'Keep it secret, keep it safe!',
@@ -206,7 +206,7 @@ Validation.registerValidationFunction('password', function(string, done) {
   } else {
     return done({
       success: false,
-      message: 'Must be 6+ characters.',
+      message: 'Must be 8+ characters.',
     });
   }
 });
