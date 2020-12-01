@@ -8,7 +8,6 @@ class UserTest extends BrowserKitTestCase
 {
     /**
      * Test retrieving multiple users.
-     * GET /v2/users.
      *
      * @return void
      */
@@ -26,7 +25,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test retrieving multiple users.
-     * GET /v2/users.
      *
      * @return void
      */
@@ -42,7 +40,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test retrieving multiple users.
-     * GET /v2/users.
      *
      * @return void
      */
@@ -58,7 +55,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that we can filter records by date range.
-     * GET /v2/users/.
      *
      * @return void
      */
@@ -116,7 +112,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that retrieving a user as a non-admin returns limited profile.
-     * GET /v2/users/:id.
      *
      * @return void
      */
@@ -141,7 +136,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that retrieving a user as a non-admin returns limited profile.
-     * GET /v2/users/:id.
      *
      * @return void
      */
@@ -173,7 +167,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that retrieving a user as an admin returns full profile.
-     * GET /v2/users/:id.
      *
      * @return void
      */
@@ -212,7 +205,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that retrieving a user as an admin returns full profile.
-     * GET /v2/users/:id.
      *
      * @return void
      */
@@ -242,7 +234,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that normal users can't request optional fields.
-     * GET /v2/users/:id.
      *
      * @return void
      */
@@ -264,7 +255,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that staffers can request optional fields.
-     * GET /v2/users/:id.
      *
      * @return void
      */
@@ -290,7 +280,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that a staffer can update a user's profile.
-     * PUT /v2/users/:id.
      *
      * @return void
      */
@@ -322,7 +311,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that a user can update their own profile.
-     * PUT /v2/users/:id.
      *
      * @return void
      */
@@ -355,7 +343,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that an update does not add the "badges" feature flag.
-     * PUT /v2/users/:id.
      *
      * @return void
      */
@@ -384,7 +371,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that a user cannot update another user's profile.
-     * PUT /v2/users/:id.
      *
      * @return void
      */
@@ -414,7 +400,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that a machine can update a user's profile.
-     * PUT /v2/users/:id.
      *
      * @return void
      */
@@ -445,7 +430,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that the write scope is required to update a profile.
-     * PUT /v2/users/:id.
      *
      * @return void
      */
@@ -512,7 +496,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that a staffer cannot change a user's role.
-     * GET /v2/users/:id.
      *
      * @return void
      */
@@ -534,7 +517,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that an admin can create a new user.
-     * POST /v2/users.
      *
      * @return void
      */
@@ -559,7 +541,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that the write scope is required to create a new user.
-     * POST /v2/users.
      *
      * @return void
      */
@@ -587,7 +568,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that an admin can update a user's profile, including their role.
-     * PUT /v2/users/:id.
      *
      * @return void
      */
@@ -613,7 +593,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that creating a user results in saving normalized data.
-     * POST /users.
      *
      * @return void
      */
@@ -635,7 +614,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that the `country` field is validated.
-     * POST /users/:id.
      *
      * @return void
      */
@@ -658,7 +636,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that an admin can update a user's profile, including their role.
-     * POST /v2/users/.
      *
      * @return void
      */
@@ -680,7 +657,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that ISO-8601 formatted date strings are accepted.
-     * PUT /v2/users/:id.
      *
      * @return void
      */
@@ -702,7 +678,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that the `sms_subscription_topics` field is validated.
-     * POST /users/:id.
      *
      * @return void
      */
@@ -732,7 +707,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that the `mobile` field is validated.
-     * POST /users/:id.
      *
      * @return void
      */
@@ -753,7 +727,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that the `club_id` field is validated.
-     * POST /v2/users.
      *
      * @return void
      */
@@ -776,7 +749,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that we can only upsert with the ?upsert=true param
-     * POST /v2/users/.
      *
      * @return void
      */
@@ -821,7 +793,6 @@ class UserTest extends BrowserKitTestCase
     /**
      * Test that we can filter records with both ?search[email]=test@dosomething.org
      * and ?search=test@dosomething.org patterns
-     * GET /v2/users/.
      *
      * @return void
      */
@@ -852,7 +823,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that retrieving a user by mobile as a non-admin returns a 401 error code.
-     * GET /v2/mobile/:mobile.
      *
      * @return void
      */
@@ -876,7 +846,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that retrieving a user by mobile as staff returns full profile.
-     * GET /v2/mobile/:mobile.
      *
      * @return void
      */
@@ -900,7 +869,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that retrieving a user by mobile as an admin returns full profile.
-     * GET /v2/mobile/:mobile.
      *
      * @return void
      */
@@ -924,7 +892,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that retrieving a user by email as a non-admin returns a 401 response.
-     * GET /v2/email/:email.
      *
      * @return void
      */
@@ -946,7 +913,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that retrieving a user by email as staff returns full profile.
-     * GET /v2/email/:email.
      *
      * @return void
      */
@@ -966,7 +932,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that retrieving a user by email as an admin returns full profile.
-     * GET /v2/email/:email.
      *
      * @return void
      */
@@ -988,7 +953,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that write scope is required to delete a user.
-     * DELETE /v2/email/:email.
      *
      * @return void
      */
@@ -1017,7 +981,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that admin can delete a user.
-     * DELETE /v2/email/:email.
      *
      * @return void
      */
@@ -1049,7 +1012,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that an admin cannot add duplicates to email_subscription_topics.
-     * PUT /v2/users/:id.
      *
      * @return void
      */
@@ -1072,7 +1034,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that an admin cannot add duplicates to sms_subscription_topics.
-     * PUT /v2/users/:id.
      *
      * @return void
      */
@@ -1095,7 +1056,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that email subscription status is true after adding topics to user with null status.
-     * PUT /v2/users/:id.
      *
      * @return void
      */
@@ -1119,7 +1079,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that email subscription status is true after adding topics to user with false status.
-     * PUT /v2/users/:id.
      *
      * @return void
      */
@@ -1145,7 +1104,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that email subscription status remains true after unsetting topics.
-     * PUT /v2/users/:id.
      *
      * @return void
      */
@@ -1171,7 +1129,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that user email subscription topics are cleared after setting email subscription status to false.
-     * PUT /v2/users/:id.
      *
      * @return void
      */
@@ -1198,7 +1155,6 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that user SMS subscription topics are cleared after setting SMS status to stop.
-     * PUT /v2/users/:id.
      *
      * @return void
      */

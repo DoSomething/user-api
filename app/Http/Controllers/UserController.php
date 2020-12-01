@@ -51,7 +51,6 @@ class UserController extends Controller
 
     /**
      * Display a listing of the resource.
-     * GET /users.
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -98,7 +97,6 @@ class UserController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * POST /users.
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -162,7 +160,6 @@ class UserController extends Controller
 
     /**
      * Display the specified resource.
-     * GET /users/:id.
      *
      * @param string $id - the actual value to search for
      *
@@ -178,7 +175,6 @@ class UserController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * PUT /users/:id.
      *
      * @param string $id - the actual value to search for
      * @param Request $request
@@ -215,7 +211,6 @@ class UserController extends Controller
 
     /**
      * Delete a user resource.
-     * DELETE /users/:id.
      *
      * @param User $user
      * @return \Illuminate\Http\Response

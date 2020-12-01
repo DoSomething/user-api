@@ -39,7 +39,6 @@ class MergeController extends Controller
 
     /**
      * EXPERIMENTAL: Merge two user accounts into one.
-     * POST /users/:id/merge.
      *
      * @param string $id - the "destination" account
      * @param Request $request

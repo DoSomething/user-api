@@ -27,7 +27,6 @@ class ClientController extends Controller
 
     /**
      * Display a listing of the resource.
-     * GET /v2/clients.
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -41,7 +40,6 @@ class ClientController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * POST /v2/clients.
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -75,7 +73,6 @@ class ClientController extends Controller
 
     /**
      * Display the specified resource.
-     * GET /v2/clients/:client_id.
      *
      * @param $client_id
      * @return \Illuminate\Http\Response
@@ -89,7 +86,6 @@ class ClientController extends Controller
 
     /**
      * Update the specified resource.
-     * PUT /v2/clients/:client_id.
      *
      * @param $client_id
      * @param Request $request
@@ -123,7 +119,6 @@ class ClientController extends Controller
 
     /**
      * Delete an API key resource.
-     * DELETE /v2/clients/:client_id.
      *
      * @param $client_id
      * @return \Illuminate\Http\Response

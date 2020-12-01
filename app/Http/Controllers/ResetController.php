@@ -21,7 +21,6 @@ class ResetController extends Controller
 
     /**
      * Sends a password reset email.
-     * POST /resets.
      *
      * @param Request $request
      * @return array

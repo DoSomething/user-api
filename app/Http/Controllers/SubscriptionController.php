@@ -39,7 +39,6 @@ class SubscriptionController extends Controller
 
     /**
      * Creates a new user with given email subscription topic, or adds the given topic to an existing user.
-     * POST v2/subscriptions.
      *
      * @param Request $request
      * @return array

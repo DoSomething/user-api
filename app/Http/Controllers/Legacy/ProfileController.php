@@ -41,7 +41,6 @@ class ProfileController extends Controller
 
     /**
      * Display the current user's profile.
-     * GET /profile.
      *
      * @return \Illuminate\Http\Response
      */
@@ -55,7 +54,6 @@ class ProfileController extends Controller
 
     /**
      * Update the currently authenticated user's profile.
-     * PUT /profile.
      *
      * @param Request $request
      * @return \Illuminate\Http\Response

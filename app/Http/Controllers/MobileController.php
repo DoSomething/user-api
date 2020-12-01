@@ -27,7 +27,6 @@ class MobileController extends Controller
 
     /**
      * Display the specified resource.
-     * GET /mobile/:id.
      *
      * @param object $user
      *

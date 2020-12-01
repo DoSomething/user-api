@@ -27,7 +27,6 @@ class EmailController extends Controller
 
     /**
      * Display the specified resource.
-     * GET /email/:id.
      *
      * @param object $user
      *

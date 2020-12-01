@@ -50,7 +50,6 @@ class UserController extends Controller
 
     /**
      * Display a listing of the resource.
-     * GET /users.
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -97,7 +96,6 @@ class UserController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * POST /users.
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -175,7 +173,6 @@ class UserController extends Controller
 
     /**
      * Display the specified resource.
-     * GET /users/:term/:id.
      *
      * @param string $term - term to search by (eg. mobile, drupal_id, id, email, etc)
      * @param string $id - the actual value to search for
@@ -197,7 +194,6 @@ class UserController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * PUT /users/:term/:id.
      *
      * @param string $term - term to search by (eg. mobile, drupal_id, id, email, etc)
      * @param string $id - the actual value to search for
@@ -225,7 +221,6 @@ class UserController extends Controller
 
     /**
      * Delete a user resource.
-     * DELETE /users/:id.
      *
      * @param $id - User ID
      * @return \Illuminate\Http\Response

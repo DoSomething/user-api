@@ -6,7 +6,6 @@ class SubscriptionUpdateTest extends BrowserKitTestCase
 {
     /**
      * Test that a user can add email subscriptions.
-     * POST /v2/users/:id/subscriptions/:topic.
      *
      * @return void
      */
@@ -28,7 +27,6 @@ class SubscriptionUpdateTest extends BrowserKitTestCase
 
     /**
      * Test that a user cannot add a duplicate email subscription.
-     * POST /v2/users/:id/subscriptions/:topic.
      *
      * @return void
      */
@@ -52,7 +50,6 @@ class SubscriptionUpdateTest extends BrowserKitTestCase
 
     /**
      * Test that a user cannot add an invalid email subscription.
-     * POST /v2/users/:id/subscriptions/:topic.
      *
      * @return void
      */
@@ -71,7 +68,6 @@ class SubscriptionUpdateTest extends BrowserKitTestCase
 
     /**
      * Test that a user can mark remove email subscriptions.
-     * DELETE /v2/users/:id/subscriptions/:topic.
      *
      * @return void
      */
@@ -92,7 +88,6 @@ class SubscriptionUpdateTest extends BrowserKitTestCase
 
     /**
      * Test that a user can't edit another user's subscriptions.
-     * POST /v2/users/:id/subscriptions/:topic.
      *
      * @return void
      */
