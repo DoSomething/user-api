@@ -3,9 +3,9 @@
 namespace Northstar\Http\Middleware;
 
 use Closure;
+use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Illuminate\Contracts\Auth\Factory as Auth;
 
 class RedirectIfAuthenticated
 {

@@ -2,17 +2,17 @@
 
 namespace Northstar\Http\Controllers;
 
+use Illuminate\Cache\RateLimiter;
+use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Http\Request;
+use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\Exception\OAuthServerException;
 use Northstar\Auth\Encrypter;
 use Northstar\Events\Throttled;
-use Illuminate\Cache\RateLimiter;
+use Northstar\Http\Transformers\UserInfoTransformer;
 use Northstar\Models\RefreshToken;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use League\OAuth2\Server\AuthorizationServer;
-use Illuminate\Contracts\Auth\Factory as Auth;
-use Northstar\Http\Transformers\UserInfoTransformer;
-use League\OAuth2\Server\Exception\OAuthServerException;
 
 class OAuthController extends Controller
 {

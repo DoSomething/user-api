@@ -2,9 +2,9 @@
 
 namespace Northstar\Policies;
 
+use Illuminate\Auth\Access\HandlesAuthorization;
 use Northstar\Auth\Scope;
 use Northstar\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
 {

@@ -2,8 +2,8 @@
 
 namespace Northstar\Console\Commands;
 
-use Northstar\Auth\Registrar;
 use Illuminate\Console\Command;
+use Northstar\Auth\Registrar;
 
 class RemoveTotpDevice extends Command
 {

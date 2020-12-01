@@ -2,11 +2,11 @@
 
 namespace Northstar\Http\Controllers;
 
-use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
-use Northstar\PasswordResetType;
 use Northstar\Http\Transformers\UserTransformer;
+use Northstar\Models\User;
+use Northstar\PasswordResetType;
 
 class SubscriptionController extends Controller
 {
@@ -39,7 +39,7 @@ class SubscriptionController extends Controller
 
     /**
      * Creates a new user with given email subscription topic, or adds the given topic to an existing user.
-     * POST v2/subscriptions
+     * POST v2/subscriptions.
      *
      * @param Request $request
      * @return array

@@ -1,8 +1,8 @@
 <?php
 
 use Carbon\Carbon;
-use Northstar\Models\User;
 use Illuminate\Support\Facades\Artisan;
+use Northstar\Models\User;
 
 class UpdateUserFieldsCommandTest extends BrowserKitTestCase
 {

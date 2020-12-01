@@ -2,13 +2,13 @@
 
 namespace Northstar\Jobs;
 
-use Northstar\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Redis;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Redis;
+use Northstar\Models\User;
 use Northstar\Services\CustomerIo;
 
 class SendPasswordUpdatedToCustomerIo implements ShouldQueue

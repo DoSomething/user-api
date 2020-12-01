@@ -49,6 +49,7 @@ class DrupalPasswordHash
             default:
                 return false;
         }
+
         return $hash && $stored_hash == $hash;
     }
 
@@ -93,6 +94,7 @@ class DrupalPasswordHash
         // _password_base64_encode() of a 16 byte MD5 will always be 22 characters.
         // _password_base64_encode() of a 64 byte sha512 will always be 86 characters.
         $expected = 12 + ceil((8 * $len) / 6);
+
         return strlen($output) == $expected
             ? substr($output, 0, DRUPAL_HASH_LENGTH)
             : false;
@@ -131,6 +133,7 @@ class DrupalPasswordHash
     private static function _password_get_count_log2($setting)
     {
         $itoa64 = self::_password_itoa64();
+
         return strpos($itoa64, $setting[3]);
     }
 

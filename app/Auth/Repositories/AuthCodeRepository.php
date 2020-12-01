@@ -10,7 +10,7 @@ use Northstar\Models\AuthCode;
 class AuthCodeRepository implements AuthCodeRepositoryInterface
 {
     /**
-     * Creates a new AuthCode
+     * Creates a new AuthCode.
      *
      * @return AuthCodeEntityInterface
      */

@@ -6,7 +6,7 @@ class SubscriptionsTest extends BrowserKitTestCase
 {
     /**
      * Test adding a subscription topic to an existing user.
-     * POST /v2/subscriptions
+     * POST /v2/subscriptions.
      *
      * @return void
      */
@@ -37,7 +37,7 @@ class SubscriptionsTest extends BrowserKitTestCase
 
     /**
      * Test adding a subscription topics to an existing user with no duplicates.
-     * POST /v2/subscriptions
+     * POST /v2/subscriptions.
      *
      * @return void
      */
@@ -68,7 +68,7 @@ class SubscriptionsTest extends BrowserKitTestCase
 
     /**
      * Test adding a subscription topic to a new user.
-     * POST /v2/subscriptions
+     * POST /v2/subscriptions.
      *
      * @return void
      */
@@ -95,7 +95,7 @@ class SubscriptionsTest extends BrowserKitTestCase
 
     /**
      * Test that a new user gets a password reset email.
-     * POST /v2/subscriptions
+     * POST /v2/subscriptions.
      *
      * @return void
      */
@@ -118,7 +118,7 @@ class SubscriptionsTest extends BrowserKitTestCase
 
     /**
      * Test rate limiting (10 posts per hour)
-     * POST /v2/subscriptions
+     * POST /v2/subscriptions.
      *
      * @return void
      */

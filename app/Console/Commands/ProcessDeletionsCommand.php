@@ -3,9 +3,9 @@
 namespace Northstar\Console\Commands;
 
 use Carbon\Carbon;
-use Northstar\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
+use Northstar\Models\User;
 
 class ProcessDeletionsCommand extends Command
 {

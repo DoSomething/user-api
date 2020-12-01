@@ -49,7 +49,7 @@ $factory->define(Northstar\Models\User::class, function (
             ],
             $faker->numberBetween(0, 6),
         ),
-        /**
+        /*
          * Set email subscription status to null by default, as it won't be set for all users.
          * e.g. when source is 'sms'
          */

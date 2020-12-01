@@ -2,15 +2,15 @@
 
 namespace Northstar\Http\Controllers;
 
-use Northstar\Auth\Role;
-use Northstar\Models\User;
-use Illuminate\Http\Request;
-use Northstar\Auth\Registrar;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\AuthenticationException;
-use Northstar\Http\Transformers\UserTransformer;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
+use Northstar\Auth\Registrar;
+use Northstar\Auth\Role;
 use Northstar\Exceptions\NorthstarValidationException;
+use Northstar\Http\Transformers\UserTransformer;
+use Northstar\Models\User;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends Controller
@@ -51,7 +51,7 @@ class UserController extends Controller
 
     /**
      * Display a listing of the resource.
-     * GET /users
+     * GET /users.
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -98,7 +98,7 @@ class UserController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * POST /users
+     * POST /users.
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -162,7 +162,7 @@ class UserController extends Controller
 
     /**
      * Display the specified resource.
-     * GET /users/:id
+     * GET /users/:id.
      *
      * @param string $id - the actual value to search for
      *
@@ -178,7 +178,7 @@ class UserController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * PUT /users/:id
+     * PUT /users/:id.
      *
      * @param string $id - the actual value to search for
      * @param Request $request
@@ -215,7 +215,7 @@ class UserController extends Controller
 
     /**
      * Delete a user resource.
-     * DELETE /users/:id
+     * DELETE /users/:id.
      *
      * @param User $user
      * @return \Illuminate\Http\Response

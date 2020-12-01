@@ -3,14 +3,14 @@
 namespace Northstar\Http\Controllers\Web;
 
 use Carbon\Carbon;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\RequestException;
-use Northstar\Http\Controllers\Controller;
 use Laravel\Socialite\Two\InvalidStateException;
 use Northstar\Auth\Registrar;
+use Northstar\Http\Controllers\Controller;
 use Northstar\Models\User;
 use Northstar\Services\Google;
 

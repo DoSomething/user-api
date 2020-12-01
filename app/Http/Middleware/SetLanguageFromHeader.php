@@ -2,8 +2,8 @@
 
 namespace Northstar\Http\Middleware;
 
-use Closure;
 use App;
+use Closure;
 
 class SetLanguageFromHeader
 {

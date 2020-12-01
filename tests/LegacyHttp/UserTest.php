@@ -1,15 +1,15 @@
 <?php
 
 use Northstar\Models\User;
-use Northstar\Services\Rogue;
-use Northstar\Services\Gambit;
 use Northstar\Services\CustomerIo;
+use Northstar\Services\Gambit;
+use Northstar\Services\Rogue;
 
 class LegacyUserTest extends BrowserKitTestCase
 {
     /**
      * Test for retrieving a user by their ID.
-     * GET /users/id/:id
+     * GET /users/id/:id.
      *
      * @return void
      */
@@ -33,7 +33,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test for retrieving a user by their Mongo _id, for backwards compatibility.
-     * GET /users/_id/:id
+     * GET /users/_id/:id.
      *
      * @return void
      */
@@ -57,7 +57,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test for retrieving a user by their email.
-     * GET /users/email/:email
+     * GET /users/email/:email.
      *
      * @return void
      */
@@ -81,7 +81,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test for retrieving a user by their mobile number.
-     * GET /users/email/:email
+     * GET /users/email/:email.
      *
      * @return void
      */
@@ -105,7 +105,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test we can't retrieve a user by a non-indexed field.
-     * GET /users/email/:email
+     * GET /users/email/:email.
      *
      * @return void
      */
@@ -125,7 +125,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Tests retrieving a user by their Drupal ID.
-     * GET /users/drupal_id/{id}
+     * GET /users/drupal_id/{id}.
      */
     public function testRetrieveUser()
     {
@@ -146,7 +146,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test for retrieving a user with an admin key.
-     * GET /users/:term/:id
+     * GET /users/:term/:id.
      *
      * @return void
      */
@@ -177,7 +177,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test retrieving multiple users.
-     * GET /users
+     * GET /users.
      *
      * @return void
      */
@@ -209,7 +209,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test retrieving multiple users.
-     * GET /users
+     * GET /users.
      *
      * @return void
      */
@@ -245,7 +245,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test for retrieving a nonexistent User
-     * GET /users/_id/FAKE
+     * GET /users/_id/FAKE.
      *
      * @return void
      */
@@ -258,7 +258,7 @@ class LegacyUserTest extends BrowserKitTestCase
     /**
      * Tests retrieving multiple users by their id
      * GET /users?filter[id]=:id_1,...,:id_N
-     * GET /users?filter[drupal_id]=:id_1,...,:id_N
+     * GET /users?filter[drupal_id]=:id_1,...,:id_N.
      */
     public function testFilterUsersById()
     {
@@ -314,7 +314,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Tests searching users.
-     * GET /users/?search[field]=term
+     * GET /users/?search[field]=term.
      */
     public function testSearchUsers()
     {
@@ -349,7 +349,7 @@ class LegacyUserTest extends BrowserKitTestCase
     /**
      * Test that creating multiple users won't trigger unique
      * database constraint errors.
-     * POST /users
+     * POST /users.
      *
      * @return void
      */
@@ -384,7 +384,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that creating a user requires the write scope.
-     * POST /users
+     * POST /users.
      *
      * @return void
      */
@@ -411,7 +411,7 @@ class LegacyUserTest extends BrowserKitTestCase
      * Test that you set an indexed field to an empty string. This would cause
      * unique constraint violations if multiple users had an empty string set
      * for a unique indexed field.
-     * PUT /users/:id
+     * PUT /users/:id.
      *
      * @return void
      */
@@ -439,7 +439,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that you can't remove the only index (email or mobile) from a field.
-     * PUT /users/:id
+     * PUT /users/:id.
      *
      * @return void
      */
@@ -463,7 +463,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that you can't remove *both* the email and mobile fields from a user.
-     * PUT /users/:id
+     * PUT /users/:id.
      *
      * @return void
      */
@@ -488,7 +488,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that you can't edit a user without write scope.
-     * PUT /users/:id
+     * PUT /users/:id.
      *
      * @return void
      */
@@ -517,7 +517,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that we can't create a duplicate user.
-     * POST /users
+     * POST /users.
      *
      * @return void
      */
@@ -545,7 +545,7 @@ class LegacyUserTest extends BrowserKitTestCase
     /**
      * Test that we can't create a duplicate user by saving a user
      * with a different capitalization in their email.
-     * POST /users
+     * POST /users.
      */
     public function testCantCreateDuplicateUserByIndexCapitalization()
     {
@@ -571,7 +571,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that we can upsert based on a Drupal ID.
-     * POST /users
+     * POST /users.
      *
      * @return void
      */
@@ -600,7 +600,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that we can't create a duplicate user.
-     * POST /users
+     * POST /users.
      *
      * @return void
      */
@@ -631,7 +631,7 @@ class LegacyUserTest extends BrowserKitTestCase
     /**
      * Test that we can't create a duplicate user by "upserting" an existing
      * user and adding a new index in that operation.
-     * POST /users
+     * POST /users.
      */
     public function testCanUpsertWithAnAdditionalIndex()
     {
@@ -658,7 +658,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test for "upserting" an existing user.
-     * POST /users
+     * POST /users.
      *
      * @return void
      */
@@ -705,7 +705,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test for opting out of upsert functionality via a query string.
-     * POST /users?upsert=false
+     * POST /users?upsert=false.
      *
      * @return void
      */
@@ -736,7 +736,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that we can still create a new user when we've opted out of upserting.
-     * POST /users?upsert=false
+     * POST /users?upsert=false.
      *
      * @return void
      */
@@ -759,7 +759,7 @@ class LegacyUserTest extends BrowserKitTestCase
     /**
      * Test that "upserting" an existing user can't change an existing
      * user's account if *all* given credentials don't match.
-     * POST /users
+     * POST /users.
      *
      * @return void
      */
@@ -803,7 +803,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test for updating an existing user
-     * PUT /users/_id/:id
+     * PUT /users/_id/:id.
      *
      * @return void
      */
@@ -838,7 +838,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test for updating an existing user's index.
-     * PUT /users/_id/:id
+     * PUT /users/_id/:id.
      *
      * @return void
      */
@@ -867,7 +867,7 @@ class LegacyUserTest extends BrowserKitTestCase
     /**
      * Test that we can't update a user's profile to have duplicate
      * identifiers with someone else.
-     * PUT /users/_id/:id
+     * PUT /users/_id/:id.
      */
     public function testUpdateWithConflict()
     {
@@ -891,7 +891,7 @@ class LegacyUserTest extends BrowserKitTestCase
     /**
      * Test that we can't update a user's profile to have duplicate
      * identifiers with someone else.
-     * PUT /users/_id/:id
+     * PUT /users/_id/:id.
      */
     public function testUpdateWithDrupalIDConflict()
     {
@@ -914,7 +914,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test for deleting an existing user
-     * DELETE /users
+     * DELETE /users.
      *
      * @return void
      */
@@ -946,7 +946,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test the write scope is required to delete an existing user
-     * DELETE /users
+     * DELETE /users.
      *
      * @return void
      */
@@ -967,7 +967,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test for deleting a user that does not exist.
-     * DELETE /users
+     * DELETE /users.
      *
      * @return void
      */
@@ -981,7 +981,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test retrieving multiple users.
-     * GET /users
+     * GET /users.
      *
      * @return void
      */
@@ -999,7 +999,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test retrieving multiple users.
-     * GET /users
+     * GET /users.
      *
      * @return void
      */
@@ -1015,7 +1015,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test retrieving multiple users.
-     * GET /users
+     * GET /users.
      *
      * @return void
      */
@@ -1031,7 +1031,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that we can filter records by date range.
-     * GET /v1/users/
+     * GET /v1/users/.
      *
      * @return void
      */
@@ -1089,7 +1089,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that retrieving a user as a non-admin returns limited profile.
-     * GET /users/:term/:id
+     * GET /users/:term/:id.
      *
      * @return void
      */
@@ -1115,7 +1115,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that retrieving a user as an admin returns full profile.
-     * GET /users/:term/:id
+     * GET /users/:term/:id.
      *
      * @return void
      */
@@ -1137,7 +1137,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that retrieving a user as an admin returns full profile.
-     * GET /users/:term/:id
+     * GET /users/:term/:id.
      *
      * @return void
      */
@@ -1159,7 +1159,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that a staffer can update a user's profile.
-     * GET /users/:term/:id
+     * GET /users/:term/:id.
      *
      * @return void
      */
@@ -1227,7 +1227,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that a staffer cannot change a user's role.
-     * GET /users/:term/:id
+     * GET /users/:term/:id.
      *
      * @return void
      */
@@ -1249,7 +1249,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that an admin can create a new user.
-     * GET /users/:term/:id
+     * GET /users/:term/:id.
      *
      * @return void
      */
@@ -1278,7 +1278,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that an admin can update a user's profile, including their role.
-     * GET /users/:term/:id
+     * GET /users/:term/:id.
      *
      * @return void
      */
@@ -1304,7 +1304,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that creating a user results in saving normalized data.
-     * POST /users
+     * POST /users.
      *
      * @return void
      */
@@ -1326,7 +1326,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that we can still set old `mobilecommons_status` field.
-     * POST /users
+     * POST /users.
      *
      * @return void
      */
@@ -1347,7 +1347,7 @@ class LegacyUserTest extends BrowserKitTestCase
     /**
      * Test that the `country` field is removed if it
      * does not contain a valid ISO-3166 country code.
-     * GET /users/:term/:id
+     * GET /users/:term/:id.
      *
      * @return void
      */
@@ -1374,7 +1374,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that the `country` field is validated.
-     * GET /users/:term/:id
+     * GET /users/:term/:id.
      *
      * @return void
      */
@@ -1397,7 +1397,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that an admin can update a user's profile, including their role.
-     * POST /v1/users/
+     * POST /v1/users/.
      *
      * @return void
      */
@@ -1419,7 +1419,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that ISO-8601 formatted date strings are accepted.
-     * PUT /v1/users/id/:id
+     * PUT /v1/users/id/:id.
      *
      * @return void
      */
@@ -1441,7 +1441,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that we can only upsert created_at to be earlier.
-     * POST /v1/users/
+     * POST /v1/users/.
      *
      * @return void
      */
@@ -1479,7 +1479,7 @@ class LegacyUserTest extends BrowserKitTestCase
     /**
      * Test that we can filter records with both ?search[email]=test@dosomething.org
      * and ?search=test@dosomething.org patterns
-     * GET /v1/users/
+     * GET /v1/users/.
      *
      * @return void
      */

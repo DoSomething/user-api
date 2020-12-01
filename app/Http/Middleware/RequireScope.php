@@ -2,8 +2,8 @@
 
 namespace Northstar\Http\Middleware;
 
-use Northstar\Auth\Scope;
 use Closure;
+use Northstar\Auth\Scope;
 
 class RequireScope
 {

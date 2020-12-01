@@ -34,7 +34,7 @@ class ProfileAboutController extends Controller
     }
 
     /**
-     * Display the User Details Form
+     * Display the User Details Form.
      */
     public function edit()
     {
@@ -54,7 +54,7 @@ class ProfileAboutController extends Controller
     }
 
     /**
-     * Handle Submissions of the User Details Form
+     * Handle Submissions of the User Details Form.
      *
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse

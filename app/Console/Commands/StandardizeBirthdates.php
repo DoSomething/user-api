@@ -3,10 +3,10 @@
 namespace Northstar\Console\Commands;
 
 use Carbon\Carbon;
-use Northstar\Models\User;
-use MongoDB\BSON\UTCDateTime;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
+use MongoDB\BSON\UTCDateTime;
+use Northstar\Models\User;
 
 class StandardizeBirthdates extends Command
 {

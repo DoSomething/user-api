@@ -1,8 +1,8 @@
 <?php
 
-use Northstar\Jobs\SendPasswordResetToCustomerIo;
 use Illuminate\Support\Facades\Bus;
 use Northstar\Auth\Registrar;
+use Northstar\Jobs\SendPasswordResetToCustomerIo;
 use Northstar\Models\User;
 
 class PasswordResetTest extends BrowserKitTestCase

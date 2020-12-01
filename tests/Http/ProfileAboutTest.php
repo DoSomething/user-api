@@ -3,7 +3,7 @@
 class ProfileAboutTest extends BrowserKitTestCase
 {
     /**
-     * Test that users can navigate to the complete your profile page
+     * Test that users can navigate to the complete your profile page.
      */
     public function testViewingProfileAbout()
     {
@@ -13,7 +13,7 @@ class ProfileAboutTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that users can update their preferences successfully
+     * Test that users can update their preferences successfully.
      */
     public function testUpdatingPreferenceFields()
     {
@@ -31,7 +31,7 @@ class ProfileAboutTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that users will not see any prompts if they select "Yes" on Voter Registration
+     * Test that users will not see any prompts if they select "Yes" on Voter Registration.
      */
     public function testVoterRegistrationStatusPromptHidden()
     {
@@ -48,7 +48,7 @@ class ProfileAboutTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that users can't update their birthday to an invalid date (backend validation)
+     * Test that users can't update their birthday to an invalid date (backend validation).
      */
     public function testBirthdateError()
     {
@@ -61,7 +61,7 @@ class ProfileAboutTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that users can move to the next step of registration without updating any fields
+     * Test that users can move to the next step of registration without updating any fields.
      */
     public function testNextButtonWithoutUpdates()
     {
@@ -73,7 +73,7 @@ class ProfileAboutTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that users can move to the next step of registration without completing any fields
+     * Test that users can move to the next step of registration without completing any fields.
      */
     public function testSkipButton()
     {

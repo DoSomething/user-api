@@ -2,8 +2,8 @@
 
 namespace Northstar\Providers;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
 use Northstar\Auth\Registrar;
 
 class RouteServiceProvider extends ServiceProvider

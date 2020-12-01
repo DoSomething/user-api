@@ -2,8 +2,8 @@
 
 namespace Northstar\Http\Transformers;
 
-use Northstar\Models\User;
 use Illuminate\Support\Facades\Gate;
+use Northstar\Models\User;
 
 class UserTransformer extends BaseTransformer
 {

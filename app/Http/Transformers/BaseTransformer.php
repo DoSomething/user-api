@@ -2,10 +2,10 @@
 
 namespace Northstar\Http\Transformers;
 
-use League\Fractal\Scope;
-use Northstar\Models\User;
 use Illuminate\Support\Str;
+use League\Fractal\Scope;
 use League\Fractal\TransformerAbstract;
+use Northstar\Models\User;
 
 class BaseTransformer extends TransformerAbstract
 {

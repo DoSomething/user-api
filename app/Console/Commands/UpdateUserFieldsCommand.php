@@ -2,9 +2,9 @@
 
 namespace Northstar\Console\Commands;
 
+use Illuminate\Console\Command;
 use League\Csv\Reader;
 use Northstar\Models\User;
-use Illuminate\Console\Command;
 
 class UpdateUserFieldsCommand extends Command
 {

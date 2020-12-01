@@ -2,13 +2,13 @@
 
 namespace Northstar\Observers;
 
-use Northstar\Models\User;
 use Illuminate\Support\Arr;
-use Northstar\Models\RefreshToken;
 use Illuminate\Support\Facades\Log;
-use Northstar\Jobs\SendUserToCustomerIo;
 use Northstar\Jobs\CreateCustomerIoEvent;
 use Northstar\Jobs\DeleteUserFromOtherServices;
+use Northstar\Jobs\SendUserToCustomerIo;
+use Northstar\Models\RefreshToken;
+use Northstar\Models\User;
 
 class UserObserver
 {
@@ -70,13 +70,13 @@ class UserObserver
             !$changed['email_subscription_status']
         ) {
             $user->email_subscription_topics = [];
-            /**
+        } elseif (
+            /*
              * Else if we are updating topics, ensure email subscription status is true.
              *
              * Note: We intentionally do not auto-unsubscribe if we're updating topics with an empty array.
              * @see https://www.pivotaltracker.com/n/projects/2401401/stories/170599403/comments/211127349.
              */
-        } elseif (
             isset($changed['email_subscription_topics']) &&
             count($changed['email_subscription_topics']) &&
             !$user->email_subscription_status
@@ -85,7 +85,7 @@ class UserObserver
         }
 
         if (isset($changed['sms_status'])) {
-            /**
+            /*
              * If we're unsubscribing from SMS, clear all topics.
              *
              * Note: We don't allow users to set their own SMS subscription topics yet, so there
@@ -93,8 +93,8 @@ class UserObserver
              */
             if (User::isUnsubscribedSmsStatus($changed['sms_status'])) {
                 $user->clearSmsSubscriptionTopics();
-                // If resubscribing and not adding topics, add the default topics if user has none.
             } elseif (
+                // If resubscribing and not adding topics, add the default topics if user has none.
                 User::isSubscribedSmsStatus($changed['sms_status']) &&
                 !isset($changed['sms_subscription_topics']) &&
                 !$user->hasSmsSubscriptionTopics()

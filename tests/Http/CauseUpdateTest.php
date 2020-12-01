@@ -6,7 +6,7 @@ class CauseUpdateTest extends BrowserKitTestCase
 {
     /**
      * Test that a user can add cause preferences.
-     * POST /v2/users/:id/causes/:cause
+     * POST /v2/users/:id/causes/:cause.
      *
      * @return void
      */
@@ -26,7 +26,7 @@ class CauseUpdateTest extends BrowserKitTestCase
 
     /**
      * Test that a user cannot add a duplicate cause.
-     * POST /v2/users/:id/causes/:cause
+     * POST /v2/users/:id/causes/:cause.
      *
      * @return void
      */
@@ -46,7 +46,7 @@ class CauseUpdateTest extends BrowserKitTestCase
 
     /**
      * Test that a user cannot add a cause that does not exist.
-     * POST /v2/users/:id/causes/:cause
+     * POST /v2/users/:id/causes/:cause.
      *
      * @return void
      */
@@ -63,7 +63,7 @@ class CauseUpdateTest extends BrowserKitTestCase
 
     /**
      * Test that a user can remove a cause.
-     * DELETE /v2/users/:id/causes/:cause
+     * DELETE /v2/users/:id/causes/:cause.
      *
      * @return void
      */
@@ -83,7 +83,7 @@ class CauseUpdateTest extends BrowserKitTestCase
 
     /**
      * Test that a user can remove a cause and it will return an empty array as expected.
-     * DELETE /v2/users/:id/causes/:cause
+     * DELETE /v2/users/:id/causes/:cause.
      *
      * @return void
      */
@@ -103,7 +103,7 @@ class CauseUpdateTest extends BrowserKitTestCase
 
     /**
      * Test that a user can't edit another user's causes.
-     * POST /v2/users/:id/causes/:cause
+     * POST /v2/users/:id/causes/:cause.
      *
      * @return void
      */

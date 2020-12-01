@@ -1,9 +1,9 @@
 <?php
 
-use Tests\WithMocks;
 use Northstar\Models\User;
 use Tests\CreatesApplication;
 use Tests\WithAuthentication;
+use Tests\WithMocks;
 
 abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 {

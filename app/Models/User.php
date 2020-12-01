@@ -3,26 +3,26 @@
 namespace Northstar\Models;
 
 use Carbon\Carbon;
-use Northstar\Auth\Role;
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
-use Northstar\Services\GraphQL;
 use Email\Parse as EmailParser;
-use Northstar\PasswordResetType;
 use Illuminate\Auth\Authenticatable;
-use libphonenumber\PhoneNumberFormat;
-use Illuminate\Notifications\Notifiable;
-use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use Illuminate\Auth\Passwords\CanResetPassword;
-use Northstar\Jobs\SendPasswordResetToCustomerIo;
-use Illuminate\Foundation\Auth\Access\Authorizable;
-use Jenssegers\Mongodb\Auth\DatabaseTokenRepository;
-use Illuminate\Contracts\Auth\CanResetPassword as ResetPasswordContract;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as ResetPasswordContract;
+use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Jenssegers\Mongodb\Auth\DatabaseTokenRepository;
+use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use libphonenumber\PhoneNumberFormat;
+use Northstar\Auth\Role;
+use Northstar\Jobs\SendPasswordResetToCustomerIo;
+use Northstar\PasswordResetType;
+use Northstar\Services\GraphQL;
 
 /**
- * The User model. (Fight for the user!)
+ * The User model. (Fight for the user!).
  *
  * @property string $_id - The MongoDB ObjectID
  * @property string $id - Aliased to _id by laravel-mongodb
@@ -307,7 +307,7 @@ class User extends Model implements
     }
 
     /**
-     * Computed "email preview" field, e.g. "dfu...@gmail.com"
+     * Computed "email preview" field, e.g. "dfu...@gmail.com".
      *
      * @return string
      */
@@ -368,7 +368,7 @@ class User extends Model implements
     }
 
     /**
-     * Computed "mobile preview" field, e.g. "(212) 254-XXXX"
+     * Computed "mobile preview" field, e.g. "(212) 254-XXXX".
      *
      * @return string
      */
@@ -790,7 +790,7 @@ class User extends Model implements
     public function getClubIdUpdatedEventPayload($clubId)
     {
         $club = app(GraphQL::class)->getClubById($clubId);
-        $clubLeader = app(User::class)->find(Arr::get($club, 'leaderId'));
+        $clubLeader = app(self::class)->find(Arr::get($club, 'leaderId'));
 
         if (!$club || !$clubLeader) {
             return;

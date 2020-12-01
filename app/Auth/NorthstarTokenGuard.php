@@ -3,9 +3,9 @@
 namespace Northstar\Auth;
 
 use Illuminate\Auth\TokenGuard;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Http\Request;
 use Mockery\CountValidator\Exception;
 use Northstar\Models\User;
 

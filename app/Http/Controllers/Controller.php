@@ -2,14 +2,14 @@
 
 namespace Northstar\Http\Controllers;
 
-use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
 use Northstar\Exceptions\NorthstarValidationException;
 use Northstar\Http\Controllers\Traits\FiltersRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Northstar\Http\Controllers\Traits\TransformsResponses;
-use Illuminate\Http\Request;
 
 abstract class Controller extends BaseController
 {

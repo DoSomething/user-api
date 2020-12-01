@@ -10,7 +10,7 @@ use Northstar\Models\RefreshToken;
 class RefreshTokenRepository implements RefreshTokenRepositoryInterface
 {
     /**
-     * Creates a new refresh token
+     * Creates a new refresh token.
      *
      * @return RefreshTokenEntityInterface
      */

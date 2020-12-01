@@ -17,7 +17,7 @@ class ScopeController extends Controller
 
     /**
      * Return the list of available scopes.
-     * GET /key
+     * GET /key.
      *
      * @return array
      */

@@ -3,8 +3,8 @@
 namespace Northstar\Http\Transformers;
 
 use Illuminate\Support\Str;
-use Northstar\Models\Client;
 use League\Fractal\TransformerAbstract;
+use Northstar\Models\Client;
 
 class ClientTransformer extends TransformerAbstract
 {

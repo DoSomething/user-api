@@ -2,8 +2,8 @@
 
 namespace Northstar\Http\Controllers;
 
-use Northstar\Models\User;
 use Northstar\Http\Transformers\UserTransformer;
+use Northstar\Models\User;
 
 class SubscriptionUpdateController extends Controller
 {

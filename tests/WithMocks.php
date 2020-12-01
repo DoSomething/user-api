@@ -2,9 +2,9 @@
 
 namespace Tests;
 
+use Carbon\Carbon;
 use Closure;
 use Mockery;
-use Carbon\Carbon;
 
 trait WithMocks
 {

@@ -8,7 +8,7 @@ class ResetTest extends BrowserKitTestCase
     /**
      * Test that anonymous and non-admin keys/users cannot create
      * password reset links.
-     * POST /resets
+     * POST /resets.
      *
      * @test
      */
@@ -26,7 +26,7 @@ class ResetTest extends BrowserKitTestCase
 
     /**
      * Test creating a new password reset link.
-     * POST /resets
+     * POST /resets.
      *
      * @test
      */
@@ -47,7 +47,7 @@ class ResetTest extends BrowserKitTestCase
 
     /**
      * Test creating a new password reset link requires write scope.
-     * POST /resets
+     * POST /resets.
      *
      * @test
      */

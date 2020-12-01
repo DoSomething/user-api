@@ -2,8 +2,8 @@
 
 namespace Northstar\Services;
 
-use RuntimeException;
 use Northstar\Models\User;
+use RuntimeException;
 
 class Gambit
 {

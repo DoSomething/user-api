@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Support\Arr;
-use Tests\CreatesApplication;
-use Tests\WithMocks;
-use Tests\WithAuthentication;
 use PHPUnit\Framework\Assert;
+use Tests\CreatesApplication;
+use Tests\WithAuthentication;
+use Tests\WithMocks;
 
 abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
 {

@@ -1,8 +1,8 @@
 <?php
 
+use Laravel\Socialite\AbstractUser;
 use Northstar\Models\User;
 use Northstar\Services\Google;
-use Laravel\Socialite\AbstractUser;
 
 class GoogleTest extends BrowserKitTestCase
 {

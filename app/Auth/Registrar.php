@@ -4,14 +4,14 @@ namespace Northstar\Auth;
 
 use Closure;
 use Exception;
-use Northstar\Models\User;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use Illuminate\Contracts\Hashing\Hasher;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Factory as Validation;
 use Northstar\Exceptions\NorthstarValidationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Contracts\Auth\Authenticatable as UserContract;
+use Northstar\Models\User;
 
 class Registrar
 {
@@ -79,7 +79,7 @@ class Registrar
             'email_subscription_status' => 'boolean',
             'email_subscription_topics.*' =>
                 'in:news,scholarships,lifestyle,community,clubs',
-            /**
+            /*
              * Includes current values sent from Rock The Vote import, as well as older values for
              * backwards compatability.
              */

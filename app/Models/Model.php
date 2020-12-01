@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\Model as BaseModel;
 
 /**
- * Base model class
+ * Base model class.
  *
  * @mixin \Jenssegers\Mongodb\Query\Builder
  */

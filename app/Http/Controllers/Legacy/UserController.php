@@ -2,14 +2,14 @@
 
 namespace Northstar\Http\Controllers\Legacy;
 
-use Northstar\Auth\Role;
-use Northstar\Models\User;
 use Illuminate\Http\Request;
-use Northstar\Auth\Registrar;
 use Illuminate\Support\Facades\Log;
+use Northstar\Auth\Registrar;
+use Northstar\Auth\Role;
+use Northstar\Exceptions\NorthstarValidationException;
 use Northstar\Http\Controllers\Controller;
 use Northstar\Http\Transformers\Legacy\UserTransformer;
-use Northstar\Exceptions\NorthstarValidationException;
+use Northstar\Models\User;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends Controller
@@ -50,7 +50,7 @@ class UserController extends Controller
 
     /**
      * Display a listing of the resource.
-     * GET /users
+     * GET /users.
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -97,7 +97,7 @@ class UserController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * POST /users
+     * POST /users.
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -175,7 +175,7 @@ class UserController extends Controller
 
     /**
      * Display the specified resource.
-     * GET /users/:term/:id
+     * GET /users/:term/:id.
      *
      * @param string $term - term to search by (eg. mobile, drupal_id, id, email, etc)
      * @param string $id - the actual value to search for
@@ -197,7 +197,7 @@ class UserController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * PUT /users/:term/:id
+     * PUT /users/:term/:id.
      *
      * @param string $term - term to search by (eg. mobile, drupal_id, id, email, etc)
      * @param string $id - the actual value to search for
@@ -225,7 +225,7 @@ class UserController extends Controller
 
     /**
      * Delete a user resource.
-     * DELETE /users/:id
+     * DELETE /users/:id.
      *
      * @param $id - User ID
      * @return \Illuminate\Http\Response

@@ -107,7 +107,7 @@ class CustomerIo
     }
 
     /**
-     * Delete the given user's profile in Customer.io
+     * Delete the given user's profile in Customer.io.
      * @see https://customer.io/docs/api/#apitrackcustomerscustomers_delete
      *
      * @param string $id

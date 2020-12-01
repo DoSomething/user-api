@@ -2,9 +2,9 @@
 
 namespace Northstar\Exceptions;
 
+use Exception;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\JsonResponse;
-use Exception;
 use Northstar\Http\Transformers\UserTransformer;
 use Northstar\Models\User;
 

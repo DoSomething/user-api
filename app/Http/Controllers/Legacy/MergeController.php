@@ -2,12 +2,12 @@
 
 namespace Northstar\Http\Controllers\Legacy;
 
-use Northstar\Models\User;
-use Northstar\Merge\Merger;
-use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Northstar\Http\Controllers\Controller;
 use Northstar\Http\Transformers\Legacy\UserTransformer;
+use Northstar\Merge\Merger;
+use Northstar\Models\User;
 
 class MergeController extends Controller
 {
@@ -39,7 +39,7 @@ class MergeController extends Controller
 
     /**
      * EXPERIMENTAL: Merge two user accounts into one.
-     * POST /users/:id/merge
+     * POST /users/:id/merge.
      *
      * @param string $id - the "destination" account
      * @param Request $request

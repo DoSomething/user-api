@@ -5,7 +5,7 @@ use Northstar\Models\User;
 class ProfileSubscriptionsTest extends BrowserKitTestCase
 {
     /**
-     * Test that users can reach the profile subscriptions page
+     * Test that users can reach the profile subscriptions page.
      */
     public function testViewingProfileSubscriptions()
     {
@@ -17,7 +17,7 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that users can update their contact methods successfully
+     * Test that users can update their contact methods successfully.
      */
     public function testUpdatingContactFields()
     {
@@ -40,7 +40,7 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that users can update their contact methods successfully
+     * Test that users can update their contact methods successfully.
      */
     public function testUpdatingContactFieldsWithAutoSelectSMS()
     {
@@ -62,7 +62,7 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that users can move to the next step of registration without updating any fields
+     * Test that users can move to the next step of registration without updating any fields.
      */
     public function testFinishButtonWithoutUpdates()
     {
@@ -74,7 +74,7 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that users can move to the next step of registration without completing any fields
+     * Test that users can move to the next step of registration without completing any fields.
      */
     public function testSkipButton()
     {

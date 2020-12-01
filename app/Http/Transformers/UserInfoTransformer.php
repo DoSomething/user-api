@@ -2,8 +2,8 @@
 
 namespace Northstar\Http\Transformers;
 
-use Northstar\Models\User;
 use League\Fractal\TransformerAbstract;
+use Northstar\Models\User;
 
 class UserInfoTransformer extends TransformerAbstract
 {

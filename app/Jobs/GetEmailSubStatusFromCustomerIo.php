@@ -2,13 +2,13 @@
 
 namespace Northstar\Jobs;
 
-use Redis;
-use Northstar\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Northstar\Models\User;
+use Redis;
 
 class GetEmailSubStatusFromCustomerIo implements ShouldQueue
 {

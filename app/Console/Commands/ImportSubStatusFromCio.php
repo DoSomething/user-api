@@ -2,11 +2,11 @@
 
 namespace Northstar\Console\Commands;
 
-use League\Csv\Reader;
-use Northstar\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
+use League\Csv\Reader;
 use Northstar\Jobs\GetEmailSubStatusFromCustomerIo;
+use Northstar\Models\User;
 
 class ImportSubStatusFromCio extends Command
 {

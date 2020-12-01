@@ -1,7 +1,7 @@
 <?php
 
-use Northstar\Models\User;
 use Laravel\Socialite\AbstractUser;
+use Northstar\Models\User;
 
 class FacebookTest extends BrowserKitTestCase
 {
@@ -90,7 +90,7 @@ class FacebookTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that a user is redirected to Facebook
+     * Test that a user is redirected to Facebook.
      */
     public function testFacebookRedirect()
     {

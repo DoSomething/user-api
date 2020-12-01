@@ -1,7 +1,7 @@
 <?php
 
-use Northstar\Models\User;
 use Illuminate\Support\Facades\Artisan;
+use Northstar\Models\User;
 
 class CommunityTopicBackfillTest extends BrowserKitTestCase
 {

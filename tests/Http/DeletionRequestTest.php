@@ -7,7 +7,7 @@ class DeletionRequestTest extends BrowserKitTestCase
 {
     /**
      * Test that a user can mark themselves for deletion.
-     * POST /v2/users/:id/deletion
+     * POST /v2/users/:id/deletion.
      *
      * @return void
      */
@@ -32,7 +32,7 @@ class DeletionRequestTest extends BrowserKitTestCase
 
     /**
      * Test that a user can un-mark themselves for deletion.
-     * DELETE /v2/users/:id/deletion
+     * DELETE /v2/users/:id/deletion.
      *
      * @return void
      */
@@ -52,7 +52,7 @@ class DeletionRequestTest extends BrowserKitTestCase
 
     /**
      * Test that a staffer can mark users for deletion.
-     * DELETE /v2/users/:id/deletion
+     * DELETE /v2/users/:id/deletion.
      *
      * @return void
      */
@@ -76,7 +76,7 @@ class DeletionRequestTest extends BrowserKitTestCase
 
     /**
      * Test that a normal user can't delete someone else.
-     * DELETE /v2/users/:id/deletion
+     * DELETE /v2/users/:id/deletion.
      *
      * @return void
      */

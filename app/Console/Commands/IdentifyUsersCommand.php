@@ -2,10 +2,10 @@
 
 namespace Northstar\Console\Commands;
 
+use Illuminate\Console\Command;
 use League\Csv\Reader;
 use League\Csv\Writer;
 use Northstar\Auth\Registrar;
-use Illuminate\Console\Command;
 
 class IdentifyUsersCommand extends Command
 {

@@ -1,18 +1,18 @@
 <?php
 
 use Carbon\Carbon;
-use Illuminate\Support\Str;
-use Northstar\Models\Client;
-use Northstar\Auth\Normalizer;
-use libphonenumber\PhoneNumber;
 use Illuminate\Support\HtmlString;
-use libphonenumber\PhoneNumberUtil;
+use Illuminate\Support\Str;
+use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberFormat;
+use libphonenumber\PhoneNumberUtil;
 use Northstar\Auth\Entities\ClientEntity;
-use SeatGeek\Sixpack\Session\Base as Sixpack;
+use Northstar\Auth\Normalizer;
+use Northstar\Auth\Repositories\AccessTokenRepository;
 use Northstar\Auth\Repositories\KeyRepository;
 use Northstar\Auth\Repositories\ScopeRepository;
-use Northstar\Auth\Repositories\AccessTokenRepository;
+use Northstar\Models\Client;
+use SeatGeek\Sixpack\Session\Base as Sixpack;
 
 /**
  * Normalize the given value.
@@ -314,7 +314,7 @@ function get_client_environment_vars()
 }
 
 /**
- * Setup a Sixpack experiment
+ * Setup a Sixpack experiment.
  *
  * @param string $experiment
  * @param array $alternatives
@@ -333,7 +333,7 @@ function participate($experiment, $alternatives)
 }
 
 /**
- * Convert a Sixpack experiment
+ * Convert a Sixpack experiment.
  *
  * @param string $experiment
  *

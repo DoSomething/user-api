@@ -2,8 +2,8 @@
 
 namespace Northstar\Auth\Repositories;
 
-use Storage;
 use League\OAuth2\Server\CryptKey;
+use Storage;
 
 class KeyRepository
 {

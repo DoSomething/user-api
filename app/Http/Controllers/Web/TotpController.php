@@ -2,13 +2,13 @@
 
 namespace Northstar\Http\Controllers\Web;
 
-use OTPHP\TOTP;
-use OTPHP\Factory;
 use Endroid\QrCode\QrCode;
-use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Northstar\Http\Controllers\Controller;
+use Northstar\Models\User;
+use OTPHP\Factory;
+use OTPHP\TOTP;
 
 class TotpController extends Controller
 {

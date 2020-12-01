@@ -3,14 +3,14 @@
 namespace Northstar\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Northstar\Services\Rogue;
-use Northstar\Services\Gambit;
-use Northstar\Services\CustomerIo;
-use Illuminate\Support\Facades\Redis;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Redis;
+use Northstar\Services\CustomerIo;
+use Northstar\Services\Gambit;
+use Northstar\Services\Rogue;
 
 class DeleteUserFromOtherServices implements ShouldQueue
 {

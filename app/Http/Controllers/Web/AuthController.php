@@ -2,16 +2,16 @@
 
 namespace Northstar\Http\Controllers\Web;
 
-use Northstar\Models\User;
 use Illuminate\Http\Request;
-use Northstar\Auth\Registrar;
-use Northstar\Auth\PasswordRules;
 use Illuminate\Support\Facades\Auth;
-use Psr\Http\Message\ResponseInterface;
-use Northstar\Auth\Entities\UserEntity;
-use Northstar\Http\Controllers\Controller;
-use Psr\Http\Message\ServerRequestInterface;
 use League\OAuth2\Server\AuthorizationServer;
+use Northstar\Auth\Entities\UserEntity;
+use Northstar\Auth\PasswordRules;
+use Northstar\Auth\Registrar;
+use Northstar\Http\Controllers\Controller;
+use Northstar\Models\User;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class AuthController extends Controller
 {

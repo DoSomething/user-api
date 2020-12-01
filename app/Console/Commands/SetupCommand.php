@@ -3,8 +3,8 @@
 namespace Northstar\Console\Commands;
 
 use Defuse\Crypto\Key;
-use Illuminate\Console\Command;
 use DFurnes\Environmentalist\ConfiguresApplication;
+use Illuminate\Console\Command;
 
 class SetupCommand extends Command
 {

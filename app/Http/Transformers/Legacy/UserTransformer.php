@@ -2,9 +2,9 @@
 
 namespace Northstar\Http\Transformers\Legacy;
 
-use Northstar\Models\User;
 use Illuminate\Support\Facades\Gate;
 use League\Fractal\TransformerAbstract;
+use Northstar\Models\User;
 
 class UserTransformer extends TransformerAbstract
 {

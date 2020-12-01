@@ -6,7 +6,7 @@ class MergeTest extends BrowserKitTestCase
 {
     /**
      * Test that anonymous and normal users can't merge accounts.
-     * POST /users/:id/merge
+     * POST /users/:id/merge.
      *
      * @test
      */
@@ -23,7 +23,7 @@ class MergeTest extends BrowserKitTestCase
 
     /**
      * Test merging some accounts.
-     * POST /resets
+     * POST /resets.
      *
      * @test
      */
@@ -78,7 +78,7 @@ class MergeTest extends BrowserKitTestCase
 
     /**
      * Test last_authenticated_at merge logic.
-     * POST /resets
+     * POST /resets.
      *
      * @test
      */
@@ -113,7 +113,7 @@ class MergeTest extends BrowserKitTestCase
 
     /**
      * Test last_messaged_at merge logic.
-     * POST /resets
+     * POST /resets.
      *
      * @test
      */
@@ -148,7 +148,7 @@ class MergeTest extends BrowserKitTestCase
 
     /**
      * Test last_accessed_at merge logic.
-     * POST /resets
+     * POST /resets.
      *
      * @test
      */
@@ -183,7 +183,7 @@ class MergeTest extends BrowserKitTestCase
 
     /**
      * Test language merge logic.
-     * POST /resets
+     * POST /resets.
      *
      * @test
      */
@@ -218,7 +218,7 @@ class MergeTest extends BrowserKitTestCase
 
     /**
      * Test first_name merge logic.
-     * POST /resets
+     * POST /resets.
      *
      * @test
      */
@@ -252,7 +252,7 @@ class MergeTest extends BrowserKitTestCase
 
     /**
      * Test last_name merge logic.
-     * POST /resets
+     * POST /resets.
      *
      * @test
      */
@@ -286,7 +286,7 @@ class MergeTest extends BrowserKitTestCase
 
     /**
      * Test birthdate merge logic.
-     * POST /resets
+     * POST /resets.
      *
      * @test
      */
@@ -323,7 +323,7 @@ class MergeTest extends BrowserKitTestCase
 
     /**
      * Test that you can't merge without the write scope.
-     * POST /resets
+     * POST /resets.
      *
      * @test
      */

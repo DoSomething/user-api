@@ -6,7 +6,7 @@ class ProfileTest extends BrowserKitTestCase
 {
     /**
      * Test that a user can see their own profile.
-     * GET /profile
+     * GET /profile.
      *
      * @test
      */
@@ -33,7 +33,7 @@ class ProfileTest extends BrowserKitTestCase
 
     /**
      * Test that a user can modify their own profile.
-     * POST /profile
+     * POST /profile.
      *
      * @test
      */
@@ -71,7 +71,7 @@ class ProfileTest extends BrowserKitTestCase
 
     /**
      * Test that the write scope is required to update a profile.
-     * POST /profile
+     * POST /profile.
      *
      * @test
      */
