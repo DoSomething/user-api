@@ -8,9 +8,9 @@ const $ = require('jquery');
 function init(element = 'back') {
   $(document).ready(() => {
     const backLink = document.getElementById(element);
-    if (! backLink) return;
+    if (!backLink) return;
 
-    backLink.addEventListener('click', (event) => {
+    backLink.addEventListener('click', event => {
       event.preventDefault();
 
       analyze('Redirect', 'Clicked', 'Back To DoSomething Site');
