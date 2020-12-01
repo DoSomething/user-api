@@ -58,7 +58,9 @@
         margin: $base-spacing auto;
 
         // @TODO: Hacky!
-        .field-label { text-align: left; }
+        .field-label {
+          text-align: left;
+        }
       }
     }
   }

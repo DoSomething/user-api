@@ -1,5 +1,5 @@
-$google-blue: #4285F4;
-$google-gray: #EEE;
+$google-blue: #4285f4;
+$google-gray: #eee;
 
 .button.google-login {
   text-align: left;
@@ -11,17 +11,19 @@ $google-gray: #EEE;
   font-size: 18px;
   width: 274px;
   background: $google-blue;
-  color: #FFF;
+  color: #fff;
   text-transform: none;
 
   svg {
     display: inline-block;
     height: 46px;
-    width: 46px; 
+    width: 46px;
     vertical-align: middle;
   }
 
-  &:hover, &:active, &:focus  {
+  &:hover,
+  &:active,
+  &:focus {
     border-color: darken($google-blue, 10%);
     background: darken($google-blue, 10%);
   }
