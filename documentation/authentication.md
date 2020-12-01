@@ -1,21 +1,23 @@
 # Authentication
 
-We handle authentication using __OAuth 2__, an [open standard](https://tools.ietf.org/html/rfc6749) for authorization.
+We handle authentication using **OAuth 2**, an [open standard](https://tools.ietf.org/html/rfc6749) for authorization.
 OAuth allows us to issue access tokens (so a user or machine's credentials don't need to be sent with every request) and
 refresh tokens (so that a user's credentials do not need to be stored to re-authorize later). Most importantly, Northstar
 access tokens can be used to make requests to _any_ other DoSomething.org service!
 
-__Here's the tl;dr:__ If a user is logging in to an application and making requests, use the [Authorization Code grant](endpoints/auth.md#create-token-authorization-code-grant)
- to request an access & refresh token for them. If you're performing requests as a "machine" (not as a direct result of a
- user's action), use the [Client Credentials Grant](endpoints/auth.md#create-token-client-credentials-grant). 
+**Here's the tl;dr:** If a user is logging in to an application and making requests, use the [Authorization Code grant](endpoints/auth.md#create-token-authorization-code-grant)
+to request an access & refresh token for them. If you're performing requests as a "machine" (not as a direct result of a
+user's action), use the [Client Credentials Grant](endpoints/auth.md#create-token-client-credentials-grant).
 
 ### Clients
+
 When requesting an authentication token, credentials for a valid **client application** must be included. This includes a client ID
 (for example, `phoenix` or `letsdothis-ios`) and a client secret, which is like a long "password" for that application.
 
 Sorry, there's no public API access... yet!
 
 ### Scopes
+
 Authentication tokens are granted **scopes** to limit their privileges. This allows us to limit the abilities of "untrusted" clients
 that operate over a public network like the [mobile app](https://app.dosomething.org), and limit the damage that can be
 done if a client is compromised.
@@ -27,6 +29,7 @@ The allowed scopes for each client are listed on Aurora. A machine-friendly list
 retrieved from the public [`scopes`](endpoints/clients.md#retrieve-all-client-scopes) endpoint.
 
 ### Access Tokens
+
 The [Authorization Code Grant](endpoints/auth.md#create-token-authorization-code-grant) may be used to request an **access token** which
 can "authorize" requests on behalf of a particular user.
 
@@ -41,27 +44,27 @@ Here's an annotated payload from an example access token:
   // Issuer: the authorization server URL.
   "iss": "https://northstar.dosomething.org",
 
-  // Audience: the client which requested this token. 
+  // Audience: the client which requested this token.
   "aud": "phoenix",
-  
+
   // JWT ID: a unique identifier for the JWT
   "jti": "6feda42e0d11ef7c3924ca711017645b3bab01d2ed80e63d7f6a84b2c31fcfdaaf77d33aed6755d6",
-  
+
   // Issued At: the time at which the JWT was issued.
   "iat": 1465487055,
-  
+
   // Not Before: the time before which the token MUST NOT be accepted.
   "nbf": 1465487055,
-  
+
   // Expiration Time: the time on or after which the token MUST NOT be accepted.
   "exp": 1465490655,
-  
+
   // Subject: the Northstar ID of the user that is authorized by this JWT.
   "sub": "5430e850dt8hbc541c37tt3d",
-  
+
   // Role: the user's role (e.g. 'user', 'staff', 'admin')
   "role": "user",
-  
+
   // Scopes: the privileges this key authorizes the client to act with.
   "scopes": [
     "user"
@@ -72,6 +75,7 @@ Here's an annotated payload from an example access token:
 If you're curious about more of the nerdy details on JWTs, check out the [official introduction](https://jwt.io/introduction/).
 
 ### Refresh Tokens
+
 Access tokens are short-lived and expire after an hour. Since that's not a very long time, clients are also issued
 **refresh tokens** which can be used (once!) to create another access token. Refresh tokens don't expire, but can be revoked
 manually - for example, if a user "removes" an application or logs out from their account.
@@ -80,12 +84,14 @@ Once a refresh token is used to create a new access token through the [Refresh T
 a _new_ access token and refresh token are returned & the old refresh token cannot be used again.
 
 ### Machine Authentication
+
 Some services don't authenticate on behalf of a user (for example, an internal batch-processing service). These clients can use the
 [Client Credentials Grant](endpoints/auth.md#create-token-client-credentials-grant) to request a signed authentication token
 that securely identifies that particular application. Since user credentials are not involved, this does _not_ create a refresh
 token.
 
 ### Making Authenticated Requests
+
 Access tokens can be used to make authorized requests to Northstar and other DoSomething.org services. When making requests,
 the token should be be provided as the `Authorization` header of a request:
 

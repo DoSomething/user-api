@@ -1,4 +1,5 @@
 # Authentication Endpoints
+
 Northstar acts as the authorization server for all of our internal services at DoSomething.org. Individual services may
 send a user's credentials to Northstar in exchange for a signed access token which can be used throughout our ecosystem.
 
@@ -9,11 +10,12 @@ a short lifetime, the token can be "logged out" of all services by revoking thei
 Each access token includes the authorized user's ID, expiration timestamp, and scopes. Tokens are signed to prevent
 tampering, and can be verified using a shared public key.
 
-__Here's the tl;dr:__ If a user is logging in to an application and making requests, use the [Authorization Code grant](#create-token-authorization-code-grant)
- to request an access & refresh token for them. If you're performing requests as a "machine" (not as a direct result of a
- user's action), use the [Client Credentials Grant](#create-token-client-credentials-grant).
+**Here's the tl;dr:** If a user is logging in to an application and making requests, use the [Authorization Code grant](#create-token-authorization-code-grant)
+to request an access & refresh token for them. If you're performing requests as a "machine" (not as a direct result of a
+user's action), use the [Client Credentials Grant](#create-token-client-credentials-grant).
 
 ## Create Token (Authorization Code Grant)
+
 The authorization code grant allows you to authorize a user without needing to manually handle their username or password.
 It's a two-step process that involves redirecting the user to Northstar in their web browser, and then using the "code"
 returned to the application's redirect URL to request an access & refresh token.
@@ -22,16 +24,15 @@ returned to the application's redirect URL to request an access & refresh token.
 
 Redirect the user to Northstar's "authorize" page with the following query string parameters:
 
-* `response_type` with the value `code`
-* `client_id` with your Client ID
-* `scope` with a space-delimited list of scopes to request
-* `state` with a CSRF token that can be validated below
-* `redirect_uri` with the address to redirect to (must be one of the registered `redirect_uri`s on for the client, you can see a list on the client's page on Aurora)
-* `destination` with a destination to display on the login page (optional)
-* `title` with a title to display on the registration page (optional)
-* `callToAction` with a call to action to display on the registration page (optional)
-* `coverImage` with a link to a cover image to display on the registration page (optional)
-
+- `response_type` with the value `code`
+- `client_id` with your Client ID
+- `scope` with a space-delimited list of scopes to request
+- `state` with a CSRF token that can be validated below
+- `redirect_uri` with the address to redirect to (must be one of the registered `redirect_uri`s on for the client, you can see a list on the client's page on Aurora)
+- `destination` with a destination to display on the login page (optional)
+- `title` with a title to display on the registration page (optional)
+- `callToAction` with a call to action to display on the registration page (optional)
+- `coverImage` with a link to a cover image to display on the registration page (optional)
 
 For example, an application named `puppet-sloth` may initiate a user authorization request like so:
 
@@ -43,8 +44,8 @@ The user will be presented with a login page (unless they've previously logged i
 their existing session), and then redirected back to the given `redirect_uri` with the following values
 in the query string of the request:
 
-* `code` with the authorization code (used below)
-* `state` with the CSRF token (compare this to what you provided!)
+- `code` with the authorization code (used below)
+- `state` with the CSRF token (compare this to what you provided!)
 
 #### Step Two: Request a Token
 
@@ -82,8 +83,8 @@ curl -X POST \
   "code": "KwM/cj40QWuCmpEALcmjxEOeXmcvoYNBQCb7pWd6X0yEG4fRn/b58C8oEos4SRUhSAjOgoZMcKk+rdk9hbd9u5rvFoC3pj8oIFTMyig1fFE0Lpvvu"}' \
   https://northstar.dosomething.org/v2/auth/token
 ```
-</details>
 
+</details>
 
 <details>
 <summary><strong>Example Response</strong></summary>
@@ -98,6 +99,7 @@ curl -X POST \
   "refresh_token": "EytNzc1CJrA0fn1ymUutcg8FzOM7yUER5F+31oP/eRJdXwwaII6Lw4yS/PrC/orThdot4+7o81d/VXdUDBre6NDsMbEtTjk9fJVPDFSU74focg3N0zXKiPziBRvegv4DLrM2RkAfYYfxTK5nM1uMT2pCNBobrA8qHahgmw2XgoSE4J/xco/lmHKP393KMwn0nziKDr0YeqPRi+PAvtdsNPKpydyc0JbAFEevZ2UYXz4bRIaS4nUP+IyB6cYSdnok3OCJr8lDUp/OHA0JlOk9ra7YBFXNB8ZvlR1GEL2qQBlIWCqxPL9xrUBTIWUst7/+imx8LmBqevmGY1UFBXAm7n0p1Ih3Qxj0dx9u5woBdCwLYxAlEL70LaSDbx3qdhF+6uhrZTCnpOPE/tZSImpbmashh/SLtFEMpVP+ifISnLYSnQTvyL4XvWU/8azrFGmDmxYB63kuR4D+4QcqptPyA8JC5sOnn1CpDwzTcn93WMbhtWdIUCBTgF2R8rYNVki5"
 }
 ```
+
 </details>
 
 ## Create Token (Refresh Token Grant)
@@ -159,9 +161,11 @@ curl -X POST \
   "refresh_token": "EytNzc1CJrA0fn1ymUutcg8FzOM7yUER5F+31oP/eRJdXwwaII6Lw4yS/PrC/orThdot4+7o81d/VXdUDBre6NDsMbEtTjk9fJVPDFSU74focg3N0zXKiPziBRvegv4DLrM2RkAfYYfxTK5nM1uMT2pCNBobrA8qHahgmw2XgoSE4J/xco/lmHKP393KMwn0nziKDr0YeqPRi+PAvtdsNPKpydyc0JbAFEevZ2UYXz4bRIaS4nUP+IyB6cYSdnok3OCJr8lDUp/OHA0JlOk9ra7YBFXNB8ZvlR1GEL2qQBlIWCqxPL9xrUBTIWUst7/+imx8LmBqevmGY1UFBXAm7n0p1Ih3Qxj0dx9u5woBdCwLYxAlEL70LaSDbx3qdhF+6uhrZTCnpOPE/tZSImpbmashh/SLtFEMpVP+ifISnLYSnQTvyL4XvWU/8azrFGmDmxYB63kuR4D+4QcqptPyA8JC5sOnn1CpDwzTcn93WMbhtWdIUCBTgF2R8rYNVki5"
 }
 ```
+
 </details>
 
 ## Create Token (Client Credentials Grant)
+
 This will verify a client application's credentials and create a JWT authentication token, which can be used to sign future
 requests by the application. If invalid credentials are provided, this endpoint will return a `401 Unauthorized` error.
 
@@ -198,6 +202,7 @@ curl -X POST \
   -d '{"grant_type": "client_credentials", "client_id": "${CLIENT_ID}", "client_secret": "${CLIENT_SECRET}"'
   https://northstar.dosomething.org/v2/auth/token
 ```
+
 </details>
 
 <details>
@@ -229,7 +234,7 @@ DELETE /v2/auth/token
 // Content-Type: application/json
 
 {
-  token: String // The refresh token to be revoked.
+  token: String; // The refresh token to be revoked.
 }
 ```
 
@@ -279,6 +284,7 @@ curl -X GET \
   -H "Accept: application/json" \
   https://northstar.dosomething.org/v2/auth/info
 ```
+
 </details>
 
 <details>
@@ -307,4 +313,5 @@ curl -X GET \
   }
 }
 ```
+
 </details>

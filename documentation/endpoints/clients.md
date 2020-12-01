@@ -1,7 +1,9 @@
 # Client Endpoints
+
 The `write` scope is required for create/update/delete endpoints.
 
 ## Retrieve All Clients
+
 Retrieves all valid OAuth clients. This requires either the `admin` scope, or `role:admin` with an admin user.
 
 ```
@@ -12,11 +14,13 @@ GET /v2/clients
 <summary><strong>Example Request</strong></summary>
 
 **Example Request:**
+
 ```sh
 curl -X GET \
   -H "Authorization: Bearer ${ACCESS_TOKEN}" \
   https://northstar.dosomething.org/v2/clients
 ```
+
 </details>
 
 <details>
@@ -66,9 +70,11 @@ curl -X GET \
   }
 }
 ```
+
 </details>
 
 ## Create a Client
+
 Creates a new OAuth client. This requires either the `admin` scope, or `role:admin` with an admin user.
 
 ```
@@ -80,22 +86,22 @@ POST /v2/clients
 ```js
 {
   /* The application's title. */
-  title: String
+  title: String;
 
   /* (optional) The description for this application. */
-  description: String
-  
+  description: String;
+
   /* Application ID for the new key */
-  client_id: String
+  client_id: String;
 
   /* Whitelisted client scope(s) */
-  scope: Array
-  
+  scope: Array;
+
   /* (optional) Allowed OAuth grants(s): password, auth_code, client_credentials */
-  allowed_grants: Array
-  
+  allowed_grants: Array;
+
   /* (optional) The URI to redirect to in the Auth Code flow. */
-  redirect_uri: String
+  redirect_uri: String;
 }
 ```
 
@@ -110,6 +116,7 @@ curl -X POST \
   -d '{"title": "Test Application", "description: "An example app.", "client_id": "test-application", "scope": ["user"]}' \
   https://northstar.dosomething.org/v2/clients
 ```
+
 </details>
 
 <details>
@@ -133,9 +140,11 @@ curl -X POST \
   }
 }
 ```
+
 </details>
 
 ## Retrieve a Client
+
 View details for an OAuth client. This requires either the `admin` scope, or `role:admin` with an admin user.
 
 ```
@@ -152,8 +161,8 @@ curl -X GET\
   -H "Accept: application/json" \
   https://northstar.dosomething.org/v2/clients/test-application
 ```
-</details>
 
+</details>
 
 <details>
 <summary><strong>Example Response</strong></summary>
@@ -177,9 +186,11 @@ curl -X GET\
   }
 }
 ```
+
 </details>
 
 ## Update a Client
+
 Updates an existing OAuth client's ID or scope(s). This requires either the `admin` scope, or `role:admin` with an admin user.
 
 ```
@@ -191,19 +202,19 @@ PUT /v2/clients/:client_id
 ```js
 {
   /* (optional) Change this application's title. */
-  title: String
+  title: String;
 
   /* (optional) Change the description for this application. */
-  description: String
+  description: String;
 
   /* (optional) Change the whitelisted scope(s) for this application. */
-  scope: Array
-  
+  scope: Array;
+
   /* (optional) Allowed OAuth grants(s): password, auth_code, client_credentials */
-  allowed_grants: Array
-  
+  allowed_grants: Array;
+
   /* (optional) The URI to redirect to in the Auth Code flow. */
-  redirect_uri: String
+  redirect_uri: String;
 }
 ```
 
@@ -218,8 +229,8 @@ curl -X PUT \
   -d '{"scope": ["admin", "user"]}' \
   https://northstar.dosomething.org/v2/clients/test-application
 ```
-</details>
 
+</details>
 
 <details>
 <summary><strong>Example Response</strong></summary>
@@ -243,17 +254,17 @@ curl -X PUT \
   }
 }
 ```
+
 </details>
 
+## Delete a Client
 
-## Delete a Client 
 Delete an OAuth client. This will invalidate all refresh tokens that have been created by that client. This requires
 either the `admin` scope, or `role:admin` with an admin user.
 
 ```
 DELETE /v2/clients/:client_id
 ```
-
 
 <details>
 <summary><strong>Example Request</strong></summary>
@@ -265,8 +276,8 @@ curl -X DELETE \
   -H "Accept: application/json" \
   https://northstar.dosomething.org/v2/clients/test-application
 ```
-</details>
 
+</details>
 
 <details>
 <summary><strong>Example Response</strong></summary>
@@ -281,9 +292,11 @@ curl -X DELETE \
   }
 }
 ```
+
 </details>
 
 ## Retrieve All Client Scopes
+
 Retrieves all valid scopes and a short description of each.
 
 ```
@@ -319,5 +332,5 @@ curl -X GET https://northstar.dosomething.org/v2/scopes
   }
 }
 ```
-</details>
 
+</details>

@@ -15,7 +15,7 @@ POST /v2/resets
 ```js
 {
   /* The user id to send a password reset email to. */
-  id: String
+  id: String;
 
   /* The type of password reset email to send.
    *
@@ -24,12 +24,13 @@ POST /v2/resets
    * - `boost-activate-account`
    * - 'breakdown-activate-account'
    * - `pays-to-do-good-activate-account`
-   * - 'rock-the-vote-activate-account' 
+   * - 'rock-the-vote-activate-account'
    * - `wyd-activate-account`
    */
-  type: String
+  type: String;
 }
 ```
+
 Looking to send a new type of password reset email? Check out http://docs.dosomething.org/non-traditional-member-activation#create-new-type.
 
 <details>
@@ -42,6 +43,7 @@ curl -X POST \
   -d "{\"id\" : \"5846c3949a8920472d4c8793\", \"type\" : \"forgot-password\"}"
   https://northstar.dosomething.org/v2/resets
 ```
+
 </details>
 
 <details>
@@ -57,4 +59,5 @@ curl -X POST \
     }
 }
 ```
+
 </details>

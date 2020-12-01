@@ -1,6 +1,7 @@
 # Discovery Endpoints
 
 ## Get OpenID Configuration
+
 Get configuration details for Northstar's [OpenID Connect](http://openid.net/connect/) implementation.
 This can be used to automatically configure API clients & resource servers.
 
@@ -14,6 +15,7 @@ GET /.well-known/openid-configuration
 ```sh
 curl -X GET https://profile.dosomething.org/.well-known/openid-configuration -H "Accept: application/json"
 ```
+
 </details>
 
 <details>
@@ -39,10 +41,11 @@ curl -X GET https://profile.dosomething.org/.well-known/openid-configuration -H 
   ]
 }
 ```
+
 </details>
 
-
 ## Retrieve Public Key
+
 Retrieves the public key(s) which can be used to verify access tokens. These are returned
 as a set of [JSON Web Keys](https://tools.ietf.org/html/draft-ietf-jose-json-web-key).
 
@@ -56,6 +59,7 @@ GET /v2/keys
 ```sh
 curl -X GET https://profile.dosomething.org/v2/keys -H "Accept: application/json"
 ```
+
 </details>
 
 <details>
@@ -75,5 +79,5 @@ curl -X GET https://profile.dosomething.org/v2/keys -H "Accept: application/json
   ]
 }
 ```
-</details>
 
+</details>
