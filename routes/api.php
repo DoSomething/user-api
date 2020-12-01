@@ -30,12 +30,21 @@ Route::group(['prefix' => 'v2', 'as' => 'v2.'], function () {
     Route::post('subscriptions', 'SubscriptionController@create');
 
     // Email Subscriptions
-    Route::post('users/{user}/subscriptions/{topic}', 'SubscriptionUpdateController@store');
-    Route::delete('users/{user}/subscriptions/{topic}', 'SubscriptionUpdateController@destroy');
+    Route::post(
+        'users/{user}/subscriptions/{topic}',
+        'SubscriptionUpdateController@store',
+    );
+    Route::delete(
+        'users/{user}/subscriptions/{topic}',
+        'SubscriptionUpdateController@destroy',
+    );
 
     // Cause Preferences
     Route::post('users/{user}/causes/{cause}', 'CauseUpdateController@store');
-    Route::delete('users/{user}/causes/{cause}', 'CauseUpdateController@destroy');
+    Route::delete(
+        'users/{user}/causes/{cause}',
+        'CauseUpdateController@destroy',
+    );
 
     // Profile
     // ...
@@ -56,7 +65,9 @@ Route::group(['prefix' => 'v2', 'as' => 'v2.'], function () {
 // https://profile.dosomething.org/v1/
 Route::group(['prefix' => 'v1', 'as' => 'v1.'], function () {
     // Users
-    Route::resource('users', 'Legacy\UserController', ['except' => ['show', 'update']]);
+    Route::resource('users', 'Legacy\UserController', [
+        'except' => ['show', 'update'],
+    ]);
     Route::get('users/{term}/{id}', 'Legacy\UserController@show');
     Route::put('users/{term}/{id}', 'Legacy\UserController@update');
     Route::post('users/{id}/merge', 'Legacy\MergeController@store');

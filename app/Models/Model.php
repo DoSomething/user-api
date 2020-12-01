@@ -26,12 +26,12 @@ class Model extends BaseModel
 
         // Empty string values should be saved as `null` if attribute is not boolean.
         $booleanFields = array_keys($this->casts, 'boolean');
-        if (empty($this->attributes[$key]) && ! in_array($key, $booleanFields)) {
+        if (empty($this->attributes[$key]) && !in_array($key, $booleanFields)) {
             $this->attributes[$key] = null;
         }
 
         $isDirty = $this->isDirty($key);
-        $shouldAudit = ! in_array($key, ['updated_at', 'created_at']);
+        $shouldAudit = !in_array($key, ['updated_at', 'created_at']);
 
         if ($this->audited && $isDirty && $shouldAudit) {
             $this->attributes['audit'][$key] = [
@@ -54,7 +54,10 @@ class Model extends BaseModel
 
         foreach ($this->original as $key => $value) {
             // If a field was unset from the model's attributes or assigned null, mark it as clearable.
-            if (! array_key_exists($key, $this->attributes) || is_null($this->attributes[$key])) {
+            if (
+                !array_key_exists($key, $this->attributes) ||
+                is_null($this->attributes[$key])
+            ) {
                 $clearable[$key] = null;
             }
         }
@@ -70,7 +73,7 @@ class Model extends BaseModel
     public function removeNullAttributes()
     {
         $this->attributes = array_filter($this->attributes, function ($value) {
-            return ! is_null($value);
+            return !is_null($value);
         });
     }
 
@@ -121,7 +124,11 @@ class Model extends BaseModel
      */
     public function getChanged()
     {
-        $changed = array_replace_keys($this->getDirty(), $this->getHidden(), '*****');
+        $changed = array_replace_keys(
+            $this->getDirty(),
+            $this->getHidden(),
+            '*****',
+        );
 
         return $changed;
     }

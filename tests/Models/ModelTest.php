@@ -40,6 +40,9 @@ class ModelTest extends BrowserKitTestCase
         // Make sure the audit prop with audit info is added for the set attribute.
         $document = $this->getMongoDocument('users', $user->id);
         $this->assertArrayHasKey('audit', $document);
-        $this->assertEquals(['source' => 'northstar', 'updated_at' => $time], $user->audit['first_name']);
+        $this->assertEquals(
+            ['source' => 'northstar', 'updated_at' => $time],
+            $user->audit['first_name'],
+        );
     }
 }

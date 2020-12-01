@@ -25,8 +25,12 @@ class ClientEntity implements ClientEntityInterface
      * @param $scopes
      * @param $redirect_uri
      */
-    public function __construct($client_id, $client_name, $scopes, $redirect_uri = '')
-    {
+    public function __construct(
+        $client_id,
+        $client_name,
+        $scopes,
+        $redirect_uri = ''
+    ) {
         $this->identifier = $client_id;
         $this->name = $client_name;
         $this->allowedScopes = $scopes;
@@ -53,7 +57,12 @@ class ClientEntity implements ClientEntityInterface
      */
     public static function fromModel(Client $client)
     {
-        return new self($client->client_id, $client->title, $client->scope, $client->redirect_uri);
+        return new self(
+            $client->client_id,
+            $client->title,
+            $client->scope,
+            $client->redirect_uri,
+        );
     }
 
     /**

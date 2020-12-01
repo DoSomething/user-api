@@ -65,8 +65,12 @@ trait TransformsResponses
      * @param null $transformer
      * @return \Illuminate\Http\JsonResponse
      */
-    public function collection($collection, $code = 200, $meta = [], $transformer = null)
-    {
+    public function collection(
+        $collection,
+        $code = 200,
+        $meta = [],
+        $transformer = null
+    ) {
         if (is_null($transformer)) {
             $transformer = $this->transformer;
         }
@@ -83,8 +87,13 @@ trait TransformsResponses
      * @param $query - Eloquent query
      * @return \Illuminate\Http\Response
      */
-    public function paginatedCollection($query, $request, $code = 200, $meta = [], $transformer = null)
-    {
+    public function paginatedCollection(
+        $query,
+        $request,
+        $code = 200,
+        $meta = [],
+        $transformer = null
+    ) {
         if (is_null($transformer)) {
             $transformer = $this->transformer;
         }
@@ -102,7 +111,10 @@ trait TransformsResponses
         $queryParams = array_diff_key($request->query(), array_flip(['page']));
         $paginator->appends($queryParams);
 
-        $resource = new FractalCollection($paginator->getCollection(), $transformer);
+        $resource = new FractalCollection(
+            $paginator->getCollection(),
+            $transformer,
+        );
 
         $resource->setMeta($meta);
 
@@ -112,7 +124,7 @@ trait TransformsResponses
                 $paginator->currentPage(),
                 $paginator->previousPageUrl(),
                 $paginator->nextPageUrl(),
-                $paginator->count()
+                $paginator->count(),
             );
             $resource->setCursor($cursor);
         } else {

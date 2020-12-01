@@ -58,14 +58,17 @@ class UserTransformer extends TransformerAbstract
             $response['parse_installation_ids'] = []; // @DEPRECATED.
 
             // Email subscription statuses
-            $response['email_subscription_status'] = (bool) $user->email_subscription_status;
-            $response['email_subscription_topics'] = $user->email_subscription_topics;
+            $response['email_subscription_status'] =
+                (bool) $user->email_subscription_status;
+            $response['email_subscription_topics'] =
+                $user->email_subscription_topics;
 
             //Cause Areas
             $response['causes'] = $user->causes;
 
             // Voter registration status
-            $response['voter_registration_status'] = $user->voter_registration_status;
+            $response['voter_registration_status'] =
+                $user->voter_registration_status;
 
             // Voting Plan Status
             $response['voting_plan_status'] = $user->voting_plan_status;
@@ -76,9 +79,11 @@ class UserTransformer extends TransformerAbstract
 
         // Make a Voting Plan fields to be rendered in messaging
         $response['voting_method'] = $user->voting_method;
-        $response['voting_plan_method_of_transport'] = $user->voting_plan_method_of_transport;
+        $response['voting_plan_method_of_transport'] =
+            $user->voting_plan_method_of_transport;
         $response['voting_plan_time_of_day'] = $user->voting_plan_time_of_day;
-        $response['voting_plan_attending_with'] = $user->voting_plan_attending_with;
+        $response['voting_plan_attending_with'] =
+            $user->voting_plan_attending_with;
 
         $response['language'] = $user->language;
         $response['country'] = $user->country;
@@ -94,7 +99,9 @@ class UserTransformer extends TransformerAbstract
 
         if (Gate::allows('view-full-profile', $user)) {
             $response['last_accessed_at'] = iso8601($user->last_accessed_at);
-            $response['last_authenticated_at'] = iso8601($user->last_authenticated_at);
+            $response['last_authenticated_at'] = iso8601(
+                $user->last_authenticated_at,
+            );
             $response['last_messaged_at'] = iso8601($user->last_messaged_at);
         }
 

@@ -11,7 +11,9 @@ class Encrypter
 
     public function __construct()
     {
-        $this->setEncryptionKey(Key::loadFromAsciiSafeString(config('auth.key')));
+        $this->setEncryptionKey(
+            Key::loadFromAsciiSafeString(config('auth.key')),
+        );
     }
 
     public function decryptData($encryptedData)

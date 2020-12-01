@@ -49,15 +49,21 @@ class TotpController extends Controller
         $id = session()->pull('totp.user');
 
         // If we aren't fulfilling a login prompt, then no code will be valid:
-        if (! $id) {
-            return redirect('/login')->with('status', 'That wasn\'t a valid two-factor code. Try again!');
+        if (!$id) {
+            return redirect('/login')->with(
+                'status',
+                'That wasn\'t a valid two-factor code. Try again!',
+            );
         }
 
         // Verify provided TOTP code for the user:
         $user = User::find($id);
         $totp = Factory::loadFromProvisioningUri($user->totp);
-        if (! $totp->verify($request->code)) {
-            return redirect('/login')->with('status', 'That wasn\'t a valid two-factor code. Try again!');
+        if (!$totp->verify($request->code)) {
+            return redirect('/login')->with(
+                'status',
+                'That wasn\'t a valid two-factor code. Try again!',
+            );
         }
 
         // Authenticate the user & redirect to intended location:
@@ -77,7 +83,10 @@ class TotpController extends Controller
 
         // Don't overwrite an existing code.
         if ($user->totp) {
-            return redirect('/')->with('status', 'You\'ve already configured a two-factor device.');
+            return redirect('/')->with(
+                'status',
+                'You\'ve already configured a two-factor device.',
+            );
         }
 
         // Create a TOTP provisioning URI:
@@ -91,7 +100,11 @@ class TotpController extends Controller
         $uri = $totp->getProvisioningUri();
         $qr = new QrCode($uri);
 
-        return view('totp.configure', ['user' => $user, 'uri' => $uri, 'qr' => $qr]);
+        return view('totp.configure', [
+            'user' => $user,
+            'uri' => $uri,
+            'qr' => $qr,
+        ]);
     }
 
     /**
@@ -111,12 +124,15 @@ class TotpController extends Controller
 
         // Don't overwrite an existing code.
         if ($user->totp) {
-            return redirect('/')->with('status', 'You\'ve already configured a two-factor device.');
+            return redirect('/')->with(
+                'status',
+                'You\'ve already configured a two-factor device.',
+            );
         }
 
         // Verify the provided code & provisoning URI:
         $otp = Factory::loadFromProvisioningUri($request->uri);
-        if (! $otp->verify($request->code)) {
+        if (!$otp->verify($request->code)) {
             return back()->with('status', 'That code isn\'t valid. Try again!');
         }
 
@@ -125,6 +141,9 @@ class TotpController extends Controller
         $user->totp = $request->uri;
         $user->save();
 
-        return redirect('/')->with('status', 'You now have two-factor authentication enabled!');
+        return redirect('/')->with(
+            'status',
+            'You now have two-factor authentication enabled!',
+        );
     }
 }

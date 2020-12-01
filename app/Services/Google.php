@@ -31,7 +31,7 @@ class Google
     {
         $response = $this->client->get('people/me?personFields=birthdays', [
             'headers' => [
-                'Authorization' => 'Bearer '.$token,
+                'Authorization' => 'Bearer ' . $token,
             ],
         ]);
 

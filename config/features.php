@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Feature Flags
@@ -22,9 +21,15 @@ return [
 
     'optional-fields' => env('DS_OPTIONAL_FIELDS', false),
 
-    'refer-friends-scholarship' => env('DS_REFER_FRIENDS_SCHOLARSHIP_TEST', false),
+    'refer-friends-scholarship' => env(
+        'DS_REFER_FRIENDS_SCHOLARSHIP_TEST',
+        false,
+    ),
 
-    'no-badge-campaigns' => explode(',', env('DS_CONTENTFUL_IDS_FOR_CAMPAIGNS_WITH_NO_BADGES', null)),
+    'no-badge-campaigns' => explode(
+        ',',
+        env('DS_CONTENTFUL_IDS_FOR_CAMPAIGNS_WITH_NO_BADGES', null),
+    ),
 
     // If this is enabled, we'll also make requests to Rogue, Gambit, and
     // Customer.io's deletion APIs whenever a user model is deleted.

@@ -9,8 +9,7 @@ class ProfileAboutTest extends BrowserKitTestCase
     {
         $user = $this->makeAuthWebUser();
 
-        $this->visit('/profile/about')
-            ->see('Complete Your Profile');
+        $this->visit('/profile/about')->see('Complete Your Profile');
     }
 
     /**
@@ -40,8 +39,12 @@ class ProfileAboutTest extends BrowserKitTestCase
 
         $this->visit('/profile/about')
             ->select('confirmed', 'voter_registration_status')
-            ->dontSee('Not sure? We can help! Take 2 minutes and check your voter registration status with Rock The Vote!')
-            ->dontSee('Make your voice heard on the issues that matter to you. Take 2 minutes and register to vote at your current address!');
+            ->dontSee(
+                'Not sure? We can help! Take 2 minutes and check your voter registration status with Rock The Vote!',
+            )
+            ->dontSee(
+                'Make your voice heard on the issues that matter to you. Take 2 minutes and register to vote at your current address!',
+            );
     }
 
     /**

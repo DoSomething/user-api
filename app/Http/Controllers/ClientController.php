@@ -20,7 +20,9 @@ class ClientController extends Controller
 
         $this->middleware('role:admin');
         $this->middleware('scope:client');
-        $this->middleware('scope:write', ['only' => ['store', 'update', 'destroy']]);
+        $this->middleware('scope:write', [
+            'only' => ['store', 'update', 'destroy'],
+        ]);
     }
 
     /**
@@ -32,8 +34,7 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
-        $clients = $this->newQuery(Client::class)
-            ->orderBy('client_id', 'asc');
+        $clients = $this->newQuery(Client::class)->orderBy('client_id', 'asc');
 
         return $this->paginatedCollection($clients, $request);
     }
@@ -48,17 +49,24 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'client_id' => 'required|alpha_dash|unique:clients,client_id',
-            'title' => 'required|string',
-            'description' => 'string',
-            'scope' => 'array|scope', // @see Scope::validateScopes
-            'allowed_grant' => 'string|in:authorization_code,password,client_credentials',
-            'redirect_uri' => 'array|required_if:allowed_grant,authorization_code',
-            'redirect_uri.*' => 'url',
-        ], [
-            'redirect_uri.*.url' => 'The :attribute field is not a valid URL.',
-        ]);
+        $this->validate(
+            $request,
+            [
+                'client_id' => 'required|alpha_dash|unique:clients,client_id',
+                'title' => 'required|string',
+                'description' => 'string',
+                'scope' => 'array|scope', // @see Scope::validateScopes
+                'allowed_grant' =>
+                    'string|in:authorization_code,password,client_credentials',
+                'redirect_uri' =>
+                    'array|required_if:allowed_grant,authorization_code',
+                'redirect_uri.*' => 'url',
+            ],
+            [
+                'redirect_uri.*.url' =>
+                    'The :attribute field is not a valid URL.',
+            ],
+        );
 
         $key = Client::create($request->except('client_secret'));
 
@@ -89,16 +97,23 @@ class ClientController extends Controller
      */
     public function update($client_id, Request $request)
     {
-        $this->validate($request, [
-            'title' => 'string',
-            'description' => 'string',
-            'scope' => 'array|scope', // @see Scope::validateScopes
-            'allowed_grant' => 'string|in:authorization_code,password,client_credentials',
-            'redirect_uri' => 'array|required_if:allowed_grant,authorization_code',
-            'redirect_uri.*' => 'url',
-        ], [
-            'redirect_uri.*.url' => 'The :attribute field is not a valid URL.',
-        ]);
+        $this->validate(
+            $request,
+            [
+                'title' => 'string',
+                'description' => 'string',
+                'scope' => 'array|scope', // @see Scope::validateScopes
+                'allowed_grant' =>
+                    'string|in:authorization_code,password,client_credentials',
+                'redirect_uri' =>
+                    'array|required_if:allowed_grant,authorization_code',
+                'redirect_uri.*' => 'url',
+            ],
+            [
+                'redirect_uri.*.url' =>
+                    'The :attribute field is not a valid URL.',
+            ],
+        );
 
         $client = Client::findOrFail($client_id);
         $client->update($request->except('client_id', 'client_secret'));

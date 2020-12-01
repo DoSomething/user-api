@@ -11,7 +11,11 @@ class RenameEmailFrequencyToEmailSubscriptionStatus extends Migration
      */
     public function up()
     {
-        $this->renameField('users', 'email_frequency', 'email_subscription_status');
+        $this->renameField(
+            'users',
+            'email_frequency',
+            'email_subscription_status',
+        );
     }
 
     /**
@@ -21,7 +25,11 @@ class RenameEmailFrequencyToEmailSubscriptionStatus extends Migration
      */
     public function down()
     {
-        $this->renameField('users', 'email_subscription_status', 'email_frequency');
+        $this->renameField(
+            'users',
+            'email_subscription_status',
+            'email_frequency',
+        );
     }
 
     /**
@@ -36,7 +44,8 @@ class RenameEmailFrequencyToEmailSubscriptionStatus extends Migration
         /** @var \Jenssegers\Mongodb\Connection $connection */
         $connection = app('db')->connection('mongodb');
 
-        $connection->collection($collection)
+        $connection
+            ->collection($collection)
             ->whereRaw([$old => ['$exists' => true]])
             ->update(['$rename' => [$old => $new]]);
     }

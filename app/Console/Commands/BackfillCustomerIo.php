@@ -30,7 +30,7 @@ class BackfillCustomerIo extends Command
      */
     public function handle()
     {
-        $query = (new User)->newQuery();
+        $query = (new User())->newQuery();
         $progress = $this->output->createProgressBar($query->count());
 
         $query->chunkById(200, function (Collection $users) use ($progress) {

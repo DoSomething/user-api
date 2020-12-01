@@ -7,7 +7,9 @@
  *
  * @var \Illuminate\Database\Eloquent\Factory $factory
  */
-$factory->define(Northstar\Models\User::class, function (Faker\Generator $faker) {
+$factory->define(Northstar\Models\User::class, function (
+    Faker\Generator $faker
+) {
     $faker->addProvider(new FakerPhoneNumber($faker));
 
     return [
@@ -30,7 +32,23 @@ $factory->define(Northstar\Models\User::class, function (Faker\Generator $faker)
         'source' => 'factory',
         'school_id' => '12500012',
         'club_id' => 1,
-        'causes' => $faker->randomElements(['animal_welfare', 'bullying', 'education', 'environment', 'gender_rights_equality', 'homelessness_poverty', 'immigration_refugees', 'lgbtq_rights_equality', 'mental_health', 'physical_health', 'racial_justice_equity', 'sexual_harassment_assault'], $faker->numberBetween(0, 6)),
+        'causes' => $faker->randomElements(
+            [
+                'animal_welfare',
+                'bullying',
+                'education',
+                'environment',
+                'gender_rights_equality',
+                'homelessness_poverty',
+                'immigration_refugees',
+                'lgbtq_rights_equality',
+                'mental_health',
+                'physical_health',
+                'racial_justice_equity',
+                'sexual_harassment_assault',
+            ],
+            $faker->numberBetween(0, 6),
+        ),
         /**
          * Set email subscription status to null by default, as it won't be set for all users.
          * e.g. when source is 'sms'
@@ -39,20 +57,29 @@ $factory->define(Northstar\Models\User::class, function (Faker\Generator $faker)
     ];
 });
 
-$factory->state(Northstar\Models\User::class, 'email-subscribed', function (Faker\Generator $faker) {
+$factory->state(Northstar\Models\User::class, 'email-subscribed', function (
+    Faker\Generator $faker
+) {
     return [
         'email_subscription_status' => true,
-        'email_subscription_topics' => $faker->randomElements(['news', 'lifestyle', 'actions', 'scholarships'], $faker->numberBetween(1, 4)),
+        'email_subscription_topics' => $faker->randomElements(
+            ['news', 'lifestyle', 'actions', 'scholarships'],
+            $faker->numberBetween(1, 4),
+        ),
     ];
 });
 
-$factory->state(Northstar\Models\User::class, 'email-unsubscribed', function (Faker\Generator $faker) {
+$factory->state(Northstar\Models\User::class, 'email-unsubscribed', function (
+    Faker\Generator $faker
+) {
     return [
         'email_subscription_status' => false,
     ];
 });
 
-$factory->state(Northstar\Models\User::class, 'sms-subscribed', function (Faker\Generator $faker) {
+$factory->state(Northstar\Models\User::class, 'sms-subscribed', function (
+    Faker\Generator $faker
+) {
     return [
         'sms_status' => 'active',
         // Note: Not all users will have SMS subscription topics, it was added in March 2020.
@@ -60,14 +87,18 @@ $factory->state(Northstar\Models\User::class, 'sms-subscribed', function (Faker\
     ];
 });
 
-$factory->state(Northstar\Models\User::class, 'sms-unsubscribed', function (Faker\Generator $faker) {
+$factory->state(Northstar\Models\User::class, 'sms-unsubscribed', function (
+    Faker\Generator $faker
+) {
     return [
         'sms_status' => 'stop',
         'sms_subscription_topics' => null,
     ];
 });
 
-$factory->defineAs(Northstar\Models\User::class, 'staff', function (Faker\Generator $faker) {
+$factory->defineAs(Northstar\Models\User::class, 'staff', function (
+    Faker\Generator $faker
+) {
     $faker->addProvider(new FakerPhoneNumber($faker));
 
     return [
@@ -86,7 +117,9 @@ $factory->defineAs(Northstar\Models\User::class, 'staff', function (Faker\Genera
     ];
 });
 
-$factory->defineAs(Northstar\Models\User::class, 'admin', function (Faker\Generator $faker) {
+$factory->defineAs(Northstar\Models\User::class, 'admin', function (
+    Faker\Generator $faker
+) {
     $faker->addProvider(new FakerPhoneNumber($faker));
 
     return [
@@ -105,18 +138,30 @@ $factory->defineAs(Northstar\Models\User::class, 'admin', function (Faker\Genera
     ];
 });
 
-$factory->defineAs(\Northstar\Models\Client::class, 'authorization_code', function (Faker\Generator $faker) {
-    return [
-        'client_id' => $faker->unique()->numerify('phpunit-###'),
-        'title' => $faker->company,
-        'description' => $faker->sentence,
-        'allowed_grant' => 'authorization_code',
-        'scope' => ['user', 'openid', 'profile', 'role:staff', 'role:admin'],
-        'redirect_uri' => $faker->url,
-    ];
-});
+$factory->defineAs(
+    \Northstar\Models\Client::class,
+    'authorization_code',
+    function (Faker\Generator $faker) {
+        return [
+            'client_id' => $faker->unique()->numerify('phpunit-###'),
+            'title' => $faker->company,
+            'description' => $faker->sentence,
+            'allowed_grant' => 'authorization_code',
+            'scope' => [
+                'user',
+                'openid',
+                'profile',
+                'role:staff',
+                'role:admin',
+            ],
+            'redirect_uri' => $faker->url,
+        ];
+    },
+);
 
-$factory->defineAs(\Northstar\Models\Client::class, 'password', function (Faker\Generator $faker) {
+$factory->defineAs(\Northstar\Models\Client::class, 'password', function (
+    Faker\Generator $faker
+) {
     return [
         'client_id' => $faker->unique()->numerify('phpunit-###'),
         'title' => $faker->company,
@@ -126,12 +171,16 @@ $factory->defineAs(\Northstar\Models\Client::class, 'password', function (Faker\
     ];
 });
 
-$factory->defineAs(\Northstar\Models\Client::class, 'client_credentials', function (Faker\Generator $faker) {
-    return [
-        'client_id' => $faker->unique()->numerify('phpunit-###'),
-        'title' => $faker->company,
-        'description' => $faker->sentence,
-        'allowed_grant' => 'client_credentials',
-        'scope' => ['user', 'admin'],
-    ];
-});
+$factory->defineAs(
+    \Northstar\Models\Client::class,
+    'client_credentials',
+    function (Faker\Generator $faker) {
+        return [
+            'client_id' => $faker->unique()->numerify('phpunit-###'),
+            'title' => $faker->company,
+            'description' => $faker->sentence,
+            'allowed_grant' => 'client_credentials',
+            'scope' => ['user', 'admin'],
+        ];
+    },
+);

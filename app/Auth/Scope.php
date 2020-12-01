@@ -15,36 +15,45 @@ class Scope
      */
     protected static $scopes = [
         'role:admin' => [
-            'description' => 'Allows application to use a admin user\'s permissions.',
+            'description' =>
+                'Allows application to use a admin user\'s permissions.',
         ],
         'role:staff' => [
-            'description' => 'Allows application to use a staff user\'s permissions.',
+            'description' =>
+                'Allows application to use a staff user\'s permissions.',
         ],
         'admin' => [
-            'description' => 'Grant administrative privileges to this token, whether or not the user has the admin role.',
-            'hint' => 'Careful, don\'t use this scope with Authorization Code clients!',
+            'description' =>
+                'Grant administrative privileges to this token, whether or not the user has the admin role.',
+            'hint' =>
+                'Careful, don\'t use this scope with Authorization Code clients!',
         ],
         'user' => [
             'description' => 'Allows access to the user resource.',
         ],
         'client' => [
             'description' => 'Allows access to the client resource.',
-            'hint' => 'Be sure you need this scope before assigning! This allows your app to read other OAuth client secrets, so a leaked key is extra dangerous.',
+            'hint' =>
+                'Be sure you need this scope before assigning! This allows your app to read other OAuth client secrets, so a leaked key is extra dangerous.',
         ],
         'activity' => [
-            'description' => 'Allows access to user activity resources (signups, posts, etc.) in Rogue.',
+            'description' =>
+                'Allows access to user activity resources (signups, posts, etc.) in Rogue.',
         ],
         'write' => [
             'description' => 'Allows access to create/update/delete endpoints.',
         ],
         'profile' => [
-            'description' => 'Some third-party implementations may request this scope.',
+            'description' =>
+                'Some third-party implementations may request this scope.',
         ],
         'email' => [
-            'description' => 'Some third-party implementations may request this scope.',
+            'description' =>
+                'Some third-party implementations may request this scope.',
         ],
         'openid' => [
-            'description' => 'Some third-party implementations may request this scope.',
+            'description' =>
+                'Some third-party implementations may request this scope.',
         ],
     ];
 
@@ -66,11 +75,11 @@ class Scope
      */
     public static function validateScopes($scopes)
     {
-        if (! is_array($scopes)) {
+        if (!is_array($scopes)) {
             return false;
         }
 
-        return ! array_diff($scopes, array_keys(static::$scopes));
+        return !array_diff($scopes, array_keys(static::$scopes));
     }
 
     /**
@@ -91,7 +100,7 @@ class Scope
 
         // If scopes have been parsed from a provided JWT access token, check against
         // those. Otherwise, check the Client specified by the `X-DS-REST-API-Key` header.
-        if (! is_null($oauthScopes)) {
+        if (!is_null($oauthScopes)) {
             return in_array($scope, $oauthScopes);
         }
 
@@ -116,21 +125,32 @@ class Scope
         $hasAccessToken = request()->attributes->has('oauth_access_token_id');
         $hasLegacyAuthHeader = request()->headers->has('x-ds-rest-api-key');
         $shouldCheckScopes = $hasAccessToken || $hasLegacyAuthHeader;
-        if (! $shouldCheckScopes) {
+        if (!$shouldCheckScopes) {
             return;
         }
 
-        if (! static::allows($scope)) {
+        if (!static::allows($scope)) {
             Log::warning('invalid_scope_error');
 
             // If scopes have been parsed from a provided JWT access token or we are looking at a v2 endpoint,
             // use OAuth access denied exception to return a 401 error.
-            if (request()->attributes->has('oauth_scopes') || request()->route()->getPrefix() === '/v2') {
-                throw OAuthServerException::accessDenied('Requires the `'.$scope.'` scope.');
+            if (
+                request()->attributes->has('oauth_scopes') ||
+                request()
+                    ->route()
+                    ->getPrefix() === '/v2'
+            ) {
+                throw OAuthServerException::accessDenied(
+                    'Requires the `' . $scope . '` scope.',
+                );
             }
 
             // ...if we're using a legacy API key, return the expected 403 error.
-            throw new AccessDeniedHttpException('You must be using an API key with "'.$scope.'" scope to do that.');
+            throw new AccessDeniedHttpException(
+                'You must be using an API key with "' .
+                    $scope .
+                    '" scope to do that.',
+            );
         }
     }
 }

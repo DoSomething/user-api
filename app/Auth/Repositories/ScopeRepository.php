@@ -54,10 +54,16 @@ class ScopeRepository implements ScopeRepositoryInterface
      * @param null|string $userIdentifier
      * @return \League\OAuth2\Server\Entities\ScopeEntityInterface[]
      */
-    public function finalizeScopes(array $scopes, $grantType, ClientEntityInterface $clientEntity, $userIdentifier = null)
-    {
+    public function finalizeScopes(
+        array $scopes,
+        $grantType,
+        ClientEntityInterface $clientEntity,
+        $userIdentifier = null
+    ) {
         $allowedScopes = $clientEntity->getAllowedScopes();
-        $filteredScopes = array_filter($scopes, function (ScopeEntity $scope) use ($allowedScopes) {
+        $filteredScopes = array_filter($scopes, function (
+            ScopeEntity $scope
+        ) use ($allowedScopes) {
             return in_array($scope->getIdentifier(), $allowedScopes);
         });
 

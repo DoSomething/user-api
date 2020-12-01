@@ -42,8 +42,7 @@ class TotpTest extends BrowserKitTestCase
 
         $this->see('This account is protected by two-factor authentication.');
 
-        $this->type($totp->now(), 'code')
-            ->press('Verify');
+        $this->type($totp->now(), 'code')->press('Verify');
 
         $this->seeIsAuthenticatedAs($user, 'web');
     }
@@ -57,8 +56,7 @@ class TotpTest extends BrowserKitTestCase
 
         $this->see('This account is protected by two-factor authentication.');
 
-        $this->type('000000', 'code')
-            ->press('Verify');
+        $this->type('000000', 'code')->press('Verify');
 
         $this->see('That wasn\'t a valid two-factor code. Try again!');
         $this->dontSeeIsAuthenticated('web');

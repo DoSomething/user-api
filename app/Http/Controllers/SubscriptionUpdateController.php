@@ -15,7 +15,13 @@ class SubscriptionUpdateController extends Controller
     /**
      * @var array
      */
-    protected $emailSubscriptionTopics = ['news', 'scholarships', 'community', 'lifestyle', 'clubs'];
+    protected $emailSubscriptionTopics = [
+        'news',
+        'scholarships',
+        'community',
+        'lifestyle',
+        'clubs',
+    ];
 
     /**
      * Make a new SubpscriptionUpdateController, inject dependencies,
@@ -35,7 +41,7 @@ class SubscriptionUpdateController extends Controller
     {
         $this->authorize('edit-profile', $user);
 
-        if (! in_array($topic, $this->emailSubscriptionTopics)) {
+        if (!in_array($topic, $this->emailSubscriptionTopics)) {
             abort(404, 'That subscription does not exist.');
         }
 
@@ -50,7 +56,7 @@ class SubscriptionUpdateController extends Controller
     {
         $this->authorize('edit-profile', $user);
 
-        if (! in_array($topic, $this->emailSubscriptionTopics)) {
+        if (!in_array($topic, $this->emailSubscriptionTopics)) {
             abort(404, 'That subscription does not exist.');
         }
 

@@ -13,7 +13,9 @@
 Route::get('/', 'UserController@home');
 
 // Users
-Route::resource('users', 'UserController', ['except' => ['index', 'create', 'delete']]);
+Route::resource('users', 'UserController', [
+    'except' => ['index', 'create', 'delete'],
+]);
 
 // Authorization flow for the Auth Code OAuth grant.
 Route::get('authorize', 'AuthController@getAuthorize');
@@ -49,10 +51,15 @@ Route::get('profile/subscriptions', 'ProfileSubscriptionsController@edit');
 Route::patch('profile/subscriptions', 'ProfileSubscriptionsController@update');
 
 // Change Password
-Route::patch('users/{id}/password', 'PasswordController@update')->name('passwords.update');
+Route::patch('users/{id}/password', 'PasswordController@update')->name(
+    'passwords.update',
+);
 
 // Password Reset
 Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm');
 Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
-Route::get('password/reset/{type}/{token}', ['as' => 'password.reset', 'uses' => 'ResetPasswordController@showResetForm']);
+Route::get('password/reset/{type}/{token}', [
+    'as' => 'password.reset',
+    'uses' => 'ResetPasswordController@showResetForm',
+]);
 Route::post('password/reset/{type}', 'ResetPasswordController@reset');

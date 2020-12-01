@@ -36,7 +36,10 @@ class UnsetFieldsTest extends TestCase
         $this->assertEquals($usersWithCountry, 5);
 
         // Run the command to unset `city` and `country`
-        Artisan::call('northstar:unset', ['field' => ['city', 'country'], '--force' => true]);
+        Artisan::call('northstar:unset', [
+            'field' => ['city', 'country'],
+            '--force' => true,
+        ]);
 
         // Make sure NO users have a `city`
         $usersWithCity = User::whereRaw([

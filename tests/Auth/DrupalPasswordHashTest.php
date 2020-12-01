@@ -13,7 +13,8 @@ class DrupalPasswordHashTest extends BrowserKitTestCase
     {
         $user = User::forceCreate([
             'email' => 'dries.buytaert@example.com',
-            'drupal_password' => '$S$DOQoztwlGzTeaobeBZKNzlDttbZscuCkkZPv8yeoEvrn26H/GN5b',
+            'drupal_password' =>
+                '$S$DOQoztwlGzTeaobeBZKNzlDttbZscuCkkZPv8yeoEvrn26H/GN5b',
         ]);
 
         // Assert that we can log in with the Drupal-hashed password.
@@ -45,7 +46,8 @@ class DrupalPasswordHashTest extends BrowserKitTestCase
     {
         $user = User::create([
             'email' => 'acquia.consultant@example.com',
-            'drupal_password' => '$S$DOQoztwlGzTeaobeBZKNzlDttbZscuCkkZPv8yeoEvrn26H/GN5b',
+            'drupal_password' =>
+                '$S$DOQoztwlGzTeaobeBZKNzlDttbZscuCkkZPv8yeoEvrn26H/GN5b',
         ]);
 
         $user->password = 'secret';
@@ -72,15 +74,51 @@ class DrupalPasswordHashTest extends BrowserKitTestCase
     public function testHashesCorrectly()
     {
         // Succeeds if given a good password
-        $this->assertTrue(DrupalPasswordHash::check('testtest', '$S$DYvEbMTfOWVPq5FyHhp70eXBrt8FClzE8bV8RoR8alahwR71PoLE'), 'Succeeds if given a good password');
+        $this->assertTrue(
+            DrupalPasswordHash::check(
+                'testtest',
+                '$S$DYvEbMTfOWVPq5FyHhp70eXBrt8FClzE8bV8RoR8alahwR71PoLE',
+            ),
+            'Succeeds if given a good password',
+        );
 
         // Fails if given a bad password
-        $this->assertFalse(DrupalPasswordHash::check('secret', '$S$DYvEbMTfOWVPq5FyHhp70eXBrt8FClzE8bV8RoR8alahwR71PoLE'), 'Fails if given a bad password');
+        $this->assertFalse(
+            DrupalPasswordHash::check(
+                'secret',
+                '$S$DYvEbMTfOWVPq5FyHhp70eXBrt8FClzE8bV8RoR8alahwR71PoLE',
+            ),
+            'Fails if given a bad password',
+        );
 
         // Can check older MD5 passwords.
-        $this->assertTrue(DrupalPasswordHash::check('derpalicious', '$P$DxTIL/YfZCdJtFYNh1Ef9ERbMBkuQ91'), 'Password check succeeds on valid MD5 password.');
-        $this->assertTrue(DrupalPasswordHash::check('derpalicious', '$H$DxTIL/YfZCdJtFYNh1Ef9ERbMBkuQ91'), 'Password check succeeds on valid MD5 password.');
-        $this->assertFalse(DrupalPasswordHash::check('nowaytraderjose', '$P$DxTIL/YfZCdJtFYNh1Ef9ERbMBkuQ91'), 'Password check fails on invalid MD5 password.');
-        $this->assertFalse(DrupalPasswordHash::check('nowaytraderjose', '$H$DxTIL/YfZCdJtFYNh1Ef9ERbMBkuQ91'), 'Password check fails on invalid MD5 password.');
+        $this->assertTrue(
+            DrupalPasswordHash::check(
+                'derpalicious',
+                '$P$DxTIL/YfZCdJtFYNh1Ef9ERbMBkuQ91',
+            ),
+            'Password check succeeds on valid MD5 password.',
+        );
+        $this->assertTrue(
+            DrupalPasswordHash::check(
+                'derpalicious',
+                '$H$DxTIL/YfZCdJtFYNh1Ef9ERbMBkuQ91',
+            ),
+            'Password check succeeds on valid MD5 password.',
+        );
+        $this->assertFalse(
+            DrupalPasswordHash::check(
+                'nowaytraderjose',
+                '$P$DxTIL/YfZCdJtFYNh1Ef9ERbMBkuQ91',
+            ),
+            'Password check fails on invalid MD5 password.',
+        );
+        $this->assertFalse(
+            DrupalPasswordHash::check(
+                'nowaytraderjose',
+                '$H$DxTIL/YfZCdJtFYNh1Ef9ERbMBkuQ91',
+            ),
+            'Password check fails on invalid MD5 password.',
+        );
     }
 }

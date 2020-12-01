@@ -35,12 +35,16 @@ class UserRepository implements UserRepositoryInterface
      * @param \League\OAuth2\Server\Entities\ClientEntityInterface $clientEntity
      * @return \League\OAuth2\Server\Entities\UserEntityInterface
      */
-    public function getUserEntityByUserCredentials($username, $password, $grantType, ClientEntityInterface $clientEntity)
-    {
+    public function getUserEntityByUserCredentials(
+        $username,
+        $password,
+        $grantType,
+        ClientEntityInterface $clientEntity
+    ) {
         $credentials = ['username' => $username, 'password' => $password];
         $user = $this->registrar->resolve($credentials);
 
-        if (! $this->registrar->validateCredentials($user, $credentials)) {
+        if (!$this->registrar->validateCredentials($user, $credentials)) {
             event(\Illuminate\Auth\Events\Failed::class);
 
             return null;

@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Session Driver
@@ -57,7 +56,7 @@ return [
     |
     */
 
-    'files' => storage_path().'/framework/sessions',
+    'files' => storage_path() . '/framework/sessions',
 
     /*
     |--------------------------------------------------------------------------
@@ -149,5 +148,4 @@ return [
     */
 
     'secure' => false,
-
 ];

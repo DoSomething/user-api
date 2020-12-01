@@ -11,8 +11,9 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
     {
         $user = $this->makeAuthWebUser();
 
-        $this->visit('/profile/subscriptions')
-            ->see('Choose your contact method');
+        $this->visit('/profile/subscriptions')->see(
+            'Choose your contact method',
+        );
     }
 
     /**
@@ -27,11 +28,11 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
         $this->be($user, 'web');
 
         $this->visit('/profile/subscriptions')
-             ->type('(123) 456-7890', 'mobile')
-             ->select('less', 'sms_status')
-             ->check('email_subscription_topics[1]')
-             ->check('email_subscription_topics[3]')
-             ->press('Finish');
+            ->type('(123) 456-7890', 'mobile')
+            ->select('less', 'sms_status')
+            ->check('email_subscription_topics[1]')
+            ->check('email_subscription_topics[3]')
+            ->press('Finish');
 
         $updatedUser = $user->fresh();
 
@@ -50,10 +51,10 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
         $this->be($user, 'web');
 
         $this->visit('/profile/subscriptions')
-             ->type('(123) 456-7890', 'mobile')
-             ->check('email_subscription_topics[1]')
-             ->check('email_subscription_topics[2]')
-             ->press('Finish');
+            ->type('(123) 456-7890', 'mobile')
+            ->check('email_subscription_topics[1]')
+            ->check('email_subscription_topics[2]')
+            ->press('Finish');
 
         $updatedUser = $user->fresh();
 

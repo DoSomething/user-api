@@ -23,7 +23,9 @@ class PasswordResetTest extends BrowserKitTestCase
     {
         Bus::fake();
 
-        $user = factory(User::class)->create(['email' => 'forgetful@example.com']);
+        $user = factory(User::class)->create([
+            'email' => 'forgetful@example.com',
+        ]);
         $resetPasswordUrl = '';
 
         // The user should be able to request a new password by entering their email.
@@ -35,12 +37,14 @@ class PasswordResetTest extends BrowserKitTestCase
         ]);
 
         // We'll assert that the event was created & take note of reset URL for the next step.
-        Bus::assertDispatched(SendPasswordResetToCustomerIo::class, function ($job) use (&$resetPasswordUrl) {
+        Bus::assertDispatched(SendPasswordResetToCustomerIo::class, function (
+            $job
+        ) use (&$resetPasswordUrl) {
             $resetPasswordUrl = $job->getUrl();
 
             return true;
         });
-        info('testForgotPasswordResetFlow '.$resetPasswordUrl);
+        info('testForgotPasswordResetFlow ' . $resetPasswordUrl);
 
         // The user should visit the link that was sent via email & set a new password.
         $this->visit($resetPasswordUrl);
@@ -52,10 +56,16 @@ class PasswordResetTest extends BrowserKitTestCase
         // The user should be logged-in to Northstar, and redirected to Phoenix's OAuth flow.
         $this->seeIsAuthenticated();
         $this->seeIsAuthenticatedAs($user, 'web');
-        $this->assertRedirectedTo(config('services.phoenix.url').'/next/login');
+        $this->assertRedirectedTo(
+            config('services.phoenix.url') . '/next/login',
+        );
 
         // And their account should be updated with their new password.
-        $this->assertTrue(app(Registrar::class)->validateCredentials($user->fresh(), ['password' => 'new-top-secret-passphrase']));
+        $this->assertTrue(
+            app(Registrar::class)->validateCredentials($user->fresh(), [
+                'password' => 'new-top-secret-passphrase',
+            ]),
+        );
     }
 
     /**
@@ -102,7 +112,9 @@ class PasswordResetTest extends BrowserKitTestCase
         $this->seeJsonStructure(['success']);
 
         // We'll assert that the event was created & take note of reset URL for the next step.
-        Bus::assertDispatched(SendPasswordResetToCustomerIo::class, function ($job) use (&$resetPasswordUrl) {
+        Bus::assertDispatched(SendPasswordResetToCustomerIo::class, function (
+            $job
+        ) use (&$resetPasswordUrl) {
             $resetPasswordUrl = $job->getUrl();
 
             return true;
@@ -112,7 +124,9 @@ class PasswordResetTest extends BrowserKitTestCase
 
         $this->visit($resetPasswordUrl);
         $this->see('Welcome to your DoSomething.org account!');
-        $this->see('Create a password to join a movement of young people dedicated to making their communities a better place for everyone.');
+        $this->see(
+            'Create a password to join a movement of young people dedicated to making their communities a better place for everyone.',
+        );
 
         $this->postForm('Activate Account', [
             'password' => 'new-top-secret-passphrase',
@@ -125,6 +139,10 @@ class PasswordResetTest extends BrowserKitTestCase
         $this->assertRedirectedTo('profile/about');
 
         // And their account should be updated with their new password.
-        $this->assertTrue(app(Registrar::class)->validateCredentials($user->fresh(), ['password' => 'new-top-secret-passphrase']));
+        $this->assertTrue(
+            app(Registrar::class)->validateCredentials($user->fresh(), [
+                'password' => 'new-top-secret-passphrase',
+            ]),
+        );
     }
 }

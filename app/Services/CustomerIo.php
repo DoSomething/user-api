@@ -46,7 +46,7 @@ class CustomerIo
      */
     public function trackEvent($user, $eventName, $eventData = [])
     {
-        if (! $this->enabled()) {
+        if (!$this->enabled()) {
             info('Event would have been sent to Customer.io', [
                 'id' => $user->id,
                 'name' => $eventName,
@@ -56,16 +56,21 @@ class CustomerIo
             return;
         }
 
-        $response = $this->client->post('customers/'.$user->id.'/events', [
+        $response = $this->client->post('customers/' . $user->id . '/events', [
             'json' => ['name' => $eventName, 'data' => $eventData],
         ]);
 
         // For this endpoint, any status besides 200 means something is wrong:
         if ($response->getStatusCode() !== 200) {
-            throw new Exception('Customer.io error: '.(string) $response->getBody());
+            throw new Exception(
+                'Customer.io error: ' . (string) $response->getBody(),
+            );
         }
 
-        info('Event sent to Customer.io', ['id' => $user->id, 'name' => $eventName]);
+        info('Event sent to Customer.io', [
+            'id' => $user->id,
+            'name' => $eventName,
+        ]);
     }
 
     /**
@@ -78,19 +83,24 @@ class CustomerIo
     {
         $payload = $user->toCustomerIoPayload();
 
-        if (! $this->enabled()) {
-            info('User would have been sent to Customer.io', ['id' => $user->id, 'payload' => $payload]);
+        if (!$this->enabled()) {
+            info('User would have been sent to Customer.io', [
+                'id' => $user->id,
+                'payload' => $payload,
+            ]);
 
             return;
         }
 
-        $response = $this->client->put('customers/'.$user->id, [
+        $response = $this->client->put('customers/' . $user->id, [
             'json' => $payload,
         ]);
 
         // For this endpoint, any status besides 200 means something is wrong:
         if ($response->getStatusCode() !== 200) {
-            throw new Exception('Customer.io error: '.(string) $response->getBody());
+            throw new Exception(
+                'Customer.io error: ' . (string) $response->getBody(),
+            );
         }
 
         info('User sent to Customer.io', ['id' => $user->id]);
@@ -104,12 +114,12 @@ class CustomerIo
      */
     public function deleteUser(string $id)
     {
-        if (! config('features.delete-api')) {
-            info('User '.$id.' would have been deleted in Customer.io.');
+        if (!config('features.delete-api')) {
+            info('User ' . $id . ' would have been deleted in Customer.io.');
 
             return;
         }
 
-        return $this->client->delete('customers/'.$id);
+        return $this->client->delete('customers/' . $id);
     }
 }

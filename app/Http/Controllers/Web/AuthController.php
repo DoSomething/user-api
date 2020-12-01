@@ -36,13 +36,19 @@ class AuthController extends Controller
      * @param Registrar $registrar
      * @param AuthorizationServer $oauth
      */
-    public function __construct(Registrar $registrar, AuthorizationServer $oauth)
-    {
+    public function __construct(
+        Registrar $registrar,
+        AuthorizationServer $oauth
+    ) {
         $this->registrar = $registrar;
         $this->oauth = $oauth;
 
-        $this->middleware('guest:web', ['only' => ['getLogin', 'postLogin', 'getRegister', 'postRegister']]);
-        $this->middleware('throttle', ['only' => ['postLogin', 'postRegister']]);
+        $this->middleware('guest:web', [
+            'only' => ['getLogin', 'postLogin', 'getRegister', 'postRegister'],
+        ]);
+        $this->middleware('throttle', [
+            'only' => ['postLogin', 'postRegister'],
+        ]);
     }
 
     /**
@@ -52,22 +58,36 @@ class AuthController extends Controller
      * @param ResponseInterface $response
      * @return ResponseInterface|\Illuminate\Http\RedirectResponse
      */
-    public function getAuthorize(ServerRequestInterface $request, ResponseInterface $response)
-    {
+    public function getAuthorize(
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ) {
         $authRequest = $this->oauth->validateAuthorizationRequest($request);
         $client = $authRequest->getClient();
 
-        if (! Auth::check()) {
+        if (!Auth::check()) {
             // Store any context we'll need for login or registration in the session.
             // NOTE: Be sure to clear these in AuthController@cleanupSession afterwards!
             session([
                 // Store the Client ID so we can set user's source field on registrations:
                 'authorize_client_id' => $client->getIdentifier(),
                 // Store destination & content fields so we can customize registration page:
-                'destination' => request()->query('destination', $client->getName()),
-                'title' => request()->query('title', trans('auth.get_started.create_account')),
-                'callToAction' => request()->query('callToAction', trans('auth.get_started.call_to_action')),
-                'coverImage' => request()->query('coverImage', asset('members.jpg')),
+                'destination' => request()->query(
+                    'destination',
+                    $client->getName(),
+                ),
+                'title' => request()->query(
+                    'title',
+                    trans('auth.get_started.create_account'),
+                ),
+                'callToAction' => request()->query(
+                    'callToAction',
+                    trans('auth.get_started.call_to_action'),
+                ),
+                'coverImage' => request()->query(
+                    'coverImage',
+                    asset('members.jpg'),
+                ),
                 // Store any provided UTMs or Contentful ID for user's source_detail:
                 'source_detail' => array_filter([
                     'contentful_id' => request()->query('contentful_id'),
@@ -92,7 +112,10 @@ class AuthController extends Controller
         // third-party apps one day, we'd want to prompt the user to approve them here.
         $authRequest->setAuthorizationApproved(true);
 
-        return $this->oauth->completeAuthorizationRequest($authRequest, $response);
+        return $this->oauth->completeAuthorizationRequest(
+            $authRequest,
+            $response,
+        );
     }
 
     /**
@@ -120,17 +143,19 @@ class AuthController extends Controller
 
         // Check if the user needs to reset their password in order to log in:
         $user = $this->registrar->resolve(['username' => $request['username']]);
-        if ($user && ! $user->hasPassword()) {
+        if ($user && !$user->hasPassword()) {
             return back()
                 ->withInput($request->only('username'))
                 ->with('request_reset', true);
         }
 
         // Are the given credentials valid?
-        if (! Auth::validate($credentials)) {
+        if (!Auth::validate($credentials)) {
             return back()
                 ->withInput($request->only('username'))
-                ->withErrors(['username' => 'These credentials do not match our records.']);
+                ->withErrors([
+                    'username' => 'These credentials do not match our records.',
+                ]);
         }
 
         $this->cleanupSession();
@@ -162,7 +187,7 @@ class AuthController extends Controller
         // A custom post-logout redirect can be specified with `/logout?redirect=`.
         // If not provided (or not for a "safe" domain), redirect to the login form.
         $redirect = $request->query('redirect');
-        if (! $redirect || ! is_dosomething_domain($redirect)) {
+        if (!$redirect || !is_dosomething_domain($redirect)) {
             $redirect = 'login';
         }
 
@@ -227,8 +252,12 @@ class AuthController extends Controller
     protected function cleanupSession()
     {
         $keys = [
-            'authorize_client_id', 'destination', 'title',
-            'callToAction', 'coverImage', 'source_detail',
+            'authorize_client_id',
+            'destination',
+            'title',
+            'callToAction',
+            'coverImage',
+            'source_detail',
         ];
 
         session()->forget($keys);

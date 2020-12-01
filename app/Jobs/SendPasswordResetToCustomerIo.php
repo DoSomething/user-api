@@ -69,16 +69,21 @@ class SendPasswordResetToCustomerIo implements ShouldQueue
     public function handle(CustomerIo $customerIo)
     {
         // Rate limit Customer.io API requests to 10/s.
-        $throttler = Redis::throttle('customerio')->allow(10)->every(1);
-        $throttler->then(function () use ($customerIo) {
-            $customerIo->trackEvent($this->user, 'call_to_action_email', [
-                'actionUrl' => $this->getUrl(),
-                'type' => $this->type,
-                'userId' => $this->user->id,
-            ]);
-        }, function () {
-            // Could not obtain lock... release to the queue.
-            return $this->release(10);
-        });
+        $throttler = Redis::throttle('customerio')
+            ->allow(10)
+            ->every(1);
+        $throttler->then(
+            function () use ($customerIo) {
+                $customerIo->trackEvent($this->user, 'call_to_action_email', [
+                    'actionUrl' => $this->getUrl(),
+                    'type' => $this->type,
+                    'userId' => $this->user->id,
+                ]);
+            },
+            function () {
+                // Could not obtain lock... release to the queue.
+                return $this->release(10);
+            },
+        );
     }
 }

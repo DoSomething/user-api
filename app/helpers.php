@@ -30,8 +30,14 @@ function normalize($type = null, $value = null)
         return $normalizer;
     }
 
-    if (! method_exists($normalizer, $type)) {
-        throw new InvalidArgumentException('There isn\'t a `'.$type.'` method on the normalizer ('.Normalizer::class.').');
+    if (!method_exists($normalizer, $type)) {
+        throw new InvalidArgumentException(
+            'There isn\'t a `' .
+                $type .
+                '` method on the normalizer (' .
+                Normalizer::class .
+                ').',
+        );
     }
 
     // Otherwise, send the given value to the corresponding method.
@@ -83,7 +89,7 @@ function has_middleware($middleware = null)
 {
     $currentRoute = app('router')->getCurrentRoute();
 
-    if (! $currentRoute) {
+    if (!$currentRoute) {
         return false;
     }
 
@@ -102,7 +108,7 @@ function has_middleware($middleware = null)
 function client_id()
 {
     $oauthClientId = request()->attributes->get('oauth_client_id');
-    if (! empty($oauthClientId)) {
+    if (!empty($oauthClientId)) {
         return $oauthClientId;
     }
 
@@ -124,7 +130,7 @@ function client_id()
  */
 function get_countries()
 {
-    $iso = (new League\ISO3166\ISO3166)->all();
+    $iso = (new League\ISO3166\ISO3166())->all();
 
     return collect($iso)->pluck('name', 'alpha2');
 }
@@ -233,7 +239,7 @@ function is_dosomething_domain(string $url): bool
 {
     $host = parse_url($url, PHP_URL_HOST);
 
-    if (! $host) {
+    if (!$host) {
         return false;
     }
 
@@ -263,8 +269,10 @@ function is_dosomething_domain(string $url): bool
 function throttle($throughput)
 {
     // Refuse to throttle non-console contexts.
-    if (! app()->runningInConsole()) {
-        throw new InvalidArgumentException('Cannot use throttle() outside of console scripts.');
+    if (!app()->runningInConsole()) {
+        throw new InvalidArgumentException(
+            'Cannot use throttle() outside of console scripts.',
+        );
     }
 
     if (empty($throughput)) {
@@ -284,7 +292,13 @@ function throttle($throughput)
  */
 function scriptify($json = [], $store = 'STATE')
 {
-    return new HtmlString('<script type="text/javascript">window.'.$store.' = '.json_encode($json).'</script>');
+    return new HtmlString(
+        '<script type="text/javascript">window.' .
+            $store .
+            ' = ' .
+            json_encode($json) .
+            '</script>',
+    );
 }
 
 /**
@@ -309,7 +323,7 @@ function get_client_environment_vars()
  */
 function participate($experiment, $alternatives)
 {
-    if (! config('services.sixpack.enabled')) {
+    if (!config('services.sixpack.enabled')) {
         return false;
     }
 
@@ -327,7 +341,7 @@ function participate($experiment, $alternatives)
  */
 function convert($experiment)
 {
-    if (! config('services.sixpack.enabled')) {
+    if (!config('services.sixpack.enabled')) {
         return;
     }
 
@@ -385,14 +399,19 @@ function machine_token(...$scopes)
     $client = new ClientEntity('northstar', config('app.name'), $scopes);
     $scopeEntities = app(ScopeRepository::class)->create(...$scopes);
 
-    $accessToken = app(AccessTokenRepository::class)->getNewToken($client, $scopeEntities);
+    $accessToken = app(AccessTokenRepository::class)->getNewToken(
+        $client,
+        $scopeEntities,
+    );
     $accessToken->setPrivateKey(app(KeyRepository::class)->getPrivateKey());
     $accessToken->setIdentifier(bin2hex(random_bytes(40)));
 
     // Since this token is only used for Northstar's own API requests, we'll give it a very short TTL:
-    $accessToken->setExpiryDateTime((new \DateTimeImmutable())->add(new DateInterval('PT5M')));
+    $accessToken->setExpiryDateTime(
+        (new \DateTimeImmutable())->add(new DateInterval('PT5M')),
+    );
 
-    return 'Bearer '.(string) $accessToken;
+    return 'Bearer ' . (string) $accessToken;
 }
 
 /**

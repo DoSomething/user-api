@@ -9,11 +9,19 @@ class AddAddressesCommand extends TestCase
     public function it_should_set_addresses()
     {
         // Make two test users (matching the IDs in the 'example-addresses.csv' file).
-        User::forceCreate(['_id' => '54f9e1c8469c64df6c8b4568', 'first_name' => 'Test']);
-        User::forceCreate(['_id' => '54fa272c469c64d7068b456c', 'first_name' => 'Dominique']);
+        User::forceCreate([
+            '_id' => '54f9e1c8469c64df6c8b4568',
+            'first_name' => 'Test',
+        ]);
+        User::forceCreate([
+            '_id' => '54fa272c469c64d7068b456c',
+            'first_name' => 'Dominique',
+        ]);
 
         // Run the addresses command.
-        Artisan::call('northstar:addr', ['path' => 'tests/Console/example-addresses.csv']);
+        Artisan::call('northstar:addr', [
+            'path' => 'tests/Console/example-addresses.csv',
+        ]);
 
         // And see that we stored the provided addresses!
         $this->seeInDatabase('users', [

@@ -56,12 +56,18 @@ class ResetTest extends BrowserKitTestCase
         $admin = factory(User::class, 'admin')->create();
         $user = factory(User::class)->create();
 
-        $response = $this->asUser($admin, ['role:admin', 'user'])->post('v2/resets', [
-            'id' => $user->id,
-            'type' => PasswordResetType::$forgotPassword,
-        ]);
+        $response = $this->asUser($admin, ['role:admin', 'user'])->post(
+            'v2/resets',
+            [
+                'id' => $user->id,
+                'type' => PasswordResetType::$forgotPassword,
+            ],
+        );
 
         $this->assertResponseStatus(401);
-        $this->assertEquals('Requires the `write` scope.', $response->decodeResponseJson()['hint']);
+        $this->assertEquals(
+            'Requires the `write` scope.',
+            $response->decodeResponseJson()['hint'],
+        );
     }
 }

@@ -17,12 +17,17 @@ class DeletionRequestTest extends BrowserKitTestCase
 
         $user = factory(User::class)->create();
 
-        $this->asUser($user, ['user', 'write'])->post('v2/users/'.$user->id.'/deletion');
+        $this->asUser($user, ['user', 'write'])->post(
+            'v2/users/' . $user->id . '/deletion',
+        );
 
         $this->assertResponseStatus(200);
         $this->seeJsonField('data.sms_status', 'stop');
         $this->seeJsonField('data.email_subscription_status', false);
-        $this->seeJsonField('data.deletion_requested_at', '2019-04-26T19:00:00+00:00');
+        $this->seeJsonField(
+            'data.deletion_requested_at',
+            '2019-04-26T19:00:00+00:00',
+        );
     }
 
     /**
@@ -37,7 +42,9 @@ class DeletionRequestTest extends BrowserKitTestCase
             'deletion_requested_at' => new Carbon('2019-04-26T19:00:00+00:00'),
         ]);
 
-        $this->asUser($user, ['user', 'write'])->delete('v2/users/'.$user->id.'/deletion');
+        $this->asUser($user, ['user', 'write'])->delete(
+            'v2/users/' . $user->id . '/deletion',
+        );
 
         $this->assertResponseStatus(200);
         $this->seeJsonField('data.deletion_requested_at', null);
@@ -56,10 +63,15 @@ class DeletionRequestTest extends BrowserKitTestCase
         $staffer = factory(User::class)->create(['role' => 'staff']);
         $user = factory(User::class)->create();
 
-        $this->asUser($staffer, ['user', 'write'])->post('v2/users/'.$user->id.'/deletion');
+        $this->asUser($staffer, ['user', 'write'])->post(
+            'v2/users/' . $user->id . '/deletion',
+        );
 
         $this->assertResponseStatus(200);
-        $this->seeJsonField('data.deletion_requested_at', '2019-04-26T19:00:00+00:00');
+        $this->seeJsonField(
+            'data.deletion_requested_at',
+            '2019-04-26T19:00:00+00:00',
+        );
     }
 
     /**
@@ -73,7 +85,9 @@ class DeletionRequestTest extends BrowserKitTestCase
         $villain = factory(User::class)->create();
         $user = factory(User::class)->create();
 
-        $this->asUser($villain, ['user', 'write'])->delete('v2/users/'.$user->id.'/deletion');
+        $this->asUser($villain, ['user', 'write'])->delete(
+            'v2/users/' . $user->id . '/deletion',
+        );
 
         $this->assertResponseStatus(403);
     }

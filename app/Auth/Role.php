@@ -20,7 +20,8 @@ class Role
             'description' => 'This user is a staff member.',
         ],
         'user' => [
-            'description' => 'Default user permissions. This is a normal member.',
+            'description' =>
+                'Default user permissions. This is a normal member.',
         ],
     ];
 
@@ -62,14 +63,14 @@ class Role
         $user = auth()->user();
 
         // If there isn't a logged-in user, they can't have a role!
-        if (! $user) {
+        if (!$user) {
             return false;
         }
 
         $role = $user->role;
 
         // Check that the client is allowed to act as this role.
-        Scope::gate('role:'.$role);
+        Scope::gate('role:' . $role);
 
         return in_array($role, $allowedRoles);
     }
@@ -83,17 +84,30 @@ class Role
      */
     public static function gate(array $allowedRoles)
     {
-        if (! static::allows($allowedRoles)) {
+        if (!static::allows($allowedRoles)) {
             Log::warning('invalid_role_error');
 
             // If request is authenticated by a JWT access token or we are looking at a v2 endpoint,
             // use OAuth access denied exception to return a 401 error.
-            if (request()->attributes->has('oauth_user_id') || request()->route()->getPrefix() === '/v2') {
-                throw OAuthServerException::accessDenied('Requires one of the following roles: `'.implode(', ', $allowedRoles).'.');
+            if (
+                request()->attributes->has('oauth_user_id') ||
+                request()
+                    ->route()
+                    ->getPrefix() === '/v2'
+            ) {
+                throw OAuthServerException::accessDenied(
+                    'Requires one of the following roles: `' .
+                        implode(', ', $allowedRoles) .
+                        '.',
+                );
             }
 
             // ...if we're using a legacy API key, return the expected 403 error.
-            throw new AccessDeniedHttpException('Requires one of the following roles: `'.implode(', ', $allowedRoles).'.');
+            throw new AccessDeniedHttpException(
+                'Requires one of the following roles: `' .
+                    implode(', ', $allowedRoles) .
+                    '.',
+            );
         }
     }
 }

@@ -59,7 +59,10 @@ class FacebookController extends Controller
         } catch (RequestException | ClientException | InvalidStateException $e) {
             logger()->warning('facebook_token_mismatch');
 
-            return redirect('/register')->with('status', 'Unable to verify Facebook account.');
+            return redirect('/register')->with(
+                'status',
+                'Unable to verify Facebook account.',
+            );
         }
 
         $email = $facebookUser->email;
@@ -68,7 +71,10 @@ class FacebookController extends Controller
         if (empty($email)) {
             logger()->info('facebook_email_hidden');
 
-            return redirect('/register')->with('status', 'We need your email to contact you if you win a scholarship.');
+            return redirect('/register')->with(
+                'status',
+                'We need your email to contact you if you win a scholarship.',
+            );
         }
 
         // Aggregate public profile fields
@@ -80,7 +86,9 @@ class FacebookController extends Controller
 
         // Aggregate scoped fields
         if (isset($facebookUser->user['birthday'])) {
-            $fields['birthdate'] = format_birthdate($facebookUser->user['birthday']);
+            $fields['birthdate'] = format_birthdate(
+                $facebookUser->user['birthday'],
+            );
         }
 
         $northstarUser = $this->registrar->resolve(['email' => $email]);
@@ -96,7 +104,10 @@ class FacebookController extends Controller
         } else {
             $fields['email'] = $email;
 
-            $northstarUser = $this->registrar->registerViaWeb($fields, 'facebook');
+            $northstarUser = $this->registrar->registerViaWeb(
+                $fields,
+                'facebook',
+            );
 
             Auth::login($northstarUser, true);
             logger()->info('facebook_authentication');

@@ -36,12 +36,14 @@ trait CreatesApplication
      */
     public function createApplication()
     {
-        $app = require __DIR__.'/../bootstrap/app.php';
+        $app = require __DIR__ . '/../bootstrap/app.php';
 
         $app->make(Kernel::class)->bootstrap();
 
         // Configure a mock for any Customer.io API calls.
-        $this->customerIoMock = $this->mock(\Northstar\Services\CustomerIo::class);
+        $this->customerIoMock = $this->mock(
+            \Northstar\Services\CustomerIo::class,
+        );
         $this->customerIoMock->shouldReceive('updateCustomer')->andReturn(null);
         $this->customerIoMock->shouldReceive('trackEvent');
 
@@ -69,7 +71,9 @@ trait CreatesApplication
     {
         parent::setUp();
 
-        $this->serverVariables = $this->transformHeadersToServerVars($this->headers);
+        $this->serverVariables = $this->transformHeadersToServerVars(
+            $this->headers,
+        );
 
         // Get a new Faker generator from Laravel.
         $this->faker = app(\Faker\Generator::class);
@@ -79,7 +83,10 @@ trait CreatesApplication
         Carbon::setTestNow(null);
 
         // Reset the testing database & run migrations.
-        app()->make('db')->getMongoDB()->drop();
+        app()
+            ->make('db')
+            ->getMongoDB()
+            ->drop();
         $this->artisan('migrate');
     }
 }

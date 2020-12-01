@@ -49,8 +49,14 @@ class FacebookTest extends BrowserKitTestCase
      * @param  string  $birthday   birthday
      * @return \Laravel\Socialite\Two\User
      */
-    private function mockSocialiteAbstractUser($email, $first_name, $last_name, $id, $token, $birthday = null)
-    {
+    private function mockSocialiteAbstractUser(
+        $email,
+        $first_name,
+        $last_name,
+        $id,
+        $token,
+        $birthday = null
+    ) {
         $fields = compact('id', 'email', 'token');
 
         $user = new Laravel\Socialite\Two\User();
@@ -59,7 +65,7 @@ class FacebookTest extends BrowserKitTestCase
         $user->user['first_name'] = $first_name;
         $user->user['last_name'] = $last_name;
 
-        if (! is_null($birthday)) {
+        if (!is_null($birthday)) {
             $user->user['birthday'] = $birthday;
         }
 
@@ -72,7 +78,13 @@ class FacebookTest extends BrowserKitTestCase
      */
     private function defaultMock()
     {
-        $abstractUser = $this->mockSocialiteAbstractUser('test@dosomething.org', 'Puppet', 'Sloth', '12345', 'token');
+        $abstractUser = $this->mockSocialiteAbstractUser(
+            'test@dosomething.org',
+            'Puppet',
+            'Sloth',
+            '12345',
+            'token',
+        );
         $this->mockSocialiteFromUser($abstractUser);
         $this->mockSocialiteFromUserToken($abstractUser);
     }
@@ -115,13 +127,19 @@ class FacebookTest extends BrowserKitTestCase
         $user = auth()->user();
         $this->assertEquals($user->email, 'test@dosomething.org');
         $this->assertEquals($user->source, 'northstar');
-        $this->assertEquals($user->source_detail, 'utm_source:phpunit,auth_source:facebook');
+        $this->assertEquals(
+            $user->source_detail,
+            'utm_source:phpunit,auth_source:facebook',
+        );
         $this->assertEquals($user->country_code, country_code());
         $this->assertEquals($user->language, app()->getLocale());
         $this->assertEquals($user->email_subscription_status, true);
         $this->assertEquals($user->email_subscription_topics, ['community']);
         $this->assertArrayHasKey('badges', $user->feature_flags);
-        $this->assertEquals(true, $user->feature_flags['refer-friends-scholarship']);
+        $this->assertEquals(
+            true,
+            $user->feature_flags['refer-friends-scholarship'],
+        );
     }
 
     /**
@@ -150,11 +168,27 @@ class FacebookTest extends BrowserKitTestCase
      */
     public function testFacebookTokenValidation()
     {
-        $this->mockSocialiteFromUser($this->mockSocialiteAbstractUser('test@dosomething.org', 'Puppet', 'Sloth', '12345', 'token'));
+        $this->mockSocialiteFromUser(
+            $this->mockSocialiteAbstractUser(
+                'test@dosomething.org',
+                'Puppet',
+                'Sloth',
+                '12345',
+                'token',
+            ),
+        );
 
-        Socialite::shouldReceive('driver->fields->userFromToken')->andReturnUsing(function () {
-            $request = new GuzzleHttp\Psr7\Request('GET', 'http://graph.facebook.com');
-            throw new GuzzleHttp\Exception\RequestException('Token validation failed', $request);
+        Socialite::shouldReceive(
+            'driver->fields->userFromToken',
+        )->andReturnUsing(function () {
+            $request = new GuzzleHttp\Psr7\Request(
+                'GET',
+                'http://graph.facebook.com',
+            );
+            throw new GuzzleHttp\Exception\RequestException(
+                'Token validation failed',
+                $request,
+            );
         });
 
         $this->visit('/facebook/verify')
@@ -190,7 +224,14 @@ class FacebookTest extends BrowserKitTestCase
      */
     public function testFacebookPartialBirthday()
     {
-        $abstractUser = $this->mockSocialiteAbstractUser('test@dosomething.org', 'Puppet', 'Sloth', '12345', 'token', '01/01');
+        $abstractUser = $this->mockSocialiteAbstractUser(
+            'test@dosomething.org',
+            'Puppet',
+            'Sloth',
+            '12345',
+            'token',
+            '01/01',
+        );
         $this->mockSocialiteFromUser($abstractUser);
         $this->mockSocialiteFromUserToken($abstractUser);
 
@@ -205,7 +246,14 @@ class FacebookTest extends BrowserKitTestCase
      */
     public function testFullBirthday()
     {
-        $abstractUser = $this->mockSocialiteAbstractUser('test@dosomething.org', 'Puppet', 'Sloth', '12345', 'token', '01/01/2000');
+        $abstractUser = $this->mockSocialiteAbstractUser(
+            'test@dosomething.org',
+            'Puppet',
+            'Sloth',
+            '12345',
+            'token',
+            '01/01/2000',
+        );
         $this->mockSocialiteFromUser($abstractUser);
         $this->mockSocialiteFromUserToken($abstractUser);
 
@@ -220,7 +268,14 @@ class FacebookTest extends BrowserKitTestCase
      */
     public function testMissingEmail()
     {
-        $abstractUser = $this->mockSocialiteAbstractUser('', 'Puppet', 'Sloth', '12345', 'token', '01/01/2000');
+        $abstractUser = $this->mockSocialiteAbstractUser(
+            '',
+            'Puppet',
+            'Sloth',
+            '12345',
+            'token',
+            '01/01/2000',
+        );
         $this->mockSocialiteFromUser($abstractUser);
         $this->mockSocialiteFromUserToken($abstractUser);
 

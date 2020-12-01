@@ -46,8 +46,14 @@ class Handler extends ExceptionHandler
     public function report(Exception $e)
     {
         // If we throw a 422 Validation Exception, write something to the log for later review:
-        if ($e instanceof ValidationException || $e instanceof NorthstarValidationException) {
-            info('Validation failed.', ['url' => request()->path(), 'errors' => $e->errors()]);
+        if (
+            $e instanceof ValidationException ||
+            $e instanceof NorthstarValidationException
+        ) {
+            info('Validation failed.', [
+                'url' => request()->path(),
+                'errors' => $e->errors(),
+            ]);
 
             return;
         }
@@ -67,7 +73,9 @@ class Handler extends ExceptionHandler
         // If we receive a OAuth exception, get the included PSR-7 response,
         // convert it to a standard Symfony HttpFoundation response and return.
         if ($e instanceof OAuthServerException) {
-            $psrResponse = $e->generateHttpResponse(app(ResponseInterface::class));
+            $psrResponse = $e->generateHttpResponse(
+                app(ResponseInterface::class),
+            );
 
             return (new HttpFoundationFactory())->createResponse($psrResponse);
         }
@@ -77,7 +85,10 @@ class Handler extends ExceptionHandler
             return $this->rateLimited($e);
         } elseif ($e instanceof AuthenticationException) {
             return $this->unauthenticated($request, $e);
-        } elseif ($e instanceof ValidationException || $e instanceof NorthstarValidationException) {
+        } elseif (
+            $e instanceof ValidationException ||
+            $e instanceof NorthstarValidationException
+        ) {
             return $this->invalidated($request, $e);
         } elseif ($e instanceof ModelNotFoundException) {
             $e = new NotFoundHttpException('That resource could not be found.');
@@ -87,12 +98,19 @@ class Handler extends ExceptionHandler
 
         // If request has 'Accepts: application/json' header or we're on a route that
         // is in the `api` middleware group, render the exception as JSON object.
-        if ($request->ajax() || $request->wantsJson() || has_middleware('api')) {
+        if (
+            $request->ajax() ||
+            $request->wantsJson() ||
+            has_middleware('api')
+        ) {
             return $this->buildJsonResponse($e);
         }
 
         // Redirect to root if trying to access disabled methods on a controller or access denied to user.
-        if ($e instanceof MethodNotAllowedHttpException || $e instanceof AccessDeniedHttpException) {
+        if (
+            $e instanceof MethodNotAllowedHttpException ||
+            $e instanceof AccessDeniedHttpException
+        ) {
             return redirect('/');
         }
 
@@ -113,13 +131,20 @@ class Handler extends ExceptionHandler
         $retryAfter = $exception->getHeaders()['Retry-After'];
         $minutes = ceil($retryAfter / 60);
         $pluralizedNoun = $minutes === 1 ? 'minute' : 'minutes';
-        $message = 'Too many attempts. Please try again in '.$minutes.' '.$pluralizedNoun.'.';
+        $message =
+            'Too many attempts. Please try again in ' .
+            $minutes .
+            ' ' .
+            $pluralizedNoun .
+            '.';
 
         if (request()->wantsJson() || request()->ajax()) {
             return new JsonResponse($message, 429, $exception->getHeaders());
         }
 
-        return redirect()->back()->with('status', $message);
+        return redirect()
+            ->back()
+            ->with('status', $message);
     }
 
     /**
@@ -133,20 +158,24 @@ class Handler extends ExceptionHandler
     {
         $wantsJson = $request->ajax() || $request->wantsJson();
         if ($wantsJson && $e instanceof ValidationException) {
-            return response()->json([
-                'error' => [
-                    'code' => 422,
-                    'message' => 'Failed validation.',
-                    'fields' => $e->errors(),
+            return response()->json(
+                [
+                    'error' => [
+                        'code' => 422,
+                        'message' => 'Failed validation.',
+                        'fields' => $e->errors(),
+                    ],
                 ],
-            ], 422);
+                422,
+            );
         }
 
         if ($wantsJson && $e instanceof NorthstarValidationException) {
             return $e->getResponse();
         }
 
-        return redirect()->back()
+        return redirect()
+            ->back()
             ->withInput($request->except('password', 'password_confirmation'))
             ->withErrors($e->errors());
     }
@@ -161,7 +190,9 @@ class Handler extends ExceptionHandler
     protected function unauthenticated($request, AuthenticationException $e)
     {
         if ($request->ajax() || $request->wantsJson()) {
-            return $this->buildJsonResponse(new HttpException(401, 'Unauthorized.'));
+            return $this->buildJsonResponse(
+                new HttpException(401, 'Unauthorized.'),
+            );
         }
 
         return redirect()->guest('register');
@@ -176,11 +207,13 @@ class Handler extends ExceptionHandler
     protected function buildJsonResponse(Exception $e)
     {
         $code = $e instanceof HttpException ? $e->getStatusCode() : 500;
-        $shouldHideErrorDetails = $code == 500 && ! config('app.debug');
+        $shouldHideErrorDetails = $code == 500 && !config('app.debug');
         $response = [
             'error' => [
                 'code' => $code,
-                'message' => $shouldHideErrorDetails ? self::PRODUCTION_ERROR_MESSAGE : $e->getMessage(),
+                'message' => $shouldHideErrorDetails
+                    ? self::PRODUCTION_ERROR_MESSAGE
+                    : $e->getMessage(),
             ],
         ];
 

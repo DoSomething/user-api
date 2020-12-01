@@ -18,13 +18,13 @@ class ProfileAboutController extends Controller
         $this->middleware('auth:web');
 
         $this->causes = [
-            'animal_welfare'=> 'Animal Welfare',
-            'bullying'=>'Bullying',
-            'education'=>'Education',
+            'animal_welfare' => 'Animal Welfare',
+            'bullying' => 'Bullying',
+            'education' => 'Education',
             'environment' => 'Environment',
             'gender_rights_equality' => 'Gender Rights & Equality',
-            'homelessness_poverty'=> 'Homelessness & Poverty',
-            'immigration_refugees'=> 'Immigration & Refugees',
+            'homelessness_poverty' => 'Homelessness & Poverty',
+            'immigration_refugees' => 'Immigration & Refugees',
             'lgbtq_rights_equality' => 'LGBTQ+ Rights & Equality',
             'mental_health' => 'Mental Health',
             'physical_health' => 'Physical Health',
@@ -39,8 +39,14 @@ class ProfileAboutController extends Controller
     public function edit()
     {
         return view('profiles.about.edit', [
-            'user' => auth()->guard('web')->user(),
-            'causes1' => array_slice($this->causes, 0, count($this->causes) / 2),
+            'user' => auth()
+                ->guard('web')
+                ->user(),
+            'causes1' => array_slice(
+                $this->causes,
+                0,
+                count($this->causes) / 2,
+            ),
             'causes2' => array_slice($this->causes, count($this->causes) / 2),
             'index1' => 0,
             'index2' => 6,
@@ -55,7 +61,9 @@ class ProfileAboutController extends Controller
      */
     public function update(Request $request)
     {
-        $user = auth()->guard('web')->user();
+        $user = auth()
+            ->guard('web')
+            ->user();
 
         $this->registrar->validate($request, null, [
             'birthdate' => 'nullable|date|before:now',

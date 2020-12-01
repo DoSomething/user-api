@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Filesystem Disk
@@ -42,10 +41,9 @@ return [
     */
 
     'disks' => [
-
         'local' => [
             'driver' => 'local',
-            'root' => storage_path().'/app',
+            'root' => storage_path() . '/app',
         ],
 
         's3' => [
@@ -55,7 +53,5 @@ return [
             'region' => 'us-east-1',
             'bucket' => env('S3_BUCKET'),
         ],
-
     ],
-
 ];

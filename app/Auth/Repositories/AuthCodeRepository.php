@@ -54,6 +54,6 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
      */
     public function isAuthCodeRevoked($codeId)
     {
-        return ! AuthCode::where('code', $codeId)->exists();
+        return !AuthCode::where('code', $codeId)->exists();
     }
 }

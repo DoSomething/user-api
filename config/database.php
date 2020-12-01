@@ -4,13 +4,12 @@
 // and `REDIS_PASSWORD` environment variables:
 if (env('REDIS_URL')) {
     $url = parse_url(env('REDIS_URL'));
-    putenv('REDIS_HOST='.$url['host']);
-    putenv('REDIS_PORT='.$url['port']);
-    putenv('REDIS_PASSWORD='.$url['pass']);
+    putenv('REDIS_HOST=' . $url['host']);
+    putenv('REDIS_PORT=' . $url['port']);
+    putenv('REDIS_PASSWORD=' . $url['pass']);
 }
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | PDO Fetch Style
@@ -54,7 +53,6 @@ return [
     */
 
     'connections' => [
-
         'mongodb' => [
             'driver' => 'mongodb',
             'host' => env('DB_HOST', 'localhost'),
@@ -62,13 +60,12 @@ return [
             'username' => env('DB_USERNAME', ''),
             'password' => env('DB_PASSWORD', ''),
             'database' => env('DB_NAME', 'userapi'),
-            'options'  => array_filter([
+            'options' => array_filter([
                 'replicaSet' => env('DB_REPL_SET_NAME'),
                 'database' => env('DB_AUTH_NAME', 'userapi'),
                 'ssl' => env('DB_SSL'),
             ]),
         ],
-
     ],
 
     /*
@@ -96,7 +93,6 @@ return [
     */
 
     'redis' => [
-
         'cluster' => false,
 
         'default' => [
@@ -105,7 +101,5 @@ return [
             'port' => env('REDIS_PORT', 6379),
             'database' => env('REDIS_DATABASE', 0),
         ],
-
     ],
-
 ];

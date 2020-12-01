@@ -109,5 +109,4 @@ return [
             'expire' => 60 * 24 * 3, // reset link will expire in 3 days (4320 minutes)
         ],
     ],
-
 ];

@@ -22,8 +22,11 @@ class NorthstarUserProvider extends EloquentUserProvider implements UserProvider
      * @param \Illuminate\Contracts\Hashing\Hasher $hasher
      * @param string $model
      */
-    public function __construct(Registrar $registrar, HasherContract $hasher, $model)
-    {
+    public function __construct(
+        Registrar $registrar,
+        HasherContract $hasher,
+        $model
+    ) {
         $this->registrar = $registrar;
 
         parent::__construct($hasher, $model);

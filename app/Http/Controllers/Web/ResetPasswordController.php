@@ -59,10 +59,12 @@ class ResetPasswordController extends Controller
      */
     protected function resetPassword($user, $password)
     {
-        $user->forceFill([
-            'password' => $password,
-            'remember_token' => Str::random(60),
-        ])->save();
+        $user
+            ->forceFill([
+                'password' => $password,
+                'remember_token' => Str::random(60),
+            ])
+            ->save();
 
         // Pass along the password reset type route parameter as the source of password update.
         event(new PasswordUpdated($user, request()->type));
@@ -82,12 +84,12 @@ class ResetPasswordController extends Controller
      */
     public function showResetForm(Request $request, $type, $token = null)
     {
-        if (! isset($type)) {
+        if (!isset($type)) {
             $type = PasswordResetType::$forgotPassword;
         }
 
-        if (! in_array($type, PasswordResetType::all())) {
-            throw new NotFoundHttpException;
+        if (!in_array($type, PasswordResetType::all())) {
+            throw new NotFoundHttpException();
         }
 
         $data = [
@@ -95,8 +97,12 @@ class ResetPasswordController extends Controller
             'header' => trans('auth.forgot_password.header'),
             'instructions' => trans('auth.forgot_password.instructions'),
             'new_password_field' => trans('auth.fields.new_password'),
-            'confirm_new_password_field' => trans('auth.fields.confirm_new_password'),
-            'new_password_submit' => trans('auth.forgot_password.submit_new_password'),
+            'confirm_new_password_field' => trans(
+                'auth.fields.confirm_new_password',
+            ),
+            'new_password_submit' => trans(
+                'auth.forgot_password.submit_new_password',
+            ),
             'display_footer' => true,
         ];
 
@@ -106,8 +112,12 @@ class ResetPasswordController extends Controller
                 'header' => trans('auth.activate_account.header'),
                 'instructions' => trans('auth.activate_account.instructions'),
                 'new_password_field' => trans('auth.fields.password'),
-                'confirm_new_password_field' => trans('auth.fields.confirm_password'),
-                'new_password_submit' => trans('auth.activate_account.submit_new_password'),
+                'confirm_new_password_field' => trans(
+                    'auth.fields.confirm_password',
+                ),
+                'new_password_submit' => trans(
+                    'auth.activate_account.submit_new_password',
+                ),
                 'display_footer' => false,
             ];
         }
@@ -140,6 +150,6 @@ class ResetPasswordController extends Controller
             return 'profile/about';
         }
 
-        return config('services.phoenix.url').'/next/login';
+        return config('services.phoenix.url') . '/next/login';
     }
 }

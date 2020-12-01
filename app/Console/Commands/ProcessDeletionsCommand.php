@@ -32,9 +32,13 @@ class ProcessDeletionsCommand extends Command
     {
         $offset = $this->option('offset');
 
-        $query = User::where('deletion_requested_at', '<', new Carbon($offset.'ago'));
+        $query = User::where(
+            'deletion_requested_at',
+            '<',
+            new Carbon($offset . 'ago'),
+        );
 
-        info('Anonymizing '.$query->count().' users...');
+        info('Anonymizing ' . $query->count() . ' users...');
 
         $query->chunkById(200, function (Collection $users) {
             $users->each(function (User $user) {

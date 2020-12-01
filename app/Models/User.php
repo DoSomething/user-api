@@ -83,9 +83,16 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
  * The feature flags this user has
  * @property object $feature_flags
  */
-class User extends Model implements AuthenticatableContract, AuthorizableContract, ResetPasswordContract
+class User extends Model implements
+    AuthenticatableContract,
+    AuthorizableContract,
+    ResetPasswordContract
 {
-    use Authenticatable, Authorizable, CanResetPassword, Notifiable, SoftDeletes;
+    use Authenticatable,
+        Authorizable,
+        CanResetPassword,
+        Notifiable,
+        SoftDeletes;
 
     /**
      * Should changes to this model's attributes be stored
@@ -102,26 +109,47 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     protected $fillable = [
         // Unique identifiers & role:
-        'email', 'mobile', 'role',
+        'email',
+        'mobile',
+        'role',
 
         // Profile:
-        'first_name', 'last_name', 'birthdate', 'voter_registration_status', 'causes', 'school_id', 'club_id',
+        'first_name',
+        'last_name',
+        'birthdate',
+        'voter_registration_status',
+        'causes',
+        'school_id',
+        'club_id',
 
         // Address:
-        'addr_street1', 'addr_street2', 'addr_city', 'addr_state', 'addr_zip',
-        'country', 'language', 'addr_source',
+        'addr_street1',
+        'addr_street2',
+        'addr_city',
+        'addr_state',
+        'addr_zip',
+        'country',
+        'language',
+        'addr_source',
 
         // Source info:
         'referrer_user_id',
 
         // External profiles:
-        'mobilecommons_id', 'mobilecommons_status', 'facebook_id', 'google_id',
+        'mobilecommons_id',
+        'mobilecommons_status',
+        'facebook_id',
+        'google_id',
 
         // SMS Subscription:
-        'sms_status', 'sms_paused', 'sms_subscription_topics', 'last_messaged_at',
+        'sms_status',
+        'sms_paused',
+        'sms_subscription_topics',
+        'last_messaged_at',
 
         // Email Subscription:
-        'email_subscription_status', 'email_subscription_topics',
+        'email_subscription_status',
+        'email_subscription_topics',
 
         // Voting Method/Plan fields:
         'voting_method',
@@ -141,9 +169,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     public static $internal = [
-        'drupal_id', 'role', 'facebook_id', 'google_id',
-        'mobilecommons_id', 'mobilecommons_status', 'sms_status', 'sms_paused',
-        'last_messaged_at', 'feature_flags', 'totp', 'referrer_user_id',
+        'drupal_id',
+        'role',
+        'facebook_id',
+        'google_id',
+        'mobilecommons_id',
+        'mobilecommons_status',
+        'sms_status',
+        'sms_paused',
+        'last_messaged_at',
+        'feature_flags',
+        'totp',
+        'referrer_user_id',
     ];
 
     /**
@@ -155,7 +192,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     public static $uniqueIndexes = [
-        '_id', 'drupal_id', 'email', 'mobile', 'facebook_id', 'google_id',
+        '_id',
+        'drupal_id',
+        'email',
+        'mobile',
+        'facebook_id',
+        'google_id',
     ];
 
     /**
@@ -167,7 +209,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     public static $indexes = [
-        '_id', 'drupal_id', 'email', 'mobile', 'source', 'role', 'facebook_id', 'google_id', 'club_id',
+        '_id',
+        'drupal_id',
+        'email',
+        'mobile',
+        'source',
+        'role',
+        'facebook_id',
+        'google_id',
+        'club_id',
     ];
 
     /**
@@ -240,7 +290,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function getDisplayNameAttribute()
     {
         if ($this->last_initial) {
-            return $this->first_name.' '.$this->last_initial.'.';
+            return $this->first_name . ' ' . $this->last_initial . '.';
         }
 
         return $this->first_name;
@@ -263,7 +313,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function getEmailPreviewAttribute()
     {
-        if (! $this->email) {
+        if (!$this->email) {
             return null;
         }
 
@@ -276,17 +326,35 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         // We'll show the user's email domain for common providers.
         // See: https://dsdata.looker.com/sql/kkk4zqtkwffymv
         $allowedDomains = [
-            'aim.com', 'aol.com', 'att.net', 'bellsouth.net', 'comcast.net', 'cox.net', 'dosomething.org',
-            'gmail.com', 'hotmail.com', 'icloud.com', 'live.com', 'me.com', 'msn.com', 'outlook.com',
-            'rocketmail.com', 'sbcglobal.net', 'verizon.net', 'yahoo.com', 'ymail.com',
+            'aim.com',
+            'aol.com',
+            'att.net',
+            'bellsouth.net',
+            'comcast.net',
+            'cox.net',
+            'dosomething.org',
+            'gmail.com',
+            'hotmail.com',
+            'icloud.com',
+            'live.com',
+            'me.com',
+            'msn.com',
+            'outlook.com',
+            'rocketmail.com',
+            'sbcglobal.net',
+            'verizon.net',
+            'yahoo.com',
+            'ymail.com',
         ];
 
         $domain = $email['domain'];
 
         $previewedMailbox = Str::limit($email['local_part'], 3);
-        $previewedDomain = in_array($domain, $allowedDomains) ? $domain : Str::limit($domain, 4);
+        $previewedDomain = in_array($domain, $allowedDomains)
+            ? $domain
+            : Str::limit($domain, 4);
 
-        return $previewedMailbox.'@'.$previewedDomain;
+        return $previewedMailbox . '@' . $previewedDomain;
     }
 
     /**
@@ -306,20 +374,20 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function getMobilePreviewAttribute()
     {
-        if (! $this->mobile) {
+        if (!$this->mobile) {
             return null;
         }
 
         $mobile = parse_mobile($this->mobile);
 
-        if (! $mobile) {
+        if (!$mobile) {
             return '(XXX) XXX-XXXX';
         }
 
         $formattedNumber = format_mobile($mobile, PhoneNumberFormat::NATIONAL);
 
         // Redact the last four digits after formatting.
-        return substr($formattedNumber, 0, -4).'XXXX';
+        return substr($formattedNumber, 0, -4) . 'XXXX';
     }
 
     /**
@@ -390,7 +458,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function getRoleAttribute()
     {
-        return ! empty($this->attributes['role']) ? $this->attributes['role'] : 'user';
+        return !empty($this->attributes['role'])
+            ? $this->attributes['role']
+            : 'user';
     }
 
     /**
@@ -400,7 +470,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function setRoleAttribute($value)
     {
-        if (! Role::validateRole($value)) {
+        if (!Role::validateRole($value)) {
             return;
         }
 
@@ -446,8 +516,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             $this->drupal_password = null;
         }
 
-        if (! empty($this->attributes['password'])) {
-            logger('Saving a new password for '.$this->id.' via '.client_id());
+        if (!empty($this->attributes['password'])) {
+            logger(
+                'Saving a new password for ' .
+                    $this->id .
+                    ' via ' .
+                    client_id(),
+            );
         }
 
         // Only hash and set password if not empty.
@@ -461,7 +536,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function hasPassword()
     {
-        return ! (empty($this->password) && empty($this->drupal_password));
+        return !(empty($this->password) && empty($this->drupal_password));
     }
 
     /**
@@ -471,9 +546,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function displayName()
     {
-        if (! empty($this->first_name) && ! empty($this->last_name)) {
-            return $this->first_name.' '.$this->last_initial;
-        } elseif (! empty($this->first_name)) {
+        if (!empty($this->first_name) && !empty($this->last_name)) {
+            return $this->first_name . ' ' . $this->last_initial;
+        } elseif (!empty($this->first_name)) {
             return $this->first_name;
         }
 
@@ -551,60 +626,143 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'source' => $this->source,
             'source_detail' => $this->source_detail,
             'referrer_user_id' => $this->referrer_user_id,
-            'deletion_requested_at' => optional($this->deletion_requested_at)->timestamp,
+            'deletion_requested_at' => optional($this->deletion_requested_at)
+                ->timestamp,
             'last_messaged_at' => optional($this->last_messaged_at)->timestamp,
-            'last_authenticated_at' => optional($this->last_authenticated_at)->timestamp,
+            'last_authenticated_at' => optional($this->last_authenticated_at)
+                ->timestamp,
             'updated_at' => optional($this->updated_at)->timestamp,
             'created_at' => optional($this->created_at)->timestamp,
 
             // Email subscription topics:
-            'news_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('news', $this->email_subscription_topics) : false,
-            'lifestyle_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('lifestyle', $this->email_subscription_topics) : false,
-            'community_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('community', $this->email_subscription_topics) : false,
-            'scholarship_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('scholarships', $this->email_subscription_topics) : false,
-            'clubs_email_subscription_status' => isset($this->email_subscription_topics) ? in_array('clubs', $this->email_subscription_topics) : false,
+            'news_email_subscription_status' => isset(
+                $this->email_subscription_topics,
+            )
+                ? in_array('news', $this->email_subscription_topics)
+                : false,
+            'lifestyle_email_subscription_status' => isset(
+                $this->email_subscription_topics,
+            )
+                ? in_array('lifestyle', $this->email_subscription_topics)
+                : false,
+            'community_email_subscription_status' => isset(
+                $this->email_subscription_topics,
+            )
+                ? in_array('community', $this->email_subscription_topics)
+                : false,
+            'scholarship_email_subscription_status' => isset(
+                $this->email_subscription_topics,
+            )
+                ? in_array('scholarships', $this->email_subscription_topics)
+                : false,
+            'clubs_email_subscription_status' => isset(
+                $this->email_subscription_topics,
+            )
+                ? in_array('clubs', $this->email_subscription_topics)
+                : false,
 
             // SMS subscription topics:
-            'general_sms_subscription_status' => isset($this->sms_subscription_topics) ? in_array('general', $this->sms_subscription_topics) : false,
-            'voting_sms_subscription_status' => isset($this->sms_subscription_topics) ? in_array('voting', $this->sms_subscription_topics) : false,
+            'general_sms_subscription_status' => isset(
+                $this->sms_subscription_topics,
+            )
+                ? in_array('general', $this->sms_subscription_topics)
+                : false,
+            'voting_sms_subscription_status' => isset(
+                $this->sms_subscription_topics,
+            )
+                ? in_array('voting', $this->sms_subscription_topics)
+                : false,
 
             // Causes:
-            'animal_welfare' => in_array('animal_welfare', $this->causes) ? true : false,
+            'animal_welfare' => in_array('animal_welfare', $this->causes)
+                ? true
+                : false,
             'bullying' => in_array('bullying', $this->causes) ? true : false,
             'education' => in_array('education', $this->causes) ? true : false,
-            'environment' => in_array('environment', $this->causes) ? true : false,
-            'gender_rights_equality' => in_array('gender_rights_equality', $this->causes) ? true : false,
-            'homelessness_poverty' => in_array('homelessness_poverty', $this->causes) ? true : false,
-            'immigration_refugees' => in_array('immigration_refugees', $this->causes) ? true : false,
-            'lgbtq_rights_equality' => in_array('lgbtq_rights_equality', $this->causes) ? true : false,
-            'mental_health' => in_array('mental_health', $this->causes) ? true : false,
-            'physical_health' => in_array('physical_health', $this->causes) ? true : false,
-            'racial_justice_equity' => in_array('racial_justice_equity', $this->causes) ? true : false,
-            'sexual_harassment_assault' => in_array('sexual_harassment_assault', $this->causes) ? true : false,
+            'environment' => in_array('environment', $this->causes)
+                ? true
+                : false,
+            'gender_rights_equality' => in_array(
+                'gender_rights_equality',
+                $this->causes,
+            )
+                ? true
+                : false,
+            'homelessness_poverty' => in_array(
+                'homelessness_poverty',
+                $this->causes,
+            )
+                ? true
+                : false,
+            'immigration_refugees' => in_array(
+                'immigration_refugees',
+                $this->causes,
+            )
+                ? true
+                : false,
+            'lgbtq_rights_equality' => in_array(
+                'lgbtq_rights_equality',
+                $this->causes,
+            )
+                ? true
+                : false,
+            'mental_health' => in_array('mental_health', $this->causes)
+                ? true
+                : false,
+            'physical_health' => in_array('physical_health', $this->causes)
+                ? true
+                : false,
+            'racial_justice_equity' => in_array(
+                'racial_justice_equity',
+                $this->causes,
+            )
+                ? true
+                : false,
+            'sexual_harassment_assault' => in_array(
+                'sexual_harassment_assault',
+                $this->causes,
+            )
+                ? true
+                : false,
 
             // Voting method/plan:
             'voting_method' => strip_tags($this->voting_method),
             'voting_plan_status' => strip_tags($this->voting_plan_status),
-            'voting_plan_method_of_transport' => strip_tags($this->voting_plan_method_of_transport),
-            'voting_plan_time_of_day' => strip_tags($this->voting_plan_time_of_day),
-            'voting_plan_attending_with' => strip_tags($this->voting_plan_attending_with),
+            'voting_plan_method_of_transport' => strip_tags(
+                $this->voting_plan_method_of_transport,
+            ),
+            'voting_plan_time_of_day' => strip_tags(
+                $this->voting_plan_time_of_day,
+            ),
+            'voting_plan_attending_with' => strip_tags(
+                $this->voting_plan_attending_with,
+            ),
         ];
 
         // Only include email subscription status if we have that information.
         if (isset($this->email_subscription_status)) {
-            $payload['email_subscription_status'] = $this->email_subscription_status;
-            $payload['unsubscribed'] = (! $this->email_subscription_status);
+            $payload['email_subscription_status'] =
+                $this->email_subscription_status;
+            $payload['unsubscribed'] = !$this->email_subscription_status;
         }
 
         if (isset($this->feature_flags)) {
             if (array_key_exists('badges', $this->feature_flags)) {
-                $payload['badges_feature_flag'] = $this->feature_flags['badges'];
+                $payload['badges_feature_flag'] =
+                    $this->feature_flags['badges'];
             }
             if (array_key_exists('refer-friends', $this->feature_flags)) {
-                $payload['refer_friends_feature_flag'] = $this->feature_flags['refer-friends'];
+                $payload['refer_friends_feature_flag'] =
+                    $this->feature_flags['refer-friends'];
             }
-            if (array_key_exists('refer-friends-scholarship', $this->feature_flags)) {
-                $payload['refer_friends_scholarship_feature_flag'] = $this->feature_flags['refer-friends-scholarship'];
+            if (
+                array_key_exists(
+                    'refer-friends-scholarship',
+                    $this->feature_flags,
+                )
+            ) {
+                $payload['refer_friends_scholarship_feature_flag'] =
+                    $this->feature_flags['refer-friends-scholarship'];
             }
         }
 
@@ -614,7 +772,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
             if (isset($school)) {
                 $payload['school_name'] = $school['name'];
-                $payload['school_state'] = $school['location'] ? substr($school['location'], 3) : null;
+                $payload['school_state'] = $school['location']
+                    ? substr($school['location'], 3)
+                    : null;
             }
         }
 
@@ -632,7 +792,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $club = app(GraphQL::class)->getClubById($clubId);
         $clubLeader = app(User::class)->find(Arr::get($club, 'leaderId'));
 
-        if (! $club || ! $clubLeader) {
+        if (!$club || !$clubLeader) {
             return;
         }
 
@@ -653,8 +813,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function scopeGroup($query, $id)
     {
         // Get signup group.
-        return $query->where('campaigns', 'elemMatch', ['signup_id' => $id])
-            ->orWhere('campaigns', 'elemMatch', ['signup_group' => $id])->get();
+        return $query
+            ->where('campaigns', 'elemMatch', ['signup_id' => $id])
+            ->orWhere('campaigns', 'elemMatch', ['signup_group' => $id])
+            ->get();
     }
 
     /**
@@ -666,7 +828,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function updateIfNotSet($fields)
     {
         foreach (array_filter($fields) as $key => $value) {
-            if (! isset($this->{$key})) {
+            if (!isset($this->{$key})) {
                 $this->{$key} = $value;
             }
         }
@@ -713,7 +875,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function sendPasswordResetNotification($token)
     {
-        return $this->sendPasswordReset(PasswordResetType::$forgotPassword, $token);
+        return $this->sendPasswordReset(
+            PasswordResetType::$forgotPassword,
+            $token,
+        );
     }
 
     /**
@@ -725,13 +890,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function sendPasswordReset($type, $token = null)
     {
-        if (! $token) {
+        if (!$token) {
             $tokenRepository = new DatabaseTokenRepository(
                 app('db')->connection(),
                 app('hash'),
                 config('auth.passwords.users.table'),
                 config('app.key'),
-                config('auth.passwords.users.expire')
+                config('auth.passwords.users.expire'),
             );
             $token = $tokenRepository->create($this);
         }
@@ -747,7 +912,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function addEmailSubscriptionTopic($topic)
     {
         // Add the new topic to the existing array of topics
-        $this->email_subscription_topics = array_merge($this->email_subscription_topics ?: [], [$topic]);
+        $this->email_subscription_topics = array_merge(
+            $this->email_subscription_topics ?: [],
+            [$topic],
+        );
     }
 
     /**
@@ -758,7 +926,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function setEmailSubscriptionTopicsAttribute($value)
     {
         // Set de-duped array as email_subscription_topics
-        $this->attributes['email_subscription_topics'] = array_values(array_unique($value));
+        $this->attributes['email_subscription_topics'] = array_values(
+            array_unique($value),
+        );
     }
 
     /**
@@ -780,7 +950,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function setSmsSubscriptionTopicsAttribute($value)
     {
         // Set de-duped array as sms_subscription_topics.
-        $this->attributes['sms_subscription_topics'] = array_values(array_unique($value ?: []));
+        $this->attributes['sms_subscription_topics'] = array_values(
+            array_unique($value ?: []),
+        );
     }
 
     /**
@@ -828,7 +1000,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function isSmsSubscribed()
     {
-        return isset($this->sms_status) && self::isSubscribedSmsStatus($this->sms_status);
+        return isset($this->sms_status) &&
+            self::isSubscribedSmsStatus($this->sms_status);
     }
 
     /**
@@ -838,7 +1011,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function hasSmsSubscriptionTopics()
     {
-        return isset($this->sms_subscription_topics) && count($this->sms_subscription_topics);
+        return isset($this->sms_subscription_topics) &&
+            count($this->sms_subscription_topics);
     }
 
     /**
@@ -856,7 +1030,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         // Fix formatting issue where some causes were saved as indexed objects
         // (e.g. {0: "animal_welfare", 1: "bullying"}) instead of an array.
         // Context: https://www.pivotaltracker.com/story/show/172005082
-        return collect($value)->values()->all();
+        return collect($value)
+            ->values()
+            ->all();
     }
 
     /**
@@ -890,7 +1066,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         $schoolId = $this->school_id;
 
-        if (! isset($schoolId)) {
+        if (!isset($schoolId)) {
             return null;
         }
 
@@ -898,7 +1074,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             return $schoolId;
         }
 
-        return substr($schoolId, 0, 3).'XXXXX';
+        return substr($schoolId, 0, 3) . 'XXXXX';
     }
 
     /**

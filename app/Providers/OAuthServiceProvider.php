@@ -42,27 +42,49 @@ class OAuthServiceProvider extends ServiceProvider
     {
         // Register our custom user provider
         Auth::provider('northstar', function ($app, array $config) {
-            return new NorthstarUserProvider($app[Registrar::class], $app['hash'], $config['model']);
+            return new NorthstarUserProvider(
+                $app[Registrar::class],
+                $app['hash'],
+                $config['model'],
+            );
         });
 
         // Register our custom token Guard implementation
         Auth::extend('northstar-token', function ($app, $name, array $config) {
-            return new NorthstarTokenGuard(Auth::createUserProvider($config['provider']), request());
+            return new NorthstarTokenGuard(
+                Auth::createUserProvider($config['provider']),
+                request(),
+            );
         });
 
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
-        $this->app->bind(ClientRepositoryInterface::class, ClientRepository::class);
-        $this->app->bind(ScopeRepositoryInterface::class, ScopeRepository::class);
-        $this->app->bind(RefreshTokenRepositoryInterface::class, RefreshTokenRepository::class);
-        $this->app->bind(AccessTokenRepositoryInterface::class, AccessTokenRepository::class);
-        $this->app->bind(AuthCodeRepositoryInterface::class, AuthCodeRepository::class);
+        $this->app->bind(
+            ClientRepositoryInterface::class,
+            ClientRepository::class,
+        );
+        $this->app->bind(
+            ScopeRepositoryInterface::class,
+            ScopeRepository::class,
+        );
+        $this->app->bind(
+            RefreshTokenRepositoryInterface::class,
+            RefreshTokenRepository::class,
+        );
+        $this->app->bind(
+            AccessTokenRepositoryInterface::class,
+            AccessTokenRepository::class,
+        );
+        $this->app->bind(
+            AuthCodeRepositoryInterface::class,
+            AuthCodeRepository::class,
+        );
 
         // Auth Code grant needs auth code TTL to be injected.
         $this->app->bind(AuthCodeGrant::class, function () {
             return new AuthCodeGrant(
                 app(AuthCodeRepositoryInterface::class),
                 app(RefreshTokenRepositoryInterface::class),
-                new DateInterval('PT1H')
+                new DateInterval('PT1H'),
             );
         });
 
@@ -74,7 +96,7 @@ class OAuthServiceProvider extends ServiceProvider
                 app(ScopeRepositoryInterface::class),
                 app(KeyRepository::class)->getPrivateKey(),
                 Key::loadFromAsciiSafeString(config('auth.key')),
-                app(BearerTokenResponse::class)
+                app(BearerTokenResponse::class),
             );
 
             // Define which OAuth grants we'll accept.
@@ -95,10 +117,12 @@ class OAuthServiceProvider extends ServiceProvider
 
             // Rate limit failed client authentication attempts.
             // @see: OAuthController::createToken
-            $server->getEmitter()->addListener('client.authentication.failed', function () {
-                // Increment number of failed requests for this route & IP address.
-                app(RateLimiter::class)->hit(request()->fingerprint(), 1);
-            });
+            $server
+                ->getEmitter()
+                ->addListener('client.authentication.failed', function () {
+                    // Increment number of failed requests for this route & IP address.
+                    app(RateLimiter::class)->hit(request()->fingerprint(), 1);
+                });
 
             return $server;
         });
@@ -106,7 +130,7 @@ class OAuthServiceProvider extends ServiceProvider
         $this->app->singleton(ResourceServer::class, function () {
             return new ResourceServer(
                 app(AccessTokenRepositoryInterface::class),
-                app(KeyRepository::class)->getPublicKey()
+                app(KeyRepository::class)->getPublicKey(),
             );
         });
     }

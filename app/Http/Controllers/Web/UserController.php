@@ -41,7 +41,11 @@ class UserController extends BaseController
      */
     public function home()
     {
-        return view('users.show', ['user' => auth()->guard('web')->user()]);
+        return view('users.show', [
+            'user' => auth()
+                ->guard('web')
+                ->user(),
+        ]);
     }
 
     /**
@@ -66,8 +70,15 @@ class UserController extends BaseController
     {
         $user = User::findOrFail($id);
 
-        if (! $user->can('editProfile', [auth()->guard('web')->user(), $user])) {
-            throw new AccessDeniedHttpException;
+        if (
+            !$user->can('editProfile', [
+                auth()
+                    ->guard('web')
+                    ->user(),
+                $user,
+            ])
+        ) {
+            throw new AccessDeniedHttpException();
         }
 
         $defaultCountry = country_code() ?: 'US';
@@ -86,15 +97,24 @@ class UserController extends BaseController
     {
         $user = User::findOrFail($id);
 
-        if (! $user->can('editProfile', [auth()->guard('web')->user(), $user])) {
-            throw new AccessDeniedHttpException;
+        if (
+            !$user->can('editProfile', [
+                auth()
+                    ->guard('web')
+                    ->user(),
+                $user,
+            ])
+        ) {
+            throw new AccessDeniedHttpException();
         }
 
         $this->registrar->validate($request, $user, [
             'first_name' => 'required|max:50',
             'last_name' => 'nullable|max:50',
             'birthdate' => 'nullable|required|date',
-            'password' => PasswordRules::optionallyChangePassword($request->email), // @TODO: Split into separate form.
+            'password' => PasswordRules::optionallyChangePassword(
+                $request->email,
+            ), // @TODO: Split into separate form.
         ]);
 
         // Remove fields with empty values.

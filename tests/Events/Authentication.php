@@ -9,13 +9,21 @@ class AuthenticationEventsTest extends BrowserKitTestCase
     public function testSuccessfulLoginEvent()
     {
         /** @var \Northstar\Models\User $user */
-        $user = factory(User::class)->create(['last_authenticated_at' => Carbon::yesterday()]);
+        $user = factory(User::class)->create([
+            'last_authenticated_at' => Carbon::yesterday(),
+        ]);
 
         // Save a reference to "now" so we can compare it.
         Carbon::setTestNow($now = Carbon::now());
 
         // Trigger the login event!
-        event(new \Illuminate\Auth\Events\Login(config('auth.defaults.guard'), $user, true));
+        event(
+            new \Illuminate\Auth\Events\Login(
+                config('auth.defaults.guard'),
+                $user,
+                true,
+            ),
+        );
 
         // The user's `last_authenticated_at` timestamp should be updated.
         $this->seeInDatabase('users', [

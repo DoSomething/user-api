@@ -49,7 +49,7 @@ class MergeController extends Controller
     public function store($id, Request $request)
     {
         $this->validate($request, [
-            'id' => ['required', 'exists:users,_id', 'not_in:'.$id],
+            'id' => ['required', 'exists:users,_id', 'not_in:' . $id],
         ]);
 
         /** @var \Northstar\Models\User $target */
@@ -59,19 +59,38 @@ class MergeController extends Controller
         $duplicate = User::findOrFail($request->input('id'));
 
         // Get all profile fields from the duplicate (except metadata like ID or source).
-        $metadata = ['_id', 'updated_at', 'created_at', 'drupal_id', 'source', 'source_detail', 'role', 'audit'];
+        $metadata = [
+            '_id',
+            'updated_at',
+            'created_at',
+            'drupal_id',
+            'source',
+            'source_detail',
+            'role',
+            'audit',
+        ];
         $duplicateFields = Arr::except($duplicate->toArray(), $metadata);
         $duplicateFieldNames = array_keys($duplicateFields);
 
         // Find out which fields we need to handle merging
-        $intersectedFields = array_intersect_key($target->toArray(), array_flip($duplicateFieldNames));
+        $intersectedFields = array_intersect_key(
+            $target->toArray(),
+            array_flip($duplicateFieldNames),
+        );
 
         // Fields that we can automatically merge
-        $fieldsToMerge = Arr::except($duplicateFields, array_keys($intersectedFields));
+        $fieldsToMerge = Arr::except(
+            $duplicateFields,
+            array_keys($intersectedFields),
+        );
 
         // Call merge on intersecting fields
         foreach ($intersectedFields as $field => $value) {
-            $fieldsToMerge[$field] = $this->merger->merge($field, $target, $duplicate);
+            $fieldsToMerge[$field] = $this->merger->merge(
+                $field,
+                $target,
+                $duplicate,
+            );
         }
 
         // Copy the "duplicate" account's fields to the target & unset on the dupe account.
@@ -81,11 +100,14 @@ class MergeController extends Controller
         }
 
         if (empty($duplicate->email) && empty($duplicate->mobile)) {
-            $duplicate->email = 'merged-account-'.$target->id.'@dosomething.invalid';
+            $duplicate->email =
+                'merged-account-' . $target->id . '@dosomething.invalid';
         }
 
         // Copy over created_at & source information if it's earlier than the target's timestamp.
-        $duplicateUserHasEarlierCreatedTimestamp = $duplicate->created_at->lt($target->created_at);
+        $duplicateUserHasEarlierCreatedTimestamp = $duplicate->created_at->lt(
+            $target->created_at,
+        );
         if ($duplicateUserHasEarlierCreatedTimestamp) {
             $target->created_at = $duplicate->created_at;
             $target->source = $duplicate->source;

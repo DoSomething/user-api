@@ -14,11 +14,16 @@ class SubscriptionUpdateTest extends BrowserKitTestCase
     {
         $user = factory(User::class)->create();
 
-        $this->asUser($user, ['user', 'write'])->post('v2/users/'.$user->id.'/subscriptions/news');
+        $this->asUser($user, ['user', 'write'])->post(
+            'v2/users/' . $user->id . '/subscriptions/news',
+        );
 
         $this->assertResponseStatus(200);
         $this->seeJsonField('data.email_subscription_topics', ['news']);
-        $this->assertEquals(['news'], $user->fresh()->email_subscription_topics);
+        $this->assertEquals(
+            ['news'],
+            $user->fresh()->email_subscription_topics,
+        );
     }
 
     /**
@@ -33,11 +38,16 @@ class SubscriptionUpdateTest extends BrowserKitTestCase
             'email_subscription_topics' => ['news'],
         ]);
 
-        $this->asUser($user, ['user', 'write'])->post('v2/users/'.$user->id.'/subscriptions/news');
+        $this->asUser($user, ['user', 'write'])->post(
+            'v2/users/' . $user->id . '/subscriptions/news',
+        );
 
         $this->assertResponseStatus(200);
         $this->seeJsonField('data.email_subscription_topics', ['news']);
-        $this->assertEquals(['news'], $user->fresh()->email_subscription_topics);
+        $this->assertEquals(
+            ['news'],
+            $user->fresh()->email_subscription_topics,
+        );
     }
 
     /**
@@ -50,7 +60,9 @@ class SubscriptionUpdateTest extends BrowserKitTestCase
     {
         $user = factory(User::class)->create();
 
-        $this->asUser($user, ['user', 'write'])->post('v2/users/'.$user->id.'/subscriptions/invalid');
+        $this->asUser($user, ['user', 'write'])->post(
+            'v2/users/' . $user->id . '/subscriptions/invalid',
+        );
 
         // This route won't exist since the topic is invalid.
         $this->assertResponseStatus(404);
@@ -69,7 +81,9 @@ class SubscriptionUpdateTest extends BrowserKitTestCase
             'email_subscription_topics' => ['news'],
         ]);
 
-        $this->asUser($user, ['user', 'write'])->delete('v2/users/'.$user->id.'/subscriptions/news');
+        $this->asUser($user, ['user', 'write'])->delete(
+            'v2/users/' . $user->id . '/subscriptions/news',
+        );
 
         $this->assertResponseStatus(200);
         $this->seeJsonField('data.email_subscription_topics', []);
@@ -87,7 +101,9 @@ class SubscriptionUpdateTest extends BrowserKitTestCase
         $villain = factory(User::class)->create();
         $user = factory(User::class)->create();
 
-        $this->asUser($villain, ['user', 'write'])->post('v2/users/'.$user->id.'/subscriptions/news');
+        $this->asUser($villain, ['user', 'write'])->post(
+            'v2/users/' . $user->id . '/subscriptions/news',
+        );
 
         $this->assertResponseStatus(403);
     }

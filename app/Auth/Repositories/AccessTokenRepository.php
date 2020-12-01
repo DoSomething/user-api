@@ -19,8 +19,11 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
      * @param mixed $userIdentifier
      * @return AccessTokenEntityInterface
      */
-    public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
-    {
+    public function getNewToken(
+        ClientEntityInterface $clientEntity,
+        array $scopes,
+        $userIdentifier = null
+    ) {
         $accessToken = new AccessTokenEntity();
         $accessToken->setClient($clientEntity);
 
@@ -48,8 +51,9 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
      *
      * @param \League\OAuth2\Server\Entities\AccessTokenEntityInterface $accessTokenEntity
      */
-    public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
-    {
+    public function persistNewAccessToken(
+        AccessTokenEntityInterface $accessTokenEntity
+    ) {
         // Since access tokens are not checked against the database, but instead
         // verified by their hash, we'll just make a record in the log.
         logger('issued access token', [

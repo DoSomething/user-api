@@ -51,7 +51,7 @@ trait WithAuthentication
     public function withLegacyApiKeyScopes(array $scopes)
     {
         $client = Client::create([
-            'client_id' => 'testing'.$this->faker->uuid,
+            'client_id' => 'testing' . $this->faker->uuid,
             'scope' => $scopes,
         ]);
 
@@ -106,10 +106,16 @@ trait WithAuthentication
     public function withAccessToken($scopes = [], $user = null)
     {
         $accessToken = new AccessTokenEntity();
-        $accessToken->setClient(new ClientEntity('phpunit', 'PHPUnit', $scopes));
+        $accessToken->setClient(
+            new ClientEntity('phpunit', 'PHPUnit', $scopes),
+        );
         $accessToken->setIdentifier(bin2hex(random_bytes(40)));
-        $accessToken->setExpiryDateTime((new \DateTimeImmutable())->add(new DateInterval('PT1H')));
-        $accessToken->setPrivateKey(new CryptKey(storage_path('app/keys/private.key'), null, false));
+        $accessToken->setExpiryDateTime(
+            (new \DateTimeImmutable())->add(new DateInterval('PT1H')),
+        );
+        $accessToken->setPrivateKey(
+            new CryptKey(storage_path('app/keys/private.key'), null, false),
+        );
 
         if ($user) {
             $accessToken->setUserIdentifier($user->id);
@@ -117,7 +123,7 @@ trait WithAuthentication
         }
 
         foreach ($scopes as $identifier) {
-            if (! array_key_exists($identifier, Scope::all())) {
+            if (!array_key_exists($identifier, Scope::all())) {
                 continue;
             }
 
@@ -127,7 +133,7 @@ trait WithAuthentication
         }
 
         $this->serverVariables = array_replace($this->serverVariables, [
-            'HTTP_Authorization' => 'Bearer '.$accessToken,
+            'HTTP_Authorization' => 'Bearer ' . $accessToken,
         ]);
 
         return $this;

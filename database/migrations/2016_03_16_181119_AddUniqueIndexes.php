@@ -14,10 +14,16 @@ class AddUniqueIndexes extends Migration
     {
         Schema::table('users', function (Blueprint $collection) {
             $collection->dropIndex('email_1');
-            $collection->index('email', null, null, ['sparse' => true, 'unique' => true]);
+            $collection->index('email', null, null, [
+                'sparse' => true,
+                'unique' => true,
+            ]);
 
             $collection->dropIndex('mobile_1');
-            $collection->index('mobile', null, null, ['sparse' => true, 'unique' => true]);
+            $collection->index('mobile', null, null, [
+                'sparse' => true,
+                'unique' => true,
+            ]);
         });
 
         Schema::table('tokens', function (Blueprint $collection) {

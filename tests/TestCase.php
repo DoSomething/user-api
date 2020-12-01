@@ -32,7 +32,9 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
      */
     public function createMongoDocument($collection, array $contents)
     {
-        $document = app('db')->collection($collection)->insert($contents);
+        $document = app('db')
+            ->collection($collection)
+            ->insert($contents);
 
         return $document;
     }
@@ -46,11 +48,19 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
      */
     public function getMongoDocument($collection, $id)
     {
-        $document = app('db')->collection($collection)->where(['_id' => $id])->first();
+        $document = app('db')
+            ->collection($collection)
+            ->where(['_id' => $id])
+            ->first();
 
-        $this->assertNotNull($document, sprintf(
-            'Unable to find document in collection [%s] with _id [%s].', $collection, $id
-        ));
+        $this->assertNotNull(
+            $document,
+            sprintf(
+                'Unable to find document in collection [%s] with _id [%s].',
+                $collection,
+                $id,
+            ),
+        );
 
         return $document;
     }
@@ -67,7 +77,11 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     {
         $form = $this->fillForm($buttonText, $inputs);
 
-        $this->call($form->getMethod(), $form->getUri(), $this->extractParametersFromForm($form));
+        $this->call(
+            $form->getMethod(),
+            $form->getUri(),
+            $this->extractParametersFromForm($form),
+        );
 
         return $this;
     }

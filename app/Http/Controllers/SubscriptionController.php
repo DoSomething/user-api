@@ -27,8 +27,10 @@ class SubscriptionController extends Controller
      * Make a new SubscriptionController, inject dependencies,
      * and set middleware for this controller's methods.
      */
-    public function __construct(Registrar $registrar, UserTransformer $transformer)
-    {
+    public function __construct(
+        Registrar $registrar,
+        UserTransformer $transformer
+    ) {
         $this->registrar = $registrar;
         $this->transformer = $transformer;
 
@@ -46,7 +48,8 @@ class SubscriptionController extends Controller
     {
         $this->validate($request, [
             'email' => 'required|email',
-            'email_subscription_topic' => 'required|in:news,scholarships,lifestyle,community',
+            'email_subscription_topic' =>
+                'required|in:news,scholarships,lifestyle,community',
             'source' => 'required',
             'source_detail' => 'required',
         ]);
@@ -75,16 +78,24 @@ class SubscriptionController extends Controller
         // Send activate account email to new user
         switch ($topic) {
             case 'scholarships':
-                $newUser->sendPasswordReset(PasswordResetType::$paysToDoGoodActivateAccount);
+                $newUser->sendPasswordReset(
+                    PasswordResetType::$paysToDoGoodActivateAccount,
+                );
                 break;
             case 'news':
-                $newUser->sendPasswordReset(PasswordResetType::$breakdownActivateAccount);
+                $newUser->sendPasswordReset(
+                    PasswordResetType::$breakdownActivateAccount,
+                );
                 break;
             case 'lifestyle':
-                $newUser->sendPasswordReset(PasswordResetType::$boostActivateAccount);
+                $newUser->sendPasswordReset(
+                    PasswordResetType::$boostActivateAccount,
+                );
                 break;
             case 'community':
-                $newUser->sendPasswordReset(PasswordResetType::$wydActivateAccount);
+                $newUser->sendPasswordReset(
+                    PasswordResetType::$wydActivateAccount,
+                );
                 break;
         }
 

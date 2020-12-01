@@ -52,8 +52,12 @@ class OAuthController extends Controller
      * @param RateLimiter $limiter
      * @param Encrypter $encrypter
      */
-    public function __construct(AuthorizationServer $oauth, Auth $auth, RateLimiter $limiter, Encrypter $encrypter)
-    {
+    public function __construct(
+        AuthorizationServer $oauth,
+        Auth $auth,
+        RateLimiter $limiter,
+        Encrypter $encrypter
+    ) {
         $this->oauth = $oauth;
         $this->auth = $auth;
         $this->limiter = $limiter;
@@ -72,7 +76,7 @@ class OAuthController extends Controller
     {
         $user = $this->auth->guard('api')->user();
 
-        return $this->item($user, 200, [], new UserInfoTransformer);
+        return $this->item($user, 200, [], new UserInfoTransformer());
     }
 
     /**
@@ -87,18 +91,30 @@ class OAuthController extends Controller
      * @return ResponseInterface
      * @throws OAuthServerException
      */
-    public function createToken(ServerRequestInterface $request, ResponseInterface $response)
-    {
+    public function createToken(
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ) {
         $shouldRateLimit = config('features.rate-limiting');
 
         // If this IP has given incorrect client credentials too many times, take a break.
         // @see: EventServiceProvider `client.authentication.failed` listener.
-        if ($shouldRateLimit && $this->limiter->tooManyAttempts(request()->fingerprint(), 10)) {
+        if (
+            $shouldRateLimit &&
+            $this->limiter->tooManyAttempts(request()->fingerprint(), 10)
+        ) {
             event(Throttled::class);
 
-            $minutes = ceil($this->limiter->availableIn(request()->fingerprint()) / 60);
+            $minutes = ceil(
+                $this->limiter->availableIn(request()->fingerprint()) / 60,
+            );
             $pluralizedNoun = $minutes === 1 ? 'minute' : 'minutes';
-            $message = 'Too many attempts. Please try again in '.$minutes.' '.$pluralizedNoun.'.';
+            $message =
+                'Too many attempts. Please try again in ' .
+                $minutes .
+                ' ' .
+                $pluralizedNoun .
+                '.';
 
             throw new OAuthServerException($message, 429, 'rate_limit', 429);
         }
@@ -125,24 +141,42 @@ class OAuthController extends Controller
         ]);
 
         try {
-            $refreshToken = $this->encrypter->decryptData($request->input('token'));
+            $refreshToken = $this->encrypter->decryptData(
+                $request->input('token'),
+            );
         } catch (\LogicException $e) {
             // Per RFC7009, invalid tokens do _not_ trigger an error response.
-            return $this->respond('That refresh token has been successfully revoked.', 200);
+            return $this->respond(
+                'That refresh token has been successfully revoked.',
+                200,
+            );
         }
 
         // Make sure that the authenticated user is allowed to do this.
-        if ($this->auth->guard('api')->user()->getAuthIdentifier() !== $refreshToken['user_id']) {
-            throw OAuthServerException::accessDenied('That refresh token does not belong to the currently authorized user.');
+        if (
+            $this->auth
+                ->guard('api')
+                ->user()
+                ->getAuthIdentifier() !== $refreshToken['user_id']
+        ) {
+            throw OAuthServerException::accessDenied(
+                'That refresh token does not belong to the currently authorized user.',
+            );
         }
 
-        $token = RefreshToken::where('token', $refreshToken['refresh_token_id'])->first();
+        $token = RefreshToken::where(
+            'token',
+            $refreshToken['refresh_token_id'],
+        )->first();
 
         // Delete the refresh token, if it exists.
         if ($token) {
             $token->delete();
         }
 
-        return $this->respond('That refresh token has been successfully revoked.', 200);
+        return $this->respond(
+            'That refresh token has been successfully revoked.',
+            200,
+        );
     }
 }

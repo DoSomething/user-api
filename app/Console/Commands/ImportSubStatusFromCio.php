@@ -42,7 +42,7 @@ class ImportSubStatusFromCio extends Command
         if ($this->option('path')) {
             // Make a local copy of the CSV
             $path = $this->option('path');
-            $this->line('Loading in csv from '.$path);
+            $this->line('Loading in csv from ' . $path);
 
             $temp = tempnam(sys_get_temp_dir(), 'command_csv');
             file_put_contents($temp, fopen($this->option('path'), 'r'));
@@ -56,34 +56,58 @@ class ImportSubStatusFromCio extends Command
 
             foreach ($usersToUpdate as $user) {
                 $user = User::find($user['id']);
-                dispatch(new GetEmailSubStatusFromCustomerIo($user))->onQueue(config('queue.names.low'));
+                dispatch(new GetEmailSubStatusFromCustomerIo($user))->onQueue(
+                    config('queue.names.low'),
+                );
 
                 // Logging to track progress
                 $current = $this->currentCount += 1;
                 if ($current % 100 == 0) {
                     $percentDone = ($current / $totalCount) * 100;
-                    $this->line('northstar:importsub - '.$current.'/'.$totalCount.' - '.$percentDone.'% done');
+                    $this->line(
+                        'northstar:importsub - ' .
+                            $current .
+                            '/' .
+                            $totalCount .
+                            ' - ' .
+                            $percentDone .
+                            '% done',
+                    );
                 }
             }
         } else {
             // Grab users who have email addresses
-            $query = (new User)->newQuery();
+            $query = (new User())->newQuery();
             $query = $query->where('email', 'exists', true);
 
             $totalCount = $query->count();
 
-            $query->chunkById(200, function (Collection $users) use ($totalCount) {
+            $query->chunkById(200, function (Collection $users) use (
+                $totalCount
+            ) {
                 $users->each(function (User $user) {
-                    dispatch(new GetEmailSubStatusFromCustomerIo($user))->onQueue(config('queue.names.low'));
+                    dispatch(
+                        new GetEmailSubStatusFromCustomerIo($user),
+                    )->onQueue(config('queue.names.low'));
                 });
 
                 // Logging to track progress
                 $this->currentCount += 200;
                 $percentDone = ($this->currentCount / $totalCount) * 100;
-                $this->line('northstar:importsub - '.$this->currentCount.'/'.$totalCount.' - '.$percentDone.'% done');
+                $this->line(
+                    'northstar:importsub - ' .
+                        $this->currentCount .
+                        '/' .
+                        $totalCount .
+                        ' - ' .
+                        $percentDone .
+                        '% done',
+                );
             });
         }
 
-        $this->line('northstar:importsub - Queued up a job to grab email status for each user!');
+        $this->line(
+            'northstar:importsub - Queued up a job to grab email status for each user!',
+        );
     }
 }

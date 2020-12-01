@@ -23,7 +23,10 @@ class LogMemoryUsage
 
         // Log how much memory this request used.
         $megabytes = memory_get_peak_usage() / 1000000;
-        Log::debug('memory_usage', ['mb' => $megabytes, 'path' => $request->path()]);
+        Log::debug('memory_usage', [
+            'mb' => $megabytes,
+            'path' => $request->path(),
+        ]);
 
         return $response;
     }

@@ -22,8 +22,7 @@ class WebUserTest extends BrowserKitTestCase
     {
         $user = $this->makeAuthWebUser();
 
-        $this->visit('users/'.$user->id)
-             ->seePageIs('/');
+        $this->visit('users/' . $user->id)->seePageIs('/');
     }
 
     /**
@@ -34,8 +33,8 @@ class WebUserTest extends BrowserKitTestCase
         $user = $this->makeAuthWebUser();
 
         $this->visit('/')
-             ->click('Edit Profile')
-             ->seePageIs('users/'.$user->id.'/edit');
+            ->click('Edit Profile')
+            ->seePageIs('users/' . $user->id . '/edit');
     }
 
     /**
@@ -46,9 +45,9 @@ class WebUserTest extends BrowserKitTestCase
     {
         $user = $this->makeAuthWebUser();
 
-        $this->visit('users/'.$user->id.'/edit')
-             ->click('Cancel')
-             ->seePageIs('/');
+        $this->visit('users/' . $user->id . '/edit')
+            ->click('Cancel')
+            ->seePageIs('/');
     }
 
     /**
@@ -58,11 +57,11 @@ class WebUserTest extends BrowserKitTestCase
     {
         $user = $this->makeAuthWebUser();
 
-        $this->visit('users/'.$user->id.'/edit')
-             ->type('Jean-Paul', 'first_name')
-             ->type('Beaubier-Lee', 'last_name')
-             ->press('Save')
-             ->seePageIs('/');
+        $this->visit('users/' . $user->id . '/edit')
+            ->type('Jean-Paul', 'first_name')
+            ->type('Beaubier-Lee', 'last_name')
+            ->press('Save')
+            ->seePageIs('/');
 
         $updatedUser = User::find($user->id);
 
@@ -79,7 +78,6 @@ class WebUserTest extends BrowserKitTestCase
 
         $randoUser = factory(User::class)->create();
 
-        $this->visit('users/'.$randoUser->id.'/edit')
-             ->seePageIs('/');
+        $this->visit('users/' . $randoUser->id . '/edit')->seePageIs('/');
     }
 }

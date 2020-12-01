@@ -64,18 +64,54 @@ class UserTest extends BrowserKitTestCase
      */
     public function testV2FilterByDateField()
     {
-        factory(User::class, 4)->create(['updated_at' => $this->faker->dateTimeBetween('1/1/2000', '12/31/2009')]);
-        factory(User::class, 5)->create(['updated_at' => $this->faker->dateTimeBetween('1/1/2010', '1/1/2015')]);
-        factory(User::class, 6)->create(['updated_at' => $this->faker->dateTimeBetween('1/2/2015', '1/1/2017')]);
+        factory(User::class, 4)->create([
+            'updated_at' => $this->faker->dateTimeBetween(
+                '1/1/2000',
+                '12/31/2009',
+            ),
+        ]);
+        factory(User::class, 5)->create([
+            'updated_at' => $this->faker->dateTimeBetween(
+                '1/1/2010',
+                '1/1/2015',
+            ),
+        ]);
+        factory(User::class, 6)->create([
+            'updated_at' => $this->faker->dateTimeBetween(
+                '1/2/2015',
+                '1/1/2017',
+            ),
+        ]);
 
-        $this->withAccessToken(['admin', 'user'])->json('GET', 'v2/users?before[updated_at]=1/1/2010');
-        $this->assertCount(4, $this->decodeResponseJson()['data'], 'can filter `updated_at` before timestamp');
+        $this->withAccessToken(['admin', 'user'])->json(
+            'GET',
+            'v2/users?before[updated_at]=1/1/2010',
+        );
+        $this->assertCount(
+            4,
+            $this->decodeResponseJson()['data'],
+            'can filter `updated_at` before timestamp',
+        );
 
-        $this->withAccessToken(['admin', 'user'])->json('GET', 'v2/users?after[updated_at]=1/1/2015');
-        $this->assertCount(6, $this->decodeResponseJson()['data'], 'can filter `updated_at` after timestamp');
+        $this->withAccessToken(['admin', 'user'])->json(
+            'GET',
+            'v2/users?after[updated_at]=1/1/2015',
+        );
+        $this->assertCount(
+            6,
+            $this->decodeResponseJson()['data'],
+            'can filter `updated_at` after timestamp',
+        );
 
-        $this->withAccessToken(['admin', 'user'])->json('GET', 'v2/users?before[updated_at]=1/2/2015&after[updated_at]=12/31/2009');
-        $this->assertCount(5, $this->decodeResponseJson()['data'], 'can filter `updated_at` between two timestamps');
+        $this->withAccessToken(['admin', 'user'])->json(
+            'GET',
+            'v2/users?before[updated_at]=1/2/2015&after[updated_at]=12/31/2009',
+        );
+        $this->assertCount(
+            5,
+            $this->decodeResponseJson()['data'],
+            'can filter `updated_at` between two timestamps',
+        );
     }
 
     /**
@@ -89,7 +125,7 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
 
         // Test that we can view public profile as another user.
-        $this->get('v2/users/'.$user->id);
+        $this->get('v2/users/' . $user->id);
         $this->assertResponseStatus(200);
 
         // And test that private profile fields are hidden for the other user.
@@ -118,7 +154,9 @@ class UserTest extends BrowserKitTestCase
         $viewer = factory(User::class)->create();
 
         // Test that we can view public profile as another user.
-        $this->asUser($viewer, ['user', 'user:admin'])->get('v2/users/'.$user->id);
+        $this->asUser($viewer, ['user', 'user:admin'])->get(
+            'v2/users/' . $user->id,
+        );
         $this->assertResponseStatus(200);
         $this->seeJsonField('data.first_name', 'Puppet');
         $this->seeJsonField('data.display_name', 'Puppet S.');
@@ -152,7 +190,7 @@ class UserTest extends BrowserKitTestCase
             'referrer_user_id' => '559442cca59dbfca578b4bed',
         ]);
 
-        $this->asStaffUser()->get('v2/users/'.$user->id);
+        $this->asStaffUser()->get('v2/users/' . $user->id);
         $this->assertResponseStatus(200);
 
         // Check that public & private profile fields are visible
@@ -166,7 +204,10 @@ class UserTest extends BrowserKitTestCase
         $this->seeJsonField('data.school_id', '12500012');
         $this->seeJsonField('data.school_id_preview', '125XXXXX');
         $this->seeJsonField('data.club_id', 1);
-        $this->seeJsonField('data.referrer_user_id', '559442cca59dbfca578b4bed');
+        $this->seeJsonField(
+            'data.referrer_user_id',
+            '559442cca59dbfca578b4bed',
+        );
     }
 
     /**
@@ -180,13 +221,21 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $admin = factory(User::class, 'admin')->create();
 
-        $this->asUser($admin, ['user', 'user:admin'])->get('v2/users/'.$user->id);
+        $this->asUser($admin, ['user', 'user:admin'])->get(
+            'v2/users/' . $user->id,
+        );
         $this->assertResponseStatus(200);
 
         // Check that public & private profile fields are visible
         $this->seeJsonStructure([
             'data' => [
-                'id', 'email', 'first_name', 'last_name', 'facebook_id', 'school_id', 'club_id',
+                'id',
+                'email',
+                'first_name',
+                'last_name',
+                'facebook_id',
+                'school_id',
+                'club_id',
             ],
         ]);
     }
@@ -204,7 +253,9 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
 
         // Normal users should not be able to query sensitive values for others:
-        $this->asNormalUser()->get('v2/users/'.$user->id.'?include=email,addr_street1,school_id');
+        $this->asNormalUser()->get(
+            'v2/users/' . $user->id . '?include=email,addr_street1,school_id',
+        );
         $this->assertResponseOk()
             ->dontSeeJsonField('data.email')
             ->dontSeeJsonField('data.addr_street1')
@@ -224,11 +275,13 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
 
         // Check that sensitive fields are not included by default:
-        $this->asStaffUser()->get('v2/users/'.$user->id);
+        $this->asStaffUser()->get('v2/users/' . $user->id);
         $this->assertResponseOk()->dontSeeJsonField('data.email');
 
         // When we re-query with `?include=`, we should see them!
-        $this->asStaffUser()->get('v2/users/'.$user->id.'?include=email,addr_street1,school_id');
+        $this->asStaffUser()->get(
+            'v2/users/' . $user->id . '?include=email,addr_street1,school_id',
+        );
         $this->assertResponseOk()
             ->seeJsonField('data.email', $user->email)
             ->seeJsonField('data.addr_street1', $user->addr_street1)
@@ -246,11 +299,15 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff', 'write'])->json('PUT', 'v2/users/'.$user->id, [
-            'first_name' => 'Alexander',
-            'last_name' => 'Hamilton',
-            'club_id' => 2,
-        ]);
+        $this->asUser($staff, ['user', 'role:staff', 'write'])->json(
+            'PUT',
+            'v2/users/' . $user->id,
+            [
+                'first_name' => 'Alexander',
+                'last_name' => 'Hamilton',
+                'club_id' => 2,
+            ],
+        );
 
         $this->assertResponseStatus(200);
 
@@ -273,12 +330,16 @@ class UserTest extends BrowserKitTestCase
     {
         $user = factory(User::class)->create();
 
-        $this->asUser($user, ['user', 'write'])->json('PUT', 'v2/users/'.$user->id, [
-            'first_name' => 'Pepper',
-            'last_name' => 'Puppy',
-            'school_id' => '7110001',
-            'club_id' => 2,
-        ]);
+        $this->asUser($user, ['user', 'write'])->json(
+            'PUT',
+            'v2/users/' . $user->id,
+            [
+                'first_name' => 'Pepper',
+                'last_name' => 'Puppy',
+                'school_id' => '7110001',
+                'club_id' => 2,
+            ],
+        );
 
         $this->assertResponseStatus(200);
 
@@ -305,10 +366,14 @@ class UserTest extends BrowserKitTestCase
 
         $user = factory(User::class)->create();
 
-        $this->asUser($user, ['user', 'write'])->json('PUT', 'v2/users/'.$user->id, [
-            'first_name' => 'Pepper',
-            'last_name' => 'Puppy',
-        ]);
+        $this->asUser($user, ['user', 'write'])->json(
+            'PUT',
+            'v2/users/' . $user->id,
+            [
+                'first_name' => 'Pepper',
+                'last_name' => 'Puppy',
+            ],
+        );
 
         $this->assertResponseStatus(200);
 
@@ -328,10 +393,14 @@ class UserTest extends BrowserKitTestCase
         $user1 = factory(User::class)->create();
         $user2 = factory(User::class)->create();
 
-        $this->asUser($user2, ['user', 'role:staff', 'write'])->json('PUT', 'v2/users/'.$user1->id, [
-            'first_name' => 'Burt',
-            'last_name' => 'Macklin',
-        ]);
+        $this->asUser($user2, ['user', 'role:staff', 'write'])->json(
+            'PUT',
+            'v2/users/' . $user1->id,
+            [
+                'first_name' => 'Burt',
+                'last_name' => 'Macklin',
+            ],
+        );
 
         $this->assertResponseStatus(401);
 
@@ -353,7 +422,7 @@ class UserTest extends BrowserKitTestCase
     {
         $user = factory(User::class)->create();
 
-        $this->asMachine()->json('PUT', 'v2/users/'.$user->id, [
+        $this->asMachine()->json('PUT', 'v2/users/' . $user->id, [
             'first_name' => 'Wilhelmina',
             'last_name' => 'Grubbly-Plank',
             'school_id' => '11122019',
@@ -385,13 +454,20 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $response = $this->asUser($staff, ['user', 'role:staff'])->json('PUT', 'v2/users/'.$user->id, [
-            'first_name' => 'Alexander',
-            'last_name' => 'Hamilton',
-        ]);
+        $response = $this->asUser($staff, ['user', 'role:staff'])->json(
+            'PUT',
+            'v2/users/' . $user->id,
+            [
+                'first_name' => 'Alexander',
+                'last_name' => 'Hamilton',
+            ],
+        );
 
         $this->assertResponseStatus(401);
-        $this->assertEquals('Requires the `write` scope.', $response->decodeResponseJson()['hint']);
+        $this->assertEquals(
+            'Requires the `write` scope.',
+            $response->decodeResponseJson()['hint'],
+        );
     }
 
     /** @test */
@@ -400,9 +476,13 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff', 'write'])->json('PUT', 'v2/users/'.$user->id, [
-            'mobile' => '',
-        ]);
+        $this->asUser($staff, ['user', 'role:staff', 'write'])->json(
+            'PUT',
+            'v2/users/' . $user->id,
+            [
+                'mobile' => '',
+            ],
+        );
 
         $this->assertResponseStatus(200);
 
@@ -416,9 +496,13 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff', 'write'])->json('PUT', 'v2/users/'.$user->id, [
-            'mobile' => null,
-        ]);
+        $this->asUser($staff, ['user', 'role:staff', 'write'])->json(
+            'PUT',
+            'v2/users/' . $user->id,
+            [
+                'mobile' => null,
+            ],
+        );
 
         $this->assertResponseStatus(200);
 
@@ -437,9 +521,13 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff'])->json('PUT', 'v2/users/'.$user->id, [
-            'role' => 'admin',
-        ]);
+        $this->asUser($staff, ['user', 'role:staff'])->json(
+            'PUT',
+            'v2/users/' . $user->id,
+            [
+                'role' => 'admin',
+            ],
+        );
 
         $this->assertResponseStatus(401);
     }
@@ -479,15 +567,22 @@ class UserTest extends BrowserKitTestCase
     {
         $user = factory(User::class, 'staff')->create();
 
-        $response = $this->asUser($user, ['user', 'role:staff'])->json('POST', 'v2/users', [
-            'first_name' => 'Hercules',
-            'last_name' => 'Mulligan',
-            'email' => $this->faker->email,
-            'country' => 'us',
-        ]);
+        $response = $this->asUser($user, ['user', 'role:staff'])->json(
+            'POST',
+            'v2/users',
+            [
+                'first_name' => 'Hercules',
+                'last_name' => 'Mulligan',
+                'email' => $this->faker->email,
+                'country' => 'us',
+            ],
+        );
 
         $this->assertResponseStatus(401);
-        $this->assertEquals('Requires the `write` scope.', $response->decodeResponseJson()['hint']);
+        $this->assertEquals(
+            'Requires the `write` scope.',
+            $response->decodeResponseJson()['hint'],
+        );
     }
 
     /**
@@ -500,7 +595,7 @@ class UserTest extends BrowserKitTestCase
     {
         $user = factory(User::class)->create();
 
-        $this->asAdminUser()->json('PUT', 'v2/users/'.$user->id, [
+        $this->asAdminUser()->json('PUT', 'v2/users/' . $user->id, [
             'first_name' => 'Hercules',
             'last_name' => 'Mulligan',
             'role' => 'admin',
@@ -594,12 +689,15 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
 
         $newTimestamp = '2017-11-02T18:42:00.000Z';
-        $this->asAdminUser()->putJson('v2/users/'.$user->id, [
+        $this->asAdminUser()->putJson('v2/users/' . $user->id, [
             'last_messaged_at' => $newTimestamp,
         ]);
 
         $this->assertResponseStatus(200);
-        $this->assertEquals('2017-11-02T18:42:00+00:00', $user->fresh()->last_messaged_at->toIso8601String());
+        $this->assertEquals(
+            '2017-11-02T18:42:00+00:00',
+            $user->fresh()->last_messaged_at->toIso8601String(),
+        );
     }
 
     /**
@@ -699,7 +797,10 @@ class UserTest extends BrowserKitTestCase
 
         // It should return a 422 error.
         $this->assertResponseStatus(422);
-        $this->assertEquals($this->decodeResponseJson()['error']['fields']['id'][0], 'A record matching one of the given indexes already exists.');
+        $this->assertEquals(
+            $this->decodeResponseJson()['error']['fields']['id'][0],
+            'A record matching one of the given indexes already exists.',
+        );
 
         // Test that the user is returned with changes if ?upsert=true is present.
         $this->asAdminUser()->json('POST', 'v2/users?upsert=true', [
@@ -728,13 +829,25 @@ class UserTest extends BrowserKitTestCase
     {
         $user = factory(User::class)->create(['email' => $this->faker->email]);
 
-        $this->withAccessToken(['admin', 'user'])->json('GET', 'v2/users?search[email]='.$user->email);
+        $this->withAccessToken(['admin', 'user'])->json(
+            'GET',
+            'v2/users?search[email]=' . $user->email,
+        );
         $this->assertCount(1, $this->decodeResponseJson()['data']);
-        $this->assertEquals($this->decodeResponseJson()['data'][0]['email'], $user->email);
+        $this->assertEquals(
+            $this->decodeResponseJson()['data'][0]['email'],
+            $user->email,
+        );
 
-        $this->withAccessToken(['admin', 'user'])->json('GET', 'v2/users?search='.$user->email);
+        $this->withAccessToken(['admin', 'user'])->json(
+            'GET',
+            'v2/users?search=' . $user->email,
+        );
         $this->assertCount(1, $this->decodeResponseJson()['data']);
-        $this->assertEquals($this->decodeResponseJson()['data'][0]['email'], $user->email);
+        $this->assertEquals(
+            $this->decodeResponseJson()['data'][0]['email'],
+            $user->email,
+        );
     }
 
     /**
@@ -745,13 +858,20 @@ class UserTest extends BrowserKitTestCase
      */
     public function testV2GetDataFromUserByMobileAsAnonUser()
     {
-        $user = factory(User::class)->create(['mobile' => $this->faker->phoneNumber]);
+        $user = factory(User::class)->create([
+            'mobile' => $this->faker->phoneNumber,
+        ]);
         $viewer = factory(User::class)->create();
 
         // Test that we can view user information if not staff or admin.
-        $this->asUser($viewer, ['user', 'role:staff'])->get('v2/mobile/'.$user->mobile);
+        $this->asUser($viewer, ['user', 'role:staff'])->get(
+            'v2/mobile/' . $user->mobile,
+        );
         $this->assertResponseStatus(401);
-        $this->assertEquals('The resource owner or authorization server denied the request.', $this->decodeResponseJson()['message']);
+        $this->assertEquals(
+            'The resource owner or authorization server denied the request.',
+            $this->decodeResponseJson()['message'],
+        );
     }
 
     /**
@@ -762,17 +882,19 @@ class UserTest extends BrowserKitTestCase
      */
     public function testV2GetAllDataFromUserByMobileAsStaff()
     {
-        $user = factory(User::class)->create(['mobile' => $this->faker->phoneNumber]);
+        $user = factory(User::class)->create([
+            'mobile' => $this->faker->phoneNumber,
+        ]);
         $admin = factory(User::class, 'staff')->create();
 
-        $this->asUser($admin, ['role:staff'])->get('v2/mobile/'.$user->mobile);
+        $this->asUser($admin, ['role:staff'])->get(
+            'v2/mobile/' . $user->mobile,
+        );
         $this->assertResponseStatus(200);
 
         // Check that fields are visible
         $this->seeJsonStructure([
-            'data' => [
-                'id', 'email', 'first_name', 'last_name', 'facebook_id',
-            ],
+            'data' => ['id', 'email', 'first_name', 'last_name', 'facebook_id'],
         ]);
     }
 
@@ -784,17 +906,19 @@ class UserTest extends BrowserKitTestCase
      */
     public function testV2GetAllDataFromUserMobileAsAdmin()
     {
-        $user = factory(User::class)->create(['mobile' => $this->faker->phoneNumber]);
+        $user = factory(User::class)->create([
+            'mobile' => $this->faker->phoneNumber,
+        ]);
         $admin = factory(User::class, 'admin')->create();
 
-        $this->asUser($admin, ['user', 'role:admin'])->get('v2/mobile/'.$user->mobile);
+        $this->asUser($admin, ['user', 'role:admin'])->get(
+            'v2/mobile/' . $user->mobile,
+        );
         $this->assertResponseStatus(200);
 
         // Check that fields are visible
         $this->seeJsonStructure([
-            'data' => [
-                'id', 'email', 'first_name', 'last_name', 'facebook_id',
-            ],
+            'data' => ['id', 'email', 'first_name', 'last_name', 'facebook_id'],
         ]);
     }
 
@@ -810,9 +934,14 @@ class UserTest extends BrowserKitTestCase
         $viewer = factory(User::class)->create();
 
         // Test that we cannot view public profile as another user.
-        $this->asUser($viewer, ['user', 'user:admin'])->get('v2/email/'.$user->email);
+        $this->asUser($viewer, ['user', 'user:admin'])->get(
+            'v2/email/' . $user->email,
+        );
         $this->assertResponseStatus(401);
-        $this->assertEquals('The resource owner or authorization server denied the request.', $this->decodeResponseJson()['message']);
+        $this->assertEquals(
+            'The resource owner or authorization server denied the request.',
+            $this->decodeResponseJson()['message'],
+        );
     }
 
     /**
@@ -826,14 +955,12 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create(['email' => $this->faker->email]);
         $admin = factory(User::class, 'staff')->create();
 
-        $this->asUser($admin, ['role:staff'])->get('v2/email/'.$user->email);
+        $this->asUser($admin, ['role:staff'])->get('v2/email/' . $user->email);
         $this->assertResponseStatus(200);
 
         // Check that public & private profile fields are visible
         $this->seeJsonStructure([
-            'data' => [
-                'id', 'email', 'first_name', 'last_name', 'facebook_id',
-            ],
+            'data' => ['id', 'email', 'first_name', 'last_name', 'facebook_id'],
         ]);
     }
 
@@ -848,14 +975,14 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class)->create(['email' => $this->faker->email]);
         $admin = factory(User::class, 'admin')->create();
 
-        $this->asUser($admin, ['user', 'role:admin'])->get('v2/email/'.$user->email);
+        $this->asUser($admin, ['user', 'role:admin'])->get(
+            'v2/email/' . $user->email,
+        );
         $this->assertResponseStatus(200);
 
         // Check that public & private profile fields are visible
         $this->seeJsonStructure([
-            'data' => [
-                'id', 'email', 'first_name', 'last_name', 'facebook_id',
-            ],
+            'data' => ['id', 'email', 'first_name', 'last_name', 'facebook_id'],
         ]);
     }
 
@@ -870,15 +997,22 @@ class UserTest extends BrowserKitTestCase
         $user = factory(User::class, 'staff')->create();
         $userToDelete = factory(User::class)->create();
 
-        $response = $this->asUser($user, ['user', 'role:staff'])->json('DELETE', 'v2/users/'.$userToDelete->id, [
-            'first_name' => 'Hercules',
-            'last_name' => 'Mulligan',
-            'email' => $this->faker->email,
-            'country' => 'us',
-        ]);
+        $response = $this->asUser($user, ['user', 'role:staff'])->json(
+            'DELETE',
+            'v2/users/' . $userToDelete->id,
+            [
+                'first_name' => 'Hercules',
+                'last_name' => 'Mulligan',
+                'email' => $this->faker->email,
+                'country' => 'us',
+            ],
+        );
 
         $this->assertResponseStatus(401);
-        $this->assertEquals('Requires the `write` scope.', $response->decodeResponseJson()['hint']);
+        $this->assertEquals(
+            'Requires the `write` scope.',
+            $response->decodeResponseJson()['hint'],
+        );
     }
 
     /**
@@ -891,16 +1025,24 @@ class UserTest extends BrowserKitTestCase
     {
         $userToDelete = factory(User::class)->create();
 
-        $this->mock(Rogue::class)->shouldReceive('deleteUser')->once();
-        $this->mock(Gambit::class)->shouldReceive('deleteUser')->once();
+        $this->mock(Rogue::class)
+            ->shouldReceive('deleteUser')
+            ->once();
+        $this->mock(Gambit::class)
+            ->shouldReceive('deleteUser')
+            ->once();
         $this->customerIoMock->shouldReceive('deleteUser')->once();
 
-        $response = $this->asAdminUser()->json('DELETE', 'v2/users/'.$userToDelete->id, [
-            'first_name' => 'Hercules',
-            'last_name' => 'Mulligan',
-            'email' => $this->faker->email,
-            'country' => 'us',
-        ]);
+        $response = $this->asAdminUser()->json(
+            'DELETE',
+            'v2/users/' . $userToDelete->id,
+            [
+                'first_name' => 'Hercules',
+                'last_name' => 'Mulligan',
+                'email' => $this->faker->email,
+                'country' => 'us',
+            ],
+        );
 
         $this->assertResponseStatus(200);
     }
@@ -915,7 +1057,7 @@ class UserTest extends BrowserKitTestCase
     {
         $user = factory(User::class)->create();
 
-        $this->asAdminUser()->json('PUT', 'v2/users/'.$user->id, [
+        $this->asAdminUser()->json('PUT', 'v2/users/' . $user->id, [
             'email_subscription_topics' => ['news', 'news'],
         ]);
 
@@ -938,7 +1080,7 @@ class UserTest extends BrowserKitTestCase
     {
         $user = factory(User::class)->create();
 
-        $this->asAdminUser()->json('PUT', 'v2/users/'.$user->id, [
+        $this->asAdminUser()->json('PUT', 'v2/users/' . $user->id, [
             'sms_subscription_topics' => ['voting', 'voting'],
         ]);
 
@@ -961,9 +1103,13 @@ class UserTest extends BrowserKitTestCase
     {
         $nullStatusUser = factory(User::class)->create();
 
-        $this->asUser($nullStatusUser, ['user', 'write'])->json('PUT', 'v2/users/'.$nullStatusUser->id, [
-            'email_subscription_topics' => ['news'],
-        ]);
+        $this->asUser($nullStatusUser, ['user', 'write'])->json(
+            'PUT',
+            'v2/users/' . $nullStatusUser->id,
+            [
+                'email_subscription_topics' => ['news'],
+            ],
+        );
 
         $this->seeInDatabase('users', [
             '_id' => $nullStatusUser->id,
@@ -979,11 +1125,17 @@ class UserTest extends BrowserKitTestCase
      */
     public function testFalseEmailSubscriptionStatusChangesWhenAddingTopics()
     {
-        $unsubscribedUser = factory(User::class)->states('email-unsubscribed')->create();
+        $unsubscribedUser = factory(User::class)
+            ->states('email-unsubscribed')
+            ->create();
 
-        $this->asUser($unsubscribedUser, ['user', 'write'])->json('PUT', 'v2/users/'.$unsubscribedUser->id, [
-            'email_subscription_topics' => ['news'],
-        ]);
+        $this->asUser($unsubscribedUser, ['user', 'write'])->json(
+            'PUT',
+            'v2/users/' . $unsubscribedUser->id,
+            [
+                'email_subscription_topics' => ['news'],
+            ],
+        );
 
         $this->seeInDatabase('users', [
             '_id' => $unsubscribedUser->id,
@@ -999,11 +1151,17 @@ class UserTest extends BrowserKitTestCase
      */
     public function testEmailSubscriptionStatusRemainsTrueWhenClearingTopics()
     {
-        $subscribedUser = factory(User::class)->states('email-subscribed')->create();
+        $subscribedUser = factory(User::class)
+            ->states('email-subscribed')
+            ->create();
 
-        $this->asUser($subscribedUser, ['user', 'write'])->json('PUT', 'v2/users/'.$subscribedUser->id, [
-            'email_subscription_topics' => null,
-        ]);
+        $this->asUser($subscribedUser, ['user', 'write'])->json(
+            'PUT',
+            'v2/users/' . $subscribedUser->id,
+            [
+                'email_subscription_topics' => null,
+            ],
+        );
 
         $this->seeInDatabase('users', [
             '_id' => $subscribedUser->id,
@@ -1019,11 +1177,17 @@ class UserTest extends BrowserKitTestCase
      */
     public function testEmailSubscriptionTopicsAreClearedWhenUnsubscribing()
     {
-        $subscribedUser = factory(User::class)->states('email-subscribed')->create();
+        $subscribedUser = factory(User::class)
+            ->states('email-subscribed')
+            ->create();
 
-        $this->asUser($subscribedUser, ['user', 'write'])->json('PUT', 'v2/users/'.$subscribedUser->id, [
-            'email_subscription_status' => false,
-        ]);
+        $this->asUser($subscribedUser, ['user', 'write'])->json(
+            'PUT',
+            'v2/users/' . $subscribedUser->id,
+            [
+                'email_subscription_status' => false,
+            ],
+        );
 
         $this->seeInDatabase('users', [
             '_id' => $subscribedUser->id,
@@ -1040,11 +1204,17 @@ class UserTest extends BrowserKitTestCase
      */
     public function testSmsSubscriptionTopicsAreClearedWhenUnsubscribing()
     {
-        $subscribedUser = factory(User::class)->states('sms-subscribed')->create();
+        $subscribedUser = factory(User::class)
+            ->states('sms-subscribed')
+            ->create();
 
-        $this->asUser($subscribedUser, ['user', 'write'])->json('PUT', 'v2/users/'.$subscribedUser->id, [
-            'sms_status' => 'stop',
-        ]);
+        $this->asUser($subscribedUser, ['user', 'write'])->json(
+            'PUT',
+            'v2/users/' . $subscribedUser->id,
+            [
+                'sms_status' => 'stop',
+            ],
+        );
 
         $this->seeInDatabase('users', [
             '_id' => $subscribedUser->id,

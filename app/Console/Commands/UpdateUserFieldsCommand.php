@@ -60,7 +60,7 @@ class UpdateUserFieldsCommand extends Command
 
         // Make a local copy of the CSV
         $path = $this->argument('path');
-        $this->line('northstar:update: Loading in csv from '.$path);
+        $this->line('northstar:update: Loading in csv from ' . $path);
 
         $temp = tempnam(sys_get_temp_dir(), 'command_csv');
         file_put_contents($temp, fopen($this->argument('path'), 'r'));
@@ -70,7 +70,9 @@ class UpdateUserFieldsCommand extends Command
         $usersCsv->setHeaderOffset(0);
         $usersToUpdate = $usersCsv->getRecords();
 
-        $this->line('northstar:update: Updating '.count($usersCsv).' users...');
+        $this->line(
+            'northstar:update: Updating ' . count($usersCsv) . ' users...',
+        );
 
         $fieldsToUpdate = $this->argument('fields');
 
@@ -82,8 +84,11 @@ class UpdateUserFieldsCommand extends Command
         foreach ($usersToUpdate as $userToUpdate) {
             $user = User::find($userToUpdate['northstar_id']);
 
-            if (! $user) {
-                $this->line('northstar:update: Oops! Could not find user: '.$userToUpdate['northstar_id']);
+            if (!$user) {
+                $this->line(
+                    'northstar:update: Oops! Could not find user: ' .
+                        $userToUpdate['northstar_id'],
+                );
 
                 $this->logPercent();
 
@@ -91,7 +96,7 @@ class UpdateUserFieldsCommand extends Command
             }
 
             foreach ($fieldsToUpdate as $field) {
-                if (! empty($userToUpdate[$field])) {
+                if (!empty($userToUpdate[$field])) {
                     // Special instructions when working with array field
                     if ($field === 'email_subscription_topics') {
                         $user->addEmailSubscriptionTopic($userToUpdate[$field]);
@@ -104,9 +109,9 @@ class UpdateUserFieldsCommand extends Command
             $user->save();
 
             if ($this->option('verbose')) {
-                $this->line('northstar:update: Updated user - '.$user->id);
+                $this->line('northstar:update: Updated user - ' . $user->id);
                 $mb = memory_get_peak_usage() / 1000000;
-                $this->line('northstar:update: '.$mb.' Mb used');
+                $this->line('northstar:update: ' . $mb . ' Mb used');
             }
 
             $this->logPercent();
@@ -127,7 +132,17 @@ class UpdateUserFieldsCommand extends Command
         if ($this->currentCount % 1000 === 0) {
             $percent = ($this->currentCount / $this->totalCount) * 100;
             $mb = memory_get_peak_usage() / 1000000;
-            $this->line('northstar:update: '.$this->currentCount.'/'.$this->totalCount.' - '.$percent.'% done - '.$mb.' Mb used');
+            $this->line(
+                'northstar:update: ' .
+                    $this->currentCount .
+                    '/' .
+                    $this->totalCount .
+                    ' - ' .
+                    $percent .
+                    '% done - ' .
+                    $mb .
+                    ' Mb used',
+            );
         }
     }
 }

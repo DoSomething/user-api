@@ -17,23 +17,25 @@ class Normalizer
     public function credentials($credentials)
     {
         // If a username is given, figure out whether it's an email or mobile number.
-        if (! empty($credentials['username'])) {
-            $type = $this->isEmail($credentials['username']) ? 'email' : 'mobile';
+        if (!empty($credentials['username'])) {
+            $type = $this->isEmail($credentials['username'])
+                ? 'email'
+                : 'mobile';
             $credentials[$type] = $credentials['username'];
             unset($credentials['username']);
         }
 
         // Map id to Mongo's _id ObjectID field.
-        if (! empty($credentials['id'])) {
+        if (!empty($credentials['id'])) {
             $credentials['_id'] = $credentials['id'];
             unset($credentials['id']);
         }
 
-        if (! empty($credentials['email'])) {
+        if (!empty($credentials['email'])) {
             $credentials['email'] = $this->email($credentials['email']);
         }
 
-        if (! empty($credentials['mobile'])) {
+        if (!empty($credentials['mobile'])) {
             $mobile = $this->mobile($credentials['mobile']);
             $credentials['mobile'] = $mobile ?: '';
         }
@@ -71,12 +73,12 @@ class Normalizer
         // Normalize "1 (555) 555-5555" format without leading "+".
         $digits = preg_replace('/[^0-9]/', '', $mobile);
         if (strlen($digits) === 11 && $digits[0] === '1') {
-            $mobile = '+'.$mobile;
+            $mobile = '+' . $mobile;
         }
 
         $number = parse_mobile($mobile);
 
-        if (! $number) {
+        if (!$number) {
             return '';
         }
 

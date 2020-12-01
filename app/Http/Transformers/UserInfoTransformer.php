@@ -24,7 +24,10 @@ class UserInfoTransformer extends TransformerAbstract
             'birthdate' => format_date($user->birthdate, 'Y-m-d'),
 
             'address' => [
-                'street_address' => implode(PHP_EOL, [$user->addr_street1, $user->addr_street2]),
+                'street_address' => implode(PHP_EOL, [
+                    $user->addr_street1,
+                    $user->addr_street2,
+                ]),
                 'locality' => $user->addr_city,
                 'region' => $user->addr_state,
                 'postal_code' => $user->addr_zip,

@@ -17,10 +17,12 @@ return [
         'create_account' => 'Para comenzar, ¡crea una cuenta DoSomething.org!',
     ],
     'validation' => [
-        'issues' => 'Hmmm, hubo algunos problemas con la información que nos enviaste:',
+        'issues' =>
+            'Hmmm, hubo algunos problemas con la información que nos enviaste:',
         'optional' => '(opcional)',
         'auth' => [
-            'email' => 'Proporciona una dirección válida de correo electrónico.',
+            'email' =>
+                'Proporciona una dirección válida de correo electrónico.',
         ],
         'signup' => [
             'birthday' => 'Necesitamos tu cumpleaños.',
@@ -38,7 +40,8 @@ return [
     'fields' => [
         'email' => 'Dirección de correo electrónico',
         'mobile' => 'Número de celular',
-        'email_or_mobile' => 'Dirección de correo electrónico o número de celular',
+        'email_or_mobile' =>
+            'Dirección de correo electrónico o número de celular',
         'first_name' => 'Nombre',
         'birthday' => 'Cumpleaños',
         'password' => 'Contraseña',
@@ -48,13 +51,15 @@ return [
     ],
     'forgot_password' => [
         'header' => '¿Olvidaste la contraseña?',
-        'instructions' => 'A todos nos ha pasado. Ingresa tu cuenta de correo para restablecer tu contraseña.',
+        'instructions' =>
+            'A todos nos ha pasado. Ingresa tu cuenta de correo para restablecer tu contraseña.',
         'submit_forgot_password' => 'Request New Password',
     ],
     'footnote' => [
         'create' => 'Crear una cuenta significa que aceptas nuestros',
         'terms_of_service' => 'Términos del servicio',
         'privacy_policy' => 'Política de Privacidad',
-        'messaging' => 'y aceptas recibir nuestras noticias semanales. Pueden aplicarse cargos por mensajes y datos. Envía la palabra STOP en un mensaje de texto para dejar de recibir mensajes y la palabra HELP para solicitar ayuda.',
+        'messaging' =>
+            'y aceptas recibir nuestras noticias semanales. Pueden aplicarse cargos por mensajes y datos. Envía la palabra STOP en un mensaje de texto para dejar de recibir mensajes y la palabra HELP para solicitar ayuda.',
     ],
 ];

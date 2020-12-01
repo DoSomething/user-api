@@ -41,5 +41,12 @@ class AuthCode extends Model
      *
      * @var array
      */
-    protected $fillable = ['code', 'scopes', 'user_id', 'client_id', 'expiration', 'redirect_uri'];
+    protected $fillable = [
+        'code',
+        'scopes',
+        'user_id',
+        'client_id',
+        'expiration',
+        'redirect_uri',
+    ];
 }
