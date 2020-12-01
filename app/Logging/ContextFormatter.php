@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Logging;
+namespace App\Logging;
 
 use Illuminate\Log\Logger;
 

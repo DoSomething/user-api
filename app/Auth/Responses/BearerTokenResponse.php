@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Auth\Responses;
+namespace App\Auth\Responses;
 
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\ResponseTypes\BearerTokenResponse as BaseTokenResponse;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Northstar\Http\Middleware;
+namespace App\Http\Middleware;
 
+use App\Auth\Scope;
 use Closure;
-use Northstar\Auth\Scope;
 
 class RequireScope
 {

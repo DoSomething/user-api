@@ -1,7 +1,7 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
-use Northstar\Models\User;
 
 class StandardizeBirthdatesTest extends TestCase
 {

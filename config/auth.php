@@ -77,8 +77,8 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'northstar', // @see: \Northstar\Auth\NorthstarUserProvider
-            'model' => Northstar\Models\User::class,
+            'driver' => 'northstar', // @see: \App\Auth\NorthstarUserProvider
+            'model' => App\Models\User::class,
         ],
     ],
 

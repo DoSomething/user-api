@@ -1,7 +1,7 @@
 <?php
 
-use Northstar\Models\User;
-use Northstar\Services\GraphQL;
+use App\Models\User;
+use App\Services\GraphQL;
 
 class UserModelTest extends BrowserKitTestCase
 {

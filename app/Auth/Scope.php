@@ -1,10 +1,10 @@
 <?php
 
-namespace Northstar\Auth;
+namespace App\Auth;
 
+use App\Models\Client;
 use Illuminate\Support\Facades\Log;
 use League\OAuth2\Server\Exception\OAuthServerException;
-use Northstar\Models\Client;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class Scope

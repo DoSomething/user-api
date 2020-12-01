@@ -1,9 +1,9 @@
 <?php
 
-namespace Northstar\Http\Controllers;
+namespace App\Http\Controllers;
 
+use App\Auth\Repositories\KeyRepository;
 use JOSE_JWK;
-use Northstar\Auth\Repositories\KeyRepository;
 use phpseclib\Crypt\RSA;
 
 class KeyController extends Controller

@@ -1,9 +1,9 @@
 <?php
 
-namespace Northstar\Http\Controllers\Web;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
-use Northstar\Http\Controllers\Controller;
 
 class ForgotPasswordController extends Controller
 {

@@ -1,7 +1,7 @@
 <?php
 
-use Northstar\Models\User;
-use Northstar\PasswordResetType;
+use App\Models\User;
+use App\PasswordResetType;
 
 class ResetTest extends BrowserKitTestCase
 {

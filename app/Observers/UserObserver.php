@@ -1,21 +1,21 @@
 <?php
 
-namespace Northstar\Observers;
+namespace App\Observers;
 
+use App\Jobs\CreateCustomerIoEvent;
+use App\Jobs\DeleteUserFromOtherServices;
+use App\Jobs\SendUserToCustomerIo;
+use App\Models\RefreshToken;
+use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
-use Northstar\Jobs\CreateCustomerIoEvent;
-use Northstar\Jobs\DeleteUserFromOtherServices;
-use Northstar\Jobs\SendUserToCustomerIo;
-use Northstar\Models\RefreshToken;
-use Northstar\Models\User;
 
 class UserObserver
 {
     /**
      * Handle the User "creating" event.
      *
-     * @param  \Northstar\Models\User  $user
+     * @param  \App\Models\User  $user
      * @return void
      */
     public function creating(User $user)
@@ -40,7 +40,7 @@ class UserObserver
     /**
      * Handle the User "created" event.
      *
-     * @param  \Northstar\Models\User  $user
+     * @param  \App\Models\User  $user
      * @return void
      */
     public function created(User $user)
@@ -57,7 +57,7 @@ class UserObserver
     /**
      * Handle the User "updating" event.
      *
-     * @param  \Northstar\Models\User  $user
+     * @param  \App\Models\User  $user
      * @return void
      */
     public function updating(User $user)
@@ -131,7 +131,7 @@ class UserObserver
     /**
      * Handle the User "updated" event.
      *
-     * @param  \Northstar\Models\User  $user
+     * @param  \App\Models\User  $user
      * @return void
      */
     public function updated(User $user)
@@ -145,7 +145,7 @@ class UserObserver
     /**
      * Handle the User "deleting" event.
      *
-     * @param  \Northstar\Models\User  $user
+     * @param  \App\Models\User  $user
      * @return void
      */
     public function deleting(User $user)

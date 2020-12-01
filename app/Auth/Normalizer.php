@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Auth;
+namespace App\Auth;
 
 use Carbon\Carbon;
 use libphonenumber\PhoneNumberFormat;

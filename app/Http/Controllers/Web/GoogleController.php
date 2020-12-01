@@ -1,7 +1,11 @@
 <?php
 
-namespace Northstar\Http\Controllers\Web;
+namespace App\Http\Controllers\Web;
 
+use App\Auth\Registrar;
+use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Services\Google;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
@@ -9,10 +13,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\InvalidStateException;
-use Northstar\Auth\Registrar;
-use Northstar\Http\Controllers\Controller;
-use Northstar\Models\User;
-use Northstar\Services\Google;
 
 class GoogleController extends Controller
 {
@@ -74,7 +74,7 @@ class GoogleController extends Controller
             $googleUser = Socialite::driver('google')->user();
             // Use the service container so we can mock Google API requests in tests.
             // @see https://laravel.com/docs/5.5/helpers#method-app
-            $client = app('Northstar\Services\Google');
+            $client = app('App\Services\Google');
 
             $googleProfile = $client->getProfile($googleUser->token);
         } catch (RequestException | ClientException | InvalidStateException $e) {

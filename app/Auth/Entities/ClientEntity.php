@@ -1,11 +1,11 @@
 <?php
 
-namespace Northstar\Auth\Entities;
+namespace App\Auth\Entities;
 
+use App\Models\Client;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\Traits\ClientTrait;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
-use Northstar\Models\Client;
 
 class ClientEntity implements ClientEntityInterface
 {

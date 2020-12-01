@@ -1,7 +1,18 @@
 <?php
 
-namespace Northstar\Providers;
+namespace App\Providers;
 
+use App\Auth\NorthstarTokenGuard;
+use App\Auth\NorthstarUserProvider;
+use App\Auth\Registrar;
+use App\Auth\Repositories\AccessTokenRepository;
+use App\Auth\Repositories\AuthCodeRepository;
+use App\Auth\Repositories\ClientRepository;
+use App\Auth\Repositories\KeyRepository;
+use App\Auth\Repositories\RefreshTokenRepository;
+use App\Auth\Repositories\ScopeRepository;
+use App\Auth\Repositories\UserRepository;
+use App\Auth\Responses\BearerTokenResponse;
 use DateInterval;
 use Defuse\Crypto\Key;
 use Illuminate\Cache\RateLimiter;
@@ -19,17 +30,6 @@ use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use League\OAuth2\Server\ResourceServer;
-use Northstar\Auth\NorthstarTokenGuard;
-use Northstar\Auth\NorthstarUserProvider;
-use Northstar\Auth\Registrar;
-use Northstar\Auth\Repositories\AccessTokenRepository;
-use Northstar\Auth\Repositories\AuthCodeRepository;
-use Northstar\Auth\Repositories\ClientRepository;
-use Northstar\Auth\Repositories\KeyRepository;
-use Northstar\Auth\Repositories\RefreshTokenRepository;
-use Northstar\Auth\Repositories\ScopeRepository;
-use Northstar\Auth\Repositories\UserRepository;
-use Northstar\Auth\Responses\BearerTokenResponse;
 
 class OAuthServiceProvider extends ServiceProvider
 {

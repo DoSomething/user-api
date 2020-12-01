@@ -1,6 +1,6 @@
 <?php
 
-use Northstar\Models\User;
+use App\Models\User;
 
 class SubscriptionsTest extends BrowserKitTestCase
 {
@@ -113,7 +113,7 @@ class SubscriptionsTest extends BrowserKitTestCase
     }
 
     /**
-     * Test rate limiting (10 posts per hour)
+     * Test rate limiting (10 posts per hour).
      *
      * @return void
      */

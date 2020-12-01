@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Auth;
+namespace App\Auth;
 
 use Illuminate\Support\Facades\Log;
 use League\OAuth2\Server\Exception\OAuthServerException;
@@ -59,7 +59,7 @@ class Role
             return true;
         }
 
-        /** @var \Northstar\Models\User $user */
+        /** @var \App\Models\User $user */
         $user = auth()->user();
 
         // If there isn't a logged-in user, they can't have a role!

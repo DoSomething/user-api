@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Events;
+namespace App\Events;
 
 use Illuminate\Queue\SerializesModels;
 

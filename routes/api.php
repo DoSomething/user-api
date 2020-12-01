@@ -6,7 +6,7 @@
  * contains the "api" middleware group. Now create something great!
  *
  * @var \Illuminate\Routing\Router $router
- * @see \Northstar\Providers\RouteServiceProvider
+ * @see \App\Providers\RouteServiceProvider
  */
 
 // https://profile.dosomething.org/v2/

@@ -1,12 +1,12 @@
 <?php
 
-namespace Northstar\Http\Controllers\Web;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
+use App\Models\User;
 use Endroid\QrCode\QrCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Northstar\Http\Controllers\Controller;
-use Northstar\Models\User;
 use OTPHP\Factory;
 use OTPHP\TOTP;
 

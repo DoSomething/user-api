@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Http\Middleware;
+namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Routing\Middleware\ThrottleRequests as BaseThrottler;

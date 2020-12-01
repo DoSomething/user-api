@@ -1,15 +1,15 @@
 <?php
 
-namespace Northstar\Http\Controllers\Web;
+namespace App\Http\Controllers\Web;
 
+use App\Auth\Entities\UserEntity;
+use App\Auth\PasswordRules;
+use App\Auth\Registrar;
+use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use League\OAuth2\Server\AuthorizationServer;
-use Northstar\Auth\Entities\UserEntity;
-use Northstar\Auth\PasswordRules;
-use Northstar\Auth\Registrar;
-use Northstar\Http\Controllers\Controller;
-use Northstar\Models\User;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -211,7 +211,7 @@ class AuthController extends Controller
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
-     * @throws \Northstar\Exceptions\NorthstarValidationException
+     * @throws \App\Exceptions\NorthstarValidationException
      */
     public function postRegister(Request $request)
     {

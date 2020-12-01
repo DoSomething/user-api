@@ -1,8 +1,8 @@
 <?php
 
-use Northstar\Models\User;
-use Northstar\Services\Gambit;
-use Northstar\Services\Rogue;
+use App\Models\User;
+use App\Services\Gambit;
+use App\Services\Rogue;
 
 class UserTest extends BrowserKitTestCase
 {
@@ -748,7 +748,7 @@ class UserTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that we can only upsert with the ?upsert=true param
+     * Test that we can only upsert with the ?upsert=true param.
      *
      * @return void
      */
@@ -792,7 +792,7 @@ class UserTest extends BrowserKitTestCase
 
     /**
      * Test that we can filter records with both ?search[email]=test@dosomething.org
-     * and ?search=test@dosomething.org patterns
+     * and ?search=test@dosomething.org patterns.
      *
      * @return void
      */

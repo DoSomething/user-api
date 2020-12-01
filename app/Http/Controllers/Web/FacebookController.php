@@ -1,15 +1,15 @@
 <?php
 
-namespace Northstar\Http\Controllers\Web;
+namespace App\Http\Controllers\Web;
 
+use App\Auth\Registrar;
+use App\Http\Controllers\Controller;
+use App\Models\User;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\InvalidStateException;
-use Northstar\Auth\Registrar;
-use Northstar\Http\Controllers\Controller;
-use Northstar\Models\User;
 
 class FacebookController extends Controller
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Auth;
+namespace App\Auth;
 
 define('DRUPAL_MIN_HASH_COUNT', 7);
 define('DRUPAL_MAX_HASH_COUNT', 30);

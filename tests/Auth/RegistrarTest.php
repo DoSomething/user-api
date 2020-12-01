@@ -1,9 +1,9 @@
 <?php
 
+use App\Auth\Registrar;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Str;
-use Northstar\Auth\Registrar;
-use Northstar\Models\User;
 
 class RegistrarTest extends BrowserKitTestCase
 {

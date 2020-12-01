@@ -1,7 +1,11 @@
 <?php
 
-namespace Northstar\Models;
+namespace App\Models;
 
+use App\Auth\Role;
+use App\Jobs\SendPasswordResetToCustomerIo;
+use App\PasswordResetType;
+use App\Services\GraphQL;
 use Carbon\Carbon;
 use Email\Parse as EmailParser;
 use Illuminate\Auth\Authenticatable;
@@ -16,10 +20,6 @@ use Illuminate\Support\Str;
 use Jenssegers\Mongodb\Auth\DatabaseTokenRepository;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use libphonenumber\PhoneNumberFormat;
-use Northstar\Auth\Role;
-use Northstar\Jobs\SendPasswordResetToCustomerIo;
-use Northstar\PasswordResetType;
-use Northstar\Services\GraphQL;
 
 /**
  * The User model. (Fight for the user!).

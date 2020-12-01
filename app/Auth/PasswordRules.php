@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Auth;
+namespace App\Auth;
 
 use LangleyFoxall\LaravelNISTPasswordRules\PasswordRules as NISTPasswordRules;
 use LangleyFoxall\LaravelNISTPasswordRules\Rules\BreachedPasswords;

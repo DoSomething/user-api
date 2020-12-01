@@ -1,16 +1,16 @@
 <?php
 
-namespace Northstar\Http\Controllers;
+namespace App\Http\Controllers;
 
+use App\Auth\Encrypter;
+use App\Events\Throttled;
+use App\Http\Transformers\UserInfoTransformer;
+use App\Models\RefreshToken;
 use Illuminate\Cache\RateLimiter;
 use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Http\Request;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
-use Northstar\Auth\Encrypter;
-use Northstar\Events\Throttled;
-use Northstar\Http\Transformers\UserInfoTransformer;
-use Northstar\Models\RefreshToken;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

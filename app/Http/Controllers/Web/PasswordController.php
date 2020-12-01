@@ -1,12 +1,12 @@
 <?php
 
-namespace Northstar\Http\Controllers\Web;
+namespace App\Http\Controllers\Web;
 
+use App\Auth\PasswordRules;
+use App\Events\PasswordUpdated;
+use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Northstar\Auth\PasswordRules;
-use Northstar\Events\PasswordUpdated;
-use Northstar\Http\Controllers\Controller;
-use Northstar\Models\User;
 
 class PasswordController extends Controller
 {
@@ -22,7 +22,7 @@ class PasswordController extends Controller
     /**
      * Update the specified user's password.
      *
-     * @param  \Northstar\Models\User $user
+     * @param  \App\Models\User $user
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */

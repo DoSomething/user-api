@@ -1,9 +1,9 @@
 <?php
 
-namespace Northstar\Http\Controllers;
+namespace App\Http\Controllers;
 
-use Northstar\Http\Transformers\UserTransformer;
-use Northstar\Models\User;
+use App\Http\Transformers\UserTransformer;
+use App\Models\User;
 
 class SubscriptionUpdateController extends Controller
 {

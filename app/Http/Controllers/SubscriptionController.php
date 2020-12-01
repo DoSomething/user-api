@@ -1,12 +1,12 @@
 <?php
 
-namespace Northstar\Http\Controllers;
+namespace App\Http\Controllers;
 
+use App\Auth\Registrar;
+use App\Http\Transformers\UserTransformer;
+use App\Models\User;
+use App\PasswordResetType;
 use Illuminate\Http\Request;
-use Northstar\Auth\Registrar;
-use Northstar\Http\Transformers\UserTransformer;
-use Northstar\Models\User;
-use Northstar\PasswordResetType;
 
 class SubscriptionController extends Controller
 {

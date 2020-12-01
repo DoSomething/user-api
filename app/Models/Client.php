@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Models;
+namespace App\Models;
 
 use Illuminate\Support\Str;
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace Northstar\Console\Commands;
+namespace App\Console\Commands;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use MongoDB\BSON\UTCDateTime;
-use Northstar\Models\User;
 
 class StandardizeBirthdates extends Command
 {

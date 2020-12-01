@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Auth;
+namespace App\Auth;
 
 use Defuse\Crypto\Key;
 use League\OAuth2\Server\CryptTrait;

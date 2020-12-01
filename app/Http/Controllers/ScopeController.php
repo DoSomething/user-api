@@ -1,8 +1,8 @@
 <?php
 
-namespace Northstar\Http\Controllers;
+namespace App\Http\Controllers;
 
-use Northstar\Auth\Scope;
+use App\Auth\Scope;
 
 class ScopeController extends Controller
 {

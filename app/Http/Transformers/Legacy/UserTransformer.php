@@ -1,10 +1,10 @@
 <?php
 
-namespace Northstar\Http\Transformers\Legacy;
+namespace App\Http\Transformers\Legacy;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use League\Fractal\TransformerAbstract;
-use Northstar\Models\User;
 
 class UserTransformer extends TransformerAbstract
 {

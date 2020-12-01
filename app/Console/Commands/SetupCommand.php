@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Console\Commands;
+namespace App\Console\Commands;
 
 use Defuse\Crypto\Key;
 use DFurnes\Environmentalist\ConfiguresApplication;

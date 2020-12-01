@@ -1,8 +1,8 @@
 <?php
 
-use Northstar\Auth\DrupalPasswordHash;
-use Northstar\Auth\Registrar;
-use Northstar\Models\User;
+use App\Auth\DrupalPasswordHash;
+use App\Auth\Registrar;
+use App\Models\User;
 
 class DrupalPasswordHashTest extends BrowserKitTestCase
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Northstar\Http\Controllers\Web;
+namespace App\Http\Controllers\Web;
 
+use App\Auth\Registrar;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Northstar\Auth\Registrar;
-use Northstar\Http\Controllers\Controller;
 
 class ProfileSubscriptionsController extends Controller
 {

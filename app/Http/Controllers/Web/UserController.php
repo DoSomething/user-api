@@ -1,14 +1,14 @@
 <?php
 
-namespace Northstar\Http\Controllers\Web;
+namespace App\Http\Controllers\Web;
 
+use App\Auth\PasswordRules;
+use App\Auth\Registrar;
+use App\Events\PasswordUpdated;
+use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use Northstar\Auth\PasswordRules;
-use Northstar\Auth\Registrar;
-use Northstar\Events\PasswordUpdated;
-use Northstar\Http\Controllers\Controller;
-use Northstar\Models\User;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class UserController extends BaseController

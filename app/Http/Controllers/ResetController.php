@@ -1,11 +1,11 @@
 <?php
 
-namespace Northstar\Http\Controllers;
+namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\PasswordResetType;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Northstar\Models\User;
-use Northstar\PasswordResetType;
 
 class ResetController extends Controller
 {
@@ -32,7 +32,7 @@ class ResetController extends Controller
             'type' => ['required', Rule::in(PasswordResetType::all())],
         ]);
 
-        /** @var \Northstar\Models\User $user */
+        /** @var \App\Models\User $user */
         $user = User::findOrFail($request['id']);
 
         $user->sendPasswordReset($request['type']);

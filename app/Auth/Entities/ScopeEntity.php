@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Auth\Entities;
+namespace App\Auth\Entities;
 
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;

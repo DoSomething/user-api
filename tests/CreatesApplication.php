@@ -42,13 +42,13 @@ trait CreatesApplication
 
         // Configure a mock for any Customer.io API calls.
         $this->customerIoMock = $this->mock(
-            \Northstar\Services\CustomerIo::class,
+            \App\Services\CustomerIo::class,
         );
         $this->customerIoMock->shouldReceive('updateCustomer')->andReturn(null);
         $this->customerIoMock->shouldReceive('trackEvent');
 
         // Configure a mock for GraphQL calls.
-        $this->graphqlMock = $this->mock(\Northstar\Services\GraphQL::class);
+        $this->graphqlMock = $this->mock(\App\Services\GraphQL::class);
         $this->graphqlMock->shouldReceive('getSchoolById')->andReturn([
             'name' => 'San Dimas High School',
             'location' => 'US-CA',

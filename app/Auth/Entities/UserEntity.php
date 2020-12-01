@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Auth\Entities;
+namespace App\Auth\Entities;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;

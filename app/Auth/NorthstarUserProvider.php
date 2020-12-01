@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Auth;
+namespace App\Auth;
 
 use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
@@ -18,7 +18,7 @@ class NorthstarUserProvider extends EloquentUserProvider implements UserProvider
     /**
      * Create a new database user provider.
      *
-     * @param \Northstar\Auth\Registrar $registrar
+     * @param \App\Auth\Registrar $registrar
      * @param \Illuminate\Contracts\Hashing\Hasher $hasher
      * @param string $model
      */
@@ -36,7 +36,7 @@ class NorthstarUserProvider extends EloquentUserProvider implements UserProvider
      * Retrieve a user by the given credentials.
      *
      * @param  array  $credentials
-     * @return \Northstar\Models\User|null
+     * @return \App\Models\User|null
      */
     public function retrieveByCredentials(array $credentials)
     {

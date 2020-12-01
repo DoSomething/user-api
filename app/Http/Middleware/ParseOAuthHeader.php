@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Http\Middleware;
+namespace App\Http\Middleware;
 
 use Illuminate\Support\Str;
 use League\OAuth2\Server\ResourceServer;

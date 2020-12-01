@@ -1,7 +1,7 @@
 <?php
 
-use Northstar\Models\Client;
-use Northstar\Models\User;
+use App\Models\Client;
+use App\Models\User;
 
 class ClientTest extends BrowserKitTestCase
 {

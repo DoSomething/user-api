@@ -156,14 +156,14 @@ return [
         /*
          * Application Service Providers...
          */
-        Northstar\Providers\AppServiceProvider::class,
-        Northstar\Providers\AuthServiceProvider::class,
-        Northstar\Providers\BroadcastServiceProvider::class,
-        Northstar\Providers\EventServiceProvider::class,
-        Northstar\Providers\OAuthServiceProvider::class,
-        Northstar\Providers\RouteServiceProvider::class,
-        Northstar\Providers\ValidationServiceProvider::class,
-        Northstar\Providers\SixpackServiceProvider::class,
+        App\Providers\AppServiceProvider::class,
+        App\Providers\AuthServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
+        App\Providers\EventServiceProvider::class,
+        App\Providers\OAuthServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
+        App\Providers\ValidationServiceProvider::class,
+        App\Providers\SixpackServiceProvider::class,
     ],
 
     /*

@@ -1,10 +1,10 @@
 <?php
 
+use App\Models\User;
+use App\Services\Gambit;
+use App\Services\Rogue;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
-use Northstar\Models\User;
-use Northstar\Services\Gambit;
-use Northstar\Services\Rogue;
 
 class ProcessDeletionsCommandTest extends TestCase
 {

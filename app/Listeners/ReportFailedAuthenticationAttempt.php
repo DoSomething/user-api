@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Listeners;
+namespace App\Listeners;
 
 use Illuminate\Support\Facades\Log;
 

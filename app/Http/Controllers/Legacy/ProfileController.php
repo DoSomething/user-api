@@ -1,13 +1,13 @@
 <?php
 
-namespace Northstar\Http\Controllers\Legacy;
+namespace App\Http\Controllers\Legacy;
 
+use App\Auth\Registrar;
+use App\Http\Controllers\Controller;
+use App\Http\Transformers\Legacy\UserTransformer;
+use App\Models\User;
 use Illuminate\Contracts\Auth\Guard as Auth;
 use Illuminate\Http\Request;
-use Northstar\Auth\Registrar;
-use Northstar\Http\Controllers\Controller;
-use Northstar\Http\Transformers\Legacy\UserTransformer;
-use Northstar\Models\User;
 
 class ProfileController extends Controller
 {
@@ -46,7 +46,7 @@ class ProfileController extends Controller
      */
     public function show()
     {
-        /** @var \Northstar\Models\User $user */
+        /** @var \App\Models\User $user */
         $user = $this->auth->user();
 
         return $this->item($user);
@@ -60,7 +60,7 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
-        /** @var \Northstar\Models\User $user */
+        /** @var \App\Models\User $user */
         $user = $this->auth->user();
 
         // Normalize & validate the given request.

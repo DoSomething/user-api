@@ -1,7 +1,7 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Northstar\Models\User;
 
 class UserTableSeeder extends Seeder
 {

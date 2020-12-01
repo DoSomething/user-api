@@ -1,11 +1,11 @@
 <?php
 
-namespace Northstar\Http\Transformers;
+namespace App\Http\Transformers;
 
+use App\Models\User;
 use Illuminate\Support\Str;
 use League\Fractal\Scope;
 use League\Fractal\TransformerAbstract;
-use Northstar\Models\User;
 
 class BaseTransformer extends TransformerAbstract
 {

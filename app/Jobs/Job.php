@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Jobs;
+namespace App\Jobs;
 
 abstract class Job
 {

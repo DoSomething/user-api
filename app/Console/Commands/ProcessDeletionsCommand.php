@@ -1,11 +1,11 @@
 <?php
 
-namespace Northstar\Console\Commands;
+namespace App\Console\Commands;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
-use Northstar\Models\User;
 
 class ProcessDeletionsCommand extends Command
 {

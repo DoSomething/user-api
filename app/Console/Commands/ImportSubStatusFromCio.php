@@ -1,12 +1,12 @@
 <?php
 
-namespace Northstar\Console\Commands;
+namespace App\Console\Commands;
 
+use App\Jobs\GetEmailSubStatusFromCustomerIo;
+use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use League\Csv\Reader;
-use Northstar\Jobs\GetEmailSubStatusFromCustomerIo;
-use Northstar\Models\User;
 
 class ImportSubStatusFromCio extends Command
 {

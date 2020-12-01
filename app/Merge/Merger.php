@@ -1,9 +1,9 @@
 <?php
 
-namespace Northstar\Merge;
+namespace App\Merge;
 
+use App\Exceptions\NorthstarValidationException;
 use Illuminate\Support\Str;
-use Northstar\Exceptions\NorthstarValidationException;
 
 class Merger
 {
