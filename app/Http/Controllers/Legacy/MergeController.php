@@ -1,13 +1,13 @@
 <?php
 
-namespace Northstar\Http\Controllers\Legacy;
+namespace App\Http\Controllers\Legacy;
 
+use App\Http\Controllers\Controller;
+use App\Http\Transformers\Legacy\UserTransformer;
+use App\Merge\Merger;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Northstar\Http\Controllers\Controller;
-use Northstar\Http\Transformers\Legacy\UserTransformer;
-use Northstar\Merge\Merger;
-use Northstar\Models\User;
 
 class MergeController extends Controller
 {
@@ -51,10 +51,10 @@ class MergeController extends Controller
             'id' => ['required', 'exists:users,_id', 'not_in:' . $id],
         ]);
 
-        /** @var \Northstar\Models\User $target */
+        /** @var \App\Models\User $target */
         $target = User::findOrFail($id);
 
-        /** @var \Northstar\Models\User $duplicate */
+        /** @var \App\Models\User $duplicate */
         $duplicate = User::findOrFail($request->input('id'));
 
         // Get all profile fields from the duplicate (except metadata like ID or source).

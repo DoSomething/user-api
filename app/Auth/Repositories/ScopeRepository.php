@@ -1,12 +1,12 @@
 <?php
 
-namespace Northstar\Auth\Repositories;
+namespace App\Auth\Repositories;
 
+use App\Auth\Entities\ScopeEntity;
+use App\Auth\Scope;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
-use Northstar\Auth\Entities\ScopeEntity;
-use Northstar\Auth\Scope;
 
 class ScopeRepository implements ScopeRepositoryInterface
 {

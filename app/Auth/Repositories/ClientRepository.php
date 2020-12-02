@@ -1,10 +1,10 @@
 <?php
 
-namespace Northstar\Auth\Repositories;
+namespace App\Auth\Repositories;
 
+use App\Auth\Entities\ClientEntity;
+use App\Models\Client;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
-use Northstar\Auth\Entities\ClientEntity;
-use Northstar\Models\Client;
 
 class ClientRepository implements ClientRepositoryInterface
 {
@@ -17,7 +17,7 @@ class ClientRepository implements ClientRepositoryInterface
      */
     public function getClientEntity($clientIdentifier)
     {
-        /** @var \Northstar\Models\Client $model */
+        /** @var \App\Models\Client $model */
         $model = Client::where('client_id', $clientIdentifier)->first();
 
         if (!$model) {

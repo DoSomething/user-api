@@ -1,11 +1,11 @@
 <?php
 
-namespace Northstar\Auth\Repositories;
+namespace App\Auth\Repositories;
 
+use App\Auth\Entities\AuthCodeEntity;
+use App\Models\AuthCode;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
-use Northstar\Auth\Entities\AuthCodeEntity;
-use Northstar\Models\AuthCode;
 
 class AuthCodeRepository implements AuthCodeRepositoryInterface
 {

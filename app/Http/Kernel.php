@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Http;
+namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -15,9 +15,9 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
-        \Northstar\Http\Middleware\LogMemoryUsage::class,
-        \Northstar\Http\Middleware\TrimStrings::class,
-        \Northstar\Http\Middleware\TrustProxies::class,
+        \App\Http\Middleware\LogMemoryUsage::class,
+        \App\Http\Middleware\TrimStrings::class,
+        \App\Http\Middleware\TrustProxies::class,
     ];
 
     /**
@@ -27,17 +27,17 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-            \Northstar\Http\Middleware\EncryptCookies::class,
+            \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \Northstar\Http\Middleware\VerifyCsrfToken::class,
-            \Northstar\Http\Middleware\SetLanguageFromHeader::class,
+            \App\Http\Middleware\VerifyCsrfToken::class,
+            \App\Http\Middleware\SetLanguageFromHeader::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             'guard:web',
         ],
         'api' => [
-            \Northstar\Http\Middleware\ParseOAuthHeader::class,
+            \App\Http\Middleware\ParseOAuthHeader::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \Barryvdh\Cors\HandleCors::class,
             'guard:api',
@@ -51,11 +51,11 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'guard' => \DoSomething\Gateway\Server\Middleware\SetGuard::class,
-        'auth' => \Northstar\Http\Middleware\Authenticate::class,
+        'auth' => \App\Http\Middleware\Authenticate::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'guest' => \Northstar\Http\Middleware\RedirectIfAuthenticated::class,
-        'scope' => \Northstar\Http\Middleware\RequireScope::class,
-        'role' => \Northstar\Http\Middleware\RequireRole::class,
-        'throttle' => \Northstar\Http\Middleware\ThrottleRequests::class,
+        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'scope' => \App\Http\Middleware\RequireScope::class,
+        'role' => \App\Http\Middleware\RequireRole::class,
+        'throttle' => \App\Http\Middleware\ThrottleRequests::class,
     ];
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Northstar\Providers;
+namespace App\Providers;
 
+use App\Auth\Registrar;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
-use Northstar\Auth\Registrar;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -15,7 +15,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $namespace = 'Northstar\Http\Controllers';
+    protected $namespace = 'App\Http\Controllers';
 
     /**
      * The registrar handles creating, updating, and

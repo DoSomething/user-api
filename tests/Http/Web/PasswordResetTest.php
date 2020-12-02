@@ -1,9 +1,9 @@
 <?php
 
+use App\Auth\Registrar;
+use App\Jobs\SendPasswordResetToCustomerIo;
+use App\Models\User;
 use Illuminate\Support\Facades\Bus;
-use Northstar\Auth\Registrar;
-use Northstar\Jobs\SendPasswordResetToCustomerIo;
-use Northstar\Models\User;
 
 class PasswordResetTest extends BrowserKitTestCase
 {
@@ -83,7 +83,7 @@ class PasswordResetTest extends BrowserKitTestCase
             $this->see('We can\'t find a user with that e-mail address.');
         }
 
-        $this->expectsEvents(\Northstar\Events\Throttled::class);
+        $this->expectsEvents(\App\Events\Throttled::class);
 
         $this->visit('password/reset');
         $this->submitForm('Request New Password', [

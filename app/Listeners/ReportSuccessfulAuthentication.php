@@ -1,11 +1,11 @@
 <?php
 
-namespace Northstar\Listeners;
+namespace App\Listeners;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Log;
-use Northstar\Models\User;
 
 class ReportSuccessfulAuthentication
 {

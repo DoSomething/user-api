@@ -1,15 +1,15 @@
 <?php
 
-namespace Northstar\Jobs;
+namespace App\Jobs;
 
+use App\Models\User;
+use App\Services\CustomerIo;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Redis;
-use Northstar\Models\User;
-use Northstar\Services\CustomerIo;
 
 class SendUserToCustomerIo implements ShouldQueue
 {

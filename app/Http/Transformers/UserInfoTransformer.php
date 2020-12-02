@@ -1,9 +1,9 @@
 <?php
 
-namespace Northstar\Http\Transformers;
+namespace App\Http\Transformers;
 
+use App\Models\User;
 use League\Fractal\TransformerAbstract;
-use Northstar\Models\User;
 
 class UserInfoTransformer extends TransformerAbstract
 {

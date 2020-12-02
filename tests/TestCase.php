@@ -1,6 +1,6 @@
 <?php
 
-use Northstar\Models\User;
+use App\Models\User;
 use Tests\CreatesApplication;
 use Tests\WithAuthentication;
 use Tests\WithMocks;

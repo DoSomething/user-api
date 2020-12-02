@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Models;
+namespace App\Models;
 
 /**
  * The OAuth refresh token model.

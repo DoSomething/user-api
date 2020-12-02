@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Services;
+namespace App\Services;
 
 class Google
 {

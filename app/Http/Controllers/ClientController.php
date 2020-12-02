@@ -1,10 +1,10 @@
 <?php
 
-namespace Northstar\Http\Controllers;
+namespace App\Http\Controllers;
 
+use App\Http\Transformers\ClientTransformer;
+use App\Models\Client;
 use Illuminate\Http\Request;
-use Northstar\Http\Transformers\ClientTransformer;
-use Northstar\Models\Client;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ClientController extends Controller

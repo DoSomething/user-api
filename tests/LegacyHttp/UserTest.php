@@ -1,9 +1,9 @@
 <?php
 
-use Northstar\Models\User;
-use Northstar\Services\CustomerIo;
-use Northstar\Services\Gambit;
-use Northstar\Services\Rogue;
+use App\Models\User;
+use App\Services\CustomerIo;
+use App\Services\Gambit;
+use App\Services\Rogue;
 
 class LegacyUserTest extends BrowserKitTestCase
 {
@@ -235,7 +235,7 @@ class LegacyUserTest extends BrowserKitTestCase
     }
 
     /**
-     * Test for retrieving a nonexistent User
+     * Test for retrieving a nonexistent User.
      *
      * @return void
      */
@@ -246,7 +246,7 @@ class LegacyUserTest extends BrowserKitTestCase
     }
 
     /**
-     * Tests retrieving multiple users by their id
+     * Tests retrieving multiple users by their id.
      */
     public function testFilterUsersById()
     {
@@ -774,7 +774,7 @@ class LegacyUserTest extends BrowserKitTestCase
     }
 
     /**
-     * Test for updating an existing user
+     * Test for updating an existing user.
      *
      * @return void
      */
@@ -881,7 +881,7 @@ class LegacyUserTest extends BrowserKitTestCase
     }
 
     /**
-     * Test for deleting an existing user
+     * Test for deleting an existing user.
      *
      * @return void
      */
@@ -912,7 +912,7 @@ class LegacyUserTest extends BrowserKitTestCase
     }
 
     /**
-     * Test the write scope is required to delete an existing user
+     * Test the write scope is required to delete an existing user.
      *
      * @return void
      */
@@ -1425,7 +1425,7 @@ class LegacyUserTest extends BrowserKitTestCase
 
     /**
      * Test that we can filter records with both ?search[email]=test@dosomething.org
-     * and ?search=test@dosomething.org patterns
+     * and ?search=test@dosomething.org patterns.
      *
      * @return void
      */

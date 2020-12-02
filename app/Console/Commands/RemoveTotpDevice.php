@@ -1,9 +1,9 @@
 <?php
 
-namespace Northstar\Console\Commands;
+namespace App\Console\Commands;
 
+use App\Auth\Registrar;
 use Illuminate\Console\Command;
-use Northstar\Auth\Registrar;
 
 class RemoveTotpDevice extends Command
 {

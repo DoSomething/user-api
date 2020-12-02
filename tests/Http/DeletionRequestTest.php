@@ -1,7 +1,7 @@
 <?php
 
+use App\Models\User;
 use Carbon\Carbon;
-use Northstar\Models\User;
 
 class DeletionRequestTest extends BrowserKitTestCase
 {

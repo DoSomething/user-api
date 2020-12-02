@@ -1,9 +1,9 @@
 <?php
 
-namespace Northstar\Listeners;
+namespace App\Listeners;
 
-use Northstar\Events\PasswordUpdated;
-use Northstar\Jobs\SendPasswordUpdatedToCustomerIo;
+use App\Events\PasswordUpdated;
+use App\Jobs\SendPasswordUpdatedToCustomerIo;
 
 class ReportPasswordUpdated
 {

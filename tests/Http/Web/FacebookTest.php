@@ -1,7 +1,7 @@
 <?php
 
+use App\Models\User;
 use Laravel\Socialite\AbstractUser;
-use Northstar\Models\User;
 
 class FacebookTest extends BrowserKitTestCase
 {

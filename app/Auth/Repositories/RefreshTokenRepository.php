@@ -1,11 +1,11 @@
 <?php
 
-namespace Northstar\Auth\Repositories;
+namespace App\Auth\Repositories;
 
+use App\Auth\Entities\RefreshTokenEntity;
+use App\Models\RefreshToken;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
-use Northstar\Auth\Entities\RefreshTokenEntity;
-use Northstar\Models\RefreshToken;
 
 class RefreshTokenRepository implements RefreshTokenRepositoryInterface
 {

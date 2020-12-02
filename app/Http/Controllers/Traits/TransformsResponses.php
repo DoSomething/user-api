@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Http\Controllers\Traits;
+namespace App\Http\Controllers\Traits;
 
 use Illuminate\Pagination\Paginator;
 use League\Fractal\Manager;

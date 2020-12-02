@@ -1,11 +1,11 @@
 <?php
 
-namespace Northstar\Console\Commands;
+namespace App\Console\Commands;
 
+use App\Auth\Registrar;
 use Illuminate\Console\Command;
 use League\Csv\Reader;
 use League\Csv\Writer;
-use Northstar\Auth\Registrar;
 
 class IdentifyUsersCommand extends Command
 {

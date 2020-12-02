@@ -1,12 +1,12 @@
 <?php
 
-namespace Northstar\Exceptions;
+namespace App\Exceptions;
 
+use App\Http\Transformers\UserTransformer;
+use App\Models\User;
 use Exception;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\JsonResponse;
-use Northstar\Http\Transformers\UserTransformer;
-use Northstar\Models\User;
 
 class NorthstarValidationException extends Exception
 {

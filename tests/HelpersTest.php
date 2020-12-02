@@ -1,7 +1,7 @@
 <?php
 
+use App\Models\Client;
 use Carbon\Carbon;
-use Northstar\Models\Client;
 
 class HelpersTest extends BrowserKitTestCase
 {

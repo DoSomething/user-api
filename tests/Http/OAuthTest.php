@@ -1,7 +1,7 @@
 <?php
 
-use Northstar\Models\Client;
-use Northstar\Models\User;
+use App\Models\Client;
+use App\Models\User;
 
 class OAuthTest extends BrowserKitTestCase
 {
@@ -244,7 +244,7 @@ class OAuthTest extends BrowserKitTestCase
         }
 
         // This next request should trigger a StatHat counter.
-        $this->expectsEvents(\Northstar\Events\Throttled::class);
+        $this->expectsEvents(\App\Events\Throttled::class);
 
         $this->post('v2/auth/token', $invalidCredentials);
         $this->assertResponseStatus(429);

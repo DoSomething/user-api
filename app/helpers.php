@@ -1,17 +1,17 @@
 <?php
 
+use App\Auth\Entities\ClientEntity;
+use App\Auth\Normalizer;
+use App\Auth\Repositories\AccessTokenRepository;
+use App\Auth\Repositories\KeyRepository;
+use App\Auth\Repositories\ScopeRepository;
+use App\Models\Client;
 use Carbon\Carbon;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberUtil;
-use Northstar\Auth\Entities\ClientEntity;
-use Northstar\Auth\Normalizer;
-use Northstar\Auth\Repositories\AccessTokenRepository;
-use Northstar\Auth\Repositories\KeyRepository;
-use Northstar\Auth\Repositories\ScopeRepository;
-use Northstar\Models\Client;
 use SeatGeek\Sixpack\Session\Base as Sixpack;
 
 /**

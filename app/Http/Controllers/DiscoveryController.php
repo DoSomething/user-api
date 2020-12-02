@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Http\Controllers;
+namespace App\Http\Controllers;
 
 class DiscoveryController extends Controller
 {

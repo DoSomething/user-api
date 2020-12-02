@@ -1,8 +1,8 @@
 <?php
 
-namespace Northstar\Services;
+namespace App\Services;
 
-use Northstar\Models\User;
+use App\Models\User;
 use RuntimeException;
 
 class Gambit

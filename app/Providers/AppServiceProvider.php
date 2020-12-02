@@ -1,10 +1,10 @@
 <?php
 
-namespace Northstar\Providers;
+namespace App\Providers;
 
+use App\Models\User;
+use App\Observers\UserObserver;
 use Illuminate\Support\ServiceProvider;
-use Northstar\Models\User;
-use Northstar\Observers\UserObserver;
 
 class AppServiceProvider extends ServiceProvider
 {

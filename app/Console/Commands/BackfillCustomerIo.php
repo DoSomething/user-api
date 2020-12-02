@@ -1,11 +1,11 @@
 <?php
 
-namespace Northstar\Console\Commands;
+namespace App\Console\Commands;
 
+use App\Jobs\SendUserToCustomerIo;
+use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
-use Northstar\Jobs\SendUserToCustomerIo;
-use Northstar\Models\User;
 
 class BackfillCustomerIo extends Command
 {

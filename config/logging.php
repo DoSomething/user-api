@@ -38,21 +38,21 @@ return [
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
-            'tap' => [Northstar\Logging\ContextFormatter::class],
+            'tap' => [App\Logging\ContextFormatter::class],
             'level' => 'debug',
         ],
 
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
-            'tap' => [Northstar\Logging\ContextFormatter::class],
+            'tap' => [App\Logging\ContextFormatter::class],
             'level' => 'debug',
             'days' => 7,
         ],
 
         'errorlog' => [
             'driver' => 'errorlog',
-            'tap' => [Northstar\Logging\ContextFormatter::class],
+            'tap' => [App\Logging\ContextFormatter::class],
             'level' => 'debug',
         ],
     ],

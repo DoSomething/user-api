@@ -1,10 +1,10 @@
 <?php
 
-namespace Northstar\Policies;
+namespace App\Policies;
 
+use App\Auth\Scope;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Northstar\Auth\Scope;
-use Northstar\Models\User;
 
 class UserPolicy
 {

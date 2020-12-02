@@ -1,16 +1,16 @@
 <?php
 
-namespace Northstar\Jobs;
+namespace App\Jobs;
 
+use App\Services\CustomerIo;
+use App\Services\Gambit;
+use App\Services\Rogue;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Redis;
-use Northstar\Services\CustomerIo;
-use Northstar\Services\Gambit;
-use Northstar\Services\Rogue;
 
 class DeleteUserFromOtherServices implements ShouldQueue
 {

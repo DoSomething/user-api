@@ -1,11 +1,11 @@
 <?php
 
-namespace Northstar\Auth\Repositories;
+namespace App\Auth\Repositories;
 
+use App\Auth\Entities\UserEntity;
+use App\Auth\Registrar;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
-use Northstar\Auth\Entities\UserEntity;
-use Northstar\Auth\Registrar;
 
 class UserRepository implements UserRepositoryInterface
 {

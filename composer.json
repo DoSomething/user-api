@@ -52,7 +52,7 @@
       "app/helpers.php"
     ],
     "psr-4": {
-      "Northstar\\": "app/"
+      "App\\": "app/"
     }
   },
   "extra": {

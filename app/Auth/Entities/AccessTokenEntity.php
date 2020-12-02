@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Auth\Entities;
+namespace App\Auth\Entities;
 
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Key;

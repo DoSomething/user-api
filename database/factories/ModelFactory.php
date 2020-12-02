@@ -7,7 +7,7 @@
  *
  * @var \Illuminate\Database\Eloquent\Factory $factory
  */
-$factory->define(Northstar\Models\User::class, function (
+$factory->define(App\Models\User::class, function (
     Faker\Generator $faker
 ) {
     $faker->addProvider(new FakerPhoneNumber($faker));
@@ -57,7 +57,7 @@ $factory->define(Northstar\Models\User::class, function (
     ];
 });
 
-$factory->state(Northstar\Models\User::class, 'email-subscribed', function (
+$factory->state(App\Models\User::class, 'email-subscribed', function (
     Faker\Generator $faker
 ) {
     return [
@@ -69,7 +69,7 @@ $factory->state(Northstar\Models\User::class, 'email-subscribed', function (
     ];
 });
 
-$factory->state(Northstar\Models\User::class, 'email-unsubscribed', function (
+$factory->state(App\Models\User::class, 'email-unsubscribed', function (
     Faker\Generator $faker
 ) {
     return [
@@ -77,7 +77,7 @@ $factory->state(Northstar\Models\User::class, 'email-unsubscribed', function (
     ];
 });
 
-$factory->state(Northstar\Models\User::class, 'sms-subscribed', function (
+$factory->state(App\Models\User::class, 'sms-subscribed', function (
     Faker\Generator $faker
 ) {
     return [
@@ -87,7 +87,7 @@ $factory->state(Northstar\Models\User::class, 'sms-subscribed', function (
     ];
 });
 
-$factory->state(Northstar\Models\User::class, 'sms-unsubscribed', function (
+$factory->state(App\Models\User::class, 'sms-unsubscribed', function (
     Faker\Generator $faker
 ) {
     return [
@@ -96,7 +96,7 @@ $factory->state(Northstar\Models\User::class, 'sms-unsubscribed', function (
     ];
 });
 
-$factory->defineAs(Northstar\Models\User::class, 'staff', function (
+$factory->defineAs(App\Models\User::class, 'staff', function (
     Faker\Generator $faker
 ) {
     $faker->addProvider(new FakerPhoneNumber($faker));
@@ -117,7 +117,7 @@ $factory->defineAs(Northstar\Models\User::class, 'staff', function (
     ];
 });
 
-$factory->defineAs(Northstar\Models\User::class, 'admin', function (
+$factory->defineAs(App\Models\User::class, 'admin', function (
     Faker\Generator $faker
 ) {
     $faker->addProvider(new FakerPhoneNumber($faker));
@@ -139,7 +139,7 @@ $factory->defineAs(Northstar\Models\User::class, 'admin', function (
 });
 
 $factory->defineAs(
-    \Northstar\Models\Client::class,
+    \App\Models\Client::class,
     'authorization_code',
     function (Faker\Generator $faker) {
         return [
@@ -159,7 +159,7 @@ $factory->defineAs(
     },
 );
 
-$factory->defineAs(\Northstar\Models\Client::class, 'password', function (
+$factory->defineAs(\App\Models\Client::class, 'password', function (
     Faker\Generator $faker
 ) {
     return [
@@ -172,7 +172,7 @@ $factory->defineAs(\Northstar\Models\Client::class, 'password', function (
 });
 
 $factory->defineAs(
-    \Northstar\Models\Client::class,
+    \App\Models\Client::class,
     'client_credentials',
     function (Faker\Generator $faker) {
         return [

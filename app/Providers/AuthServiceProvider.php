@@ -1,10 +1,10 @@
 <?php
 
-namespace Northstar\Providers;
+namespace App\Providers;
 
+use App\Models\User;
+use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Northstar\Models\User;
-use Northstar\Policies\UserPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {

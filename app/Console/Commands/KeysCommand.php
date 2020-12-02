@@ -1,9 +1,9 @@
 <?php
 
-namespace Northstar\Console\Commands;
+namespace App\Console\Commands;
 
+use App\Auth\Repositories\KeyRepository;
 use Illuminate\Console\Command;
-use Northstar\Auth\Repositories\KeyRepository;
 use phpseclib\Crypt\RSA;
 
 class KeysCommand extends Command

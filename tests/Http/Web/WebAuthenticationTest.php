@@ -1,7 +1,7 @@
 <?php
 
-use Northstar\Models\Client;
-use Northstar\Models\User;
+use App\Models\Client;
+use App\Models\User;
 
 class WebAuthenticationTest extends BrowserKitTestCase
 {
@@ -96,7 +96,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
         }
 
         // This next request should trigger a StatHat counter.
-        $this->expectsEvents(\Northstar\Events\Throttled::class);
+        $this->expectsEvents(\App\Events\Throttled::class);
 
         $this->visit('login');
         $this->submitForm('Log In', [

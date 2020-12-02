@@ -1,13 +1,13 @@
 <?php
 
-namespace Northstar\Auth;
+namespace App\Auth;
 
+use App\Models\User;
 use Illuminate\Auth\TokenGuard;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Http\Request;
 use Mockery\CountValidator\Exception;
-use Northstar\Models\User;
 
 class NorthstarTokenGuard extends TokenGuard implements Guard
 {
@@ -50,7 +50,7 @@ class NorthstarTokenGuard extends TokenGuard implements Guard
      * Retrieve the user from a parsed JWT access token that
      * was provided with the current request.
      *
-     * @return \Northstar\Models\User|null
+     * @return \App\Models\User|null
      */
     public function getUserForToken()
     {

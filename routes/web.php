@@ -6,7 +6,7 @@
  * contains the "web" middleware group. Now create something great!
  *
  * @var \Illuminate\Routing\Router $router
- * @see \Northstar\Providers\RouteServiceProvider
+ * @see \App\Providers\RouteServiceProvider
  */
 
 // Homepage

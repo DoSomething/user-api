@@ -2,21 +2,21 @@
 
 namespace Tests;
 
+use App\Auth\Entities\AccessTokenEntity;
+use App\Auth\Entities\ClientEntity;
+use App\Auth\Entities\ScopeEntity;
+use App\Auth\Scope;
+use App\Models\Client;
+use App\Models\User;
 use DateInterval;
 use League\OAuth2\Server\CryptKey;
-use Northstar\Auth\Entities\AccessTokenEntity;
-use Northstar\Auth\Entities\ClientEntity;
-use Northstar\Auth\Entities\ScopeEntity;
-use Northstar\Auth\Scope;
-use Northstar\Models\Client;
-use Northstar\Models\User;
 
 trait WithAuthentication
 {
     /**
      * Make a new authenticated web user.
      *
-     * @return \Northstar\Models\User
+     * @return \App\Models\User
      */
     protected function makeAuthWebUser()
     {

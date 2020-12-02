@@ -1,10 +1,10 @@
 <?php
 
-namespace Northstar\Http\Middleware;
+namespace App\Http\Middleware;
 
+use App\Auth\Role;
 use Closure;
 use League\OAuth2\Server\Exception\OAuthServerException;
-use Northstar\Auth\Role;
 
 class RequireRole
 {

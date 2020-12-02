@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Auth\Repositories;
+namespace App\Auth\Repositories;
 
 use League\OAuth2\Server\CryptKey;
 use Storage;

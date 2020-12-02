@@ -1,10 +1,10 @@
 <?php
 
-namespace Northstar\Providers;
+namespace App\Providers;
 
+use App\Auth\Scope;
 use Illuminate\Support\ServiceProvider;
 use libphonenumber\PhoneNumberUtil;
-use Northstar\Auth\Scope;
 
 class ValidationServiceProvider extends ServiceProvider
 {

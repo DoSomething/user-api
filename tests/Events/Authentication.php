@@ -1,14 +1,14 @@
 <?php
 
+use App\Models\User;
 use Carbon\Carbon;
-use Northstar\Models\User;
 
 class AuthenticationEventsTest extends BrowserKitTestCase
 {
     /** @test */
     public function testSuccessfulLoginEvent()
     {
-        /** @var \Northstar\Models\User $user */
+        /** @var \App\Models\User $user */
         $user = factory(User::class)->create([
             'last_authenticated_at' => Carbon::yesterday(),
         ]);

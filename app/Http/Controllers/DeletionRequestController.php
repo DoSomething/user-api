@@ -1,10 +1,10 @@
 <?php
 
-namespace Northstar\Http\Controllers;
+namespace App\Http\Controllers;
 
+use App\Http\Transformers\UserTransformer;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Northstar\Http\Transformers\UserTransformer;
-use Northstar\Models\User;
 
 class DeletionRequestController extends Controller
 {

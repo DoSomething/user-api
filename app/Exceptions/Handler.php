@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Exceptions;
+namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -126,7 +126,7 @@ class Handler extends ExceptionHandler
      */
     protected function rateLimited($exception)
     {
-        event(new \Northstar\Events\Throttled());
+        event(new \App\Events\Throttled());
 
         $retryAfter = $exception->getHeaders()['Retry-After'];
         $minutes = ceil($retryAfter / 60);

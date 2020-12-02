@@ -1,6 +1,6 @@
 <?php
 
-use Northstar\Models\User;
+use App\Models\User;
 
 class ProfileTest extends BrowserKitTestCase
 {

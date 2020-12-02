@@ -1,13 +1,13 @@
 <?php
 
-namespace Northstar\Auth\Repositories;
+namespace App\Auth\Repositories;
 
+use App\Auth\Entities\AccessTokenEntity;
+use App\Models\User;
 use Carbon\Carbon;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
-use Northstar\Auth\Entities\AccessTokenEntity;
-use Northstar\Models\User;
 
 class AccessTokenRepository implements AccessTokenRepositoryInterface
 {

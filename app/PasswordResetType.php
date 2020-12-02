@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar;
+namespace App;
 
 class PasswordResetType
 {

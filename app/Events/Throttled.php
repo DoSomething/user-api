@@ -1,6 +1,6 @@
 <?php
 
-namespace Northstar\Events;
+namespace App\Events;
 
 class Throttled extends Event
 {

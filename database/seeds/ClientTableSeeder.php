@@ -1,8 +1,8 @@
 <?php
 
+use App\Auth\Scope;
+use App\Models\Client;
 use Illuminate\Database\Seeder;
-use Northstar\Auth\Scope;
-use Northstar\Models\Client;
 
 class ClientTableSeeder extends Seeder
 {
