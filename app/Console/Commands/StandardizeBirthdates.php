@@ -3,10 +3,10 @@
 namespace Northstar\Console\Commands;
 
 use Carbon\Carbon;
-use Northstar\Models\User;
-use MongoDB\BSON\UTCDateTime;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
+use MongoDB\BSON\UTCDateTime;
+use Northstar\Models\User;
 
 class StandardizeBirthdates extends Command
 {
@@ -50,17 +50,35 @@ class StandardizeBirthdates extends Command
                 // If possible, switch the birthday to a date type, otherwise, wipe it!
                 try {
                     $date = Carbon::parse($value);
-                    app('db')->collection('users')->where(['_id' => $user->id])
-                        ->update(['birthdate' => new UTCDateTime($date->getTimestamp() * 1000)]);
+                    app('db')
+                        ->collection('users')
+                        ->where(['_id' => $user->id])
+                        ->update([
+                            'birthdate' => new UTCDateTime(
+                                $date->getTimestamp() * 1000,
+                            ),
+                        ]);
                 } catch (\Exception $e) {
                     $user->setBirthdateAttribute(null);
                     $user->save();
                 }
 
-                if (! $user->fresh()->birthdate) {
-                    info('northstar:bday - removed invalid birthdate from '.$user->id.' - '.$value);
+                if (!$user->fresh()->birthdate) {
+                    info(
+                        'northstar:bday - removed invalid birthdate from ' .
+                            $user->id .
+                            ' - ' .
+                            $value,
+                    );
                 } else {
-                    info('northstar:bday - updated user '.$user->id.' birthdate from '.$value.' to '.$date);
+                    info(
+                        'northstar:bday - updated user ' .
+                            $user->id .
+                            ' birthdate from ' .
+                            $value .
+                            ' to ' .
+                            $date,
+                    );
                 }
                 $progressBar->advance();
             }

@@ -15,7 +15,7 @@ abstract class PasswordRules extends NISTPasswordRules
     /**
      * The base rules for setting a new password. These are used to construct
      * the "change password" rules. (We omit the "confirm" rule here, since
-     * we don't ask users to confirm their password when registering.)
+     * we don't ask users to confirm their password when registering.).
      */
     public static function register($username)
     {

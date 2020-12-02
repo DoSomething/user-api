@@ -2,9 +2,9 @@
 
 namespace Northstar\Providers;
 
+use Illuminate\Support\ServiceProvider;
 use Northstar\Models\User;
 use Northstar\Observers\UserObserver;
-use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {

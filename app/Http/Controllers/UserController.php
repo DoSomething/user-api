@@ -2,15 +2,15 @@
 
 namespace Northstar\Http\Controllers;
 
-use Northstar\Auth\Role;
-use Northstar\Models\User;
-use Illuminate\Http\Request;
-use Northstar\Auth\Registrar;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\AuthenticationException;
-use Northstar\Http\Transformers\UserTransformer;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
+use Northstar\Auth\Registrar;
+use Northstar\Auth\Role;
 use Northstar\Exceptions\NorthstarValidationException;
+use Northstar\Http\Transformers\UserTransformer;
+use Northstar\Models\User;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends Controller
@@ -35,19 +35,22 @@ class UserController extends Controller
      * @param Registrar $registrar
      * @param UserTransformer $transformer
      */
-    public function __construct(Registrar $registrar, UserTransformer $transformer)
-    {
+    public function __construct(
+        Registrar $registrar,
+        UserTransformer $transformer
+    ) {
         $this->registrar = $registrar;
         $this->transformer = $transformer;
 
         $this->middleware('role:admin,staff', ['except' => ['show', 'update']]);
         $this->middleware('scope:user');
-        $this->middleware('scope:write', ['only' => ['store', 'update', 'destroy']]);
+        $this->middleware('scope:write', [
+            'only' => ['store', 'update', 'destroy'],
+        ]);
     }
 
     /**
      * Display a listing of the resource.
-     * GET /users
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -64,23 +67,36 @@ class UserController extends Controller
 
         // Use `?before[column]=time` to get records before given value.
         $befores = normalize('dates', $request->query('before'));
-        $query = $this->filter($query, $befores, [User::CREATED_AT, User::UPDATED_AT], '<');
+        $query = $this->filter(
+            $query,
+            $befores,
+            [User::CREATED_AT, User::UPDATED_AT],
+            '<',
+        );
 
         // Use `?after[column]=time` to get records after given value.
         $afters = normalize('dates', $request->query('after'));
-        $query = $this->filter($query, $afters, [User::CREATED_AT, User::UPDATED_AT], '>');
+        $query = $this->filter(
+            $query,
+            $afters,
+            [User::CREATED_AT, User::UPDATED_AT],
+            '>',
+        );
 
         // Use `?search[column]=value` or `?search=key` to find users matching one or more criteria.
         $searches = $request->query('search');
 
-        $query = $this->search($query, normalize('credentials', $searches), User::$uniqueIndexes);
+        $query = $this->search(
+            $query,
+            normalize('credentials', $searches),
+            User::$uniqueIndexes,
+        );
 
         return $this->paginatedCollection($query, $request);
     }
 
     /**
      * Store a newly created resource in storage.
-     * POST /users
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -88,11 +104,20 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $existingUser = $this->registrar->resolve($request->only('id', 'email', 'mobile', 'drupal_id', 'facebook_id'));
+        $existingUser = $this->registrar->resolve(
+            $request->only('id', 'email', 'mobile', 'drupal_id', 'facebook_id'),
+        );
 
         // If there is an existing user, throw an error.
-        if ($existingUser && ! $request->query('upsert')) {
-            throw new NorthstarValidationException(['id' => ['A record matching one of the given indexes already exists.']], $existingUser);
+        if ($existingUser && !$request->query('upsert')) {
+            throw new NorthstarValidationException(
+                [
+                    'id' => [
+                        'A record matching one of the given indexes already exists.',
+                    ],
+                ],
+                $existingUser,
+            );
         }
 
         // Normalize input and validate the request
@@ -104,28 +129,37 @@ class UserController extends Controller
             // Makes sure we can't "upsert" a record to have a changed index if already set.
             // @TODO: There must be a better way to do this...
             foreach (User::$uniqueIndexes as $index) {
-                if ($request->has($index) && ! empty($existingUser->{$index}) && $request->input($index) !== $existingUser->{$index}) {
+                if (
+                    $request->has($index) &&
+                    !empty($existingUser->{$index}) &&
+                    $request->input($index) !== $existingUser->{$index}
+                ) {
                     Log::warning('upsert_index_conflict', [
                         'index' => $index,
                         'new' => $request->input($index),
                         'existing' => $existingUser->{$index},
                     ]);
 
-                    throw new NorthstarValidationException([$index => ['Cannot upsert an existing index.']], $user);
+                    throw new NorthstarValidationException(
+                        [$index => ['Cannot upsert an existing index.']],
+                        $user,
+                    );
                 }
             }
         }
 
-        $user = $this->registrar->register($request->except('role'), $existingUser);
+        $user = $this->registrar->register(
+            $request->except('role'),
+            $existingUser,
+        );
 
-        $code = ! is_null($existingUser) ? 200 : 201;
+        $code = !is_null($existingUser) ? 200 : 201;
 
         return $this->item($user, $code);
     }
 
     /**
      * Display the specified resource.
-     * GET /users/:id
      *
      * @param string $id - the actual value to search for
      *
@@ -141,7 +175,6 @@ class UserController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * PUT /users/:id
      *
      * @param string $id - the actual value to search for
      * @param Request $request
@@ -152,12 +185,15 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        if (! Gate::allows('edit-profile', $user)) {
+        if (!Gate::allows('edit-profile', $user)) {
             throw new AuthenticationException('This action is unauthorized.');
         }
 
         // Debug level log to show the payload received
-        Log::debug('received update user payload for user '.$user->id, $request->all());
+        Log::debug(
+            'received update user payload for user ' . $user->id,
+            $request->all(),
+        );
 
         // Normalize input and validate the request
         $request = normalize('credentials', $request);
@@ -175,7 +211,6 @@ class UserController extends Controller
 
     /**
      * Delete a user resource.
-     * DELETE /users/:id
      *
      * @param User $user
      * @return \Illuminate\Http\Response

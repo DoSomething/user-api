@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Password Reminder Language Lines
@@ -13,10 +12,11 @@ return [
     |
     */
 
-    'password' => 'Passwords must be at least six characters and match the confirmation.',
+    'password' =>
+        'Passwords must be at least six characters and match the confirmation.',
     'user' => "We can't find a user with that e-mail address.",
-    'token' => "It's been longer than 72 hours since your create-password link was sent.",
+    'token' =>
+        "It's been longer than 72 hours since your create-password link was sent.",
     'sent' => 'We have e-mailed your password reset link!',
     'reset' => 'Your password has been reset!',
-
 ];

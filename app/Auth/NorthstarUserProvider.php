@@ -3,9 +3,9 @@
 namespace Northstar\Auth;
 
 use Illuminate\Auth\EloquentUserProvider;
+use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Hashing\Hasher as HasherContract;
-use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 
 class NorthstarUserProvider extends EloquentUserProvider implements UserProvider
 {
@@ -22,8 +22,11 @@ class NorthstarUserProvider extends EloquentUserProvider implements UserProvider
      * @param \Illuminate\Contracts\Hashing\Hasher $hasher
      * @param string $model
      */
-    public function __construct(Registrar $registrar, HasherContract $hasher, $model)
-    {
+    public function __construct(
+        Registrar $registrar,
+        HasherContract $hasher,
+        $model
+    ) {
         $this->registrar = $registrar;
 
         parent::__construct($hasher, $model);

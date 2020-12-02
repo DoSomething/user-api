@@ -6,7 +6,6 @@ class ProfileTest extends BrowserKitTestCase
 {
     /**
      * Test that a user can see their own profile.
-     * GET /profile
      *
      * @test
      */
@@ -33,7 +32,6 @@ class ProfileTest extends BrowserKitTestCase
 
     /**
      * Test that a user can modify their own profile.
-     * POST /profile
      *
      * @test
      */
@@ -71,7 +69,6 @@ class ProfileTest extends BrowserKitTestCase
 
     /**
      * Test that the write scope is required to update a profile.
-     * POST /profile
      *
      * @test
      */
@@ -93,6 +90,9 @@ class ProfileTest extends BrowserKitTestCase
         ]);
 
         $this->assertResponseStatus(401);
-        $this->assertEquals('Requires the `write` scope.', $response->decodeResponseJson()['hint']);
+        $this->assertEquals(
+            'Requires the `write` scope.',
+            $response->decodeResponseJson()['hint'],
+        );
     }
 }

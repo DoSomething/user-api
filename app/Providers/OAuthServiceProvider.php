@@ -4,32 +4,32 @@ namespace Northstar\Providers;
 
 use DateInterval;
 use Defuse\Crypto\Key;
-use Northstar\Auth\Registrar;
 use Illuminate\Cache\RateLimiter;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
-use Northstar\Auth\NorthstarTokenGuard;
-use League\OAuth2\Server\ResourceServer;
-use Northstar\Auth\NorthstarUserProvider;
-use League\OAuth2\Server\Grant\AuthCodeGrant;
-use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\AuthorizationServer;
-use Northstar\Auth\Repositories\KeyRepository;
-use Northstar\Auth\Repositories\UserRepository;
-use Northstar\Auth\Repositories\ScopeRepository;
-use League\OAuth2\Server\Grant\RefreshTokenGrant;
-use Northstar\Auth\Repositories\ClientRepository;
-use Northstar\Auth\Responses\BearerTokenResponse;
-use Northstar\Auth\Repositories\AuthCodeRepository;
+use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
-use Northstar\Auth\Repositories\AccessTokenRepository;
-use Northstar\Auth\Repositories\RefreshTokenRepository;
-use League\OAuth2\Server\Repositories\UserRepositoryInterface;
-use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
-use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
-use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
+use League\OAuth2\Server\Grant\PasswordGrant;
+use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
+use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
+use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
+use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
+use League\OAuth2\Server\Repositories\UserRepositoryInterface;
+use League\OAuth2\Server\ResourceServer;
+use Northstar\Auth\NorthstarTokenGuard;
+use Northstar\Auth\NorthstarUserProvider;
+use Northstar\Auth\Registrar;
+use Northstar\Auth\Repositories\AccessTokenRepository;
+use Northstar\Auth\Repositories\AuthCodeRepository;
+use Northstar\Auth\Repositories\ClientRepository;
+use Northstar\Auth\Repositories\KeyRepository;
+use Northstar\Auth\Repositories\RefreshTokenRepository;
+use Northstar\Auth\Repositories\ScopeRepository;
+use Northstar\Auth\Repositories\UserRepository;
+use Northstar\Auth\Responses\BearerTokenResponse;
 
 class OAuthServiceProvider extends ServiceProvider
 {
@@ -42,27 +42,49 @@ class OAuthServiceProvider extends ServiceProvider
     {
         // Register our custom user provider
         Auth::provider('northstar', function ($app, array $config) {
-            return new NorthstarUserProvider($app[Registrar::class], $app['hash'], $config['model']);
+            return new NorthstarUserProvider(
+                $app[Registrar::class],
+                $app['hash'],
+                $config['model'],
+            );
         });
 
         // Register our custom token Guard implementation
         Auth::extend('northstar-token', function ($app, $name, array $config) {
-            return new NorthstarTokenGuard(Auth::createUserProvider($config['provider']), request());
+            return new NorthstarTokenGuard(
+                Auth::createUserProvider($config['provider']),
+                request(),
+            );
         });
 
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
-        $this->app->bind(ClientRepositoryInterface::class, ClientRepository::class);
-        $this->app->bind(ScopeRepositoryInterface::class, ScopeRepository::class);
-        $this->app->bind(RefreshTokenRepositoryInterface::class, RefreshTokenRepository::class);
-        $this->app->bind(AccessTokenRepositoryInterface::class, AccessTokenRepository::class);
-        $this->app->bind(AuthCodeRepositoryInterface::class, AuthCodeRepository::class);
+        $this->app->bind(
+            ClientRepositoryInterface::class,
+            ClientRepository::class,
+        );
+        $this->app->bind(
+            ScopeRepositoryInterface::class,
+            ScopeRepository::class,
+        );
+        $this->app->bind(
+            RefreshTokenRepositoryInterface::class,
+            RefreshTokenRepository::class,
+        );
+        $this->app->bind(
+            AccessTokenRepositoryInterface::class,
+            AccessTokenRepository::class,
+        );
+        $this->app->bind(
+            AuthCodeRepositoryInterface::class,
+            AuthCodeRepository::class,
+        );
 
         // Auth Code grant needs auth code TTL to be injected.
         $this->app->bind(AuthCodeGrant::class, function () {
             return new AuthCodeGrant(
                 app(AuthCodeRepositoryInterface::class),
                 app(RefreshTokenRepositoryInterface::class),
-                new DateInterval('PT1H')
+                new DateInterval('PT1H'),
             );
         });
 
@@ -74,7 +96,7 @@ class OAuthServiceProvider extends ServiceProvider
                 app(ScopeRepositoryInterface::class),
                 app(KeyRepository::class)->getPrivateKey(),
                 Key::loadFromAsciiSafeString(config('auth.key')),
-                app(BearerTokenResponse::class)
+                app(BearerTokenResponse::class),
             );
 
             // Define which OAuth grants we'll accept.
@@ -95,10 +117,12 @@ class OAuthServiceProvider extends ServiceProvider
 
             // Rate limit failed client authentication attempts.
             // @see: OAuthController::createToken
-            $server->getEmitter()->addListener('client.authentication.failed', function () {
-                // Increment number of failed requests for this route & IP address.
-                app(RateLimiter::class)->hit(request()->fingerprint(), 1);
-            });
+            $server
+                ->getEmitter()
+                ->addListener('client.authentication.failed', function () {
+                    // Increment number of failed requests for this route & IP address.
+                    app(RateLimiter::class)->hit(request()->fingerprint(), 1);
+                });
 
             return $server;
         });
@@ -106,7 +130,7 @@ class OAuthServiceProvider extends ServiceProvider
         $this->app->singleton(ResourceServer::class, function () {
             return new ResourceServer(
                 app(AccessTokenRepositoryInterface::class),
-                app(KeyRepository::class)->getPublicKey()
+                app(KeyRepository::class)->getPublicKey(),
             );
         });
     }

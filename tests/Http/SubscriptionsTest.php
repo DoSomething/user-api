@@ -6,13 +6,14 @@ class SubscriptionsTest extends BrowserKitTestCase
 {
     /**
      * Test adding a subscription topic to an existing user.
-     * POST /v2/subscriptions
      *
      * @return void
      */
     public function testAddSubscriptionToExistingUser()
     {
-        $user = factory(User::class)->create(['email_subscription_topics' => []]);
+        $user = factory(User::class)->create([
+            'email_subscription_topics' => [],
+        ]);
 
         $this->json('POST', 'v2/subscriptions', [
             'email' => $user->email,
@@ -35,14 +36,15 @@ class SubscriptionsTest extends BrowserKitTestCase
 
     /**
      * Test adding a subscription topics to an existing user with no duplicates.
-     * POST /v2/subscriptions
      *
      * @return void
      */
     public function testAddSubscriptionToExistingUserWithNoDuplicates()
     {
         // Create a user who already has a subscription topic
-        $user = factory(User::class)->create(['email_subscription_topics' => ['news']]);
+        $user = factory(User::class)->create([
+            'email_subscription_topics' => ['news'],
+        ]);
 
         $this->json('POST', 'v2/subscriptions', [
             'email' => $user->email,
@@ -64,7 +66,6 @@ class SubscriptionsTest extends BrowserKitTestCase
 
     /**
      * Test adding a subscription topic to a new user.
-     * POST /v2/subscriptions
      *
      * @return void
      */
@@ -91,7 +92,6 @@ class SubscriptionsTest extends BrowserKitTestCase
 
     /**
      * Test that a new user gets a password reset email.
-     * POST /v2/subscriptions
      *
      * @return void
      */
@@ -107,12 +107,13 @@ class SubscriptionsTest extends BrowserKitTestCase
         $this->assertResponseStatus(201);
         $this->customerIoMock->shouldHaveReceived('trackEvent')->once();
 
-        $this->seeInDatabase('password_resets', ['email' => 'topics@dosomething.org']);
+        $this->seeInDatabase('password_resets', [
+            'email' => 'topics@dosomething.org',
+        ]);
     }
 
     /**
      * Test rate limiting (10 posts per hour)
-     * POST /v2/subscriptions
      *
      * @return void
      */
@@ -121,7 +122,7 @@ class SubscriptionsTest extends BrowserKitTestCase
         // Post to /subscriptions 10 times
         for ($i = 0; $i < 10; $i++) {
             $this->json('POST', 'v2/subscriptions', [
-                'email' => 'topics'.$i.'@dosomething.org',
+                'email' => 'topics' . $i . '@dosomething.org',
                 'email_subscription_topic' => 'news',
                 'source' => 'phoenix-next',
                 'source_detail' => 'test_source_detail',

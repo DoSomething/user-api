@@ -2,9 +2,9 @@
 
 namespace Northstar\Console\Commands;
 
+use Illuminate\Console\Command;
 use League\Csv\Reader;
 use Northstar\Models\User;
-use Illuminate\Console\Command;
 
 class DeleteUsersCommand extends Command
 {
@@ -33,14 +33,14 @@ class DeleteUsersCommand extends Command
         $csv = Reader::createFromString($input);
         $csv->setHeaderOffset(0);
 
-        info('Immediately deleting '.count($csv).' users...');
+        info('Immediately deleting ' . count($csv) . ' users...');
 
         foreach ($csv->getRecords() as $record) {
             $id = $record[$this->option('id_column')];
             $user = User::find($id);
 
-            if (! $user) {
-                info('Skipping: '.$id);
+            if (!$user) {
+                info('Skipping: ' . $id);
                 continue;
             }
 

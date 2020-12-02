@@ -1,7 +1,7 @@
 <?php
 
-use Northstar\Models\User;
 use Northstar\Models\Client;
+use Northstar\Models\User;
 
 class ClientTest extends BrowserKitTestCase
 {
@@ -41,7 +41,11 @@ class ClientTest extends BrowserKitTestCase
         $this->seeJsonStructure([
             'data' => [
                 '*' => [
-                    'client_id', 'client_secret', 'scope', 'allowed_grant', 'redirect_uri',
+                    'client_id',
+                    'client_secret',
+                    'scope',
+                    'allowed_grant',
+                    'redirect_uri',
                 ],
             ],
         ]);
@@ -92,9 +96,7 @@ class ClientTest extends BrowserKitTestCase
 
         $this->assertResponseStatus(201);
         $this->seeJsonStructure([
-            'data' => [
-                'client_id', 'client_secret', 'scope',
-            ],
+            'data' => ['client_id', 'client_secret', 'scope'],
         ]);
     }
 
@@ -105,7 +107,11 @@ class ClientTest extends BrowserKitTestCase
     {
         $admin = factory(User::class, 'admin')->create();
 
-        $response = $this->asUser($admin, ['role:admin', 'user', 'client'])->json('POST', 'v2/clients', [
+        $response = $this->asUser($admin, [
+            'role:admin',
+            'user',
+            'client',
+        ])->json('POST', 'v2/clients', [
             'title' => 'Dog',
             'description' => 'hello this is doge',
             'client_id' => 'dog',
@@ -114,7 +120,10 @@ class ClientTest extends BrowserKitTestCase
         ]);
 
         $this->assertResponseStatus(401);
-        $this->assertEquals('Requires the `write` scope.', $response->decodeResponseJson()['hint']);
+        $this->assertEquals(
+            'Requires the `write` scope.',
+            $response->decodeResponseJson()['hint'],
+        );
     }
 
     /**
@@ -133,7 +142,7 @@ class ClientTest extends BrowserKitTestCase
     {
         $client = Client::create(['client_id' => 'phpunit_key']);
 
-        $this->asNormalUser()->get('v2/clients/'.$client->client_id);
+        $this->asNormalUser()->get('v2/clients/' . $client->client_id);
         $this->assertResponseStatus(401);
     }
 
@@ -144,7 +153,7 @@ class ClientTest extends BrowserKitTestCase
     {
         $client = Client::create(['client_id' => 'phpunit_key']);
 
-        $this->asAdminUser()->get('v2/clients/'.$client->client_id);
+        $this->asAdminUser()->get('v2/clients/' . $client->client_id);
         $this->assertResponseStatus(200);
     }
 
@@ -155,11 +164,8 @@ class ClientTest extends BrowserKitTestCase
     {
         $client = Client::create(['client_id' => 'update_key']);
 
-        $this->asNormalUser()->json('PUT', 'v2/clients/'.$client->client_id, [
-            'scope' => [
-                'admin',
-                'user',
-            ],
+        $this->asNormalUser()->json('PUT', 'v2/clients/' . $client->client_id, [
+            'scope' => ['admin', 'user'],
         ]);
 
         $this->assertResponseStatus(401);
@@ -170,9 +176,12 @@ class ClientTest extends BrowserKitTestCase
      */
     public function testUpdateAsAdminUser()
     {
-        $client = Client::create(['client_id' => 'update_key', 'allowed_grant' => 'password']);
+        $client = Client::create([
+            'client_id' => 'update_key',
+            'allowed_grant' => 'password',
+        ]);
 
-        $this->asAdminUser()->json('PUT', 'v2/clients/'.$client->client_id, [
+        $this->asAdminUser()->json('PUT', 'v2/clients/' . $client->client_id, [
             'title' => 'New Title',
             'scope' => ['admin', 'user'],
             'allowed_grant' => 'authorization_code',
@@ -194,11 +203,18 @@ class ClientTest extends BrowserKitTestCase
      */
     public function testUpdateWithoutWriteScope()
     {
-        $client = Client::create(['client_id' => 'update_key', 'allowed_grant' => 'password']);
+        $client = Client::create([
+            'client_id' => 'update_key',
+            'allowed_grant' => 'password',
+        ]);
 
         $admin = factory(User::class, 'admin')->create();
 
-        $response = $this->asUser($admin, ['role:admin', 'user', 'client'])->json('PUT', 'v2/clients/'.$client->client_id, [
+        $response = $this->asUser($admin, [
+            'role:admin',
+            'user',
+            'client',
+        ])->json('PUT', 'v2/clients/' . $client->client_id, [
             'title' => 'New Title',
             'scope' => ['admin', 'user'],
             'allowed_grant' => 'authorization_code',
@@ -206,7 +222,10 @@ class ClientTest extends BrowserKitTestCase
         ]);
 
         $this->assertResponseStatus(401);
-        $this->assertEquals('Requires the `write` scope.', $response->decodeResponseJson()['hint']);
+        $this->assertEquals(
+            'Requires the `write` scope.',
+            $response->decodeResponseJson()['hint'],
+        );
     }
 
     /**
@@ -217,7 +236,10 @@ class ClientTest extends BrowserKitTestCase
     {
         $client = Client::create(['client_id' => 'delete_me']);
 
-        $this->asNormalUser()->json('DELETE', 'v2/clients/'.$client->client_id);
+        $this->asNormalUser()->json(
+            'DELETE',
+            'v2/clients/' . $client->client_id,
+        );
         $this->assertResponseStatus(401);
 
         // It's still there!
@@ -232,7 +254,10 @@ class ClientTest extends BrowserKitTestCase
     {
         $client = Client::create(['client_id' => 'delete_me']);
 
-        $this->asAdminUser()->json('DELETE', 'v2/clients/'.$client->client_id);
+        $this->asAdminUser()->json(
+            'DELETE',
+            'v2/clients/' . $client->client_id,
+        );
         $this->assertResponseStatus(200);
 
         $this->dontSeeInDatabase('clients', ['client_id' => 'delete_me']);
@@ -247,9 +272,16 @@ class ClientTest extends BrowserKitTestCase
         $admin = factory(User::class, 'admin')->create();
         $client = Client::create(['client_id' => 'delete_me']);
 
-        $response = $this->asUser($admin, ['role:admin', 'user', 'client'])->json('DELETE', 'v2/clients/'.$client->client_id);
+        $response = $this->asUser($admin, [
+            'role:admin',
+            'user',
+            'client',
+        ])->json('DELETE', 'v2/clients/' . $client->client_id);
 
         $this->assertResponseStatus(401);
-        $this->assertEquals('Requires the `write` scope.', $response->decodeResponseJson()['hint']);
+        $this->assertEquals(
+            'Requires the `write` scope.',
+            $response->decodeResponseJson()['hint'],
+        );
     }
 }

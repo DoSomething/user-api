@@ -14,7 +14,12 @@ class AddIndexToSmsStatusAndTopicsFields extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $collection) {
-            $collection->index(['sms_status', 'sms_subscription_topics'], null, null, ['sparse' => true]);
+            $collection->index(
+                ['sms_status', 'sms_subscription_topics'],
+                null,
+                null,
+                ['sparse' => true],
+            );
         });
     }
 

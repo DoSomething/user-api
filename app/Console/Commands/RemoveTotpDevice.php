@@ -2,8 +2,8 @@
 
 namespace Northstar\Console\Commands;
 
-use Northstar\Auth\Registrar;
 use Illuminate\Console\Command;
+use Northstar\Auth\Registrar;
 
 class RemoveTotpDevice extends Command
 {
@@ -41,15 +41,23 @@ class RemoveTotpDevice extends Command
         $username = $this->argument('username');
         $user = $registrar->resolve(['username' => $username]);
 
-        if (! $user) {
+        if (!$user) {
             return $this->error('User not found.');
         }
 
-        if (! $user->totp) {
+        if (!$user->totp) {
             return $this->info('User does not have a TOTP device.');
         }
 
-        if ($this->confirm('Remove TOTP device from '.$username.' ('.$user->id.')?')) {
+        if (
+            $this->confirm(
+                'Remove TOTP device from ' .
+                    $username .
+                    ' (' .
+                    $user->id .
+                    ')?',
+            )
+        ) {
             $user->totp = null;
             $user->save();
 

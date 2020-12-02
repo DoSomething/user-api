@@ -2,9 +2,9 @@
 
 namespace Northstar\Http\Controllers;
 
-use Northstar\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Northstar\Models\User;
 use Northstar\PasswordResetType;
 
 class ResetController extends Controller
@@ -21,7 +21,6 @@ class ResetController extends Controller
 
     /**
      * Sends a password reset email.
-     * POST /resets
      *
      * @param Request $request
      * @return array

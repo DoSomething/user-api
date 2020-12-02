@@ -6,7 +6,6 @@ class MergeTest extends BrowserKitTestCase
 {
     /**
      * Test that anonymous and normal users can't merge accounts.
-     * POST /users/:id/merge
      *
      * @test
      */
@@ -14,16 +13,15 @@ class MergeTest extends BrowserKitTestCase
     {
         $user = factory(User::class)->create();
 
-        $this->post('v1/users/'.$user->id.'/merge');
+        $this->post('v1/users/' . $user->id . '/merge');
         $this->assertResponseStatus(403);
 
-        $this->asNormalUser()->post('v1/users/'.$user->id.'/merge');
+        $this->asNormalUser()->post('v1/users/' . $user->id . '/merge');
         $this->assertResponseStatus(401);
     }
 
     /**
      * Test merging some accounts.
-     * POST /resets
      *
      * @test
      */
@@ -50,7 +48,7 @@ class MergeTest extends BrowserKitTestCase
             'source' => 'sms',
         ]);
 
-        $this->asAdminUser()->json('POST', 'v1/users/'.$user->id.'/merge', [
+        $this->asAdminUser()->json('POST', 'v1/users/' . $user->id . '/merge', [
             'id' => $duplicate->id,
         ]);
 
@@ -68,7 +66,7 @@ class MergeTest extends BrowserKitTestCase
         // The "duplicate" user should have the duplicate fields removed.
         $this->seeInDatabase('users', [
             '_id' => $duplicate->id,
-            'email' => 'merged-account-'.$user->id.'@dosomething.invalid',
+            'email' => 'merged-account-' . $user->id . '@dosomething.invalid',
             'mobile' => null,
             'mobilecommons_id' => null,
             'sms_status' => null,
@@ -78,7 +76,6 @@ class MergeTest extends BrowserKitTestCase
 
     /**
      * Test last_authenticated_at merge logic.
-     * POST /resets
      *
      * @test
      */
@@ -94,12 +91,15 @@ class MergeTest extends BrowserKitTestCase
             'last_authenticated_at' => '2018-02-28 01:00:00',
         ]);
 
-        $this->asAdminUser()->json('POST', 'v1/users/'.$user->id.'/merge', [
+        $this->asAdminUser()->json('POST', 'v1/users/' . $user->id . '/merge', [
             'id' => $duplicate->id,
         ]);
 
         // The "target" user should have the dupe's profile fields.
-        $this->assertEquals($user->fresh()->last_authenticated_at->toTimeString(), '01:00:00');
+        $this->assertEquals(
+            $user->fresh()->last_authenticated_at->toTimeString(),
+            '01:00:00',
+        );
 
         // The "duplicate" user should have the duplicate fields removed.
         $this->seeInDatabase('users', [
@@ -110,7 +110,6 @@ class MergeTest extends BrowserKitTestCase
 
     /**
      * Test last_messaged_at merge logic.
-     * POST /resets
      *
      * @test
      */
@@ -126,12 +125,15 @@ class MergeTest extends BrowserKitTestCase
             'last_messaged_at' => '2018-02-28 01:00:00',
         ]);
 
-        $this->asAdminUser()->json('POST', 'v1/users/'.$user->id.'/merge', [
+        $this->asAdminUser()->json('POST', 'v1/users/' . $user->id . '/merge', [
             'id' => $duplicate->id,
         ]);
 
         // The "target" user should have the dupe's profile fields.
-        $this->assertEquals($user->fresh()->last_messaged_at->toTimeString(), '01:00:00');
+        $this->assertEquals(
+            $user->fresh()->last_messaged_at->toTimeString(),
+            '01:00:00',
+        );
 
         // The "duplicate" user should have the duplicate fields removed.
         $this->seeInDatabase('users', [
@@ -142,7 +144,6 @@ class MergeTest extends BrowserKitTestCase
 
     /**
      * Test last_accessed_at merge logic.
-     * POST /resets
      *
      * @test
      */
@@ -158,12 +159,15 @@ class MergeTest extends BrowserKitTestCase
             'last_accessed_at' => '2018-02-28 01:00:00',
         ]);
 
-        $this->asAdminUser()->json('POST', 'v1/users/'.$user->id.'/merge', [
+        $this->asAdminUser()->json('POST', 'v1/users/' . $user->id . '/merge', [
             'id' => $duplicate->id,
         ]);
 
         // The "target" user should have the dupe's profile fields.
-        $this->assertEquals($user->fresh()->last_accessed_at->toTimeString(), '01:00:00');
+        $this->assertEquals(
+            $user->fresh()->last_accessed_at->toTimeString(),
+            '01:00:00',
+        );
 
         // The "duplicate" user should have the duplicate fields removed.
         $this->seeInDatabase('users', [
@@ -174,7 +178,6 @@ class MergeTest extends BrowserKitTestCase
 
     /**
      * Test language merge logic.
-     * POST /resets
      *
      * @test
      */
@@ -192,7 +195,7 @@ class MergeTest extends BrowserKitTestCase
             'language' => 'yo',
         ]);
 
-        $this->asAdminUser()->json('POST', 'v1/users/'.$user->id.'/merge', [
+        $this->asAdminUser()->json('POST', 'v1/users/' . $user->id . '/merge', [
             'id' => $duplicate->id,
         ]);
 
@@ -209,7 +212,6 @@ class MergeTest extends BrowserKitTestCase
 
     /**
      * Test first_name merge logic.
-     * POST /resets
      *
      * @test
      */
@@ -227,7 +229,7 @@ class MergeTest extends BrowserKitTestCase
             'first_name' => 'Keep Me',
         ]);
 
-        $this->asAdminUser()->json('POST', 'v1/users/'.$user->id.'/merge', [
+        $this->asAdminUser()->json('POST', 'v1/users/' . $user->id . '/merge', [
             'id' => $duplicate->id,
         ]);
 
@@ -243,7 +245,6 @@ class MergeTest extends BrowserKitTestCase
 
     /**
      * Test last_name merge logic.
-     * POST /resets
      *
      * @test
      */
@@ -261,7 +262,7 @@ class MergeTest extends BrowserKitTestCase
             'last_name' => 'Newer',
         ]);
 
-        $this->asAdminUser()->json('POST', 'v1/users/'.$user->id.'/merge', [
+        $this->asAdminUser()->json('POST', 'v1/users/' . $user->id . '/merge', [
             'id' => $duplicate->id,
         ]);
 
@@ -277,7 +278,6 @@ class MergeTest extends BrowserKitTestCase
 
     /**
      * Test birthdate merge logic.
-     * POST /resets
      *
      * @test
      */
@@ -295,12 +295,15 @@ class MergeTest extends BrowserKitTestCase
             'birthdate' => '1991-04-20',
         ]);
 
-        $this->asAdminUser()->json('POST', 'v1/users/'.$user->id.'/merge', [
+        $this->asAdminUser()->json('POST', 'v1/users/' . $user->id . '/merge', [
             'id' => $duplicate->id,
         ]);
 
         // The "target" user should have the dupe's profile fields.
-        $this->assertEquals(format_date($user->fresh()->birthdate, 'Y-m-d'), '1991-04-20');
+        $this->assertEquals(
+            format_date($user->fresh()->birthdate, 'Y-m-d'),
+            '1991-04-20',
+        );
 
         // The "duplicate" user should have the duplicate fields removed.
         $this->seeInDatabase('users', [
@@ -311,7 +314,6 @@ class MergeTest extends BrowserKitTestCase
 
     /**
      * Test that you can't merge without the write scope.
-     * POST /resets
      *
      * @test
      */
@@ -331,11 +333,18 @@ class MergeTest extends BrowserKitTestCase
             'language' => 'yo',
         ]);
 
-        $response = $this->asUser($admin, ['role:admin', 'user'])->json('POST', 'v1/users/'.$user->id.'/merge', [
-            'id' => $duplicate->id,
-        ]);
+        $response = $this->asUser($admin, ['role:admin', 'user'])->json(
+            'POST',
+            'v1/users/' . $user->id . '/merge',
+            [
+                'id' => $duplicate->id,
+            ],
+        );
 
         $this->assertResponseStatus(401);
-        $this->assertEquals('Requires the `write` scope.', $response->decodeResponseJson()['hint']);
+        $this->assertEquals(
+            'Requires the `write` scope.',
+            $response->decodeResponseJson()['hint'],
+        );
     }
 }

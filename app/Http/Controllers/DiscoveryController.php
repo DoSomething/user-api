@@ -17,10 +17,10 @@ class DiscoveryController extends Controller
 
         return [
             'issuer' => $url,
-            'authorization_endpoint' => url($url.'/authorize'),
-            'token_endpoint' => url($url.'/v2/auth/token'),
-            'userinfo_endpoint' => url($url.'/v2/userinfo'),
-            'jwks_uri' => url($url.'/v2/keys'),
+            'authorization_endpoint' => url($url . '/authorize'),
+            'token_endpoint' => url($url . '/v2/auth/token'),
+            'userinfo_endpoint' => url($url . '/v2/userinfo'),
+            'jwks_uri' => url($url . '/v2/keys'),
 
             'response_types_supported' => ['code'],
             'subject_types_supported' => ['public'],

@@ -1,7 +1,7 @@
 <?php
 
-use Northstar\Models\User;
 use Illuminate\Support\Facades\Artisan;
+use Northstar\Models\User;
 
 class StandardizeBirthdatesTest extends TestCase
 {
@@ -13,7 +13,9 @@ class StandardizeBirthdatesTest extends TestCase
 
         // Create some regular and borked birthday users
         factory(User::class, 5)->create();
-        $this->createMongoDocument('users', ['birthdate' => '2018-03-15 00:00:00']);
+        $this->createMongoDocument('users', [
+            'birthdate' => '2018-03-15 00:00:00',
+        ]);
         $this->createMongoDocument('users', ['birthdate' => 'I love dogs']);
 
         // Make sure we are registering 2 borked users

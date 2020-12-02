@@ -40,32 +40,51 @@ class UnsetFieldCommand extends Command
     {
         $force = $this->option('force');
 
-        if ($force || $this->confirm('Have you made sure that there is NOT a broadcast in progress or starting soon?')) {
+        if (
+            $force ||
+            $this->confirm(
+                'Have you made sure that there is NOT a broadcast in progress or starting soon?',
+            )
+        ) {
             $fieldsToRemove = $this->argument('field');
 
             foreach ($fieldsToRemove as $field) {
                 $burnItDown = false;
 
-                if (! $force) {
-                    $burnItDown = $this->confirm('Are you sure you want to remove this field from ALL USERS? `'.$field.'`');
+                if (!$force) {
+                    $burnItDown = $this->confirm(
+                        'Are you sure you want to remove this field from ALL USERS? `' .
+                            $field .
+                            '`',
+                    );
                 }
 
                 if ($burnItDown || $this->option('force')) {
-                    info('Removing field from all users: '.$field);
+                    info('Removing field from all users: ' . $field);
 
                     $usersToUnset = DB::collection('users')
-                                    ->whereRaw([$field => ['$exists' => true]])
-                                    ->update(['$unset' => [$field => '']], ['maxTimeMS' => -1]);
+                        ->whereRaw([$field => ['$exists' => true]])
+                        ->update(
+                            ['$unset' => [$field => '']],
+                            ['maxTimeMS' => -1],
+                        );
 
-                    $usersLeft = DB::collection('users')->whereRaw([$field => ['$exists' => true]])->count();
+                    $usersLeft = DB::collection('users')
+                        ->whereRaw([$field => ['$exists' => true]])
+                        ->count();
 
-                    if (! $usersLeft) {
-                        $this->line('Field removed from all users: '.$field);
+                    if (!$usersLeft) {
+                        $this->line('Field removed from all users: ' . $field);
                     } else {
-                        $this->line('Oops! '.$usersLeft.' users still have field: '.$field);
+                        $this->line(
+                            'Oops! ' .
+                                $usersLeft .
+                                ' users still have field: ' .
+                                $field,
+                        );
                     }
                 } else {
-                    $this->line('Did NOT remove '.$field);
+                    $this->line('Did NOT remove ' . $field);
                 }
             }
         }

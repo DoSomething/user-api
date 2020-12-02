@@ -29,7 +29,9 @@ class ProfileSubscriptionsController extends Controller
     public function edit()
     {
         return view('profiles.subscriptions.edit', [
-            'user' => auth()->guard('web')->user(),
+            'user' => auth()
+                ->guard('web')
+                ->user(),
             'intended' => session()->get('url.intended', '/'),
         ]);
     }
@@ -42,13 +44,17 @@ class ProfileSubscriptionsController extends Controller
      */
     public function update(Request $request)
     {
-        $user = auth()->guard('web')->user();
+        $user = auth()
+            ->guard('web')
+            ->user();
 
         $this->registrar->validate($request, $user);
 
         $currentMobile = $user->mobile;
 
-        $this->registrar->register($request->all(), $user, function ($user) use ($currentMobile) {
+        $this->registrar->register($request->all(), $user, function (
+            $user
+        ) use ($currentMobile) {
             // Set the sms_status if we're adding or updating the user's mobile.
             if ($user->mobile && $user->mobile !== $currentMobile) {
                 if ($user->sms_status !== 'less') {

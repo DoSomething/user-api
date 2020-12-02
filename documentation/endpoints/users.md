@@ -321,7 +321,6 @@ PUT /v1/users/drupal_id/<drupal_id>
   email_subscription_status: Boolean; // Whether a user is subscribed to receive emails.
   email_subscription_topics: Array; // Valid values: 'news', 'scholarships', 'lifestyle', 'community', 'clubs'
 
-
   // Hidden fields (optional):
   race: String;
   religion: String;

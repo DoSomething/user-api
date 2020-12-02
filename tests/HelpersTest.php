@@ -23,8 +23,14 @@ class HelpersTest extends BrowserKitTestCase
     /** @test */
     public function testIso8601()
     {
-        $this->assertEquals('2017-12-15T22:00:00+00:00', iso8601('December 15 2017 10:00pm'));
-        $this->assertEquals('2017-12-15T22:00:00+00:00', iso8601(new Carbon('December 15 2017 10:00pm')));
+        $this->assertEquals(
+            '2017-12-15T22:00:00+00:00',
+            iso8601('December 15 2017 10:00pm'),
+        );
+        $this->assertEquals(
+            '2017-12-15T22:00:00+00:00',
+            iso8601(new Carbon('December 15 2017 10:00pm')),
+        );
         $this->assertEquals(null, iso8601(null), 'handles null values safely');
     }
 
@@ -51,7 +57,10 @@ class HelpersTest extends BrowserKitTestCase
     /** @test */
     public function testGetClientIdFromLegacyHeader()
     {
-        $client = Client::create(['client_id' => 'legacy_client', 'scope' => 'user']);
+        $client = Client::create([
+            'client_id' => 'legacy_client',
+            'scope' => 'user',
+        ]);
         $this->withLegacyApiKey($client)->getJson('/status');
         $this->assertEquals(client_id(), 'legacy_client');
     }
@@ -66,14 +75,40 @@ class HelpersTest extends BrowserKitTestCase
     /** @test */
     public function testIsDoSomethingDomain()
     {
-        $this->assertTrue(is_dosomething_domain('https://dosomething.org'), 'It should recognize our base domain.');
-        $this->assertTrue(is_dosomething_domain('https://identity.dosomething.org'), 'It should recognize one of our subdomains.');
-        $this->assertTrue(is_dosomething_domain('https://www.dosomething.org/campaigns/teens-for-jeans'), 'It should recognize a nested path.');
+        $this->assertTrue(
+            is_dosomething_domain('https://dosomething.org'),
+            'It should recognize our base domain.',
+        );
+        $this->assertTrue(
+            is_dosomething_domain('https://identity.dosomething.org'),
+            'It should recognize one of our subdomains.',
+        );
+        $this->assertTrue(
+            is_dosomething_domain(
+                'https://www.dosomething.org/campaigns/teens-for-jeans',
+            ),
+            'It should recognize a nested path.',
+        );
 
-        $this->assertFalse(is_dosomething_domain('https://www.google.com'), 'It should reject a non-DoSomething hostname.');
-        $this->assertFalse(is_dosomething_domain('https://dosomething.org.evil.com'), 'It should reject a non-DoSomething hostname with valid "prefix".');
-        $this->assertFalse(is_dosomething_domain('https://www.dontdosomething.org'), 'It should reject a non-DoSomething hostname with valid "suffix".');
-        $this->assertFalse(is_dosomething_domain('https://cobalt.io\@admin.dosomething.org'), 'It should reject a URL with username hack.');
-        $this->assertFalse(is_dosomething_domain('https://cobalt.io\.admin.dosomething.org'), 'It should reject hostname with escaped dot.');
+        $this->assertFalse(
+            is_dosomething_domain('https://www.google.com'),
+            'It should reject a non-DoSomething hostname.',
+        );
+        $this->assertFalse(
+            is_dosomething_domain('https://dosomething.org.evil.com'),
+            'It should reject a non-DoSomething hostname with valid "prefix".',
+        );
+        $this->assertFalse(
+            is_dosomething_domain('https://www.dontdosomething.org'),
+            'It should reject a non-DoSomething hostname with valid "suffix".',
+        );
+        $this->assertFalse(
+            is_dosomething_domain('https://cobalt.io\@admin.dosomething.org'),
+            'It should reject a URL with username hack.',
+        );
+        $this->assertFalse(
+            is_dosomething_domain('https://cobalt.io\.admin.dosomething.org'),
+            'It should reject hostname with escaped dot.',
+        );
     }
 }

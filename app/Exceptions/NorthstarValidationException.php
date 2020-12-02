@@ -2,9 +2,9 @@
 
 namespace Northstar\Exceptions;
 
+use Exception;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\JsonResponse;
-use Exception;
 use Northstar\Http\Transformers\UserTransformer;
 use Northstar\Models\User;
 
@@ -44,7 +44,9 @@ class NorthstarValidationException extends Exception
 
         // @TODO: We should have a central place to handle transformations like this...
         if ($context instanceof User) {
-            $this->response['error']['context'] = (new UserTransformer())->transform($context);
+            $this->response['error'][
+                'context'
+            ] = (new UserTransformer())->transform($context);
         } elseif (is_array($context) || $context instanceof Arrayable) {
             $this->response['error']['context'] = $context;
         }

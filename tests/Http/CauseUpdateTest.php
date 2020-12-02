@@ -6,7 +6,6 @@ class CauseUpdateTest extends BrowserKitTestCase
 {
     /**
      * Test that a user can add cause preferences.
-     * POST /v2/users/:id/causes/:cause
      *
      * @return void
      */
@@ -14,7 +13,9 @@ class CauseUpdateTest extends BrowserKitTestCase
     {
         $user = factory(User::class)->create();
 
-        $this->asUser($user, ['user', 'write'])->post('v2/users/'.$user->id.'/causes/animal_welfare');
+        $this->asUser($user, ['user', 'write'])->post(
+            'v2/users/' . $user->id . '/causes/animal_welfare',
+        );
 
         $this->assertResponseStatus(200);
 
@@ -24,7 +25,6 @@ class CauseUpdateTest extends BrowserKitTestCase
 
     /**
      * Test that a user cannot add a duplicate cause.
-     * POST /v2/users/:id/causes/:cause
      *
      * @return void
      */
@@ -34,7 +34,9 @@ class CauseUpdateTest extends BrowserKitTestCase
             'causes' => ['bullying'],
         ]);
 
-        $this->asUser($user, ['user', 'write'])->post('v2/users/'.$user->id.'/causes/bullying');
+        $this->asUser($user, ['user', 'write'])->post(
+            'v2/users/' . $user->id . '/causes/bullying',
+        );
 
         $this->assertResponseStatus(200);
         $this->seeJsonField('data.causes', ['bullying']);
@@ -42,7 +44,6 @@ class CauseUpdateTest extends BrowserKitTestCase
 
     /**
      * Test that a user cannot add a cause that does not exist.
-     * POST /v2/users/:id/causes/:cause
      *
      * @return void
      */
@@ -50,14 +51,15 @@ class CauseUpdateTest extends BrowserKitTestCase
     {
         $user = factory(User::class)->create();
 
-        $this->asUser($user, ['user', 'write'])->post('v2/users/'.$user->id.'/causes/love_animals');
+        $this->asUser($user, ['user', 'write'])->post(
+            'v2/users/' . $user->id . '/causes/love_animals',
+        );
 
         $this->assertResponseStatus(404);
     }
 
     /**
      * Test that a user can remove a cause.
-     * DELETE /v2/users/:id/causes/:cause
      *
      * @return void
      */
@@ -67,7 +69,9 @@ class CauseUpdateTest extends BrowserKitTestCase
             'causes' => ['gender_rights_equality', 'environment', 'bullying'],
         ]);
 
-        $this->asUser($user, ['user', 'write'])->delete('v2/users/'.$user->id.'/causes/gender_rights_equality');
+        $this->asUser($user, ['user', 'write'])->delete(
+            'v2/users/' . $user->id . '/causes/gender_rights_equality',
+        );
 
         $this->assertResponseStatus(200);
         $this->seeJsonField('data.causes', ['environment', 'bullying']);
@@ -75,7 +79,6 @@ class CauseUpdateTest extends BrowserKitTestCase
 
     /**
      * Test that a user can remove a cause and it will return an empty array as expected.
-     * DELETE /v2/users/:id/causes/:cause
      *
      * @return void
      */
@@ -85,7 +88,9 @@ class CauseUpdateTest extends BrowserKitTestCase
             'causes' => ['gender_rights_equality'],
         ]);
 
-        $this->asUser($user, ['user', 'write'])->delete('v2/users/'.$user->id.'/causes/gender_rights_equality');
+        $this->asUser($user, ['user', 'write'])->delete(
+            'v2/users/' . $user->id . '/causes/gender_rights_equality',
+        );
 
         $this->assertResponseStatus(200);
         $this->seeJsonField('data.causes', []);
@@ -93,7 +98,6 @@ class CauseUpdateTest extends BrowserKitTestCase
 
     /**
      * Test that a user can't edit another user's causes.
-     * POST /v2/users/:id/causes/:cause
      *
      * @return void
      */
@@ -102,7 +106,9 @@ class CauseUpdateTest extends BrowserKitTestCase
         $villain = factory(User::class)->create();
         $user = factory(User::class)->create();
 
-        $this->asUser($villain, ['user', 'write'])->post('v2/users/'.$user->id.'/causes/bullying');
+        $this->asUser($villain, ['user', 'write'])->post(
+            'v2/users/' . $user->id . '/causes/bullying',
+        );
 
         $this->assertResponseStatus(403);
     }

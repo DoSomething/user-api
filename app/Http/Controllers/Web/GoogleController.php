@@ -3,14 +3,14 @@
 namespace Northstar\Http\Controllers\Web;
 
 use Carbon\Carbon;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\RequestException;
-use Northstar\Http\Controllers\Controller;
 use Laravel\Socialite\Two\InvalidStateException;
 use Northstar\Auth\Registrar;
+use Northstar\Http\Controllers\Controller;
 use Northstar\Models\User;
 use Northstar\Services\Google;
 
@@ -30,7 +30,10 @@ class GoogleController extends Controller
      */
     protected function redirectUnsuccessfulRequest($message = null)
     {
-        return redirect('/register')->with('status', $message ?: 'Unable to verify Google account.');
+        return redirect('/register')->with(
+            'status',
+            $message ?: 'Unable to verify Google account.',
+        );
     }
 
     /**
@@ -52,7 +55,10 @@ class GoogleController extends Controller
     public function redirectToProvider()
     {
         return Socialite::driver('google')
-            ->scopes(['profile', 'https://www.googleapis.com/auth/user.birthday.read'])
+            ->scopes([
+                'profile',
+                'https://www.googleapis.com/auth/user.birthday.read',
+            ])
             ->redirect();
     }
 
@@ -85,17 +91,22 @@ class GoogleController extends Controller
         $lastName = data_get($googleUser->user, 'family_name');
 
         // If this is a new registration, ensure we've received the required profile fields.
-        if (! $northstarUser && (! $firstName || ! $lastName)) {
-            return $this->redirectUnsuccessfulRequest('We need your first and last name to create your account! Please confirm that these are set on your Google profile and try again.');
+        if (!$northstarUser && (!$firstName || !$lastName)) {
+            return $this->redirectUnsuccessfulRequest(
+                'We need your first and last name to create your account! Please confirm that these are set on your Google profile and try again.',
+            );
         }
 
         $birthday = null;
         // If birthdate is not set on the google profile, we won't receive a 'birthdays' field.
         if (property_exists($googleProfile, 'birthdays')) {
             // Some date properties in this array may not contain a year property.
-            $birthdaysWithYear = array_filter($googleProfile->birthdays, function ($item) {
-                return isset($item->date->year);
-            });
+            $birthdaysWithYear = array_filter(
+                $googleProfile->birthdays,
+                function ($item) {
+                    return isset($item->date->year);
+                },
+            );
             $birthday = data_get(Arr::first($birthdaysWithYear), 'date');
         }
 
@@ -110,7 +121,7 @@ class GoogleController extends Controller
             $fields['birthdate'] = Carbon::createFromDate(
                 $birthday->year,
                 $birthday->month,
-                $birthday->day
+                $birthday->day,
             );
         }
 
@@ -125,7 +136,10 @@ class GoogleController extends Controller
         } else {
             $fields['email'] = $email;
 
-            $northstarUser = $this->registrar->registerViaWeb($fields, 'google');
+            $northstarUser = $this->registrar->registerViaWeb(
+                $fields,
+                'google',
+            );
 
             Auth::login($northstarUser, true);
             logger()->info('google_authentication');

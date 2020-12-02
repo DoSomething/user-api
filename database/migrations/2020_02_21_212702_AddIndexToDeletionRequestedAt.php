@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddIndexToDeletionRequestedAt extends Migration
 {
@@ -14,7 +14,9 @@ class AddIndexToDeletionRequestedAt extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $collection) {
-            $collection->index('deletion_requested_at', null, null, ['sparse' => true]);
+            $collection->index('deletion_requested_at', null, null, [
+                'sparse' => true,
+            ]);
         });
     }
 

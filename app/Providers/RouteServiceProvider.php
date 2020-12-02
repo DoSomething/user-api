@@ -2,8 +2,8 @@
 
 namespace Northstar\Providers;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
 use Northstar\Auth\Registrar;
 
 class RouteServiceProvider extends ServiceProvider
@@ -67,7 +67,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes()
     {
         Route::middleware('web')
-            ->namespace($this->namespace.'\Web')
+            ->namespace($this->namespace . '\Web')
             ->group(base_path('routes/web.php'));
     }
 

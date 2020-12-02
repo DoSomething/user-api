@@ -2,9 +2,9 @@
 
 namespace Northstar\Http\Middleware;
 
+use Closure;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Northstar\Auth\Role;
-use Closure;
 
 class RequireRole
 {

@@ -2,8 +2,8 @@
 
 namespace Northstar\Services;
 
-use RuntimeException;
 use Northstar\Models\User;
+use RuntimeException;
 
 class Gambit
 {
@@ -36,24 +36,30 @@ class Gambit
      */
     public function deleteUser(string $id)
     {
-        if (! config('features.delete-api')) {
-            info('User '.$id.' would have been deleted in Gambit.');
+        if (!config('features.delete-api')) {
+            info('User ' . $id . ' would have been deleted in Gambit.');
 
             return;
         }
 
         // We don't want to throw on 404 errors, since that's expected if a user has no activity:
-        $response = $this->client->delete('/api/v2/users/'.$id, ['http_errors' => false]);
+        $response = $this->client->delete('/api/v2/users/' . $id, [
+            'http_errors' => false,
+        ]);
         $status = $response->getStatusCode();
 
         if ($status === 200) {
-            info('User '.$id.' successfully deleted from Gambit.');
+            info('User ' . $id . ' successfully deleted from Gambit.');
 
             return;
         }
 
         if ($status === 404) {
-            info('User '.$id.' did not have any conversation history in Gambit.');
+            info(
+                'User ' .
+                    $id .
+                    ' did not have any conversation history in Gambit.',
+            );
 
             return;
         }
@@ -61,6 +67,6 @@ class Gambit
         // Otherwise, something must have gone wrong...
         $json = $response->getBody()->getContents();
         $message = data_get($json, 'message', 'Unknown Error');
-        throw new RuntimeException('Gambit Error: '.$message);
+        throw new RuntimeException('Gambit Error: ' . $message);
     }
 }

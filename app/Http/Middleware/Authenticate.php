@@ -67,6 +67,6 @@ class Authenticate
         }
 
         // If not, send 'em away!
-        throw new AuthenticationException;
+        throw new AuthenticationException();
     }
 }

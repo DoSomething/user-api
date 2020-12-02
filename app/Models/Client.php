@@ -89,7 +89,10 @@ class Client extends Model
      */
     public function getScopeAttribute()
     {
-        if (! isset($this->attributes['scope']) || ! is_array($this->attributes['scope'])) {
+        if (
+            !isset($this->attributes['scope']) ||
+            !is_array($this->attributes['scope'])
+        ) {
             return [];
         }
 

@@ -3,9 +3,9 @@
 namespace Northstar\Listeners;
 
 use Carbon\Carbon;
-use Northstar\Models\User;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Log;
+use Northstar\Models\User;
 
 class ReportSuccessfulAuthentication
 {

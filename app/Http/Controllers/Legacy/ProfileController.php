@@ -3,10 +3,10 @@
 namespace Northstar\Http\Controllers\Legacy;
 
 use Illuminate\Contracts\Auth\Guard as Auth;
+use Illuminate\Http\Request;
 use Northstar\Auth\Registrar;
 use Northstar\Http\Controllers\Controller;
 use Northstar\Http\Transformers\Legacy\UserTransformer;
-use Illuminate\Http\Request;
 use Northstar\Models\User;
 
 class ProfileController extends Controller
@@ -41,7 +41,6 @@ class ProfileController extends Controller
 
     /**
      * Display the current user's profile.
-     * GET /profile
      *
      * @return \Illuminate\Http\Response
      */
@@ -55,7 +54,6 @@ class ProfileController extends Controller
 
     /**
      * Update the currently authenticated user's profile.
-     * PUT /profile
      *
      * @param Request $request
      * @return \Illuminate\Http\Response

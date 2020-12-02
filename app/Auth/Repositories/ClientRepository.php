@@ -20,7 +20,7 @@ class ClientRepository implements ClientRepositoryInterface
         /** @var \Northstar\Models\Client $model */
         $model = Client::where('client_id', $clientIdentifier)->first();
 
-        if (! $model) {
+        if (!$model) {
             return null;
         }
 
@@ -40,11 +40,11 @@ class ClientRepository implements ClientRepositoryInterface
     {
         $client = Client::where('client_id', $clientIdentifier)->first();
 
-        if (! $client) {
+        if (!$client) {
             return false;
         }
 
-        if (! $this->clientCanUseGrant($client, $grantType)) {
+        if (!$this->clientCanUseGrant($client, $grantType)) {
             return false;
         }
 
@@ -62,7 +62,10 @@ class ClientRepository implements ClientRepositoryInterface
     {
         // The refresh token grant can be used by password or auth code tokens.
         if ($grantType === 'refresh_token') {
-            return in_array($client->allowed_grant, ['password', 'authorization_code']);
+            return in_array($client->allowed_grant, [
+                'password',
+                'authorization_code',
+            ]);
         }
 
         // Otherwise, the client must always match the grant being used.

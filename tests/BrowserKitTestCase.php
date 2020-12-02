@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Support\Arr;
-use Tests\CreatesApplication;
-use Tests\WithMocks;
-use Tests\WithAuthentication;
 use PHPUnit\Framework\Assert;
+use Tests\CreatesApplication;
+use Tests\WithAuthentication;
+use Tests\WithMocks;
 
 abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
 {
@@ -33,7 +33,9 @@ abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
      */
     public function createMongoDocument($collection, array $contents)
     {
-        $document = app('db')->collection($collection)->insert($contents);
+        $document = app('db')
+            ->collection($collection)
+            ->insert($contents);
 
         return $document;
     }
@@ -47,11 +49,19 @@ abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
      */
     public function getMongoDocument($collection, $id)
     {
-        $document = app('db')->collection($collection)->where(['_id' => $id])->first();
+        $document = app('db')
+            ->collection($collection)
+            ->where(['_id' => $id])
+            ->first();
 
-        $this->assertNotNull($document, sprintf(
-            'Unable to find document in collection [%s] with _id [%s].', $collection, $id
-        ));
+        $this->assertNotNull(
+            $document,
+            sprintf(
+                'Unable to find document in collection [%s] with _id [%s].',
+                $collection,
+                $id,
+            ),
+        );
 
         return $document;
     }
@@ -68,7 +78,11 @@ abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
     {
         $form = $this->fillForm($buttonText, $inputs);
 
-        $this->call($form->getMethod(), $form->getUri(), $this->extractParametersFromForm($form));
+        $this->call(
+            $form->getMethod(),
+            $form->getUri(),
+            $this->extractParametersFromForm($form),
+        );
 
         return $this;
     }
@@ -99,7 +113,7 @@ abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
         $responseData = $this->decodeResponseJson();
 
         if (Arr::has($responseData, $key)) {
-            Assert::fail('Did not expect to find JSON response at '.$key);
+            Assert::fail('Did not expect to find JSON response at ' . $key);
         }
 
         return $this;
@@ -116,13 +130,20 @@ abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
     {
         $responseData = $this->decodeResponseJson();
 
-        if (! Arr::has($responseData, $key)) {
-            Assert::fail('Expected to find JSON response at '.$key);
+        if (!Arr::has($responseData, $key)) {
+            Assert::fail('Expected to find JSON response at ' . $key);
         }
 
         $actual = Arr::get($responseData, $key);
         if ($expected !== null && $actual !== $expected) {
-            Assert::fail('Expected to find "'.$expected.'" in response at '.$key.', found: '.$actual);
+            Assert::fail(
+                'Expected to find "' .
+                    $expected .
+                    '" in response at ' .
+                    $key .
+                    ', found: ' .
+                    $actual,
+            );
         }
 
         return $this;

@@ -1,14 +1,17 @@
 <?php
 
-use Northstar\Models\User;
 use Illuminate\Support\Facades\Artisan;
+use Northstar\Models\User;
 
 class CommunityTopicBackfillTest extends BrowserKitTestCase
 {
     /** @test */
     public function it_should_not_assign_community_to_unsubscribed_users()
     {
-        $user = factory(User::class)->create(['email_subscription_status' => false, 'email_subscription_topics' => []]);
+        $user = factory(User::class)->create([
+            'email_subscription_status' => false,
+            'email_subscription_topics' => [],
+        ]);
 
         // Run the community backfill command.
         Artisan::call('northstar:community');
@@ -24,7 +27,10 @@ class CommunityTopicBackfillTest extends BrowserKitTestCase
     /** @test */
     public function it_should_not_duplicate_community_topic()
     {
-        $user = factory(User::class)->create(['email_subscription_status' => true, 'email_subscription_topics' => ['community']]);
+        $user = factory(User::class)->create([
+            'email_subscription_status' => true,
+            'email_subscription_topics' => ['community'],
+        ]);
 
         // Run the community backfill command.
         Artisan::call('northstar:community');
@@ -40,7 +46,10 @@ class CommunityTopicBackfillTest extends BrowserKitTestCase
     /** @test */
     public function it_should_add_community_to_subscribed_users()
     {
-        $user = factory(User::class)->create(['email_subscription_status' => true, 'email_subscription_topics' => []]);
+        $user = factory(User::class)->create([
+            'email_subscription_status' => true,
+            'email_subscription_topics' => [],
+        ]);
 
         // Run the community backfill command.
         Artisan::call('northstar:community');
@@ -56,9 +65,22 @@ class CommunityTopicBackfillTest extends BrowserKitTestCase
     /** @test */
     public function it_should_ignore_other_topics()
     {
-        $user1 = factory(User::class)->create(['email_subscription_status' => true, 'email_subscription_topics' => ['news']]);
-        $user2 = factory(User::class)->create(['email_subscription_status' => true, 'email_subscription_topics' => ['news', 'scholarships']]);
-        $user3 = factory(User::class)->create(['email_subscription_status' => true, 'email_subscription_topics' => ['news', 'scholarships', 'lifestyle']]);
+        $user1 = factory(User::class)->create([
+            'email_subscription_status' => true,
+            'email_subscription_topics' => ['news'],
+        ]);
+        $user2 = factory(User::class)->create([
+            'email_subscription_status' => true,
+            'email_subscription_topics' => ['news', 'scholarships'],
+        ]);
+        $user3 = factory(User::class)->create([
+            'email_subscription_status' => true,
+            'email_subscription_topics' => [
+                'news',
+                'scholarships',
+                'lifestyle',
+            ],
+        ]);
 
         // Run the community backfill command.
         Artisan::call('northstar:community');
@@ -73,13 +95,22 @@ class CommunityTopicBackfillTest extends BrowserKitTestCase
         $this->seeInDatabase('users', [
             '_id' => $user2->id,
             'email_subscription_status' => true,
-            'email_subscription_topics' => ['news', 'scholarships', 'community'],
+            'email_subscription_topics' => [
+                'news',
+                'scholarships',
+                'community',
+            ],
         ]);
 
         $this->seeInDatabase('users', [
             '_id' => $user3->id,
             'email_subscription_status' => true,
-            'email_subscription_topics' => ['news', 'scholarships', 'lifestyle', 'community'],
+            'email_subscription_topics' => [
+                'news',
+                'scholarships',
+                'lifestyle',
+                'community',
+            ],
         ]);
     }
 }

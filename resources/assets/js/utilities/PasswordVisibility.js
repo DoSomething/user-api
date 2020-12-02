@@ -11,20 +11,24 @@ function clickHandler(event) {
   target.classList.toggle('-hide');
 
   const siblings = target.parentNode.childNodes;
-  const inputKey = Object.keys(siblings).filter(key => siblings[key].tagName === 'INPUT');
+  const inputKey = Object.keys(siblings).filter(
+    key => siblings[key].tagName === 'INPUT',
+  );
   const input = siblings[inputKey];
 
   const shouldHide = target.classList.contains('-hide');
   if (input) {
-    shouldHide ? input.type = 'password' : input.type = 'text';
+    shouldHide ? (input.type = 'password') : (input.type = 'text');
   }
 }
 
 function init() {
   $(document).ready(() => {
-    document.querySelectorAll('.password-visibility__toggle').forEach(toggle => {
-      toggle.addEventListener('click', clickHandler);
-    });
+    document
+      .querySelectorAll('.password-visibility__toggle')
+      .forEach(toggle => {
+        toggle.addEventListener('click', clickHandler);
+      });
   });
 }
 

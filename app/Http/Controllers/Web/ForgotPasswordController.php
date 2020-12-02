@@ -2,8 +2,8 @@
 
 namespace Northstar\Http\Controllers\Web;
 
-use Northstar\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Northstar\Http\Controllers\Controller;
 
 class ForgotPasswordController extends Controller
 {

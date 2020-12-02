@@ -10,12 +10,27 @@
     "stat": "webpack --env=production --profile --json > stats.json",
     "analyze": "npm run stat && webpack-bundle-analyzer stats.json public/dist",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build",
+    "format": "npm run format:css && npm run format:js && npm run format:md && npm run format:php",
+    "format:css": "prettier --write \"resources/**/*.{css,scss}\"",
+    "format:js": "prettier --write \"resources/**/*.{js,graphql}\"",
+    "format:md": "prettier --write \"documentation/**/*.md\"",
+    "format:php": "prettier --write \"{app,config,database,resources,routes,tests}/**/*.php\" \"!resources/views/**\""
   },
   "babel": {
     "presets": [
       "@dosomething"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "prettier": {
+    "singleQuote": true,
+    "phpVersion": "7.4",
+    "trailingComma": "all"
   },
   "repository": {
     "type": "git",
@@ -40,9 +55,12 @@
     "@babel/core": "^7.12.3",
     "@dosomething/babel-preset": "^3.2.0",
     "@dosomething/webpack-config": "^6.0.0",
+    "@prettier/plugin-php": "^0.16.0",
     "autoprefixer": "^9.7.4",
     "modernizr": "^3.9.0",
     "postcss-loader": "^3.0.0",
+    "prettier": "1.18.2",
+    "pretty-quick": "^1.11.1",
     "tailwindcss": "^1.9.6",
     "webpack": "~4.28.0",
     "webpack-bundle-analyzer": "^3.6.0",

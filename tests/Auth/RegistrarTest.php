@@ -36,7 +36,9 @@ class RegistrarTest extends BrowserKitTestCase
 
         // Make a test user to resolve.
         $user = factory(User::class)->create();
-        $resolvedUser = $registrar->resolve(['email' => Str::upper($user->email)]);
+        $resolvedUser = $registrar->resolve([
+            'email' => Str::upper($user->email),
+        ]);
 
         $this->assertSame($user->id, $resolvedUser->id);
     }
@@ -69,7 +71,10 @@ class RegistrarTest extends BrowserKitTestCase
         factory(User::class, 2)->create();
 
         // Make a test user to resolve.
-        $user = factory(User::class)->create(['email' => 'test@dosomething.org', 'mobile' => '1235551234']);
+        $user = factory(User::class)->create([
+            'email' => 'test@dosomething.org',
+            'mobile' => '1235551234',
+        ]);
         $resolvedUser = $registrar->resolve([
             'email' => 'Test@DoSomething.org',
             'mobile' => '1 (123) 555-1234',
@@ -106,7 +111,10 @@ class RegistrarTest extends BrowserKitTestCase
         $registrar = $this->app->make(Registrar::class);
 
         // Make a test user to (not) resolve.
-        factory(User::class)->create(['first_name' => 'Sylvanas', 'last_name' => 'Windrunner']);
+        factory(User::class)->create([
+            'first_name' => 'Sylvanas',
+            'last_name' => 'Windrunner',
+        ]);
 
         $resolvedUser = $registrar->resolve([
             'first_name' => 'Sylvanas',
@@ -144,7 +152,9 @@ class RegistrarTest extends BrowserKitTestCase
 
         // Trying to resolve a user that doesn't exist should throw exception:
         $this->expectException(ModelNotFoundException::class);
-        $registrar->resolveOrFail(['email' => 'ThisDoesNotExist@DoSomething.org']);
+        $registrar->resolveOrFail([
+            'email' => 'ThisDoesNotExist@DoSomething.org',
+        ]);
     }
 
     /**
@@ -157,11 +167,17 @@ class RegistrarTest extends BrowserKitTestCase
         $user = factory(User::class)->create(['password' => 'secret']);
 
         // It should refuse the wrong credentials...
-        $this->assertFalse($registrar->validateCredentials($user, ['password' => 'Secret']));
-        $this->assertFalse($registrar->validateCredentials($user, ['password' => 's3cr3t']));
+        $this->assertFalse(
+            $registrar->validateCredentials($user, ['password' => 'Secret']),
+        );
+        $this->assertFalse(
+            $registrar->validateCredentials($user, ['password' => 's3cr3t']),
+        );
 
         // ... but it should accept the correct ones. Security!
-        $this->assertTrue($registrar->validateCredentials($user, ['password' => 'secret']));
+        $this->assertTrue(
+            $registrar->validateCredentials($user, ['password' => 'secret']),
+        );
     }
 
     /**
@@ -172,8 +188,9 @@ class RegistrarTest extends BrowserKitTestCase
         $registrar = $this->app->make(Registrar::class);
         $user = factory(User::class)->create(['password' => 'secret']);
 
-        $this->expectsEvents(\Illuminate\Auth\Events\Login::class)
-            ->doesntExpectEvents(\Illuminate\Auth\Events\Failed::class);
+        $this->expectsEvents(
+            \Illuminate\Auth\Events\Login::class,
+        )->doesntExpectEvents(\Illuminate\Auth\Events\Failed::class);
 
         $registrar->validateCredentials($user, ['password' => 'secret']);
     }
@@ -186,9 +203,12 @@ class RegistrarTest extends BrowserKitTestCase
         $registrar = $this->app->make(Registrar::class);
         $user = factory(User::class)->create(['password' => 'secret']);
 
-        $this->doesntExpectEvents(\Illuminate\Auth\Events\Login::class)
-            ->expectsEvents(\Illuminate\Auth\Events\Failed::class);
+        $this->doesntExpectEvents(
+            \Illuminate\Auth\Events\Login::class,
+        )->expectsEvents(\Illuminate\Auth\Events\Failed::class);
 
-        $registrar->validateCredentials($user, ['password' => 'not-the-password']);
+        $registrar->validateCredentials($user, [
+            'password' => 'not-the-password',
+        ]);
     }
 }

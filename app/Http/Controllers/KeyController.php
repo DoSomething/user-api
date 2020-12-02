@@ -3,8 +3,8 @@
 namespace Northstar\Http\Controllers;
 
 use JOSE_JWK;
-use phpseclib\Crypt\RSA;
 use Northstar\Auth\Repositories\KeyRepository;
+use phpseclib\Crypt\RSA;
 
 class KeyController extends Controller
 {

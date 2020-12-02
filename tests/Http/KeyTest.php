@@ -10,12 +10,7 @@ class KeyTest extends BrowserKitTestCase
         $this->assertResponseOk();
         $this->seeJsonStructure([
             'keys' => [
-                '*' => [
-                    'kty',
-                    'e',
-                    'n',
-                    'kid',
-                ],
+                '*' => ['kty', 'e', 'n', 'kid'],
             ],
         ]);
     }

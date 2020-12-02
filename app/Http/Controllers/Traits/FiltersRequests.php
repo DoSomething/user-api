@@ -13,7 +13,7 @@ trait FiltersRequests
      */
     public function newQuery($class)
     {
-        return (new $class)->newQuery();
+        return (new $class())->newQuery();
     }
 
     /**
@@ -26,7 +26,7 @@ trait FiltersRequests
      */
     public function filter($query, $filters, $indexes, $operator = '=')
     {
-        if (! $filters) {
+        if (!$filters) {
             return $query;
         }
 
@@ -42,7 +42,12 @@ trait FiltersRequests
             // we want to append (e.g. `SELECT * WHERE _ OR WHERE _ OR WHERE _`)
             $firstWhere = true;
             foreach ($values as $value) {
-                $query->where($filter, $operator, $value, ($firstWhere ? 'and' : 'or'));
+                $query->where(
+                    $filter,
+                    $operator,
+                    $value,
+                    $firstWhere ? 'and' : 'or',
+                );
                 $firstWhere = false;
             }
         }
@@ -60,7 +65,7 @@ trait FiltersRequests
      */
     public function search($query, $searches, $indexes)
     {
-        if (! $searches) {
+        if (!$searches) {
             return $query;
         }
         if (is_string($searches)) {
@@ -83,7 +88,7 @@ trait FiltersRequests
         $firstWhere = true;
 
         foreach ($searches as $term => $value) {
-            $query->where($term, '=', $value, ($firstWhere ? 'and' : 'or'));
+            $query->where($term, '=', $value, $firstWhere ? 'and' : 'or');
             $firstWhere = false;
         }
 

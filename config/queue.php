@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Queue Driver
@@ -43,7 +42,6 @@ return [
     */
 
     'connections' => [
-
         'sync' => [
             'driver' => 'sync',
         ],
@@ -64,9 +62,9 @@ return [
 
         'sqs' => [
             'driver' => 'sqs',
-            'key'    => env('AWS_ACCESS_KEY'),
+            'key' => env('AWS_ACCESS_KEY'),
             'secret' => env('AWS_SECRET_KEY'),
-            'queue'  => env('SQS_DEFAULT_QUEUE'),
+            'queue' => env('SQS_DEFAULT_QUEUE'),
             'region' => 'us-east-1',
         ],
 
@@ -84,7 +82,6 @@ return [
             'queue' => 'default',
             'expire' => 60,
         ],
-
     ],
 
     /*
@@ -117,5 +114,4 @@ return [
     'jobs' => [
         'users' => 'high',
     ],
-
 ];

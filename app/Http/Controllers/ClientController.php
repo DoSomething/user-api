@@ -3,8 +3,8 @@
 namespace Northstar\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Northstar\Models\Client;
 use Northstar\Http\Transformers\ClientTransformer;
+use Northstar\Models\Client;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ClientController extends Controller
@@ -20,27 +20,26 @@ class ClientController extends Controller
 
         $this->middleware('role:admin');
         $this->middleware('scope:client');
-        $this->middleware('scope:write', ['only' => ['store', 'update', 'destroy']]);
+        $this->middleware('scope:write', [
+            'only' => ['store', 'update', 'destroy'],
+        ]);
     }
 
     /**
      * Display a listing of the resource.
-     * GET /v2/clients
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        $clients = $this->newQuery(Client::class)
-            ->orderBy('client_id', 'asc');
+        $clients = $this->newQuery(Client::class)->orderBy('client_id', 'asc');
 
         return $this->paginatedCollection($clients, $request);
     }
 
     /**
      * Store a newly created resource in storage.
-     * POST /v2/clients
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -48,17 +47,24 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'client_id' => 'required|alpha_dash|unique:clients,client_id',
-            'title' => 'required|string',
-            'description' => 'string',
-            'scope' => 'array|scope', // @see Scope::validateScopes
-            'allowed_grant' => 'string|in:authorization_code,password,client_credentials',
-            'redirect_uri' => 'array|required_if:allowed_grant,authorization_code',
-            'redirect_uri.*' => 'url',
-        ], [
-            'redirect_uri.*.url' => 'The :attribute field is not a valid URL.',
-        ]);
+        $this->validate(
+            $request,
+            [
+                'client_id' => 'required|alpha_dash|unique:clients,client_id',
+                'title' => 'required|string',
+                'description' => 'string',
+                'scope' => 'array|scope', // @see Scope::validateScopes
+                'allowed_grant' =>
+                    'string|in:authorization_code,password,client_credentials',
+                'redirect_uri' =>
+                    'array|required_if:allowed_grant,authorization_code',
+                'redirect_uri.*' => 'url',
+            ],
+            [
+                'redirect_uri.*.url' =>
+                    'The :attribute field is not a valid URL.',
+            ],
+        );
 
         $key = Client::create($request->except('client_secret'));
 
@@ -67,7 +73,6 @@ class ClientController extends Controller
 
     /**
      * Display the specified resource.
-     * GET /v2/clients/:client_id
      *
      * @param $client_id
      * @return \Illuminate\Http\Response
@@ -81,7 +86,6 @@ class ClientController extends Controller
 
     /**
      * Update the specified resource.
-     * PUT /v2/clients/:client_id
      *
      * @param $client_id
      * @param Request $request
@@ -89,16 +93,23 @@ class ClientController extends Controller
      */
     public function update($client_id, Request $request)
     {
-        $this->validate($request, [
-            'title' => 'string',
-            'description' => 'string',
-            'scope' => 'array|scope', // @see Scope::validateScopes
-            'allowed_grant' => 'string|in:authorization_code,password,client_credentials',
-            'redirect_uri' => 'array|required_if:allowed_grant,authorization_code',
-            'redirect_uri.*' => 'url',
-        ], [
-            'redirect_uri.*.url' => 'The :attribute field is not a valid URL.',
-        ]);
+        $this->validate(
+            $request,
+            [
+                'title' => 'string',
+                'description' => 'string',
+                'scope' => 'array|scope', // @see Scope::validateScopes
+                'allowed_grant' =>
+                    'string|in:authorization_code,password,client_credentials',
+                'redirect_uri' =>
+                    'array|required_if:allowed_grant,authorization_code',
+                'redirect_uri.*' => 'url',
+            ],
+            [
+                'redirect_uri.*.url' =>
+                    'The :attribute field is not a valid URL.',
+            ],
+        );
 
         $client = Client::findOrFail($client_id);
         $client->update($request->except('client_id', 'client_secret'));
@@ -108,7 +119,6 @@ class ClientController extends Controller
 
     /**
      * Delete an API key resource.
-     * DELETE /v2/clients/:client_id
      *
      * @param $client_id
      * @return \Illuminate\Http\Response

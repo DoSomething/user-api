@@ -1,8 +1,8 @@
 <?php
 
+use Laravel\Socialite\AbstractUser;
 use Northstar\Models\User;
 use Northstar\Services\Google;
-use Laravel\Socialite\AbstractUser;
 
 class GoogleTest extends BrowserKitTestCase
 {
@@ -38,8 +38,13 @@ class GoogleTest extends BrowserKitTestCase
      * @param  string  $token      token
      * @return \Laravel\Socialite\Two\User
      */
-    private function mockSocialiteAbstractUser($email, $first_name, $last_name, $id, $token)
-    {
+    private function mockSocialiteAbstractUser(
+        $email,
+        $first_name,
+        $last_name,
+        $id,
+        $token
+    ) {
         $fields = compact('id', 'email', 'token');
 
         $user = new Laravel\Socialite\Two\User();
@@ -58,7 +63,7 @@ class GoogleTest extends BrowserKitTestCase
     private function mockGoogleProfile($googleId)
     {
         return (object) [
-            'resourceName' => 'people/'.$googleId,
+            'resourceName' => 'people/' . $googleId,
             'birthdays' => [
                 (object) [
                     'metadata' => (object) [
@@ -96,11 +101,17 @@ class GoogleTest extends BrowserKitTestCase
     private function defaultMock()
     {
         $googleId = '12345';
-        $abstractUser = $this->mockSocialiteAbstractUser('test@dosomething.org', 'Puppet', 'Sloth', $googleId, 'token');
+        $abstractUser = $this->mockSocialiteAbstractUser(
+            'test@dosomething.org',
+            'Puppet',
+            'Sloth',
+            $googleId,
+            'token',
+        );
         $this->mockSocialiteFromUser($abstractUser);
         $this->mock(Google::class)
-          ->shouldReceive('getProfile')
-          ->andReturn($this->mockGoogleProfile($googleId));
+            ->shouldReceive('getProfile')
+            ->andReturn($this->mockGoogleProfile($googleId));
     }
 
     /**
@@ -140,14 +151,20 @@ class GoogleTest extends BrowserKitTestCase
         $user = auth()->user();
         $this->assertEquals($user->email, 'test@dosomething.org');
         $this->assertEquals($user->source, 'northstar');
-        $this->assertEquals($user->source_detail, 'utm_source:phpunit,auth_source:google');
+        $this->assertEquals(
+            $user->source_detail,
+            'utm_source:phpunit,auth_source:google',
+        );
         $this->assertEquals($user->country_code, country_code());
         $this->assertEquals($user->language, app()->getLocale());
         $this->assertEquals($user->email_subscription_status, true);
         $this->assertEquals($user->email_subscription_topics, ['community']);
         $this->assertEquals($user->birthdate, new Carbon\Carbon('2001-07-11'));
         $this->assertArrayHasKey('badges', $user->feature_flags);
-        $this->assertEquals(true, $user->feature_flags['refer-friends-scholarship']);
+        $this->assertEquals(
+            true,
+            $user->feature_flags['refer-friends-scholarship'],
+        );
     }
 
     /**
@@ -177,14 +194,22 @@ class GoogleTest extends BrowserKitTestCase
     public function testGoogleMissingProfileFields()
     {
         $googleId = '12345';
-        $abstractUser = $this->mockSocialiteAbstractUser('test@dosomething.org', null, null, $googleId, 'token');
+        $abstractUser = $this->mockSocialiteAbstractUser(
+            'test@dosomething.org',
+            null,
+            null,
+            $googleId,
+            'token',
+        );
         $this->mockSocialiteFromUser($abstractUser);
         $this->mock(Google::class)
             ->shouldReceive('getProfile')
             ->andReturn($this->mockGoogleProfile($googleId));
 
         $this->visit('/google/verify')->seePageIs('/register');
-        $this->see('We need your first and last name to create your account! Please confirm that these are set on your Google profile and try again.');
+        $this->see(
+            'We need your first and last name to create your account! Please confirm that these are set on your Google profile and try again.',
+        );
     }
 
     /**
@@ -194,7 +219,13 @@ class GoogleTest extends BrowserKitTestCase
     public function testGoogleMissingBirthday()
     {
         $googleId = '12345';
-        $abstractUser = $this->mockSocialiteAbstractUser('test@dosomething.org', 'Puppet', 'Sloth', $googleId, 'token');
+        $abstractUser = $this->mockSocialiteAbstractUser(
+            'test@dosomething.org',
+            'Puppet',
+            'Sloth',
+            $googleId,
+            'token',
+        );
         $this->mockSocialiteFromUser($abstractUser);
 
         $mockGoogleProfile = $this->mockGoogleProfile($googleId);

@@ -1,9 +1,17 @@
 // Helpers and mini patterns!
 
 %kaleidoscope-bar {
-  background: linear-gradient(to right,  $purple 0%, $purple 25%, $yellow 25%, $yellow 75%, $blue 75%, $blue 100%);
+  background: linear-gradient(
+    to right,
+    $purple 0%,
+    $purple 25%,
+    $yellow 25%,
+    $yellow 75%,
+    $blue 75%,
+    $blue 100%
+  );
   bottom: 0;
-  content: "";
+  content: '';
   display: block;
   height: 10px;
   position: absolute;

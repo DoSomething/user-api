@@ -2,13 +2,13 @@
 
 namespace Northstar\Observers;
 
-use Northstar\Models\User;
 use Illuminate\Support\Arr;
-use Northstar\Models\RefreshToken;
 use Illuminate\Support\Facades\Log;
-use Northstar\Jobs\SendUserToCustomerIo;
 use Northstar\Jobs\CreateCustomerIoEvent;
 use Northstar\Jobs\DeleteUserFromOtherServices;
+use Northstar\Jobs\SendUserToCustomerIo;
+use Northstar\Models\RefreshToken;
+use Northstar\Models\User;
 
 class UserObserver
 {
@@ -21,12 +21,15 @@ class UserObserver
     public function creating(User $user)
     {
         // Subscribe user to email if topics have been provided.
-        if (isset($user->email_subscription_topics) && count($user->email_subscription_topics)) {
+        if (
+            isset($user->email_subscription_topics) &&
+            count($user->email_subscription_topics)
+        ) {
             $user->email_subscription_status = true;
         }
 
         // Populate default topics if subscribing to SMS without any topics provided.
-        if ($user->isSmsSubscribed() && ! $user->hasSmsSubscriptionTopics()) {
+        if ($user->isSmsSubscribed() && !$user->hasSmsSubscriptionTopics()) {
             $user->addDefaultSmsSubscriptionTopics();
         }
 
@@ -44,7 +47,7 @@ class UserObserver
     {
         // Send payload to Blink for Customer.io profile.
         $queueLevel = config('queue.jobs.users');
-        $queue = config('queue.names.'.$queueLevel);
+        $queue = config('queue.names.' . $queueLevel);
         SendUserToCustomerIo::dispatch($user)->onQueue($queue);
 
         // Send metrics to StatHat.
@@ -62,20 +65,27 @@ class UserObserver
         $changed = $user->getDirty();
 
         // If we're unsubscribing from email, clear all topics.
-        if (isset($changed['email_subscription_status']) && ! $changed['email_subscription_status']) {
+        if (
+            isset($changed['email_subscription_status']) &&
+            !$changed['email_subscription_status']
+        ) {
             $user->email_subscription_topics = [];
-        /**
-         * Else if we are updating topics, ensure email subscription status is true.
-         *
-         * Note: We intentionally do not auto-unsubscribe if we're updating topics with an empty array.
-         * @see https://www.pivotaltracker.com/n/projects/2401401/stories/170599403/comments/211127349.
-         */
-        } elseif (isset($changed['email_subscription_topics']) && count($changed['email_subscription_topics']) && ! $user->email_subscription_status) {
+        } elseif (
+            /*
+             * Else if we are updating topics, ensure email subscription status is true.
+             *
+             * Note: We intentionally do not auto-unsubscribe if we're updating topics with an empty array.
+             * @see https://www.pivotaltracker.com/n/projects/2401401/stories/170599403/comments/211127349.
+             */
+            isset($changed['email_subscription_topics']) &&
+            count($changed['email_subscription_topics']) &&
+            !$user->email_subscription_status
+        ) {
             $user->email_subscription_status = true;
         }
 
         if (isset($changed['sms_status'])) {
-            /**
+            /*
              * If we're unsubscribing from SMS, clear all topics.
              *
              * Note: We don't allow users to set their own SMS subscription topics yet, so there
@@ -83,25 +93,38 @@ class UserObserver
              */
             if (User::isUnsubscribedSmsStatus($changed['sms_status'])) {
                 $user->clearSmsSubscriptionTopics();
-            // If resubscribing and not adding topics, add the default topics if user has none.
-            } elseif (User::isSubscribedSmsStatus($changed['sms_status']) && ! isset($changed['sms_subscription_topics']) && ! $user->hasSmsSubscriptionTopics()) {
+            } elseif (
+                // If resubscribing and not adding topics, add the default topics if user has none.
+                User::isSubscribedSmsStatus($changed['sms_status']) &&
+                !isset($changed['sms_subscription_topics']) &&
+                !$user->hasSmsSubscriptionTopics()
+            ) {
                 $user->addDefaultSmsSubscriptionTopics();
             }
         }
 
         // If we're updating a user's club, dispatch a Customer.io event.
         if (isset($changed['club_id'])) {
-            $customerIoPayload = $user->getClubIdUpdatedEventPayload($changed['club_id']);
+            $customerIoPayload = $user->getClubIdUpdatedEventPayload(
+                $changed['club_id'],
+            );
 
             // We'll only dispatch the event if the club is valid and we have the expected event payload.
             if ($customerIoPayload) {
-                CreateCustomerIoEvent::dispatch($user, 'club_id_updated', $customerIoPayload);
+                CreateCustomerIoEvent::dispatch(
+                    $user,
+                    'club_id_updated',
+                    $customerIoPayload,
+                );
             }
         }
 
         // Write profile changes to the log, with redacted values for hidden fields.
-        if (! app()->runningInConsole()) {
-            logger('updated user', ['id' => $user->id, 'changed' => $user->getChanged()]);
+        if (!app()->runningInConsole()) {
+            logger('updated user', [
+                'id' => $user->id,
+                'changed' => $user->getChanged(),
+            ]);
         }
     }
 
@@ -115,7 +138,7 @@ class UserObserver
     {
         // Send payload to Blink for Customer.io profile.
         $queueLevel = config('queue.jobs.users');
-        $queue = config('queue.names.'.$queueLevel);
+        $queue = config('queue.names.' . $queueLevel);
         SendUserToCustomerIo::dispatch($user)->onQueue($queue);
     }
 
@@ -129,15 +152,25 @@ class UserObserver
     {
         // Anonymize birthdate so we can see demographics of deleted users:
         if ($user->birthdate) {
-            $user->update(['birthdate' => $user->birthdate->year.'-01-01']);
+            $user->update(['birthdate' => $user->birthdate->year . '-01-01']);
         }
 
         // Remove all fields except some non-identifiable demographics:
-        $fields = array_keys(Arr::except($user->getAttributes(), [
-            '_id', 'birthdate', 'language', 'source', 'source_detail',
-            'addr_city', 'addr_state', 'addr_zip', 'country',
-            'created_at', 'updated_at',
-        ]));
+        $fields = array_keys(
+            Arr::except($user->getAttributes(), [
+                '_id',
+                'birthdate',
+                'language',
+                'source',
+                'source_detail',
+                'addr_city',
+                'addr_state',
+                'addr_zip',
+                'country',
+                'created_at',
+                'updated_at',
+            ]),
+        );
 
         if ($fields) {
             $user->drop($fields);
@@ -149,6 +182,6 @@ class UserObserver
         // And finally, delete the user from other services:
         DeleteUserFromOtherServices::dispatch($user->id);
 
-        info('Deleted: '.$user->id);
+        info('Deleted: ' . $user->id);
     }
 }

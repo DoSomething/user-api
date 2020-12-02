@@ -1,7 +1,7 @@
 <?php
 
-use Northstar\Models\User;
 use Northstar\Models\Client;
+use Northstar\Models\User;
 
 class WebAuthenticationTest extends BrowserKitTestCase
 {
@@ -65,7 +65,10 @@ class WebAuthenticationTest extends BrowserKitTestCase
      */
     public function testLoginWithInvalidCredentials()
     {
-        factory(User::class)->create(['email' => 'login-test@dosomething.org', 'password' => 'secret']);
+        factory(User::class)->create([
+            'email' => 'login-test@dosomething.org',
+            'password' => 'secret',
+        ]);
 
         $this->expectsEvents(\Illuminate\Auth\Events\Failed::class);
 
@@ -86,7 +89,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
             $this->visit('login');
             $this->submitForm('Log In', [
                 'username' => 'target@example.com',
-                'password' => 'password'.$i,
+                'password' => 'password' . $i,
             ]);
 
             $this->see('These credentials do not match our records.');
@@ -110,7 +113,10 @@ class WebAuthenticationTest extends BrowserKitTestCase
      */
     public function testLoginWithoutPasswordSet()
     {
-        factory(User::class)->create(['email' => 'puppet-sloth@dosomething.org', 'password' => null]);
+        factory(User::class)->create([
+            'email' => 'puppet-sloth@dosomething.org',
+            'password' => null,
+        ]);
 
         // Puppet Sloth doesn't have a DS.org password yet, but he tries to enter
         // "next-question" because that's his password everywhere else.
@@ -119,7 +125,9 @@ class WebAuthenticationTest extends BrowserKitTestCase
             'password' => 'next-question',
         ]);
 
-        $this->seeText('You need to reset your password before you can log in.');
+        $this->seeText(
+            'You need to reset your password before you can log in.',
+        );
     }
 
     /**
@@ -232,7 +240,9 @@ class WebAuthenticationTest extends BrowserKitTestCase
         $referrerUserId = factory(User::class)->create()->id;
 
         // Mock a session for the user with ?referrer_user_id=x param, indicating a referred user.
-        $this->withSession(['referrer_user_id' => $referrerUserId])->registerUpdated();
+        $this->withSession([
+            'referrer_user_id' => $referrerUserId,
+        ])->registerUpdated();
 
         $this->seeIsAuthenticated('web');
 
@@ -267,8 +277,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
             'features.refer-friends-scholarship' => true,
         ]);
 
-        $this->withHeader('X-Fastly-Country-Code', 'US')
-            ->registerUpdated();
+        $this->withHeader('X-Fastly-Country-Code', 'US')->registerUpdated();
 
         $this->seeIsAuthenticated('web');
 
@@ -278,7 +287,10 @@ class WebAuthenticationTest extends BrowserKitTestCase
         // The user should have a value set for 'badges'
         $this->assertArrayHasKey('badges', $user->feature_flags);
         // The user should have true set for 'refer-friends-scholarship'
-        $this->assertEquals(true, $user->feature_flags['refer-friends-scholarship']);
+        $this->assertEquals(
+            true,
+            $user->feature_flags['refer-friends-scholarship'],
+        );
     }
 
     /**
@@ -326,8 +338,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
             'features.refer-friends-scholarship' => true,
         ]);
 
-        $this->withHeader('X-Fastly-Country-Code', 'US')
-            ->registerUpdated();
+        $this->withHeader('X-Fastly-Country-Code', 'US')->registerUpdated();
 
         $this->seeIsAuthenticated('web');
 
@@ -337,7 +348,10 @@ class WebAuthenticationTest extends BrowserKitTestCase
         // The user should not have a value set for 'badges'
         $this->assertArrayNotHasKey('badges', $user->feature_flags);
         // The user should have true set for 'refer-friends-scholarship'
-        $this->assertEquals(true, $user->feature_flags['refer-friends-scholarship']);
+        $this->assertEquals(
+            true,
+            $user->feature_flags['refer-friends-scholarship'],
+        );
     }
 
     /**
@@ -352,8 +366,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
             'features.refer-friends-scholarship' => false,
         ]);
 
-        $this->withHeader('X-Fastly-Country-Code', 'US')
-            ->registerUpdated();
+        $this->withHeader('X-Fastly-Country-Code', 'US')->registerUpdated();
 
         $this->seeIsAuthenticated('web');
 
@@ -363,7 +376,10 @@ class WebAuthenticationTest extends BrowserKitTestCase
         // The user should have a value set for 'badges'
         $this->assertArrayHasKey('badges', $user->feature_flags);
         // The user should not have a value set for 'refer-friends-scholarship'
-        $this->assertArrayNotHasKey('refer-friends-scholarship', $user->feature_flags);
+        $this->assertArrayNotHasKey(
+            'refer-friends-scholarship',
+            $user->feature_flags,
+        );
     }
 
     /**
@@ -424,8 +440,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
      */
     public function testRegisterFromMexico()
     {
-        $this->withHeader('X-Fastly-Country-Code', 'MX')
-            ->registerUpdated();
+        $this->withHeader('X-Fastly-Country-Code', 'MX')->registerUpdated();
 
         $this->seeIsAuthenticated('web');
 

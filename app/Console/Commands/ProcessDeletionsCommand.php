@@ -3,9 +3,9 @@
 namespace Northstar\Console\Commands;
 
 use Carbon\Carbon;
-use Northstar\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
+use Northstar\Models\User;
 
 class ProcessDeletionsCommand extends Command
 {
@@ -32,9 +32,13 @@ class ProcessDeletionsCommand extends Command
     {
         $offset = $this->option('offset');
 
-        $query = User::where('deletion_requested_at', '<', new Carbon($offset.'ago'));
+        $query = User::where(
+            'deletion_requested_at',
+            '<',
+            new Carbon($offset . 'ago'),
+        );
 
-        info('Anonymizing '.$query->count().' users...');
+        info('Anonymizing ' . $query->count() . ' users...');
 
         $query->chunkById(200, function (Collection $users) {
             $users->each(function (User $user) {

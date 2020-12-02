@@ -10,7 +10,7 @@ use Northstar\Models\AuthCode;
 class AuthCodeRepository implements AuthCodeRepositoryInterface
 {
     /**
-     * Creates a new AuthCode
+     * Creates a new AuthCode.
      *
      * @return AuthCodeEntityInterface
      */
@@ -54,6 +54,6 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
      */
     public function isAuthCodeRevoked($codeId)
     {
-        return ! AuthCode::where('code', $codeId)->exists();
+        return !AuthCode::where('code', $codeId)->exists();
     }
 }

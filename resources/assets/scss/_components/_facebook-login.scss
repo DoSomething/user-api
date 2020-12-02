@@ -11,19 +11,20 @@ $facebook-blue: #4267b2;
   background: $facebook-blue;
   border: 1px solid $facebook-blue;
   text-transform: none;
-  
-  &:hover, &:active, &:focus {
+
+  &:hover,
+  &:active,
+  &:focus {
     background: darken($facebook-blue, 10%);
   }
 
-
-    &:before {
-      @include icomoon-icon;
-      content: "\e600";
-      display: inline-block;
-      text-decoration: none;
-      font-size: 24px;
-      vertical-align: middle;
-      margin-right: $base-spacing;
-    }
+  &:before {
+    @include icomoon-icon;
+    content: '\e600';
+    display: inline-block;
+    text-decoration: none;
+    font-size: 24px;
+    vertical-align: middle;
+    margin-right: $base-spacing;
+  }
 }

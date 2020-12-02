@@ -5,18 +5,19 @@ use Northstar\Models\User;
 class ProfileSubscriptionsTest extends BrowserKitTestCase
 {
     /**
-     * Test that users can reach the profile subscriptions page
+     * Test that users can reach the profile subscriptions page.
      */
     public function testViewingProfileSubscriptions()
     {
         $user = $this->makeAuthWebUser();
 
-        $this->visit('/profile/subscriptions')
-            ->see('Choose your contact method');
+        $this->visit('/profile/subscriptions')->see(
+            'Choose your contact method',
+        );
     }
 
     /**
-     * Test that users can update their contact methods successfully
+     * Test that users can update their contact methods successfully.
      */
     public function testUpdatingContactFields()
     {
@@ -27,11 +28,11 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
         $this->be($user, 'web');
 
         $this->visit('/profile/subscriptions')
-             ->type('(123) 456-7890', 'mobile')
-             ->select('less', 'sms_status')
-             ->check('email_subscription_topics[1]')
-             ->check('email_subscription_topics[3]')
-             ->press('Finish');
+            ->type('(123) 456-7890', 'mobile')
+            ->select('less', 'sms_status')
+            ->check('email_subscription_topics[1]')
+            ->check('email_subscription_topics[3]')
+            ->press('Finish');
 
         $updatedUser = $user->fresh();
 
@@ -39,7 +40,7 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that users can update their contact methods successfully
+     * Test that users can update their contact methods successfully.
      */
     public function testUpdatingContactFieldsWithAutoSelectSMS()
     {
@@ -50,10 +51,10 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
         $this->be($user, 'web');
 
         $this->visit('/profile/subscriptions')
-             ->type('(123) 456-7890', 'mobile')
-             ->check('email_subscription_topics[1]')
-             ->check('email_subscription_topics[2]')
-             ->press('Finish');
+            ->type('(123) 456-7890', 'mobile')
+            ->check('email_subscription_topics[1]')
+            ->check('email_subscription_topics[2]')
+            ->press('Finish');
 
         $updatedUser = $user->fresh();
 
@@ -61,7 +62,7 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that users can move to the next step of registration without updating any fields
+     * Test that users can move to the next step of registration without updating any fields.
      */
     public function testFinishButtonWithoutUpdates()
     {
@@ -73,7 +74,7 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that users can move to the next step of registration without completing any fields
+     * Test that users can move to the next step of registration without completing any fields.
      */
     public function testSkipButton()
     {

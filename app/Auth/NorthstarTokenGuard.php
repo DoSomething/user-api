@@ -3,9 +3,9 @@
 namespace Northstar\Auth;
 
 use Illuminate\Auth\TokenGuard;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Http\Request;
 use Mockery\CountValidator\Exception;
 use Northstar\Models\User;
 
@@ -35,7 +35,7 @@ class NorthstarTokenGuard extends TokenGuard implements Guard
         // If we've already retrieved the user for the current request we can just
         // return it back immediately. We do not want to fetch the user data on
         // every call to this method because that would be tremendously slow.
-        if (! is_null($this->user)) {
+        if (!is_null($this->user)) {
             return $this->user;
         }
 
@@ -83,6 +83,8 @@ class NorthstarTokenGuard extends TokenGuard implements Guard
      */
     public function once()
     {
-        throw new Exception('Token-based authentication is stateless. Use Auth::check instead.');
+        throw new Exception(
+            'Token-based authentication is stateless. Use Auth::check instead.',
+        );
     }
 }

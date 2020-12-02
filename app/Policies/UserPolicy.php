@@ -2,9 +2,9 @@
 
 namespace Northstar\Policies;
 
+use Illuminate\Auth\Access\HandlesAuthorization;
 use Northstar\Auth\Scope;
 use Northstar\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
 {
@@ -26,7 +26,7 @@ class UserPolicy
 
         // But if this isn't a machine client & anonymous, they
         // certainly can't be a superuser, now can they?!
-        if (! $viewer) {
+        if (!$viewer) {
             return false;
         }
 
@@ -43,7 +43,7 @@ class UserPolicy
      */
     protected function isOwner(?User $viewer, User $target)
     {
-        if (! $viewer) {
+        if (!$viewer) {
             return false;
         }
 

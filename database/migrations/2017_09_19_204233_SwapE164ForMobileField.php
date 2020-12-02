@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class SwapE164ForMobileField extends Migration
 {
@@ -21,7 +21,10 @@ class SwapE164ForMobileField extends Migration
         $this->renameField('users', 'e164', 'mobile');
 
         Schema::table('users', function (Blueprint $collection) {
-            $collection->index('mobile', null, null, ['sparse' => true, 'unique' => true]);
+            $collection->index('mobile', null, null, [
+                'sparse' => true,
+                'unique' => true,
+            ]);
         });
     }
 
@@ -40,7 +43,10 @@ class SwapE164ForMobileField extends Migration
         $this->renameField('users', '_old_mobile', 'mobile');
 
         Schema::table('users', function (Blueprint $collection) {
-            $collection->index('mobile', null, null, ['sparse' => true, 'unique' => true]);
+            $collection->index('mobile', null, null, [
+                'sparse' => true,
+                'unique' => true,
+            ]);
         });
     }
 
@@ -57,7 +63,8 @@ class SwapE164ForMobileField extends Migration
         $connection = app('db')->connection('mongodb');
 
         // Rename 'mobile_status' to 'mobilecommons_status'.
-        $connection->collection($collection)
+        $connection
+            ->collection($collection)
             ->whereRaw([$old => ['$exists' => true]])
             ->update(['$rename' => [$old => $new]]);
     }

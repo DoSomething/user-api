@@ -14,8 +14,10 @@ class ParseOAuthHeader
      * @param ResourceServer $oauth
      * @param ServerRequestInterface $request
      */
-    public function __construct(ResourceServer $oauth, ServerRequestInterface $request)
-    {
+    public function __construct(
+        ResourceServer $oauth,
+        ServerRequestInterface $request
+    ) {
         $this->oauth = $oauth;
         $this->request = $request;
     }
@@ -32,8 +34,10 @@ class ParseOAuthHeader
         $header = $request->header('Authorization', '');
 
         // Only attempt to parse as a JWT if Bearer token & not a legacy database token.
-        if ($this->isBearerToken($header) && ! $this->isLegacyToken($header)) {
-            $this->request = $this->oauth->validateAuthenticatedRequest($this->request);
+        if ($this->isBearerToken($header) && !$this->isLegacyToken($header)) {
+            $this->request = $this->oauth->validateAuthenticatedRequest(
+                $this->request,
+            );
 
             // Add the parsed attributes (oauth_access_token_id, oauth_client_id,
             // oauth_user_id, & oauth_scopes) to the request.

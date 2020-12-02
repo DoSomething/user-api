@@ -2,10 +2,10 @@
 
 namespace Northstar\Console\Commands;
 
-use Northstar\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Northstar\Jobs\SendUserToCustomerIo;
+use Northstar\Models\User;
 
 class BackfillCustomerIo extends Command
 {
@@ -30,7 +30,7 @@ class BackfillCustomerIo extends Command
      */
     public function handle()
     {
-        $query = (new User)->newQuery();
+        $query = (new User())->newQuery();
         $progress = $this->output->createProgressBar($query->count());
 
         $query->chunkById(200, function (Collection $users) use ($progress) {

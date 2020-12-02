@@ -50,19 +50,27 @@ class OAuthTest extends BrowserKitTestCase
 
         // Make the authorization request:
         $this->be($user, 'web');
-        $this->get('authorize?'.http_build_query([
-            'response_type' => 'code',
-            'client_id' => $client->client_id,
-            'client_secret' => $client->client_secret,
-            'redirect_uri' => $client->redirect_uri,
-            'scope' => 'user role:staff',
-            'state' => csrf_token(),
-        ]));
+        $this->get(
+            'authorize?' .
+                http_build_query([
+                    'response_type' => 'code',
+                    'client_id' => $client->client_id,
+                    'client_secret' => $client->client_secret,
+                    'redirect_uri' => $client->redirect_uri,
+                    'scope' => 'user role:staff',
+                    'state' => csrf_token(),
+                ]),
+        );
 
         // For the purpose of the the test, let's just grab the 'code' from the redirect.
         $redirect = $this->response->headers->get('location');
-        $code = urldecode(str_replace('http://example.com/?code=', '', $redirect));
-        $this->assertNotEmpty($code, 'A code was returned to the redirect URI.');
+        $code = urldecode(
+            str_replace('http://example.com/?code=', '', $redirect),
+        );
+        $this->assertNotEmpty(
+            $code,
+            'A code was returned to the redirect URI.',
+        );
 
         // Freeze time so we can assert when we made this token.
         $now = $this->mockTime('+1 minute');
@@ -78,7 +86,10 @@ class OAuthTest extends BrowserKitTestCase
 
         // A valid JWT should be returned, and the user's "last accessed" timestamp should update.
         $this->assertValidJwtToken($user, $client, ['user', 'role:staff']);
-        $this->assertEquals((string) $now, (string) $user->fresh()->last_accessed_at);
+        $this->assertEquals(
+            (string) $now,
+            (string) $user->fresh()->last_accessed_at,
+        );
     }
 
     /**
@@ -109,7 +120,9 @@ class OAuthTest extends BrowserKitTestCase
     public function testRoleClaim()
     {
         $client = factory(Client::class, 'password')->create();
-        $admin = factory(User::class, 'admin')->create(['password' => 'secret']);
+        $admin = factory(User::class, 'admin')->create([
+            'password' => 'secret',
+        ]);
 
         $this->post('v2/auth/token', [
             'grant_type' => 'password',
@@ -254,7 +267,9 @@ class OAuthTest extends BrowserKitTestCase
         ]);
 
         // We should receive a token with only the requested scopes.
-        $jwt = (new \Lcobucci\JWT\Parser())->parse($this->decodeResponseJson()['access_token']);
+        $jwt = (new \Lcobucci\JWT\Parser())->parse(
+            $this->decodeResponseJson()['access_token'],
+        );
         $this->assertSame(['user'], $jwt->getClaim('scopes'));
     }
 
@@ -264,7 +279,9 @@ class OAuthTest extends BrowserKitTestCase
      */
     public function testCantRequestDisallowedClientScope()
     {
-        $client = factory(Client::class, 'client_credentials')->create(['scope' => ['user']]);
+        $client = factory(Client::class, 'client_credentials')->create([
+            'scope' => ['user'],
+        ]);
 
         $this->post('v2/auth/token', [
             'grant_type' => 'client_credentials',
@@ -274,7 +291,9 @@ class OAuthTest extends BrowserKitTestCase
         ]);
 
         // We should receive a token, but *not* with the disallowed scope
-        $jwt = (new \Lcobucci\JWT\Parser())->parse($this->decodeResponseJson()['access_token']);
+        $jwt = (new \Lcobucci\JWT\Parser())->parse(
+            $this->decodeResponseJson()['access_token'],
+        );
         $this->assertSame(['user'], $jwt->getClaim('scopes'));
     }
 
@@ -309,13 +328,11 @@ class OAuthTest extends BrowserKitTestCase
         ]);
 
         $this->assertResponseStatus(200);
-        $this->seeJsonStructure([
-            'token_type',
-            'expires_in',
-            'access_token',
-        ]);
+        $this->seeJsonStructure(['token_type', 'expires_in', 'access_token']);
 
-        $jwt = (new \Lcobucci\JWT\Parser())->parse($this->decodeResponseJson()['access_token']);
+        $jwt = (new \Lcobucci\JWT\Parser())->parse(
+            $this->decodeResponseJson()['access_token'],
+        );
 
         // Check that the token has the expected user ID and scopes.
         $this->assertSame('', $jwt->getClaim('sub'));
@@ -363,7 +380,10 @@ class OAuthTest extends BrowserKitTestCase
         ]);
 
         // The user's `last_accessed_at` timestamp should be updated.
-        $this->assertEquals((string) $now, (string) $user->fresh()->last_accessed_at);
+        $this->assertEquals(
+            (string) $now,
+            (string) $user->fresh()->last_accessed_at,
+        );
 
         // And now, verify that that refresh token has been consumed.
         $this->post('v2/auth/token', [
@@ -395,7 +415,7 @@ class OAuthTest extends BrowserKitTestCase
 
         $token = $this->decodeResponseJson()['access_token'];
 
-        $this->get('v1/users', ['Authorization' => 'Bearer '.$token]);
+        $this->get('v1/users', ['Authorization' => 'Bearer ' . $token]);
         $this->assertResponseStatus(200);
     }
 
@@ -459,12 +479,16 @@ class OAuthTest extends BrowserKitTestCase
         $jwt = $this->decodeResponseJson();
 
         // Now, delete that refresh token.
-        $this->delete('v2/auth/token', [
-            'token' => $jwt['refresh_token'],
-        ], [
-            'Content-Type' => 'application/x-www-form-urlencoded',
-            'Authorization' => 'Bearer '.$jwt['access_token'],
-        ]);
+        $this->delete(
+            'v2/auth/token',
+            [
+                'token' => $jwt['refresh_token'],
+            ],
+            [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+                'Authorization' => 'Bearer ' . $jwt['access_token'],
+            ],
+        );
         $this->assertResponseStatus(200);
 
         // And that token should now be rejected if provided:
@@ -483,8 +507,12 @@ class OAuthTest extends BrowserKitTestCase
      */
     public function testCantRevokeAnotherUsersRefreshToken()
     {
-        $user1 = factory(User::class)->create(['password' => 'rather-secret-phrase']);
-        $user2 = factory(User::class)->create(['password' => 'another-secret-code']);
+        $user1 = factory(User::class)->create([
+            'password' => 'rather-secret-phrase',
+        ]);
+        $user2 = factory(User::class)->create([
+            'password' => 'another-secret-code',
+        ]);
         $client = factory(Client::class, 'password')->create();
 
         // Make token for user #1.
@@ -511,12 +539,16 @@ class OAuthTest extends BrowserKitTestCase
         ])->decodeResponseJson();
 
         // Now, try to delete User #1's refresh token w/ User #2's access token.
-        $this->delete('v2/auth/token', [
-            'token' => $jwt1['refresh_token'], // <--- User #1's refresh token
-        ], [
-            'Content-Type' => 'application/x-www-form-urlencoded',
-            'Authorization' => 'Bearer '.$jwt2['access_token'], // <-- but User #2's access token!
-        ]);
+        $this->delete(
+            'v2/auth/token',
+            [
+                'token' => $jwt1['refresh_token'], // <--- User #1's refresh token
+            ],
+            [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+                'Authorization' => 'Bearer ' . $jwt2['access_token'], // <-- but User #2's access token!
+            ],
+        );
         $this->assertResponseStatus(401);
     }
 }

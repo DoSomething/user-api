@@ -2,9 +2,9 @@
 
 namespace Northstar\Auth\Entities;
 
-use League\OAuth2\Server\Entities\UserEntityInterface;
-use League\OAuth2\Server\Entities\Traits\EntityTrait;
 use Illuminate\Contracts\Auth\Authenticatable;
+use League\OAuth2\Server\Entities\Traits\EntityTrait;
+use League\OAuth2\Server\Entities\UserEntityInterface;
 
 class UserEntity implements UserEntityInterface
 {

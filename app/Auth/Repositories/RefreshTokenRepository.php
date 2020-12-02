@@ -10,7 +10,7 @@ use Northstar\Models\RefreshToken;
 class RefreshTokenRepository implements RefreshTokenRepositoryInterface
 {
     /**
-     * Creates a new refresh token
+     * Creates a new refresh token.
      *
      * @return RefreshTokenEntityInterface
      */
@@ -24,13 +24,19 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
      *
      * @param \League\OAuth2\Server\Entities\RefreshTokenEntityInterface $refreshTokenEntity
      */
-    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
-    {
+    public function persistNewRefreshToken(
+        RefreshTokenEntityInterface $refreshTokenEntity
+    ) {
         RefreshToken::create([
             'token' => $refreshTokenEntity->getIdentifier(),
             'scopes' => $refreshTokenEntity->getAccessToken()->getScopes(),
-            'user_id' => $refreshTokenEntity->getAccessToken()->getUserIdentifier(),
-            'client_id' => $refreshTokenEntity->getAccessToken()->getClient()->getIdentifier(),
+            'user_id' => $refreshTokenEntity
+                ->getAccessToken()
+                ->getUserIdentifier(),
+            'client_id' => $refreshTokenEntity
+                ->getAccessToken()
+                ->getClient()
+                ->getIdentifier(),
         ]);
     }
 
@@ -58,6 +64,6 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     {
         $exists = RefreshToken::where('token', $tokenId)->exists();
 
-        return ! $exists;
+        return !$exists;
     }
 }

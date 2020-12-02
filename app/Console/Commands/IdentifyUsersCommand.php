@@ -2,10 +2,10 @@
 
 namespace Northstar\Console\Commands;
 
+use Illuminate\Console\Command;
 use League\Csv\Reader;
 use League\Csv\Writer;
 use Northstar\Auth\Registrar;
-use Illuminate\Console\Command;
 
 class IdentifyUsersCommand extends Command
 {
@@ -52,11 +52,18 @@ class IdentifyUsersCommand extends Command
 
         foreach ($csv->getRecords() as $record) {
             $databaseColumn = $this->option('database_column') ?: $csvColumn;
-            $user = $registrar->resolve([$databaseColumn => $record[$csvColumn]]);
+            $user = $registrar->resolve([
+                $databaseColumn => $record[$csvColumn],
+            ]);
 
-            $output->insertOne(array_merge([
-                'id' => $user ? $user->id : 'N/A',
-            ], $record));
+            $output->insertOne(
+                array_merge(
+                    [
+                        'id' => $user ? $user->id : 'N/A',
+                    ],
+                    $record,
+                ),
+            );
         }
 
         // Write the combined CSV to the specified output.

@@ -8,7 +8,6 @@ class ResetTest extends BrowserKitTestCase
     /**
      * Test that anonymous and non-admin keys/users cannot create
      * password reset links.
-     * POST /resets
      *
      * @test
      */
@@ -26,7 +25,6 @@ class ResetTest extends BrowserKitTestCase
 
     /**
      * Test creating a new password reset link.
-     * POST /resets
      *
      * @test
      */
@@ -47,7 +45,6 @@ class ResetTest extends BrowserKitTestCase
 
     /**
      * Test creating a new password reset link requires write scope.
-     * POST /resets
      *
      * @test
      */
@@ -56,12 +53,18 @@ class ResetTest extends BrowserKitTestCase
         $admin = factory(User::class, 'admin')->create();
         $user = factory(User::class)->create();
 
-        $response = $this->asUser($admin, ['role:admin', 'user'])->post('v2/resets', [
-            'id' => $user->id,
-            'type' => PasswordResetType::$forgotPassword,
-        ]);
+        $response = $this->asUser($admin, ['role:admin', 'user'])->post(
+            'v2/resets',
+            [
+                'id' => $user->id,
+                'type' => PasswordResetType::$forgotPassword,
+            ],
+        );
 
         $this->assertResponseStatus(401);
-        $this->assertEquals('Requires the `write` scope.', $response->decodeResponseJson()['hint']);
+        $this->assertEquals(
+            'Requires the `write` scope.',
+            $response->decodeResponseJson()['hint'],
+        );
     }
 }

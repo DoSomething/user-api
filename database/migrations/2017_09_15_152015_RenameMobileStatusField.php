@@ -37,7 +37,8 @@ class RenameMobileStatusField extends Migration
         $connection = app('db')->connection('mongodb');
 
         // Rename 'mobile_status' to 'mobilecommons_status'.
-        $connection->collection($collection)
+        $connection
+            ->collection($collection)
             ->whereRaw([$old => ['$exists' => true]])
             ->update(['$rename' => [$old => $new]]);
     }

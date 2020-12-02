@@ -3,8 +3,8 @@
 namespace Northstar\Console\Commands;
 
 use Defuse\Crypto\Key;
-use Illuminate\Console\Command;
 use DFurnes\Environmentalist\ConfiguresApplication;
+use Illuminate\Console\Command;
 
 class SetupCommand extends Command
 {
@@ -35,11 +35,17 @@ class SetupCommand extends Command
 
         // Generate key and save to APP_AUTH_KEY in .env file
         $key = Key::createNewRandomKey();
-        $this->writeEnvironmentVariable('APP_AUTH_KEY', $key->saveToAsciiSafeString());
+        $this->writeEnvironmentVariable(
+            'APP_AUTH_KEY',
+            $key->saveToAsciiSafeString(),
+        );
 
         $this->runArtisanCommand('key:generate', 'Creating application key');
 
-        $this->runArtisanCommand('northstar:keys', 'Creating public/private key');
+        $this->runArtisanCommand(
+            'northstar:keys',
+            'Creating public/private key',
+        );
 
         $this->runArtisanCommand('migrate', 'Running database migrations');
     }

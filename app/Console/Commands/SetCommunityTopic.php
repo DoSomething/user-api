@@ -2,9 +2,9 @@
 
 namespace Northstar\Console\Commands;
 
-use Northstar\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
+use Northstar\Models\User;
 
 class SetCommunityTopic extends Command
 {
@@ -50,7 +50,7 @@ class SetCommunityTopic extends Command
         config(['queue.jobs.users' => 'low']);
 
         // Grab users who have email addresses
-        $query = (new User)->newQuery();
+        $query = (new User())->newQuery();
         $query = $query->where('email_subscription_status', true);
         $query = $query->whereNotIn('email_subscription_topics', ['community']);
 
@@ -68,15 +68,29 @@ class SetCommunityTopic extends Command
                 $user->addEmailSubscriptionTopic('community');
                 $user->save();
 
-                $this->line('northstar:community - User '.$user->id.' given community topic');
+                $this->line(
+                    'northstar:community - User ' .
+                        $user->id .
+                        ' given community topic',
+                );
             });
 
             // Logging to track progress (may read over 100% at the end when there are less than 200 users in the last chunk)
             $this->currentCount += 200;
             $percentDone = ($this->currentCount / $totalCount) * 100;
-            $this->line('northstar:community - status update - '.$this->currentCount.'/'.$totalCount.' - '.$percentDone.'% done');
+            $this->line(
+                'northstar:community - status update - ' .
+                    $this->currentCount .
+                    '/' .
+                    $totalCount .
+                    ' - ' .
+                    $percentDone .
+                    '% done',
+            );
         });
 
-        $this->line('northstar:community - Added "community" to each appropriate user!');
+        $this->line(
+            'northstar:community - Added "community" to each appropriate user!',
+        );
     }
 }

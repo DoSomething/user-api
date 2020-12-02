@@ -2,8 +2,8 @@
 
 namespace Northstar\Http\Controllers;
 
-use Northstar\Models\User;
 use Northstar\Http\Transformers\UserTransformer;
+use Northstar\Models\User;
 
 class EmailController extends Controller
 {
@@ -27,7 +27,6 @@ class EmailController extends Controller
 
     /**
      * Display the specified resource.
-     * GET /email/:id
      *
      * @param object $user
      *

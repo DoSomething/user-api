@@ -3,18 +3,17 @@
 class ProfileAboutTest extends BrowserKitTestCase
 {
     /**
-     * Test that users can navigate to the complete your profile page
+     * Test that users can navigate to the complete your profile page.
      */
     public function testViewingProfileAbout()
     {
         $user = $this->makeAuthWebUser();
 
-        $this->visit('/profile/about')
-            ->see('Complete Your Profile');
+        $this->visit('/profile/about')->see('Complete Your Profile');
     }
 
     /**
-     * Test that users can update their preferences successfully
+     * Test that users can update their preferences successfully.
      */
     public function testUpdatingPreferenceFields()
     {
@@ -32,7 +31,7 @@ class ProfileAboutTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that users will not see any prompts if they select "Yes" on Voter Registration
+     * Test that users will not see any prompts if they select "Yes" on Voter Registration.
      */
     public function testVoterRegistrationStatusPromptHidden()
     {
@@ -40,12 +39,16 @@ class ProfileAboutTest extends BrowserKitTestCase
 
         $this->visit('/profile/about')
             ->select('confirmed', 'voter_registration_status')
-            ->dontSee('Not sure? We can help! Take 2 minutes and check your voter registration status with Rock The Vote!')
-            ->dontSee('Make your voice heard on the issues that matter to you. Take 2 minutes and register to vote at your current address!');
+            ->dontSee(
+                'Not sure? We can help! Take 2 minutes and check your voter registration status with Rock The Vote!',
+            )
+            ->dontSee(
+                'Make your voice heard on the issues that matter to you. Take 2 minutes and register to vote at your current address!',
+            );
     }
 
     /**
-     * Test that users can't update their birthday to an invalid date (backend validation)
+     * Test that users can't update their birthday to an invalid date (backend validation).
      */
     public function testBirthdateError()
     {
@@ -58,7 +61,7 @@ class ProfileAboutTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that users can move to the next step of registration without updating any fields
+     * Test that users can move to the next step of registration without updating any fields.
      */
     public function testNextButtonWithoutUpdates()
     {
@@ -70,7 +73,7 @@ class ProfileAboutTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that users can move to the next step of registration without completing any fields
+     * Test that users can move to the next step of registration without completing any fields.
      */
     public function testSkipButton()
     {

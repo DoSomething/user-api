@@ -32,7 +32,8 @@
     "seatgeek/sixpack-php": "^2.1",
     "softonic/graphql-client": "^1.2",
     "spomky-labs/otphp": "^10.0",
-    "symfony/psr-http-message-bridge": "^1.0.0"
+    "symfony/psr-http-message-bridge": "^1.0.0",
+    "weerd/php-style": "^1.1"
   },
   "require-dev": {
     "facade/ignition": "^1.4",
@@ -56,9 +57,9 @@
   },
   "extra": {
     "laravel": {
-        "dont-discover": [
-            "jenssegers/mongodb"
-        ]
+      "dont-discover": [
+        "jenssegers/mongodb"
+      ]
     }
   },
   "autoload-dev": {
@@ -71,6 +72,7 @@
     }
   },
   "scripts": {
+    "format": "vendor/bin/php-cs-fixer fix --allow-risky=yes",
     "post-autoload-dump": [
       "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
       "@php artisan package:discover"

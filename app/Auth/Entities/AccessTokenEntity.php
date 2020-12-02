@@ -61,7 +61,13 @@ class AccessTokenEntity implements AccessTokenEntityInterface
             ->setSubject($this->getUserIdentifier())
             ->set('role', $this->getRole())
             ->set('scopes', $this->getScopes())
-            ->sign(new Sha256(), new Key($privateKey->getKeyPath(), $privateKey->getPassPhrase()))
+            ->sign(
+                new Sha256(),
+                new Key(
+                    $privateKey->getKeyPath(),
+                    $privateKey->getPassPhrase(),
+                ),
+            )
             ->getToken();
     }
 }

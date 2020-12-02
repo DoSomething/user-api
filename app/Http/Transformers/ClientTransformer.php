@@ -3,8 +3,8 @@
 namespace Northstar\Http\Transformers;
 
 use Illuminate\Support\Str;
-use Northstar\Models\Client;
 use League\Fractal\TransformerAbstract;
+use Northstar\Models\Client;
 
 class ClientTransformer extends TransformerAbstract
 {
@@ -15,7 +15,9 @@ class ClientTransformer extends TransformerAbstract
     public function transform(Client $client)
     {
         return [
-            'title' => ! empty($client->title) ? $client->title : Str::title($client->client_id),
+            'title' => !empty($client->title)
+                ? $client->title
+                : Str::title($client->client_id),
             'description' => $client->description,
 
             'client_id' => $client->client_id,
@@ -23,7 +25,9 @@ class ClientTransformer extends TransformerAbstract
             'scope' => $client->scope,
 
             'allowed_grant' => $client->allowed_grant,
-            'redirect_uri' => is_array($client->redirect_uri) ? $client->redirect_uri : [$client->redirect_uri],
+            'redirect_uri' => is_array($client->redirect_uri)
+                ? $client->redirect_uri
+                : [$client->redirect_uri],
 
             'refresh_tokens' => $client->getRefreshTokenCount(),
 

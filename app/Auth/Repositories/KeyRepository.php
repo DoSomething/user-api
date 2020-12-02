@@ -2,8 +2,8 @@
 
 namespace Northstar\Auth\Repositories;
 
-use Storage;
 use League\OAuth2\Server\CryptKey;
+use Storage;
 
 class KeyRepository
 {
@@ -14,7 +14,8 @@ class KeyRepository
      */
     public function hasKeys()
     {
-        return Storage::has('keys/public.key') || Storage::has('keys/private.key');
+        return Storage::has('keys/public.key') ||
+            Storage::has('keys/private.key');
     }
 
     /**
@@ -67,11 +68,11 @@ class KeyRepository
      */
     protected function getFileCached($path)
     {
-        $cachedPath = storage_path('cache/'.$path);
+        $cachedPath = storage_path('cache/' . $path);
 
         // If this isn't cached locally, fetch it from storage driver.
-        if (! file_exists($cachedPath)) {
-            if (! file_exists(storage_path('cache/keys'))) {
+        if (!file_exists($cachedPath)) {
+            if (!file_exists(storage_path('cache/keys'))) {
                 mkdir(storage_path('cache/keys'), 0770, true);
             }
 
@@ -82,6 +83,10 @@ class KeyRepository
 
         $shouldCheckPermissions = config('app.debug') === false;
 
-        return new CryptKey('file://'.$cachedPath, null, $shouldCheckPermissions);
+        return new CryptKey(
+            'file://' . $cachedPath,
+            null,
+            $shouldCheckPermissions,
+        );
     }
 }

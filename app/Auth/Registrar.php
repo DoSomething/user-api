@@ -4,14 +4,14 @@ namespace Northstar\Auth;
 
 use Closure;
 use Exception;
-use Northstar\Models\User;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use Illuminate\Contracts\Hashing\Hasher;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Factory as Validation;
 use Northstar\Exceptions\NorthstarValidationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Contracts\Auth\Authenticatable as UserContract;
+use Northstar\Models\User;
 
 class Registrar
 {
@@ -49,31 +49,44 @@ class Registrar
      * @param array $additionalRules
      * @throws NorthstarValidationException
      */
-    public function validate(Request $request, User $existingUser = null, array $additionalRules = [])
-    {
+    public function validate(
+        Request $request,
+        User $existingUser = null,
+        array $additionalRules = []
+    ) {
         $fields = normalize('credentials', $request->all());
 
         $existingId = isset($existingUser->id) ? $existingUser->id : 'null';
         $rules = [
             'first_name' => 'max:50',
-            'email' => 'email|nullable|unique:users,email,'.$existingId.',_id|required_without:mobile',
-            'mobile' => 'mobile|nullable|unique:users,mobile,'.$existingId.',_id|required_without:email',
+            'email' =>
+                'email|nullable|unique:users,email,' .
+                $existingId .
+                ',_id|required_without:mobile',
+            'mobile' =>
+                'mobile|nullable|unique:users,mobile,' .
+                $existingId .
+                ',_id|required_without:email',
             'birthdate' => 'nullable|date',
             'country' => 'nullable|country',
             'club_id' => 'nullable|integer',
             'mobilecommons_status' => 'in:active,undeliverable,unknown', // for backwards compatibility.
-            'sms_status' => 'nullable|in:active,less,stop,undeliverable,unknown,pending',
+            'sms_status' =>
+                'nullable|in:active,less,stop,undeliverable,unknown,pending',
             'sms_paused' => 'boolean',
             'sms_subscription_topics.*' => 'in:general,voting',
             'last_messaged_at' => 'date',
             'email_subscription_status' => 'boolean',
-            'email_subscription_topics.*' => 'in:news,scholarships,lifestyle,community,clubs',
-            /**
+            'email_subscription_topics.*' =>
+                'in:news,scholarships,lifestyle,community,clubs',
+            /*
              * Includes current values sent from Rock The Vote import, as well as older values for
              * backwards compatability.
              */
-            'voter_registration_status' => 'nullable|in:uncertain,ineligible,unregistered,confirmed,registration_complete,rejected,under-18,step-1,step-2,step-3,step-4',
-            'causes.*' => 'in:animal_welfare,bullying,education,environment,gender_rights_equality,homelessness_poverty,immigration_refugees,lgbtq_rights_equality,mental_health,physical_health,racial_justice_equity,sexual_harassment_assault',
+            'voter_registration_status' =>
+                'nullable|in:uncertain,ineligible,unregistered,confirmed,registration_complete,rejected,under-18,step-1,step-2,step-3,step-4',
+            'causes.*' =>
+                'in:animal_welfare,bullying,education,environment,gender_rights_equality,homelessness_poverty,immigration_refugees,lgbtq_rights_equality,mental_health,physical_health,racial_justice_equity,sexual_harassment_assault',
         ];
 
         // If existing user is provided, merge indexes into the request so
@@ -82,10 +95,15 @@ class Registrar
             $fields = array_merge($existingUser->indexes(), $fields);
         }
 
-        $validator = $this->validation->make($fields, array_merge($rules, $additionalRules));
+        $validator = $this->validation->make(
+            $fields,
+            array_merge($rules, $additionalRules),
+        );
 
         if ($validator->fails()) {
-            throw new NorthstarValidationException($validator->errors()->getMessages());
+            throw new NorthstarValidationException(
+                $validator->errors()->getMessages(),
+            );
         }
     }
 
@@ -100,14 +118,19 @@ class Registrar
     {
         $credentials = normalize('credentials', $credentials);
 
-        $matches = (new User)->query();
+        $matches = (new User())->query();
 
         // For the first `where` query, we want to limit results... from then on,
         // we want to append (e.g. `SELECT * WHERE _ OR WHERE _ OR WHERE _`)
         $firstWhere = true;
         foreach (User::$uniqueIndexes as $type) {
             if (isset($credentials[$type])) {
-                $matches = $matches->where($type, '=', $credentials[$type], ($firstWhere ? 'and' : 'or'));
+                $matches = $matches->where(
+                    $type,
+                    '=',
+                    $credentials[$type],
+                    $firstWhere ? 'and' : 'or',
+                );
                 $firstWhere = false;
             }
         }
@@ -138,8 +161,8 @@ class Registrar
     {
         $user = $this->resolve($credentials);
 
-        if (! $user) {
-            throw new ModelNotFoundException;
+        if (!$user) {
+            throw new ModelNotFoundException();
         }
 
         return $user;
@@ -155,8 +178,10 @@ class Registrar
      */
     public function validateCredentials($user, array $credentials)
     {
-        if (! $user) {
-            event(new \Illuminate\Auth\Events\Failed('web', $user, $credentials));
+        if (!$user) {
+            event(
+                new \Illuminate\Auth\Events\Failed('web', $user, $credentials),
+            );
 
             return false;
         }
@@ -167,7 +192,13 @@ class Registrar
             return true;
         }
 
-        if (! $user->password && DrupalPasswordHash::check($credentials['password'], $user->drupal_password)) {
+        if (
+            !$user->password &&
+            DrupalPasswordHash::check(
+                $credentials['password'],
+                $user->drupal_password,
+            )
+        ) {
             // If this user has a Drupal-hashed password, rehash it, remove the
             // Drupal password field from the user document, and save the user.
             $user->password = $credentials['password'];
@@ -195,13 +226,13 @@ class Registrar
     public function register($input, $user = null, Closure $customizer = null)
     {
         // If there is no user provided, create a new one.
-        if (! $user) {
-            $user = new User;
+        if (!$user) {
+            $user = new User();
         }
 
         $user->fill($input);
 
-        if (! is_null($customizer)) {
+        if (!is_null($customizer)) {
             $customizer($user);
         }
 
@@ -219,7 +250,7 @@ class Registrar
      */
     public function registerViaWeb($input, $authSource = null)
     {
-        $user = new User;
+        $user = new User();
 
         $user->fill($input);
 
@@ -230,10 +261,16 @@ class Registrar
         }
 
         if (session('source_detail')) {
-            $sourceDetail = array_merge(session('source_detail'), $sourceDetail);
+            $sourceDetail = array_merge(
+                session('source_detail'),
+                $sourceDetail,
+            );
         }
 
-        $user->setSource(null, $sourceDetail ? stringify_object($sourceDetail) : null);
+        $user->setSource(
+            null,
+            $sourceDetail ? stringify_object($sourceDetail) : null,
+        );
 
         if ($referrerUserId = session('referrer_user_id')) {
             if (is_valid_objectid($referrerUserId)) {
@@ -246,7 +283,7 @@ class Registrar
         }
 
         // Set the user's password, if provided:
-        if (! empty($input['password'])) {
+        if (!empty($input['password'])) {
             $user->password = $input['password'];
         }
 
@@ -262,13 +299,19 @@ class Registrar
         $user->addEmailSubscriptionTopic('community');
 
         // Exclude any 'clubs' referrals from our feature flag tests.
-        if (! Str::contains($user->source_detail, 'utm_source:clubs')) {
+        if (!Str::contains($user->source_detail, 'utm_source:clubs')) {
             $feature_flags = [];
 
             // If the badges test is running & the user is eligible, sort users into badges group & control group
-            if (config('features.badges') && ! Str::contains($user->source_detail, config('features.no-badge-campaigns'))) {
+            if (
+                config('features.badges') &&
+                !Str::contains(
+                    $user->source_detail,
+                    config('features.no-badge-campaigns'),
+                )
+            ) {
                 // Give 70% users the badges flag (1-7), 30% in control (8-10)
-                $feature_flags['badges'] = (rand(1, 10) < 8);
+                $feature_flags['badges'] = rand(1, 10) < 8;
             }
 
             // If the refer-friends-scholarship test is running, give all users the refer-friends-scholarship flag.

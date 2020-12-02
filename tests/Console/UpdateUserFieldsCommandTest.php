@@ -1,8 +1,8 @@
 <?php
 
 use Carbon\Carbon;
-use Northstar\Models\User;
 use Illuminate\Support\Facades\Artisan;
+use Northstar\Models\User;
 
 class UpdateUserFieldsCommandTest extends BrowserKitTestCase
 {
@@ -16,7 +16,10 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
         factory(User::class)->create(['_id' => '5acfbf609a89201c340543e5']);
 
         // Run the user update command.
-        Artisan::call('northstar:update', ['path' => 'tests/Console/example-user-updates.csv', 'fields' => ['source', 'created_at']]);
+        Artisan::call('northstar:update', [
+            'path' => 'tests/Console/example-user-updates.csv',
+            'fields' => ['source', 'created_at'],
+        ]);
 
         // Make sure the updates were made
         $this->seeInDatabase('users', [
@@ -48,13 +51,28 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
     public function it_should_update_email_topics()
     {
         // Create the users given in the test csv
-        factory(User::class)->create(['_id' => '5acfbf609a89201c340543e2', 'email_subscription_topics' => []]);
-        factory(User::class)->create(['_id' => '5acfbf609a89201c340543e3', 'email_subscription_topics' => ['news', 'lifestyle']]);
-        factory(User::class)->create(['_id' => '5acfbf609a89201c340543e4', 'email_subscription_topics' => ['lifestyle']]);
-        $user = factory(User::class)->create(['_id' => '5acfbf609a89201c340543e5', 'email_subscription_topics' => ['lifestyle']]);
+        factory(User::class)->create([
+            '_id' => '5acfbf609a89201c340543e2',
+            'email_subscription_topics' => [],
+        ]);
+        factory(User::class)->create([
+            '_id' => '5acfbf609a89201c340543e3',
+            'email_subscription_topics' => ['news', 'lifestyle'],
+        ]);
+        factory(User::class)->create([
+            '_id' => '5acfbf609a89201c340543e4',
+            'email_subscription_topics' => ['lifestyle'],
+        ]);
+        $user = factory(User::class)->create([
+            '_id' => '5acfbf609a89201c340543e5',
+            'email_subscription_topics' => ['lifestyle'],
+        ]);
 
         // Run the user update command.
-        Artisan::call('northstar:update', ['path' => 'tests/Console/example-topic-updates.csv', 'fields' => ['email_subscription_topics']]);
+        Artisan::call('northstar:update', [
+            'path' => 'tests/Console/example-topic-updates.csv',
+            'fields' => ['email_subscription_topics'],
+        ]);
 
         // Updating user with no email topics
         $this->seeInDatabase('users', [
@@ -65,7 +83,11 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
         // Updating user with 2 existing email topics
         $this->seeInDatabase('users', [
             '_id' => '5acfbf609a89201c340543e3',
-            'email_subscription_topics' => ['news', 'lifestyle', 'scholarships'],
+            'email_subscription_topics' => [
+                'news',
+                'lifestyle',
+                'scholarships',
+            ],
         ]);
 
         // Updating user to make sure a topic isn't duplicated
