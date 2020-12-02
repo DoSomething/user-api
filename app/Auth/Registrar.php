@@ -2,8 +2,6 @@
 
 namespace App\Auth;
 
-use App\Exceptions\NorthstarValidationException;
-use App\Models\User;
 use Closure;
 use Exception;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
@@ -12,6 +10,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Factory as Validation;
+use App\Exceptions\NorthstarValidationException;
+use App\Models\User;
 
 class Registrar
 {
