@@ -23,11 +23,7 @@ class LegacyUserTest extends BrowserKitTestCase
             'v1/users/id/' . $user->id,
         );
         $this->assertResponseStatus(200);
-        $this->seeJsonSubset([
-            'data' => [
-                'id' => $user->id,
-            ],
-        ]);
+        $this->seeJsonField('data.id', $user->id);
     }
 
     /**
@@ -46,11 +42,7 @@ class LegacyUserTest extends BrowserKitTestCase
             'v1/users/_id/' . $user->id,
         );
         $this->assertResponseStatus(200);
-        $this->seeJsonSubset([
-            'data' => [
-                'id' => $user->id,
-            ],
-        ]);
+        $this->seeJsonField('data.id', $user->id);
     }
 
     /**
@@ -69,11 +61,7 @@ class LegacyUserTest extends BrowserKitTestCase
             'v1/users/email/JBeaubier@Xavier.edu',
         );
         $this->assertResponseStatus(200);
-        $this->seeJsonSubset([
-            'data' => [
-                'id' => $user->id,
-            ],
-        ]);
+        $this->seeJsonField('data.id', $user->id);
     }
 
     /**
@@ -92,11 +80,7 @@ class LegacyUserTest extends BrowserKitTestCase
             'v1/users/mobile/' . $user->mobile,
         );
         $this->assertResponseStatus(200);
-        $this->seeJsonSubset([
-            'data' => [
-                'id' => $user->id,
-            ],
-        ]);
+        $this->seeJsonField('data.id', $user->id);
     }
 
     /**
@@ -130,12 +114,8 @@ class LegacyUserTest extends BrowserKitTestCase
             'v1/users/drupal_id/100010',
         );
         $this->assertResponseStatus(200);
-        $this->seeJsonSubset([
-            'data' => [
-                'id' => $user->id,
-                'drupal_id' => $user->drupal_id,
-            ],
-        ]);
+        $this->seeJsonField('data.id', $user->id);
+        $this->seeJsonField('data.drupal_id', $user->drupal_id);
     }
 
     /**
@@ -661,21 +641,18 @@ class LegacyUserTest extends BrowserKitTestCase
 
         // The response should return JSON with a 200 Okay status code
         $this->assertResponseStatus(200);
-        $this->seeJsonSubset([
-            'data' => [
-                'email' => 'upsert-me@dosomething.org',
 
-                // Check for the new fields we "upserted":
-                'first_name' => 'Puppet',
-                'mobile' => '5556667777',
+        $this->seeJsonField('data.email', 'upsert-me@dosomething.org');
 
-                // Ensure the `source` field is immutable (since we did not provide an earlier creation date):
-                'source' => 'database',
+        // Check for the new fields we "upserted":
+        $this->seeJsonField('data.first_name', 'Puppet');
+        $this->seeJsonField('data.mobile', '5556667777');
 
-                // The role should *not* be changed by upsert (since that'd make it easily to accidentally grant!)
-                'role' => 'user',
-            ],
-        ]);
+        // Ensure the `source` field is immutable (since we did not provide an earlier creation date):
+        $this->seeJsonField('data.source', 'database');
+
+        // The role should *not* be changed by upsert (since that'd make it easily to accidentally grant!)
+        $this->seeJsonField('data.role', 'user');
     }
 
     /**
@@ -762,14 +739,10 @@ class LegacyUserTest extends BrowserKitTestCase
 
         // The response should indicate a validation conflict!
         $this->assertResponseStatus(422);
-        $this->seeJsonSubset([
-            'error' => [
-                'code' => 422,
-                'message' => 'Failed validation.',
-                'fields' => [
-                    'email' => ['Cannot upsert an existing index.'],
-                ],
-            ],
+        $this->seeJsonField('error.code', 422);
+        $this->seeJsonField('error.message', 'Failed validation.');
+        $this->seeJsonField('error.fields', [
+            'email' => ['Cannot upsert an existing index.'],
         ]);
     }
 
@@ -792,12 +765,8 @@ class LegacyUserTest extends BrowserKitTestCase
         );
 
         $this->assertResponseStatus(200);
-        $this->seeJsonSubset([
-            'data' => [
-                'email' => 'newemail@dosomething.org',
-                'mobile' => '5543694724', // unchanged user values should remain unchanged
-            ],
-        ]);
+        $this->seeJsonField('data.email', 'newemail@dosomething.org');
+        $this->seeJsonField('data.mobile', '5543694724'); // unchanged user values should remain unchanged
 
         // Verify user data got updated
         $this->seeInDatabase('users', [
@@ -1220,15 +1189,11 @@ class LegacyUserTest extends BrowserKitTestCase
         ]);
 
         $this->assertResponseStatus(201);
-        $this->seeJsonSubset([
-            'data' => [
-                'first_name' => 'Hercules',
-                'last_name' => 'Mulligan',
-                'country' => 'US', // mutator should capitalize country codes!
-                'source' => 'historical',
-                'source_detail' => 'american-revolution',
-            ],
-        ]);
+        $this->seeJsonField('data.first_name', 'Hercules');
+        $this->seeJsonField('data.last_name', 'Mulligan');
+        $this->seeJsonField('data.country', 'US'); // mutator should capitalize country codes!
+        $this->seeJsonField('data.source', 'historical');
+        $this->seeJsonField('data.source_detail', 'american-revolution');
     }
 
     /**
@@ -1247,13 +1212,9 @@ class LegacyUserTest extends BrowserKitTestCase
         ]);
 
         $this->assertResponseStatus(200);
-        $this->seeJsonSubset([
-            'data' => [
-                'first_name' => 'Hercules',
-                'last_name' => 'Mulligan',
-                'role' => 'admin',
-            ],
-        ]);
+        $this->seeJsonField('data.first_name', 'Hercules');
+        $this->seeJsonField('data.last_name', 'Mulligan');
+        $this->seeJsonField('data.role', 'admin');
     }
 
     /**
@@ -1358,12 +1319,8 @@ class LegacyUserTest extends BrowserKitTestCase
         ]);
 
         $this->assertResponseStatus(201);
-        $this->seeJsonSubset([
-            'data' => [
-                'last_name' => '└(^o^)┘',
-                'last_initial' => '└',
-            ],
-        ]);
+        $this->seeJsonField('data.last_name', '└(^o^)┘');
+        $this->seeJsonField('data.last_initial', '└');
     }
 
     /**
@@ -1388,7 +1345,7 @@ class LegacyUserTest extends BrowserKitTestCase
     }
 
     /**
-     * Test that we can only upsert created_at to be earlier.
+     * Test that we cant upsert created_at to be earlier.
      *
      * @return void
      */
@@ -1410,17 +1367,17 @@ class LegacyUserTest extends BrowserKitTestCase
             'source_detail' => 'secret-war/2',
         ]);
 
-        // It should ignore the new `source, `source_detail`, and `created_at`.
         $this->assertResponseStatus(200);
-        $this->seeJsonSubset([
-            'data' => [
-                'email' => $user->email,
-                'first_name' => 'Daisy',
-                'source' => 'television',
-                'source_detail' => 'agents-of-shield',
-                'created_at' => $user->created_at->toIso8601String(),
-            ],
-        ]);
+        $this->seeJsonField('data.email', $user->email);
+        $this->seeJsonField('data.first_name', 'Daisy');
+
+        // It should ignore the new `source, `source_detail`, and `created_at`.
+        $this->seeJsonField('data.source', 'television');
+        $this->seeJsonField('data.source_detail', 'agents-of-shield');
+        $this->seeJsonField(
+            'data.created_at',
+            $user->created_at->toISO8601String(),
+        );
     }
 
     /**

@@ -17,17 +17,13 @@ class ProfileTest extends BrowserKitTestCase
             'last_name' => $this->faker->lastName,
         ]);
 
-        // Try to register an account that already exists, but with different capitalization
         $this->asUser($user, ['user'])->get('v1/profile');
+
         $this->assertResponseStatus(200);
-        $this->seeJsonSubset([
-            'data' => [
-                'id' => $user->id,
-                'email' => $user->email,
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
-            ],
-        ]);
+        $this->seeJsonField('data.id', $user->id);
+        $this->seeJsonField('data.email', $user->email);
+        $this->seeJsonField('data.first_name', $user->first_name);
+        $this->seeJsonField('data.last_name', $user->last_name);
     }
 
     /**
@@ -53,18 +49,10 @@ class ProfileTest extends BrowserKitTestCase
         ]);
 
         $this->assertResponseStatus(200);
-        $this->seeJsonSubset([
-            'data' => [
-                'id' => $user->id,
-                'email' => $user->email,
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
-                'drupal_id' => 123456, // shouldn't have changed, field is read-only for users!
-                'role' => 'user', // shouldn't have changed, field is read-only for users!
-                'mobile' => '5551234567', // should be normalized!
-                'language' => 'en',
-            ],
-        ]);
+        $this->seeJsonField('data.id', $user->id);
+        $this->seeJsonField('data.drupal_id', 123456); // shouldn't have changed, field is read-only for users!
+        $this->seeJsonField('data.role', 'user'); // shouldn't have changed, field is read-only for users!
+        $this->seeJsonField('data.mobile', '5551234567'); // should be normalized!
     }
 
     /**
