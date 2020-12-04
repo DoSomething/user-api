@@ -530,13 +530,9 @@ class UserTest extends BrowserKitTestCase
         ]);
 
         $this->assertResponseStatus(201);
-        $this->seeJsonSubset([
-            'data' => [
-                'first_name' => 'Hercules',
-                'last_name' => 'Mulligan',
-                'country' => 'US', // mutator should capitalize country codes!
-            ],
-        ]);
+        $this->seeJsonField('data.first_name', 'Hercules');
+        $this->seeJsonField('data.last_name', 'Mulligan');
+        $this->seeJsonField('data.country', 'US'); // mutator should capitalize country codes!
     }
 
     /**
@@ -582,13 +578,9 @@ class UserTest extends BrowserKitTestCase
         ]);
 
         $this->assertResponseStatus(200);
-        $this->seeJsonSubset([
-            'data' => [
-                'first_name' => 'Hercules',
-                'last_name' => 'Mulligan',
-                'role' => 'admin',
-            ],
-        ]);
+        $this->seeJsonField('data.first_name', 'Hercules');
+        $this->seeJsonField('data.last_name', 'Mulligan');
+        $this->seeJsonField('data.role', 'admin');
     }
 
     /**
@@ -647,12 +639,8 @@ class UserTest extends BrowserKitTestCase
         ]);
 
         $this->assertResponseStatus(201);
-        $this->seeJsonSubset([
-            'data' => [
-                'last_name' => '└(^o^)┘',
-                'last_initial' => '└',
-            ],
-        ]);
+        $this->seeJsonField('data.last_name', '└(^o^)┘');
+        $this->seeJsonField('data.last_initial', '└');
     }
 
     /**
@@ -782,12 +770,8 @@ class UserTest extends BrowserKitTestCase
 
         // It should return the upserted record.
         $this->assertResponseStatus(200);
-        $this->seeJsonSubset([
-            'data' => [
-                'email' => $user->email,
-                'first_name' => 'Daizy',
-            ],
-        ]);
+        $this->seeJsonField('data.email', $user->email);
+        $this->seeJsonField('data.first_name', 'Daizy');
     }
 
     /**
