@@ -32,7 +32,6 @@ Redirect the user to Northstar's "authorize" page with the following query strin
 - `destination` with a destination to display on the login page (optional)
 - `title` with a title to display on the registration page (optional)
 - `callToAction` with a call to action to display on the registration page (optional)
-- `coverImage` with a link to a cover image to display on the registration page (optional)
 
 For example, an application named `puppet-sloth` may initiate a user authorization request like so:
 

@@ -23,15 +23,18 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
-<body class="modernizr-no-js">
+<body class="chromeless modernizr-no-js">
     <div class="chrome">
         @if (session('status'))
             <div class="messages">{{ session('status') }}</div>
         @endif
         <div class="wrapper">
-            @include('layouts.navigation')
-            <section class="container -framed {{ isset($extended) && $extended ? '-extended' : '' }} {{ isset($coverImage) && $coverImage ? '-cover-image' : '' }}">
-                @include('layouts.cover_image')
+            <nav class="navigation">
+                <a class="navigation__logo" href="http://www.dosomething.org"><span>DoSomething.org</span></a>
+                <a class="navigation__toggle js-navigation-toggle" href="#"><span>Show Menu</span></a>
+            </nav>
+
+            <section class="container -framed {{ isset($extended) && $extended ? '-extended' : '' }}">
                 <div class="wrapper -half">
                     @yield('content')
                 </div>
@@ -39,7 +42,6 @@
         </div>
     </div>
 
-    @include('layouts.variables')
     {{ scriptify(auth()->user() ? auth()->user()->id : null, 'NORTHSTAR_ID') }}
     {{ scriptify(get_client_environment_vars(), 'ENV') }}
     {{ scriptify($errors->messages(), 'ERRORS') }}

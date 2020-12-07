@@ -63,3 +63,9 @@ Route::get('password/reset/{type}/{token}', [
     'uses' => 'ResetPasswordController@showResetForm',
 ]);
 Route::post('password/reset/{type}', 'ResetPasswordController@reset');
+
+// Administration
+Route::prefix('admin')->group(function () {
+    // Homepage
+    Route::view('/', 'admin.home');
+});

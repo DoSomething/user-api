@@ -84,10 +84,6 @@ class AuthController extends Controller
                     'callToAction',
                     trans('auth.get_started.call_to_action'),
                 ),
-                'coverImage' => request()->query(
-                    'coverImage',
-                    asset('members.jpg'),
-                ),
                 // Store any provided UTMs or Contentful ID for user's source_detail:
                 'source_detail' => array_filter([
                     'contentful_id' => request()->query('contentful_id'),
@@ -256,7 +252,6 @@ class AuthController extends Controller
             'destination',
             'title',
             'callToAction',
-            'coverImage',
             'source_detail',
         ];
 
