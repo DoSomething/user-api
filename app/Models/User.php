@@ -540,6 +540,16 @@ class User extends Model implements
     }
 
     /**
+     * Does this user have one of the given roles?
+     *
+     * @return bool
+     */
+    public function hasRole(string ...$roles)
+    {
+        return in_array($this->role, $roles);
+    }
+
+    /**
      * Get the display name for the user.
      *
      * @return string
