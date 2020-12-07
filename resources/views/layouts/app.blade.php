@@ -29,7 +29,11 @@
             <div class="messages">{{ session('status') }}</div>
         @endif
         <div class="wrapper">
-            @include('layouts.navigation')
+            <nav class="navigation">
+                <a class="navigation__logo" href="http://www.dosomething.org"><span>DoSomething.org</span></a>
+                <a class="navigation__toggle js-navigation-toggle" href="#"><span>Show Menu</span></a>
+            </nav>
+
             <section class="container -framed {{ isset($extended) && $extended ? '-extended' : '' }}">
                 <div class="wrapper -half">
                     @yield('content')
