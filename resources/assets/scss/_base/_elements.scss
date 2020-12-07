@@ -1,5 +1,6 @@
-body,
-html {
+// Hide Forge's built-in site chrome.
+// @see: _regions/_chrome.scss
+body.chromeless {
   background: $white;
 }
 

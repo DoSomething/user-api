@@ -1,3 +1,5 @@
-.chrome > .wrapper {
+// Hide Forge's built-in site chrome.
+// @see: _base/_elements.scss
+.chromeless .chrome > .wrapper {
   box-shadow: none;
 }

@@ -23,7 +23,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
-<body class="modernizr-no-js">
+<body class="chromeless modernizr-no-js">
     <div class="chrome">
         @if (session('status'))
             <div class="messages">{{ session('status') }}</div>
