@@ -68,4 +68,7 @@ Route::post('password/reset/{type}', 'ResetPasswordController@reset');
 Route::prefix('admin')->group(function () {
     // Homepage
     Route::view('/', 'admin.home');
+
+    // Fastly Redirects
+    Route::resource('redirects', 'Admin\RedirectsController');
 });
