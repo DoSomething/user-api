@@ -26,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // ...
+        $this->app->bind(Fastly::class, function ($app) {
+            return new Fastly(config('services.fastly'));
+        });
     }
 }
