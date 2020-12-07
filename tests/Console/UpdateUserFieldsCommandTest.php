@@ -17,7 +17,7 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
 
         // Run the user update command.
         Artisan::call('northstar:update', [
-            'path' => 'tests/Console/example-user-updates.csv',
+            'path' => 'tests/Console/files/example-user-updates.csv',
             'fields' => ['source', 'created_at'],
         ]);
 
@@ -70,7 +70,7 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
 
         // Run the user update command.
         Artisan::call('northstar:update', [
-            'path' => 'tests/Console/example-topic-updates.csv',
+            'path' => 'tests/Console/files/example-topic-updates.csv',
             'fields' => ['email_subscription_topics'],
         ]);
 
