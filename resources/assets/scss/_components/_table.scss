@@ -1,0 +1,35 @@
+/**
+ * Table
+ */
+.table {
+  display: table;
+  width: 100%;
+  border: 1px solid $light-gray;
+  border-radius: $sm-border-radius;
+  border-collapse: separate; // Needed to display border radius on table.
+
+  @include media($small) {
+    display: block;
+  }
+}
+
+.table-header {
+  background: $white;
+  color: $purple;
+  font-weight: $weight-bold;
+  text-align: left;
+}
+
+.table-row {
+  display: table-row;
+  background: $white;
+
+  &:nth-of-type(odd) {
+    background: #efefef;
+  }
+}
+
+.table-cell {
+  padding: ($base-spacing / 4) ($base-spacing / 2);
+  display: table-cell;
+}
