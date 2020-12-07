@@ -105,11 +105,15 @@ class UpdateUserFieldsCommand extends Command
                 // Special instructions when working with array field
                 if ($field === 'email_subscription_topics') {
                     $user->addEmailSubscriptionTopic($updateFieldValue);
-                } elseif ($field === 'email_subscription_status') {
-                    $user->{$field} = filter_var($updateFieldValue, FILTER_VALIDATE_BOOLEAN);
-                } else {
-                    $user->{$field} = $updateFieldValue;
+                    continue;
                 }
+
+                if ($field === 'email_subscription_status') {
+                    $user->{$field} = filter_var($updateFieldValue, FILTER_VALIDATE_BOOLEAN);
+                    continue;
+                }
+
+                $user->{$field} = $updateFieldValue;
             }
 
             $user->save();
