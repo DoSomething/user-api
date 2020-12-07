@@ -103,9 +103,13 @@ module.exports = {
       padding: {
         '1/4': '25%',
         '1/3': '33%',
-        '1/2': '50%'
-      }
+        '1/2': '50%',
+      },
     },
+  },
+  corePlugins: {
+    // Avoid conflict with Forge's 'container' pattern:
+    container: false,
   },
   variants: {},
   plugins: [],
