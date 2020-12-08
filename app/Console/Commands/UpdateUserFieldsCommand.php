@@ -14,8 +14,8 @@ class UpdateUserFieldsCommand extends Command
      * @var string
      */
     protected $signature = 'northstar:update
-                            {path : URL of the csv with the updated data}
-                            {fields* : Which fields we should look for in the csv and update on the user}';
+                            {input=php://stdin}
+                            {--field=* : Which fields we should look for in the csv and update on the user}';
 
     /**
      * The console command description.
@@ -58,30 +58,21 @@ class UpdateUserFieldsCommand extends Command
         // Use low priority queue for these updates
         config(['queue.jobs.users' => 'low']);
 
-        // Make a local copy of the CSV
-        $path = $this->argument('path');
-        $this->line('northstar:update: Loading in csv from ' . $path);
+        $input = file_get_contents($this->argument('input'));
+        $csv = Reader::createFromString($input);
+        $csv->setHeaderOffset(0);
 
-        $temp = tempnam(sys_get_temp_dir(), 'command_csv');
-        file_put_contents($temp, fopen($this->argument('path'), 'r'));
-
-        // Load the user updates from the CSV
-        $usersCsv = Reader::createFromPath($temp, 'r');
-        $usersCsv->setHeaderOffset(0);
-        $usersToUpdate = $usersCsv->getRecords();
+        $this->totalCount = count($csv);
 
         $this->line(
-            'northstar:update: Updating ' . count($usersCsv) . ' users...',
+            'northstar:update: Updating ' . $this->totalCount . ' users...',
         );
 
-        $fieldsToUpdate = $this->argument('fields');
-
-        $this->totalCount = count($usersCsv);
+        $fieldsToUpdate = $this->option('field');
         $currentCount = 0;
-
         $user = null;
 
-        foreach ($usersToUpdate as $userToUpdate) {
+        foreach ($csv->getRecords() as $userToUpdate) {
             $user = User::find($userToUpdate['northstar_id']);
 
             if (!$user) {
@@ -139,20 +130,24 @@ class UpdateUserFieldsCommand extends Command
     public function logPercent()
     {
         $this->currentCount++;
-        if ($this->currentCount % 1000 === 0) {
-            $percent = ($this->currentCount / $this->totalCount) * 100;
-            $mb = memory_get_peak_usage() / 1000000;
-            $this->line(
-                'northstar:update: ' .
-                    $this->currentCount .
-                    '/' .
-                    $this->totalCount .
-                    ' - ' .
-                    $percent .
-                    '% done - ' .
-                    $mb .
-                    ' Mb used',
-            );
+
+        if ($this->currentCount % 1000 !== 0) {
+            return;
         }
+
+        $percent = ($this->currentCount / $this->totalCount) * 100;
+        $mb = memory_get_peak_usage() / 1000000;
+
+        $this->line(
+            'northstar:update: ' .
+                $this->currentCount .
+                '/' .
+                $this->totalCount .
+                ' - ' .
+                $percent .
+                '% done - ' .
+                $mb .
+                ' Mb used',
+        );
     }
 }

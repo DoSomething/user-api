@@ -17,8 +17,8 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
 
         // Run the user update command.
         Artisan::call('northstar:update', [
-            'path' => 'tests/Console/files/example-user-updates.csv',
-            'fields' => ['source', 'created_at'],
+            'input' => 'tests/Console/files/example-user-updates.csv',
+            '--field' => ['source', 'created_at'],
         ]);
 
         // Make sure the updates were made
@@ -70,8 +70,8 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
 
         // Run the user update command.
         Artisan::call('northstar:update', [
-            'path' => 'tests/Console/files/example-topic-updates.csv',
-            'fields' => ['email_subscription_topics'],
+            'input' => 'tests/Console/files/example-topic-updates.csv',
+            '--field' => ['email_subscription_topics'],
         ]);
 
         // Updating user with no email topics
@@ -125,8 +125,8 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
 
         // Run the user update command.
         Artisan::call('northstar:update', [
-            'path' => 'tests/Console/files/example-email-subscription-status-updates.csv',
-            'fields' => ['email_subscription_status'],
+            'input' => 'tests/Console/files/example-email-subscription-status-updates.csv',
+            '--field' => ['email_subscription_status'],
         ]);
 
         // Verify users who have been unsubscribed
