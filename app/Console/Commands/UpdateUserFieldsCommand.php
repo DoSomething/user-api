@@ -111,8 +111,7 @@ class UpdateUserFieldsCommand extends Command
 
             if ($this->option('verbose')) {
                 $this->line('northstar:update: Updated user - ' . $user->id);
-                $mb = memory_get_peak_usage() / 1000000;
-                $this->line('northstar:update: ' . $mb . ' Mb used');
+                $this->line('northstar:update: ' . $this->getMbUsed() . ' Mb used');
             }
 
             $this->logPercent();
@@ -120,6 +119,16 @@ class UpdateUserFieldsCommand extends Command
         }
 
         $this->line('northstar:update: Done updating users!');
+    }
+
+    /**
+     * Returns number of megabytes used.
+     *
+     * @return float
+     */
+    public function getMbUsed()
+    {
+        return memory_get_peak_usage() / 1000000;
     }
 
     /**
@@ -135,18 +144,15 @@ class UpdateUserFieldsCommand extends Command
             return;
         }
 
-        $percent = ($this->currentCount / $this->totalCount) * 100;
-        $mb = memory_get_peak_usage() / 1000000;
-
         $this->line(
             'northstar:update: ' .
                 $this->currentCount .
                 '/' .
                 $this->totalCount .
                 ' - ' .
-                $percent .
+                ($this->currentCount / $this->totalCount) * 100 .
                 '% done - ' .
-                $mb .
+                $this->getMbUsed() .
                 ' Mb used',
         );
     }
