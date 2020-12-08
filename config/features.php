@@ -11,7 +11,7 @@ return [
     |
     */
 
-    'customer_io' => env('DS_ENABLE_CUSTOMER_IO'),
+    'customer_io' => env('DS_ENABLE_CUSTOMER_IO', false),
 
     'password-grant' => env('DS_ENABLE_PASSWORD_GRANT', true),
 

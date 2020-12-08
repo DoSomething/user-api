@@ -96,14 +96,24 @@ class UpdateUserFieldsCommand extends Command
             }
 
             foreach ($fieldsToUpdate as $field) {
-                if (!empty($userToUpdate[$field])) {
-                    // Special instructions when working with array field
-                    if ($field === 'email_subscription_topics') {
-                        $user->addEmailSubscriptionTopic($userToUpdate[$field]);
-                    } else {
-                        $user->{$field} = $userToUpdate[$field];
-                    }
+                $updateFieldValue = $userToUpdate[$field];
+
+                if (empty($updateFieldValue)) {
+                    continue;
                 }
+
+                // Special instructions when working with array field
+                if ($field === 'email_subscription_topics') {
+                    $user->addEmailSubscriptionTopic($updateFieldValue);
+                    continue;
+                }
+
+                if ($field === 'email_subscription_status') {
+                    $user->{$field} = filter_var($updateFieldValue, FILTER_VALIDATE_BOOLEAN);
+                    continue;
+                }
+
+                $user->{$field} = $updateFieldValue;
             }
 
             $user->save();

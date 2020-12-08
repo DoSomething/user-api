@@ -17,7 +17,7 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
 
         // Run the user update command.
         Artisan::call('northstar:update', [
-            'path' => 'tests/Console/example-user-updates.csv',
+            'path' => 'tests/Console/files/example-user-updates.csv',
             'fields' => ['source', 'created_at'],
         ]);
 
@@ -70,7 +70,7 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
 
         // Run the user update command.
         Artisan::call('northstar:update', [
-            'path' => 'tests/Console/example-topic-updates.csv',
+            'path' => 'tests/Console/files/example-topic-updates.csv',
             'fields' => ['email_subscription_topics'],
         ]);
 
@@ -100,6 +100,52 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
         $this->seeInDatabase('users', [
             '_id' => '5acfbf609a89201c340543e5',
             'email_subscription_topics' => ['lifestyle', 'news'],
+        ]);
+    }
+
+    /** @test */
+    public function it_should_update_email_subscription_status()
+    {
+        // Create the users given in the test csv
+        factory(User::class)->create([
+            '_id' => '5f3dc976ea73310d6443dfe2',
+            'email_subscription_status' => true,
+            'email_subscription_topics' => ['community'],
+        ]);
+        factory(User::class)->create([
+            '_id' => '5f3dc97dea73310d6443e002',
+            'email_subscription_topics' => false,
+            'email_subscription_topics' => [],
+        ]);
+        factory(User::class)->create([
+            '_id' => '5f3dc97cea73310d6443dff9',
+            'email_subscription_status' => true,
+            'email_subscription_topics' => ['lifestyle'],
+        ]);
+
+        // Run the user update command.
+        Artisan::call('northstar:update', [
+            'path' => 'tests/Console/files/example-email-subscription-status-updates.csv',
+            'fields' => ['email_subscription_status'],
+        ]);
+
+        // Verify users who have been unsubscribed
+        $this->seeInDatabase('users', [
+            '_id' => '5f3dc976ea73310d6443dfe2',
+            'email_subscription_status' => false,
+            'email_subscription_topics' => null,
+        ]);
+        $this->seeInDatabase('users', [
+            '_id' => '5f3dc97cea73310d6443dff9',
+            'email_subscription_status' => false,
+            'email_subscription_topics' => null,
+        ]);
+
+        // Verify user who should be subscribed
+        $this->seeInDatabase('users', [
+            '_id' => '5f3dc97dea73310d6443e002',
+            'email_subscription_status' => true,
+            'email_subscription_topics' => null,
         ]);
     }
 }
