@@ -15,14 +15,14 @@ class UpdateUserFieldsCommand extends Command
      */
     protected $signature = 'northstar:update
                             {input=php://stdin}
-                            {--field=* : Which fields we should look for in the csv and update on the user}';
+                            {--field=* : Each field that should be updated}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'For each user in the csv, overwrites each given field with the new value given in the csv.';
+    protected $description = 'For each user in the csv, overwrites each field with its new value.';
 
     /**
      * The total number of records to process.
