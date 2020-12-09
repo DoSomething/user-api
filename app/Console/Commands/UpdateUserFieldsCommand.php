@@ -14,15 +14,15 @@ class UpdateUserFieldsCommand extends Command
      * @var string
      */
     protected $signature = 'northstar:update
-                            {path : URL of the csv with the updated data}
-                            {fields* : Which fields we should look for in the csv and update on the user}';
+                            {input=php://stdin}
+                            {--field=* : Each field that should be updated}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'For each user in the csv, overwrites each given field with the new value given in the csv.';
+    protected $description = 'For each user in the csv, overwrites each field with its new value.';
 
     /**
      * The total number of records to process.
@@ -58,30 +58,21 @@ class UpdateUserFieldsCommand extends Command
         // Use low priority queue for these updates
         config(['queue.jobs.users' => 'low']);
 
-        // Make a local copy of the CSV
-        $path = $this->argument('path');
-        $this->line('northstar:update: Loading in csv from ' . $path);
+        $input = file_get_contents($this->argument('input'));
+        $csv = Reader::createFromString($input);
+        $csv->setHeaderOffset(0);
 
-        $temp = tempnam(sys_get_temp_dir(), 'command_csv');
-        file_put_contents($temp, fopen($this->argument('path'), 'r'));
-
-        // Load the user updates from the CSV
-        $usersCsv = Reader::createFromPath($temp, 'r');
-        $usersCsv->setHeaderOffset(0);
-        $usersToUpdate = $usersCsv->getRecords();
+        $this->totalCount = count($csv);
 
         $this->line(
-            'northstar:update: Updating ' . count($usersCsv) . ' users...',
+            'northstar:update: Updating ' . $this->totalCount . ' users...',
         );
 
-        $fieldsToUpdate = $this->argument('fields');
-
-        $this->totalCount = count($usersCsv);
+        $fieldsToUpdate = $this->option('field');
         $currentCount = 0;
-
         $user = null;
 
-        foreach ($usersToUpdate as $userToUpdate) {
+        foreach ($csv->getRecords() as $userToUpdate) {
             $user = User::find($userToUpdate['northstar_id']);
 
             if (!$user) {
@@ -120,8 +111,7 @@ class UpdateUserFieldsCommand extends Command
 
             if ($this->option('verbose')) {
                 $this->line('northstar:update: Updated user - ' . $user->id);
-                $mb = memory_get_peak_usage() / 1000000;
-                $this->line('northstar:update: ' . $mb . ' Mb used');
+                $this->line('northstar:update: ' . $this->getMbUsed() . ' Mb used');
             }
 
             $this->logPercent();
@@ -132,6 +122,16 @@ class UpdateUserFieldsCommand extends Command
     }
 
     /**
+     * Returns number of megabytes used.
+     *
+     * @return float
+     */
+    public function getMbUsed()
+    {
+        return memory_get_peak_usage() / 1000000;
+    }
+
+    /**
      * Increment the current count and log an update if we've processed a multiple of 1000 records.
      *
      * @return void
@@ -139,20 +139,21 @@ class UpdateUserFieldsCommand extends Command
     public function logPercent()
     {
         $this->currentCount++;
-        if ($this->currentCount % 1000 === 0) {
-            $percent = ($this->currentCount / $this->totalCount) * 100;
-            $mb = memory_get_peak_usage() / 1000000;
-            $this->line(
-                'northstar:update: ' .
-                    $this->currentCount .
-                    '/' .
-                    $this->totalCount .
-                    ' - ' .
-                    $percent .
-                    '% done - ' .
-                    $mb .
-                    ' Mb used',
-            );
+
+        if ($this->currentCount % 1000 !== 0) {
+            return;
         }
+
+        $this->line(
+            'northstar:update: ' .
+                $this->currentCount .
+                '/' .
+                $this->totalCount .
+                ' - ' .
+                ($this->currentCount / $this->totalCount) * 100 .
+                '% done - ' .
+                $this->getMbUsed() .
+                ' Mb used',
+        );
     }
 }
