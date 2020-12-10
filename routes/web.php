@@ -70,7 +70,7 @@ if (config('features.admin')) {
         ->name('admin.')
         ->group(function () {
             // Homepage
-            Route::view('/', 'home');
+            Route::view('/', 'admin.home');
 
             // Fastly Redirects
             Route::resource('redirects', 'Admin\RedirectsController');
