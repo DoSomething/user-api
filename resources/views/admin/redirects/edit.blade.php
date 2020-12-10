@@ -12,8 +12,8 @@
                 @include('forms.errors')
 
                 <form action="{{ route('redirects.update', $redirect->id) }}" method="POST">
-                    <input type="hidden" name="_method" value="PUT">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    {{ method_field('PUT') }}
+                    {{ csrf_field() }}
 
                     <div class="form-item -padded">
                         <label for="path" class="field-label">Incoming Path</label>

@@ -13,6 +13,8 @@
                 @include('forms.errors')
 
                 <form action="{{ route('redirects.store') }}" method="POST">
+                    {{ csrf_field() }}
+
                     <div class="form-item -padded">
                         <label for="path" class="field-label">Incoming Path</label>
                         <input class="text-field" placeholder="e.g. /us/campaigns/old-path" name="path" type="text" id="path">
