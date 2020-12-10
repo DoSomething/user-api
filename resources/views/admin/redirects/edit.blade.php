@@ -22,7 +22,7 @@
 
                     <div class="form-item -padded">
                         <label for="target" class="field-label">Target URL</label>
-                        <input class="text-field" value="{{ $redirect->path }}" placeholder="e.g. https://www.dosomething.org/new-path" name="target" type="text" id="target">
+                        <input class="text-field" value="{{ $redirect->target }}" placeholder="e.g. https://www.dosomething.org/new-path" name="target" type="text" id="target">
                     </div>
 
                     <input class="button" type="submit" value="Update Redirect">
