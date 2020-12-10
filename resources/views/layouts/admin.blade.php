@@ -12,10 +12,8 @@
 </head>
 
 <body class="modernizr-no-js">
-    @if (Session::has('flash_message'))
-        <div class="{{ Session::get('flash_message')['class'] }}">
-            <em>{{ Session::get('flash_message')['text'] }}</em>
-        </div>
+    @if (session('flash'))
+        <div class="messages">{{ session('flash') }}</div>
     @endif
 
     <div class="chrome">
