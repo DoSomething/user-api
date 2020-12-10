@@ -12,7 +12,7 @@
 
                 @include('forms.errors')
 
-                <form action="{{ route('redirects.store') }}" method="POST">
+                <form action="{{ route('admin.redirects.store') }}" method="POST">
                     {{ csrf_field() }}
 
                     <div class="form-item -padded">

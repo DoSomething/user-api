@@ -47,7 +47,7 @@
                                     </a>
                                 </li> --}}
                                 <li>
-                                    <a href="{{ route('redirects.index') }}">
+                                    <a href="{{ route('admin.redirects.index') }}">
                                         <strong class="navigation__title">Redirects</strong>
                                         <span class="navigation__subtitle">Vanity URLs & SEO</span>
                                     </a>

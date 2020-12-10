@@ -11,7 +11,7 @@
 
                 @include('forms.errors')
 
-                <form action="{{ route('redirects.update', $redirect->id) }}" method="POST">
+                <form action="{{ route('admin.redirects.update', $redirect->id) }}" method="POST">
                     {{ method_field('PUT') }}
                     {{ csrf_field() }}
 

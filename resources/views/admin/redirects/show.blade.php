@@ -33,14 +33,14 @@
                         </div>
 
                         <a class="button -secondary -danger"
-                            href="{{ route('redirects.destroy', $redirect->id) }}"
+                            href="{{ route('admin.redirects.destroy', $redirect->id) }}"
                             data-method="DELETE" data-confirm="Are you sure you want to delete this redirect?">Delete Redirect</a>
                     </div>
                 </div>
             </div>
 
             <div class="container__block -narrow">
-                <a class="secondary" href="{{ route('redirects.edit', [ $redirect->id ]) }}">Edit this redirect</a>
+                <a class="secondary" href="{{ route('admin.redirects.edit', [ $redirect->id ]) }}">Edit this redirect</a>
                 <p class="footnote">
                     Last updated: {{ $redirect->updated_at->format('F d, Y g:ia') }}<br />
                     Created: {{ $redirect->created_at->format('F d, Y g:ia') }}

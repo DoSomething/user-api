@@ -11,7 +11,7 @@
                 <p>These are the URL redirects registered in Fastly.</p>
             </div>
             <div class="container__block -narrow">
-                <a class="button -secondary" href="{{ route('redirects.create') }}">New redirect</a>
+                <a class="button -secondary" href="{{ route('admin.redirects.create') }}">New redirect</a>
             </div>
             <div class="container__block">
                 <table class="table">
@@ -24,7 +24,7 @@
                     <tbody>
                         @foreach($redirects as $redirect)
                             <tr class="table-row">
-                                <td class="table-cell break-all" title="{{ $redirect->path }}"><a href="{{ route('redirects.show', [$redirect->id]) }}">{{ Illuminate\Support\Str::limit($redirect->path, 40) }}</a></td>
+                                <td class="table-cell break-all" title="{{ $redirect->path }}"><a href="{{ route('admin.redirects.show', [$redirect->id]) }}">{{ Illuminate\Support\Str::limit($redirect->path, 40) }}</a></td>
                                 <td class="table-cell break-all" title="{{ $redirect->target }}">{{ Illuminate\Support\Str::limit($redirect->target, 60) }}</td>
                             </tr>
                         @endforeach

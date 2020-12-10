@@ -66,11 +66,13 @@ Route::post('password/reset/{type}', 'ResetPasswordController@reset');
 
 // Administration
 if (config('features.admin')) {
-    Route::prefix('admin')->group(function () {
-        // Homepage
-        Route::view('/', 'admin.home');
+    Route::prefix('admin')
+        ->name('admin.')
+        ->group(function () {
+            // Homepage
+            Route::view('/', 'home');
 
-        // Fastly Redirects
-        Route::resource('redirects', 'Admin\RedirectsController');
-    });
+            // Fastly Redirects
+            Route::resource('redirects', 'Admin\RedirectsController');
+        });
 }
