@@ -13,7 +13,7 @@
 
             <div class="container__block -half">
                 <label class="field-label">Path:</label>
-                <code class="break-all"><em>{{ config('services.fastly.service_url') }}</em>{{ $redirect->path }}</code><br><br>
+                <code class="break-all"><em>{{ config('services.fastly.frontend_url') }}</em>{{ $redirect->path }}</code><br><br>
                 <label class="field-label">Target:</label>
                 <code class="break-all">{{ $redirect->target }}</code><br><br>
                 <label class="field-label">Redirect Status:</label>
