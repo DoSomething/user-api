@@ -19,7 +19,7 @@
     <div class="chrome">
         <div class="wrapper">
             <nav class="navigation -white -floating">
-                <a class="navigation__logo" href="/"><span>DoSomething.org</span></a>
+                <a class="navigation__logo" href="/admin"><span>DoSomething.org</span></a>
                 <div class="navigation__menu">
                     @auth
                         <ul class="navigation__primary">
