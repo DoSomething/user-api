@@ -72,7 +72,12 @@ return [
 
     'fastly' => [
         'url' => 'https://api.fastly.com/',
-        'key' => env('FASTLY_API_TOKEN'),
-        'service_id' => env('FASTLY_SERVICE_ID'),
+        'api_key' => env('FASTLY_API_KEY'),
+        'redirects_table' => env('FASTLY_TABLE_REDIRECTS'),
+        'frontend_url' => env('FASTLY_FRONTEND_SERVICE_URL'),
+        'services' => [
+            'frontend' => env('FASTLY_FRONTEND_SERVICE_ID'),
+            'backend' => env('FASTLY_BACKEND_SERVICE_ID'),
+        ],
     ],
 ];

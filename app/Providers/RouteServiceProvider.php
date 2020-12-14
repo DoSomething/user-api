@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Auth\Registrar;
+use App\Services\Fastly;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +41,16 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('mobile', function ($value) {
             return app(Registrar::class)->resolveOrFail(['mobile' => $value]);
+        });
+
+        Route::bind('redirect', function ($key) {
+            $redirect = app(Fastly::class)->getRedirect($key);
+
+            if (!$redirect) {
+                throw new NotFoundHttpException();
+            }
+
+            return $redirect;
         });
     }
 
