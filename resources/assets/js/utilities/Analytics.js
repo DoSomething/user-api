@@ -74,6 +74,7 @@ export function getAdditionalContext() {
     utmSource: query('utm_source'),
     utmMedium: query('utm_medium'),
     utmCampaign: query('utm_campaign'),
+    utmContent: query('utm_content'),
   };
 }
 
