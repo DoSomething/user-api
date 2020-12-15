@@ -90,6 +90,7 @@ class AuthController extends Controller
                     'utm_source' => request()->query('utm_source'),
                     'utm_medium' => request()->query('utm_medium'),
                     'utm_campaign' => request()->query('utm_campaign'),
+                    'utm_content' => request()->query('utm_content'),
                 ]),
                 // Store the provided Referrer User ID for user's referrer_user_id field:
                 'referrer_user_id' => request()->query('referrer_user_id'),
