@@ -236,14 +236,20 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      * @throws NotFoundHttpException
      */
-    public function createMagicLink(User $user)
+    public function createMagicLink(User $user, Request $request)
     {
         // Require admin access to create a magic link for now.
         $this->authorize('delete', $user);
 
+        $this->validate($request, [
+            'redirect' => 'required',
+        ]);
+
         $generator = new LoginUrl($user);
 
-        $generator->setRedirectUrl('/somewhere/else');
+        //$generator->setRedirectUrl($request['redirect']);
+        // Try redirecting to a path in this project
+        $generator->setRedirectUrl('users/' . $user->id . '/edit');
 
         $url = $generator->generate();
 
