@@ -7,6 +7,7 @@ use App\Auth\Role;
 use App\Exceptions\NorthstarValidationException;
 use App\Http\Transformers\UserTransformer;
 use App\Models\User;
+use Grosv\LaravelPasswordlessLogin\LoginUrl;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -226,5 +227,26 @@ class UserController extends Controller
         // We'll return the deleted user since that may be helpful
         // for some applications to update their local state.
         return $this->item($user);
+    }
+
+    /**
+     * Creates a magic link for a user resource.
+     *
+     * @param User $user
+     * @return \Illuminate\Http\Response
+     * @throws NotFoundHttpException
+     */
+    public function createMagicLink(User $user)
+    {
+        // Require admin access to create a magic link for now.
+        $this->authorize('delete', $user);
+
+        $generator = new LoginUrl($user);
+
+        $generator->setRedirectUrl('/somewhere/else');
+
+        $url = $generator->generate();
+
+        return $this->respond($url);
     }
 }

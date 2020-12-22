@@ -21,6 +21,7 @@ Route::group(['prefix' => 'v2', 'as' => 'v2.'], function () {
     Route::resource('users', 'UserController');
     Route::post('users/{user}/deletion', 'DeletionRequestController@store');
     Route::delete('users/{user}/deletion', 'DeletionRequestController@destroy');
+    Route::post('users/{user}/magic-links', 'UserController@createMagicLink');
 
     // User (by email or mobile number)
     Route::get('mobile/{mobile}', 'MobileController@show');
