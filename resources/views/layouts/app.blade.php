@@ -21,11 +21,6 @@
     @show
     
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <!-- TODO: This should be wrapped in conditional if referrer-policy header exists -->
-        <meta name="Referrer-Policy" content="{{ request()->headers->get('referrer-policy') }}">
-    <!-- TODO: End if -->
-
 </head>
 
 <body class="chromeless modernizr-no-js">
