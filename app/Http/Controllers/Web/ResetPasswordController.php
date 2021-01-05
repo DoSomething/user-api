@@ -125,7 +125,7 @@ class ResetPasswordController extends Controller
         $data['token'] = $token;
         $data['type'] = $type;
         $data['email'] = $request->email;
-        /**
+        /*
          * We specify a no-referrer policy to prevent leaking password reset tokens to
          * third-party services.
          * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy#Integration_with_HTML
