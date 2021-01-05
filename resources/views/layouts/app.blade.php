@@ -22,7 +22,7 @@
     
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    @if ($referrer)
+    @if (isset($referrer))
         <meta name="referrer" content="{{ $referrer }}">
     @endif
 </head>
