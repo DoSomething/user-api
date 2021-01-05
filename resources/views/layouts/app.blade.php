@@ -21,6 +21,10 @@
     @show
     
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    @if ($referrer)
+        <meta name="referrer" content="{{ $referrer }}">
+    @endif
 </head>
 
 <body class="chromeless modernizr-no-js">

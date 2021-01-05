@@ -125,6 +125,7 @@ class ResetPasswordController extends Controller
         $data['token'] = $token;
         $data['type'] = $type;
         $data['email'] = $request->email;
+        $data['referrer'] = 'no-referrer';
 
         return view('auth.passwords.reset')->with($data);
     }
