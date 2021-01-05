@@ -127,7 +127,7 @@ class PasswordResetTest extends BrowserKitTestCase
         $this->see(
             'Create a password to join a movement of young people dedicated to making their communities a better place for everyone.',
         );
-        $this->seeHeader('referrer', 'no-referrer');
+        $this->seeHeader('Referrer-Policy', 'no-referrer');
 
         $this->postForm('Activate Account', [
             'password' => 'new-top-secret-passphrase',
