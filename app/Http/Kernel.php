@@ -54,7 +54,7 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-        'referrer' => \App\Http\Middleware\ReferrerPolicy::class,
+        'no-referrer' => \App\Http\Middleware\ReferrerPolicy::class,
         'scope' => \App\Http\Middleware\RequireScope::class,
         'role' => \App\Http\Middleware\RequireRole::class,
         'throttle' => \App\Http\Middleware\ThrottleRequests::class,
