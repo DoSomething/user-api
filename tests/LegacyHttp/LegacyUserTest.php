@@ -5,7 +5,7 @@ use App\Services\CustomerIo;
 use App\Services\Gambit;
 use App\Services\Rogue;
 
-class UserTest extends BrowserKitTestCase
+class LegacyUserTest extends BrowserKitTestCase
 {
     /**
      * Test for retrieving a user by their ID.

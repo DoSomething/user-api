@@ -3,7 +3,7 @@
 use App\Models\User;
 use App\Services\GraphQL;
 
-class UserTest extends BrowserKitTestCase
+class UserModelTest extends BrowserKitTestCase
 {
     /** @test */
     public function it_should_send_new_users_to_customer_io()
