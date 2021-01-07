@@ -3,7 +3,7 @@
 use App\Models\User;
 use Carbon\Carbon;
 
-class AuthenticationEventsTest extends BrowserKitTestCase
+class Authentication extends BrowserKitTestCase
 {
     /** @test */
     public function testSuccessfulLoginEvent()
