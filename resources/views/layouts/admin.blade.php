@@ -23,13 +23,13 @@
                 <div class="navigation__menu">
                     @auth
                         <ul class="navigation__primary">
-                            @if (Auth::user()->hasRole('admin'))
-                                {{-- <li>
-                                    <a href="{{ route('users.index') }}">
+                            @if (Auth::user()->hasRole('admin', 'staff'))
+                                <li>
+                                    <a href="{{ route('admin.users.index') }}">
                                         <strong class="navigation__title">Users</strong>
                                         <span class="navigation__subtitle">Member profiles</span>
                                     </a>
-                                </li> --}}
+                                </li> 
                             @endif
                             @if (Auth::user()->hasRole('admin'))
                                 {{-- <li>
