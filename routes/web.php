@@ -72,6 +72,11 @@ if (config('features.admin')) {
             // Homepage
             Route::view('/', 'admin.home');
 
+            // Users
+            Route::resource('users', 'Admin\UserController', [
+                'except' => ['create', 'store'],
+            ]);
+
             // Fastly Redirects
             Route::resource('redirects', 'Admin\RedirectsController');
         });
