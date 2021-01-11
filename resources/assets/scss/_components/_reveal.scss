@@ -1,0 +1,29 @@
+.reveal {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background-image: url('eye-blocked.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.reveal:hover {
+  background-color: rgb(255, 255, 185);
+}
+
+.reveal:hover,
+.reveal.is-active {
+  background-image: url('eye.svg');
+}
+
+.reveal.is-active:hover {
+  background-image: url('eye-blocked.svg');
+}
+
+.reveal span {
+  display: none;
+}
+
+.revealed {
+  background-color: rgb(255, 255, 185);
+}

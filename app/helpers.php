@@ -424,3 +424,58 @@ function is_valid_objectid(string $string): bool
 {
     return (bool) preg_match('/^[a-f\d]{24}$/i', $string);
 }
+
+/**
+ * Create a "revealer" toggle for sensitive fields.
+ */
+function revealer(...$fields)
+{
+    $currentIncludes = csv_query('include');
+
+    $isActive = count(array_intersect($currentIncludes, $fields)) > 0;
+
+    $newFields = $isActive
+        ? array_diff($currentIncludes, $fields)
+        : array_merge($currentIncludes, $fields);
+
+    $linkTag =
+        '<a href="' .
+        e(request()->url() . '?include=' . implode(',', $newFields)) .
+        '" class="reveal ' .
+        ($isActive ? 'is-active' : '') .
+        '" data-turbolinks-action="replace" data-turbolinks-scroll="false"><span>reveal</span></a>';
+
+    return new HtmlString($linkTag);
+}
+
+/**
+ * Read a given CSV-formatted query string.
+ *
+ * @param string $key
+ * @param string[] $default
+ * @return string[]
+ */
+function csv_query(string $key, array $default = []): array
+{
+    $query = request()->query($key);
+
+    if (!$query) {
+        return $default;
+    }
+
+    return explode(',', $query);
+}
+
+/**
+ * Print user-friendly name from an ISO country code.
+ *
+ * @param  string $code
+ * @return string
+ */
+function country_name($code)
+{
+    $isoCodes = new \Sokil\IsoCodes\IsoCodesFactory();
+    $country = $isoCodes->getCountries()->getByAlpha2($code);
+
+    return $country ? $country->getName() : 'Unknown (' . $code . ')';
+}
