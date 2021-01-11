@@ -1,0 +1,20 @@
+/**
+ * Profiles
+ */
+.profile-settings dt {
+  float: left;
+  clear: both;
+  color: $dark-gray;
+  font-weight: $weight-bold;
+  padding-right: $base-spacing / 2;
+}
+
+.profile-settings dd {
+  float: left;
+}
+
+.profile-section {
+  @include clearfix;
+
+  padding-bottom: $base-spacing;
+}

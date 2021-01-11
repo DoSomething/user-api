@@ -1,0 +1,18 @@
+/**
+ * Danger Zone container
+ */
+.danger-zone {
+  background: $white;
+  padding: $base-spacing / 2;
+  border: 2px solid rgba($error-color, 0.5);
+  border-radius: $lg-border-radius;
+}
+
+.danger-zone__heading {
+  color: $error-color;
+  margin-bottom: $base-spacing / 2;
+}
+
+.danger-zone__block + .danger-zone__block {
+  margin-top: $section-spacing;
+}
