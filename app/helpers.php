@@ -250,9 +250,9 @@ function is_dosomething_domain(string $url): bool
         return false;
     }
 
-    // Reject a host that includes an escaped '.', which could be used to
-    // bypass our domain check below (e.g. 'cobalt.io\.dosomething.org'):
-    if (str_contains($host, '\.')) {
+    // Reject a host that includes an escaped '.' or '@', which could be used to
+    // fool our domain check below (e.g. 'cobalt.io\.dosomething.org'):
+    if (str_contains($host, '\.') || str_contains($host, '\@')) {
         return false;
     }
 
