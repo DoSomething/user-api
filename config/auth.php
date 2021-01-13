@@ -101,9 +101,9 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
-            'email' => 'auth.emails.password', // @TODO: Should this be elsewhere now?
             'table' => 'password_resets',
             'expire' => 60 * 24 * 3, // reset link will expire in 3 days (4320 minutes)
+            'throttle' => 60,
         ],
     ],
 
@@ -118,6 +118,6 @@ return [
     |
     */
 
-    // 'password_timeout' => 10800, @TODO: Confirm ok to add this.
+    'password_timeout' => 10800,
 
 ];
