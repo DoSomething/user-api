@@ -41,10 +41,10 @@ return [
             'port' => env('DB_PORT', 27017),
             'username' => env('DB_USERNAME', ''),
             'password' => env('DB_PASSWORD', ''),
-            'database' => env('DB_NAME', 'userapi'),
+            'database' => env('DB_DATABASE', 'userapi'),
             'options' => array_filter([
                 'replicaSet' => env('DB_REPL_SET_NAME'),
-                'database' => env('DB_AUTH_NAME', 'userapi'),
+                'database' => env('DB_AUTH_DATABASE', 'userapi'),
                 'ssl' => env('DB_SSL'),
             ]),
         ],
