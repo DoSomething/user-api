@@ -15,15 +15,15 @@
     </testsuites>
     <php>
         <env name="APP_ENV" value="testing"/>
-        <env name="DB_NAME" value="northstar-test"/>
+        <env name="DB_DATABASE" value="northstar-test"/>
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="SIXPACK_ENABLED" value="false"/>
         <env name="DS_ENABLE_BLINK" value="true"/>
         <env name="DS_ENABLE_DELETE_APIS" value="true"/>
         <env name="DS_ENABLE_RATE_LIMITING" value="true"/>
         <env name="DS_ENABLE_PASSWORD_GRANT" value="true"/>
         <env name="DS_OPTIONAL_FIELDS" value="false"/>
-        <env name="SIXPACK_ENABLED" value="false"/>
     </php>
 </phpunit>
