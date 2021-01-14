@@ -31,6 +31,7 @@
     "mongodb/mongodb": "~1.4.0",
     "seatgeek/sixpack-php": "^2.1",
     "softonic/graphql-client": "^1.2",
+    "sokil/php-isocodes": "^3.0",
     "spomky-labs/otphp": "^10.0",
     "symfony/psr-http-message-bridge": "^1.0.0",
     "weerd/php-style": "^1.1"

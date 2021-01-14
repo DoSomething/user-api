@@ -21,6 +21,7 @@
 
 // Components - basic non-divisible building blocks
 @import '_components/_alert';
+@import '_components/_danger-zone';
 @import '_components/_logo';
 @import '_components/_key-value';
 @import '_components/_forms';
@@ -30,10 +31,13 @@
 @import '_components/_google-login';
 @import '_components/_divider';
 @import '_components/_password-visibility';
+@import '_components/_profile';
+@import '_components/_reveal';
 @import '_components/_table';
 @import '_components/_text-field';
 @import '_components/_field-label';
 @import '_components/_button';
+@import '_components/_waypoints';
 
 // Regions - complete sections of an interface
 @import '_regions/_chrome';

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Auth\Registrar;
 use App\Http\Controllers\Controller;
+use App\Types\CauseInterests;
 use Illuminate\Http\Request;
 
 class ProfileAboutController extends Controller
@@ -17,20 +18,7 @@ class ProfileAboutController extends Controller
 
         $this->middleware('auth:web');
 
-        $this->causes = [
-            'animal_welfare' => 'Animal Welfare',
-            'bullying' => 'Bullying',
-            'education' => 'Education',
-            'environment' => 'Environment',
-            'gender_rights_equality' => 'Gender Rights & Equality',
-            'homelessness_poverty' => 'Homelessness & Poverty',
-            'immigration_refugees' => 'Immigration & Refugees',
-            'lgbtq_rights_equality' => 'LGBTQ+ Rights & Equality',
-            'mental_health' => 'Mental Health',
-            'physical_health' => 'Physical Health',
-            'racial_justice_equity' => 'Racial Justice & Equity',
-            'sexual_harassment_assault' => 'Sexual Harassment & Assault',
-        ];
+        $this->causes = CauseInterests::labels();
     }
 
     /**
