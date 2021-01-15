@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\User;
-use App\PasswordResetType;
+use App\Types\PasswordResetType;
 
 class ResetTest extends BrowserKitTestCase
 {
@@ -57,7 +57,7 @@ class ResetTest extends BrowserKitTestCase
             'v2/resets',
             [
                 'id' => $user->id,
-                'type' => PasswordResetType::$forgotPassword,
+                'type' => PasswordResetType::get('FORGOT_PASSWORD'),
             ],
         );
 

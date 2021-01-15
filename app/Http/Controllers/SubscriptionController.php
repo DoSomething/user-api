@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Auth\Registrar;
 use App\Http\Transformers\UserTransformer;
 use App\Models\User;
-use App\PasswordResetType;
+use App\Types\PasswordResetType;
 use Illuminate\Http\Request;
 use App\Types\EmailSubscriptionTopicType;
 use Illuminate\Validation\Rule;
@@ -81,22 +81,22 @@ class SubscriptionController extends Controller
         switch ($topic) {
             case 'scholarships':
                 $newUser->sendPasswordReset(
-                    PasswordResetType::$paysToDoGoodActivateAccount,
+                    PasswordResetType::get('PAYS_TO_DO_GOOD_ACTIVATE_ACCOUNT'),
                 );
                 break;
             case 'news':
                 $newUser->sendPasswordReset(
-                    PasswordResetType::$breakdownActivateAccount,
+                    PasswordResetType::get('BREAKDOWN_ACTIVATE_ACCOUNT'),
                 );
                 break;
             case 'lifestyle':
                 $newUser->sendPasswordReset(
-                    PasswordResetType::$boostActivateAccount,
+                    PasswordResetType::get('BOOST_ACTIVATE_ACCOUNT'),
                 );
                 break;
             case 'community':
                 $newUser->sendPasswordReset(
-                    PasswordResetType::$wydActivateAccount,
+                    PasswordResetType::get('WYD_ACTIVATE_ACCOUNT'),
                 );
                 break;
         }

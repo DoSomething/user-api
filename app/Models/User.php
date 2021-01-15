@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Auth\Role;
 use App\Jobs\SendPasswordResetToCustomerIo;
-use App\PasswordResetType;
+use App\Types\PasswordResetType;
 use App\Services\GraphQL;
 use Carbon\Carbon;
 use Email\Parse as EmailParser;
@@ -886,7 +886,7 @@ class User extends Model implements
     public function sendPasswordResetNotification($token)
     {
         return $this->sendPasswordReset(
-            PasswordResetType::$forgotPassword,
+            PasswordResetType::get('FORGOT_PASSWORD'),
             $token,
         );
     }

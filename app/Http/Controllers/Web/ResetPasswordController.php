@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Auth\PasswordRules;
 use App\Events\PasswordUpdated;
 use App\Http\Controllers\Controller;
-use App\PasswordResetType;
+use App\Types\PasswordResetType;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -85,7 +85,7 @@ class ResetPasswordController extends Controller
     public function showResetForm(Request $request, $type, $token = null)
     {
         if (!isset($type)) {
-            $type = PasswordResetType::$forgotPassword;
+            $type = PasswordResetType::get('FORGOT_PASSWORD');
         }
 
         if (!in_array($type, PasswordResetType::all())) {
