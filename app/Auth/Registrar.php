@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Types\CauseInterestType;
 use Illuminate\Contracts\Hashing\Hasher;
 use App\Types\EmailSubscriptionTopicType;
 use App\Exceptions\NorthstarValidationException;
@@ -89,7 +90,7 @@ class Registrar
             'voter_registration_status' =>
                 'nullable|in:uncertain,ineligible,unregistered,confirmed,registration_complete,rejected,under-18,step-1,step-2,step-3,step-4',
             'causes.*' =>
-                'in:animal_welfare,bullying,education,environment,gender_rights_equality,homelessness_poverty,immigration_refugees,lgbtq_rights_equality,mental_health,physical_health,racial_justice_equity,sexual_harassment_assault',
+            Rule::in(CauseInterestType::all()),
         ];
 
         // If existing user is provided, merge indexes into the request so
