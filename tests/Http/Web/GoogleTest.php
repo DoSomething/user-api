@@ -131,7 +131,7 @@ class GoogleTest extends TestCase
 
         $redirectDomain = parse_url($response->headers->get('Location'));
 
-        // We just care that the domain is correct and not all the query params included in the redirect URL.
+        // We just care that the domain matches the expected value, excluding all the query params.
         $this->assertEquals('accounts.google.com', $redirectDomain['host']);
     }
 
