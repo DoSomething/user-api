@@ -88,6 +88,23 @@ abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
     }
 
     /**
+     * Register a new user account with updated registration page.
+     */
+    public function registerUpdated()
+    {
+        // Make sure we're logged out before trying to register.
+        auth('web')->logout();
+
+        $this->visit('register');
+        $this->submitForm('register-submit', [
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'email' => $this->faker->unique->email,
+            'password' => 'my-top-secret-passphrase',
+        ]);
+    }
+
+    /**
      * Set a header on the request.
      *
      * @param $name
@@ -147,22 +164,5 @@ abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
         }
 
         return $this;
-    }
-
-    /**
-     * Register a new user account with updated registration page.
-     */
-    public function registerUpdated()
-    {
-        // Make sure we're logged out before trying to register.
-        auth('web')->logout();
-
-        $this->visit('register');
-        $this->submitForm('register-submit', [
-            'first_name' => $this->faker->firstName,
-            'last_name' => $this->faker->lastName,
-            'email' => $this->faker->unique->email,
-            'password' => 'my-top-secret-passphrase',
-        ]);
     }
 }
