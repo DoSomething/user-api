@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Auth\Registrar;
-use App\Http\Transformers\UserTransformer;
 use App\Models\User;
-use App\Types\PasswordResetType;
+use App\Auth\Registrar;
 use Illuminate\Http\Request;
-use App\Types\EmailSubscriptionTopicType;
 use Illuminate\Validation\Rule;
+use App\Types\PasswordResetType;
+use App\Types\EmailSubscriptionTopicType;
+use App\Http\Transformers\UserTransformer;
 
 class SubscriptionController extends Controller
 {
