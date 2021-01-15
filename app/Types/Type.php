@@ -33,7 +33,6 @@ abstract class Type extends Enum
         return Arr::get(static::labels(), $type);
     }
 
-
     /**
      * Return the given string value.
      *
