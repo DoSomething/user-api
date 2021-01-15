@@ -2,8 +2,9 @@
 
 use App\Models\User;
 use Laravel\Socialite\AbstractUser;
+use Laravel\Socialite\Facades\Socialite;
 
-class FacebookTest extends BrowserKitTestCase
+class FacebookTest extends TestCase
 {
     /**
      * Mock a Socialite user for the given
@@ -60,6 +61,7 @@ class FacebookTest extends BrowserKitTestCase
         $fields = compact('id', 'email', 'token');
 
         $user = new Laravel\Socialite\Two\User();
+
         $user->map($fields);
 
         $user->user['first_name'] = $first_name;
@@ -85,7 +87,9 @@ class FacebookTest extends BrowserKitTestCase
             '12345',
             'token',
         );
+
         $this->mockSocialiteFromUser($abstractUser);
+
         $this->mockSocialiteFromUserToken($abstractUser);
     }
 
@@ -94,11 +98,14 @@ class FacebookTest extends BrowserKitTestCase
      */
     public function testFacebookRedirect()
     {
-        $this->expectException(\Laravel\BrowserKitTesting\HttpException::class);
+        $response = $this->get('/facebook/continue');
 
-        // @TODO: Why do we need these two magic annotations?
-        $this->visit('/facebook/continue');
-        $this->assertRedirectedTo('https://www.facebook.com/');
+        $response->assertStatus(302);
+
+        $redirectDomain = parse_url($response->headers->get('Location'));
+
+        // We just care that the host domain matches the expected value, excluding all the query params.
+        $this->assertEquals('www.facebook.com', $redirectDomain['host']);
     }
 
     /**
@@ -121,10 +128,15 @@ class FacebookTest extends BrowserKitTestCase
             ],
         ]);
 
-        $this->visit('/facebook/verify')->seePageIs('/profile/about');
-        $this->seeIsAuthenticated('web');
+        $response = $this->get('/facebook/verify');
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/profile/about');
+
+        $this->isAuthenticated('web');
 
         $user = auth()->user();
+
         $this->assertEquals($user->email, 'test@dosomething.org');
         $this->assertEquals($user->source, 'northstar');
         $this->assertEquals(
@@ -150,10 +162,15 @@ class FacebookTest extends BrowserKitTestCase
     {
         $this->defaultMock();
 
-        $this->visit('/facebook/verify')->seePageIs('/profile/about');
-        $this->seeIsAuthenticated('web');
+        $response = $this->get('/facebook/verify');
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/profile/about');
+
+        $this->isAuthenticated('web');
 
         $user = auth()->user();
+
         $this->assertEquals($user->email, 'test@dosomething.org');
         $this->assertEquals($user->first_name, 'Puppet');
         $this->assertEquals($user->last_name, 'Sloth');
@@ -191,10 +208,16 @@ class FacebookTest extends BrowserKitTestCase
             );
         });
 
-        $this->visit('/facebook/verify')
-            ->seePageIs('/register')
-            ->see('Unable to verify Facebook account.');
-        $this->dontSeeIsAuthenticated('web');
+        $response = $this->get('/facebook/verify');
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/register');
+
+        $redirectResponse = $this->followRedirects($response);
+
+        $redirectResponse->assertSeeText('Unable to verify Facebook account.');
+
+        $this->assertGuest('web');
     }
 
     /**
@@ -211,9 +234,13 @@ class FacebookTest extends BrowserKitTestCase
 
         $this->defaultMock();
 
-        $this->visit('/facebook/verify')->seePageIs('/');
+        $response = $this->get('/facebook/verify');
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/');
 
         $user = auth()->user();
+
         $this->assertEquals($user->first_name, 'Joe');
         $this->assertEquals($user->last_name, 'Sloth');
         $this->assertEquals($user->birthdate, $factoryUser->birthdate);
@@ -232,12 +259,15 @@ class FacebookTest extends BrowserKitTestCase
             'token',
             '01/01',
         );
+
         $this->mockSocialiteFromUser($abstractUser);
+
         $this->mockSocialiteFromUserToken($abstractUser);
 
-        $this->visit('/facebook/verify');
+        $this->get('/facebook/verify');
 
         $user = auth()->user();
+
         $this->assertNull($user->birthdate);
     }
 
@@ -254,12 +284,15 @@ class FacebookTest extends BrowserKitTestCase
             'token',
             '01/01/2000',
         );
+
         $this->mockSocialiteFromUser($abstractUser);
+
         $this->mockSocialiteFromUserToken($abstractUser);
 
-        $this->visit('/facebook/verify');
+        $this->get('/facebook/verify');
 
         $user = auth()->user();
+
         $this->assertEquals($user->birthdate, new Carbon\Carbon('2000-01-01'));
     }
 
@@ -276,12 +309,20 @@ class FacebookTest extends BrowserKitTestCase
             'token',
             '01/01/2000',
         );
+
         $this->mockSocialiteFromUser($abstractUser);
+
         $this->mockSocialiteFromUserToken($abstractUser);
 
-        $this->visit('/facebook/verify')
-            ->seePageIs('/register')
-            ->see('We need your email');
-        $this->dontSeeIsAuthenticated('web');
+        $response = $this->get('/facebook/verify');
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/register');
+
+        $redirectResponse = $this->followRedirects($response);
+
+        $redirectResponse->assertSeeText('We need your email');
+
+        $this->assertGuest('web');
     }
 }
