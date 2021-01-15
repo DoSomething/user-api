@@ -7,6 +7,8 @@ use App\Http\Transformers\UserTransformer;
 use App\Models\User;
 use App\PasswordResetType;
 use Illuminate\Http\Request;
+use App\Types\EmailSubscriptionTopicType;
+use Illuminate\Validation\Rule;
 
 class SubscriptionController extends Controller
 {
@@ -48,7 +50,8 @@ class SubscriptionController extends Controller
         $this->validate($request, [
             'email' => 'required|email',
             'email_subscription_topic' =>
-                'required|in:news,scholarships,lifestyle,community',
+                ['required', Rule::in(EmailSubscriptionTopicType::all())],
+
             'source' => 'required',
             'source_detail' => 'required',
         ]);

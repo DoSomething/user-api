@@ -2,16 +2,18 @@
 
 namespace App\Auth;
 
-use App\Exceptions\NorthstarValidationException;
-use App\Models\User;
 use Closure;
 use Exception;
-use Illuminate\Contracts\Auth\Authenticatable as UserContract;
-use Illuminate\Contracts\Hashing\Hasher;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Contracts\Hashing\Hasher;
+use App\Types\EmailSubscriptionTopicType;
+use App\Exceptions\NorthstarValidationException;
 use Illuminate\Validation\Factory as Validation;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 
 class Registrar
 {
@@ -78,7 +80,8 @@ class Registrar
             'last_messaged_at' => 'date',
             'email_subscription_status' => 'boolean',
             'email_subscription_topics.*' =>
-                'in:news,scholarships,lifestyle,community,clubs',
+                Rule::in(EmailSubscriptionTopicType::all()),
+
             /*
              * Includes current values sent from Rock The Vote import, as well as older values for
              * backwards compatability.
