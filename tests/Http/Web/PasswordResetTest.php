@@ -48,6 +48,7 @@ class PasswordResetTest extends BrowserKitTestCase
 
         // The user should visit the link that was sent via email & set a new password.
         $this->visit($resetPasswordUrl);
+        $this->dontSee('window.snowplow');
         $this->postForm('Reset Password', [
             'password' => 'new-top-secret-passphrase',
             'password_confirmation' => 'new-top-secret-passphrase',
