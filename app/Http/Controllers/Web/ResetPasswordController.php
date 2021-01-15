@@ -125,6 +125,8 @@ class ResetPasswordController extends Controller
         $data['token'] = $token;
         $data['type'] = $type;
         $data['email'] = $request->email;
+        // Hide analytics scripts to prevent leaking password reset tokens to third-party services.
+        $data['hide_analytics'] = true;
 
         return view('auth.passwords.reset')->with($data);
     }
