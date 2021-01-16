@@ -5,8 +5,13 @@ use App\Jobs\SendPasswordResetToCustomerIo;
 use App\Models\User;
 use Illuminate\Support\Facades\Bus;
 
-class PasswordResetTest extends BrowserKitTestCase
+class PasswordResetTest extends TestCase
 {
+    private function getUserTokenFromResetUrl($url)
+    {
+        return last(explode('/', parse_url($url)['path']));
+    }
+
     /**
      * Default headers for this test case.
      *
@@ -26,17 +31,26 @@ class PasswordResetTest extends BrowserKitTestCase
         $user = factory(User::class)->create([
             'email' => 'forgetful@example.com',
         ]);
+
         $resetPasswordUrl = '';
 
+        // User can initiate a password reset.
+        $stepOneResponse = $this->get('/password/reset');
+
+        $stepOneResponse->assertSeeText('Forgot your password?');
+        $stepOneResponse->assertSeeText(
+            e('We\'ve all been there. Reset by entering your email.'),
+        );
+
         // The user should be able to request a new password by entering their email.
-        $this->visit('/password/reset');
-        $this->see('Forgot your password?');
-        $this->see('We\'ve all been there. Reset by entering your email.');
-        $this->submitForm('Request New Password', [
+        $stepTwoResponse = $this->post('/password/email', [
             'email' => 'forgetful@example.com',
         ]);
 
-        // We'll assert that the event was created & take note of reset URL for the next step.
+        $stepTwoResponse->assertStatus(302);
+        $stepTwoResponse->assertRedirect('/password/reset');
+
+        // Assert that the event was created & take note of reset URL for the next step.
         Bus::assertDispatched(SendPasswordResetToCustomerIo::class, function (
             $job
         ) use (&$resetPasswordUrl) {
@@ -44,22 +58,38 @@ class PasswordResetTest extends BrowserKitTestCase
 
             return true;
         });
+
+        // @TODO: Not sure why we are logging this, and if so should we do it for the test below with a $resetPasswordUrl?
         info('testForgotPasswordResetFlow ' . $resetPasswordUrl);
 
         // The user should visit the link that was sent via email & set a new password.
+<<<<<<< HEAD
         $this->visit($resetPasswordUrl);
         $this->dontSee('window.snowplow');
         $this->postForm('Reset Password', [
+=======
+        $stepThreeResponse = $this->get($resetPasswordUrl);
+
+        $stepThreeResponse->assertSeeText('Forgot your password?');
+
+        $stepFourResponse = $this->post('/password/reset/forgot-password', [
+            'email' => $user->email,
+            'token' => $this->getUserTokenFromResetUrl($resetPasswordUrl),
+>>>>>>> Removing BrowserKit from PasswordResetTest.
             'password' => 'new-top-secret-passphrase',
             'password_confirmation' => 'new-top-secret-passphrase',
         ]);
 
-        // The user should be logged-in to Northstar, and redirected to Phoenix's OAuth flow.
-        $this->seeIsAuthenticated();
-        $this->seeIsAuthenticatedAs($user, 'web');
-        $this->assertRedirectedTo(
+        $stepFourResponse->assertStatus(302);
+        $stepFourResponse->assertRedirect(
             config('services.phoenix.url') . '/next/login',
         );
+
+        $this->followRedirects($stepFourResponse);
+
+        // The user should be logged-in to Northstar, and redirected to Phoenix's OAuth flow.
+        $this->isAuthenticated();
+        $this->assertAuthenticatedAs($user, 'web');
 
         // And their account should be updated with their new password.
         $this->assertTrue(
@@ -76,22 +106,26 @@ class PasswordResetTest extends BrowserKitTestCase
     public function testPasswordResetRateLimited()
     {
         for ($i = 0; $i < 10; $i++) {
-            $this->visit('password/reset');
-            $this->submitForm('Request New Password', [
-                'email' => 'nonexistant@example.com',
-            ]);
+            $this->get('password/reset')->assertStatus(200);
 
-            $this->see('We can\'t find a user with that e-mail address.');
+            $this->followingRedirects()
+                ->post('/password/email', [
+                    'email' => 'nonexistant@example.com',
+                ])
+                ->assertSeeText(
+                    e('We can\'t find a user with that e-mail address.'),
+                );
         }
 
         $this->expectsEvents(\App\Events\Throttled::class);
 
-        $this->visit('password/reset');
-        $this->submitForm('Request New Password', [
-            'email' => 'nonexistant@example.com',
-        ]);
+        $this->get('password/reset')->assertStatus(200);
 
-        $this->see('Too many attempts.');
+        $this->followingRedirects()
+            ->post('/password/email', [
+                'email' => 'nonexistant@example.com',
+            ])
+            ->assertSeeText('Too many attempts.');
     }
 
     /**
@@ -102,17 +136,19 @@ class PasswordResetTest extends BrowserKitTestCase
         Bus::fake();
 
         $user = factory(User::class)->create();
+
         $resetPasswordUrl = null;
 
-        $this->asAdminUser()->post('v2/resets', [
+        // Initiate password reset for user.
+        $stepOneResponse = $this->asAdminUser()->post('v2/resets', [
             'id' => $user->id,
             'type' => 'rock-the-vote-activate-account',
         ]);
 
-        $this->assertResponseStatus(200);
-        $this->seeJsonStructure(['success']);
+        $stepOneResponse->assertStatus(200);
+        $stepOneResponse->assertJsonStructure(['success']);
 
-        // We'll assert that the event was created & take note of reset URL for the next step.
+        // Assert that the event was created & take note of reset URL for the next step.
         Bus::assertDispatched(SendPasswordResetToCustomerIo::class, function (
             $job
         ) use (&$resetPasswordUrl) {
@@ -123,21 +159,37 @@ class PasswordResetTest extends BrowserKitTestCase
 
         $this->refreshApplication();
 
-        $this->visit($resetPasswordUrl);
-        $this->see('Welcome to your DoSomething.org account!');
-        $this->see(
+        // User goes to password reset URL.
+        $stepTwoResponse = $this->get($resetPasswordUrl);
+
+        $stepTwoResponse->assertSeeText(
+            'Welcome to your DoSomething.org account!',
+        );
+
+        $stepTwoResponse->assertSeeText(
             'Create a password to join a movement of young people dedicated to making their communities a better place for everyone.',
         );
 
-        $this->postForm('Activate Account', [
-            'password' => 'new-top-secret-passphrase',
-            'password_confirmation' => 'new-top-secret-passphrase',
-        ]);
+        // User submits post request with new password.
+        $stepThreeResponse = $this->post(
+            '/password/reset/rock-the-vote-activate-account',
+            [
+                'email' => $user->email,
+                'token' => $this->getUserTokenFromResetUrl($resetPasswordUrl),
+                'password' => 'new-top-secret-passphrase',
+                'password_confirmation' => 'new-top-secret-passphrase',
+            ],
+        );
+
+        $stepThreeResponse->assertStatus(302);
+        $stepThreeResponse->assertRedirect('profile/about');
+
+        // Continue redirect to complete process and land on about or edit profile page.
+        $this->followRedirects($stepThreeResponse);
 
         // The user should be logged-in to Northstar, and redirected to Phoenix's OAuth flow.
-        $this->seeIsAuthenticated();
-        $this->seeIsAuthenticatedAs($user, 'web');
-        $this->assertRedirectedTo('profile/about');
+        $this->isAuthenticated();
+        $this->assertAuthenticatedAs($user, 'web');
 
         // And their account should be updated with their new password.
         $this->assertTrue(
