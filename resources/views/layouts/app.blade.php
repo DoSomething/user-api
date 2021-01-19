@@ -12,8 +12,10 @@
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <link rel="apple-touch-icon-precomposed" href="{{ asset('apple-touch-icon-precomposed.png') }}">
 
-    @include('layouts.google_tag_manager')
-    @include('layouts.snowplow')
+    @if (!isset($hide_analytics))
+        @include('layouts.google_tag_manager')
+        @include('layouts.snowplow')
+    @endif
 
     @section('scripts')
         <link rel="stylesheet" href="{{ elixir('app.css', 'dist') }}">
