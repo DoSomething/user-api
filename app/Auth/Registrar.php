@@ -2,19 +2,19 @@
 
 namespace App\Auth;
 
+use App\Exceptions\NorthstarValidationException;
+use App\Models\User;
+use App\Types\CauseInterestType;
+use App\Types\EmailSubscriptionTopicType;
 use Closure;
 use Exception;
-use App\Models\User;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use App\Types\CauseInterestType;
-use Illuminate\Contracts\Hashing\Hasher;
-use App\Types\EmailSubscriptionTopicType;
-use App\Exceptions\NorthstarValidationException;
-use Illuminate\Validation\Factory as Validation;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
+use Illuminate\Contracts\Hashing\Hasher;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Factory as Validation;
+use Illuminate\Validation\Rule;
 
 class Registrar
 {

@@ -2,24 +2,24 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use App\Auth\Role;
+use App\Jobs\SendPasswordResetToCustomerIo;
 use App\Services\GraphQL;
+use App\Types\PasswordResetType;
+use Carbon\Carbon;
+use Email\Parse as EmailParser;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as ResetPasswordContract;
+use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Email\Parse as EmailParser;
-use App\Types\PasswordResetType;
-use Illuminate\Auth\Authenticatable;
-use libphonenumber\PhoneNumberFormat;
-use Illuminate\Notifications\Notifiable;
-use App\Jobs\SendPasswordResetToCustomerIo;
-use Jenssegers\Mongodb\Eloquent\SoftDeletes;
-use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Foundation\Auth\Access\Authorizable;
 use Jenssegers\Mongodb\Auth\DatabaseTokenRepository;
-use Illuminate\Contracts\Auth\CanResetPassword as ResetPasswordContract;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use libphonenumber\PhoneNumberFormat;
 
 /**
  * The User model. (Fight for the user!).

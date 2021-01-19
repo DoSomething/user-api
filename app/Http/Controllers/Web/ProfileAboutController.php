@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Web;
 
 use App\Auth\Registrar;
-use Illuminate\Http\Request;
-use App\Types\CauseInterestType;
 use App\Http\Controllers\Controller;
+use App\Types\CauseInterestType;
+use Illuminate\Http\Request;
 
 class ProfileAboutController extends Controller
 {

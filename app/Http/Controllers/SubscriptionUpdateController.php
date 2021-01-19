@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Transformers\UserTransformer;
 use App\Models\User;
 use App\Types\EmailSubscriptionTopicType;
-use App\Http\Transformers\UserTransformer;
 
 class SubscriptionUpdateController extends Controller
 {

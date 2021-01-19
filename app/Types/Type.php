@@ -2,8 +2,8 @@
 
 namespace App\Types;
 
-use MyCLabs\Enum\Enum;
 use Illuminate\Support\Arr;
+use MyCLabs\Enum\Enum;
 
 abstract class Type extends Enum
 {
