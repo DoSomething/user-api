@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\PasswordResetType;
+use App\Types\PasswordResetType;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Transformers\UserTransformer;
 use App\Models\User;
+use App\Types\EmailSubscriptionTopicType;
 
 class SubscriptionUpdateController extends Controller
 {
@@ -11,17 +12,6 @@ class SubscriptionUpdateController extends Controller
      * @var UserTransformer
      */
     protected $transformer;
-
-    /**
-     * @var array
-     */
-    protected $emailSubscriptionTopics = [
-        'news',
-        'scholarships',
-        'community',
-        'lifestyle',
-        'clubs',
-    ];
 
     /**
      * Make a new SubpscriptionUpdateController, inject dependencies,
@@ -41,7 +31,7 @@ class SubscriptionUpdateController extends Controller
     {
         $this->authorize('edit-profile', $user);
 
-        if (!in_array($topic, $this->emailSubscriptionTopics)) {
+        if (!in_array($topic, EmailSubscriptionTopicType::all())) {
             abort(404, 'That subscription does not exist.');
         }
 
@@ -56,7 +46,7 @@ class SubscriptionUpdateController extends Controller
     {
         $this->authorize('edit-profile', $user);
 
-        if (!in_array($topic, $this->emailSubscriptionTopics)) {
+        if (!in_array($topic, EmailSubscriptionTopicType::all())) {
             abort(404, 'That subscription does not exist.');
         }
 

@@ -4,6 +4,8 @@ namespace App\Auth;
 
 use App\Exceptions\NorthstarValidationException;
 use App\Models\User;
+use App\Types\CauseInterestType;
+use App\Types\EmailSubscriptionTopicType;
 use Closure;
 use Exception;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
@@ -12,6 +14,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Factory as Validation;
+use Illuminate\Validation\Rule;
 
 class Registrar
 {
@@ -78,7 +81,8 @@ class Registrar
             'last_messaged_at' => 'date',
             'email_subscription_status' => 'boolean',
             'email_subscription_topics.*' =>
-                'in:news,scholarships,lifestyle,community,clubs',
+                Rule::in(EmailSubscriptionTopicType::all()),
+
             /*
              * Includes current values sent from Rock The Vote import, as well as older values for
              * backwards compatability.
@@ -86,7 +90,7 @@ class Registrar
             'voter_registration_status' =>
                 'nullable|in:uncertain,ineligible,unregistered,confirmed,registration_complete,rejected,under-18,step-1,step-2,step-3,step-4',
             'causes.*' =>
-                'in:animal_welfare,bullying,education,environment,gender_rights_equality,homelessness_poverty,immigration_refugees,lgbtq_rights_equality,mental_health,physical_health,racial_justice_equity,sexual_harassment_assault',
+            Rule::in(CauseInterestType::all()),
         ];
 
         // If existing user is provided, merge indexes into the request so

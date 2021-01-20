@@ -6,7 +6,7 @@ use App\Auth\Registrar;
 use App\Auth\Role;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Types\CauseInterests;
+use App\Types\CauseInterestType;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -70,7 +70,7 @@ class UserController extends Controller
         return view('admin.users.edit', [
             'user' => $user,
             'title' => $user->display_name,
-            'causes' => CauseInterests::labels(),
+            'causes' => CauseInterestType::labels(),
         ]);
     }
 

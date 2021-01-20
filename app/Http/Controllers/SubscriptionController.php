@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Auth\Registrar;
 use App\Http\Transformers\UserTransformer;
 use App\Models\User;
-use App\PasswordResetType;
+use App\Types\EmailSubscriptionTopicType;
+use App\Types\PasswordResetType;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class SubscriptionController extends Controller
 {
@@ -48,7 +50,8 @@ class SubscriptionController extends Controller
         $this->validate($request, [
             'email' => 'required|email',
             'email_subscription_topic' =>
-                'required|in:news,scholarships,lifestyle,community',
+                ['required', Rule::in(EmailSubscriptionTopicType::all())],
+
             'source' => 'required',
             'source_detail' => 'required',
         ]);
@@ -78,22 +81,22 @@ class SubscriptionController extends Controller
         switch ($topic) {
             case 'scholarships':
                 $newUser->sendPasswordReset(
-                    PasswordResetType::$paysToDoGoodActivateAccount,
+                    PasswordResetType::get('PAYS_TO_DO_GOOD_ACTIVATE_ACCOUNT'),
                 );
                 break;
             case 'news':
                 $newUser->sendPasswordReset(
-                    PasswordResetType::$breakdownActivateAccount,
+                    PasswordResetType::get('BREAKDOWN_ACTIVATE_ACCOUNT'),
                 );
                 break;
             case 'lifestyle':
                 $newUser->sendPasswordReset(
-                    PasswordResetType::$boostActivateAccount,
+                    PasswordResetType::get('BOOST_ACTIVATE_ACCOUNT'),
                 );
                 break;
             case 'community':
                 $newUser->sendPasswordReset(
-                    PasswordResetType::$wydActivateAccount,
+                    PasswordResetType::get('WYD_ACTIVATE_ACCOUNT'),
                 );
                 break;
         }

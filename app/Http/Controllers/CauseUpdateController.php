@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Transformers\UserTransformer;
 use App\Models\User;
+use App\Types\CauseInterestType;
 
 class CauseUpdateController extends Controller
 {
@@ -31,20 +32,7 @@ class CauseUpdateController extends Controller
         $this->authorize('edit-profile', $user);
 
         if (
-            !in_array($cause, [
-                'animal_welfare',
-                'bullying',
-                'education',
-                'environment',
-                'gender_rights_equality',
-                'homelessness_poverty',
-                'immigration_refugees',
-                'lgbtq_rights_equality',
-                'mental_health',
-                'physical_health',
-                'racial_justice_equity',
-                'sexual_harassment_assault',
-            ])
+            !in_array($cause, CauseInterestType::all())
         ) {
             abort(404, 'That cause does not exist.');
         }
@@ -61,20 +49,7 @@ class CauseUpdateController extends Controller
         $this->authorize('edit-profile', $user);
 
         if (
-            !in_array($cause, [
-                'animal_welfare',
-                'bullying',
-                'education',
-                'environment',
-                'gender_rights_equality',
-                'homelessness_poverty',
-                'immigration_refugees',
-                'lgbtq_rights_equality',
-                'mental_health',
-                'physical_health',
-                'racial_justice_equity',
-                'sexual_harassment_assault',
-            ])
+            !in_array($cause, CauseInterestType::all())
         ) {
             abort(404, 'That cause does not exist.');
         }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Auth\Registrar;
 use App\Http\Controllers\Controller;
-use App\Types\CauseInterests;
+use App\Types\CauseInterestType;
 use Illuminate\Http\Request;
 
 class ProfileAboutController extends Controller
@@ -18,7 +18,7 @@ class ProfileAboutController extends Controller
 
         $this->middleware('auth:web');
 
-        $this->causes = CauseInterests::labels();
+        $this->causes = CauseInterestType::labels();
     }
 
     /**
