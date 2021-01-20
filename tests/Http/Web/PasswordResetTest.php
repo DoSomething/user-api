@@ -65,6 +65,7 @@ class PasswordResetTest extends TestCase
         // The user should visit the link that was sent via email & set a new password.
         $stepThreeResponse = $this->get($resetPasswordUrl);
 
+        $stepThreeResponse->assertStatus(200);
         $stepThreeResponse->assertDontSee('window.snowplow');
         $stepThreeResponse->assertSeeText('Forgot your password?');
 

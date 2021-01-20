@@ -264,7 +264,9 @@ class FacebookTest extends TestCase
 
         $this->mockSocialiteFromUserToken($abstractUser);
 
-        $this->get('/facebook/verify');
+        $response = $this->followingRedirects()->get('/facebook/verify');
+
+        $response->assertStatus(200);
 
         $user = auth()->user();
 
@@ -289,7 +291,9 @@ class FacebookTest extends TestCase
 
         $this->mockSocialiteFromUserToken($abstractUser);
 
-        $this->get('/facebook/verify');
+        $response = $this->followingRedirects()->get('/facebook/verify');
+
+        $response->assertStatus(200);
 
         $user = auth()->user();
 
