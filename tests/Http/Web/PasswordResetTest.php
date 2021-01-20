@@ -158,6 +158,7 @@ class PasswordResetTest extends TestCase
         // User goes to password reset URL.
         $stepTwoResponse = $this->get($resetPasswordUrl);
 
+        $stepTwoResponse->assertStatus(200);
         $stepTwoResponse->assertSeeText(
             'Welcome to your DoSomething.org account!',
         );
