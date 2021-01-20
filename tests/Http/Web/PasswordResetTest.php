@@ -63,19 +63,14 @@ class PasswordResetTest extends TestCase
         info('testForgotPasswordResetFlow ' . $resetPasswordUrl);
 
         // The user should visit the link that was sent via email & set a new password.
-<<<<<<< HEAD
-        $this->visit($resetPasswordUrl);
-        $this->dontSee('window.snowplow');
-        $this->postForm('Reset Password', [
-=======
         $stepThreeResponse = $this->get($resetPasswordUrl);
 
+        $stepThreeResponse->assertDontSee('window.snowplow');
         $stepThreeResponse->assertSeeText('Forgot your password?');
 
         $stepFourResponse = $this->post('/password/reset/forgot-password', [
             'email' => $user->email,
             'token' => $this->getUserTokenFromResetUrl($resetPasswordUrl),
->>>>>>> Removing BrowserKit from PasswordResetTest.
             'password' => 'new-top-secret-passphrase',
             'password_confirmation' => 'new-top-secret-passphrase',
         ]);
