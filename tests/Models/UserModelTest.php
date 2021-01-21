@@ -29,7 +29,7 @@ class UserModelTest extends BrowserKitTestCase
         $this->customerIoMock->shouldHaveReceived('updateCustomer')->once();
 
         // The Customer.io payload should be serialized correctly:
-        $this->assertEquals($user->toCustomerIoPayload(), [
+        $expected = [
             'id' => $user->id,
             'first_name' => $user->first_name,
             'display_name' => $user->display_name,
@@ -83,12 +83,15 @@ class UserModelTest extends BrowserKitTestCase
             'physical_health' => false,
             'racial_justice_equity' => false,
             'sexual_harassment_assault' => true,
+
             'voting_method' => null,
             'voting_plan_status' => null,
             'voting_plan_method_of_transport' => null,
             'voting_plan_time_of_day' => null,
             'voting_plan_attending_with' => null,
-        ]);
+        ];
+
+        $this->assertEquals($expected, $user->toCustomerIoPayload());
     }
 
     /** @test */
