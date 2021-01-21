@@ -298,7 +298,6 @@ class UserModelTest extends BrowserKitTestCase
         $newClubName = 'DoSomething Staffers Club';
 
         // Ensure we query this Rogue club via GraphQL.
-        $this->graphqlMock = $this->mock(GraphQL::class);
         $this->graphqlMock
             ->shouldReceive('getClubById')
             ->with($newClubId)
@@ -345,7 +344,7 @@ class UserModelTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
 
         // Ensure we don't find a Rogue club via GraphQL.
-        $this->mock(GraphQL::class)
+        $this->graphqlMock
             ->shouldReceive('getClubById', 'getSchoolById')
             ->andReturn(null);
 
