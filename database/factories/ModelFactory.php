@@ -30,7 +30,6 @@ $factory->define(App\Models\User::class, function (
         'country' => $faker->countryCode,
         'language' => $faker->languageCode,
         'source' => 'factory',
-        'school_id' => '12500012',
         'club_id' => 1,
         'causes' => $faker->randomElements(
             [

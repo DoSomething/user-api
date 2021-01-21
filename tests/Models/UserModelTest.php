@@ -13,6 +13,7 @@ class UserModelTest extends BrowserKitTestCase
         /** @var User $user */
         $user = factory(User::class)->create([
             'birthdate' => '1/2/1990',
+            'school_id' => '12500012',
             'causes' => [
                 'animal_welfare',
                 'education',
@@ -42,8 +43,8 @@ class UserModelTest extends BrowserKitTestCase
             'addr_state' => $user->addr_state,
             'addr_zip' => $user->addr_zip,
             'country' => $user->country,
-            'school_id' => $user->school_id,
             'club_id' => $user->club_id,
+            'school_id' => '12500012',
             'school_name' => 'San Dimas High School',
             'school_state' => 'CA',
             'voter_registration_status' => $user->voter_registration_status,

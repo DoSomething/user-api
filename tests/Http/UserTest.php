@@ -181,6 +181,7 @@ class UserTest extends BrowserKitTestCase
             'mobile' => '+18602035512',
             'birthdate' => '01/01/1993',
             'referrer_user_id' => '559442cca59dbfca578b4bed',
+            'school_id' => '12500012',
         ]);
 
         $this->asStaffUser()->get('v2/users/' . $user->id);
