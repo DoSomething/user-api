@@ -24,7 +24,7 @@ $factory->define(App\Models\User::class, function (
         'password' => $faker->password,
         'birthdate' => $faker->dateTimeBetween('1/1/1980', '-1 year'),
         'addr_street1' => $faker->streetAddress,
-        'city' => $faker->city,
+        'addr_city' => $faker->city,
         'addr_state' => $faker->stateAbbr,
         'addr_zip' => $faker->postcode,
         'country' => $faker->countryCode,
