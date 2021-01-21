@@ -32,7 +32,7 @@ class MergeTest extends BrowserKitTestCase
             'first_name' => 'Phil',
             'last_name' => 'Dunfy',
             'addr_street1' => '19 W 21st St',
-            'city' => 'New York',
+            'addr_city' => 'New York',
             'addr_state' => 'NY',
             'addr_zip' => '10010',
             'country' => 'USA',

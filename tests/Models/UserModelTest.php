@@ -13,6 +13,10 @@ class UserModelTest extends BrowserKitTestCase
         /** @var User $user */
         $user = factory(User::class)->create([
             'birthdate' => '1/2/1990',
+            'email_subscription_status' => true,
+            'email_subscription_topics' => ['news', 'community'],
+            'sms_subscription_topics' => ['general'],
+            'school_id' => '12500012',
             'causes' => [
                 'animal_welfare',
                 'education',
@@ -25,7 +29,7 @@ class UserModelTest extends BrowserKitTestCase
         $this->customerIoMock->shouldHaveReceived('updateCustomer')->once();
 
         // The Customer.io payload should be serialized correctly:
-        $this->assertEquals($user->toCustomerIoPayload(), [
+        $expected = [
             'id' => $user->id,
             'first_name' => $user->first_name,
             'display_name' => $user->display_name,
@@ -36,14 +40,16 @@ class UserModelTest extends BrowserKitTestCase
             'sms_status' => $user->sms_status,
             'sms_paused' => (bool) $user->sms_paused,
             'sms_status_source' => 'northstar',
+            'email_subscription_status' => true,
+            'unsubscribed' => false,
             'facebook_id' => $user->facebook_id,
             'google_id' => $user->google_id,
             'addr_city' => $user->addr_city,
             'addr_state' => $user->addr_state,
             'addr_zip' => $user->addr_zip,
             'country' => $user->country,
-            'school_id' => $user->school_id,
             'club_id' => $user->club_id,
+            'school_id' => '12500012',
             'school_name' => 'San Dimas High School',
             'school_state' => 'CA',
             'voter_registration_status' => $user->voter_registration_status,
@@ -56,41 +62,15 @@ class UserModelTest extends BrowserKitTestCase
             'last_messaged_at' => null,
             'updated_at' => $user->updated_at->timestamp,
             'created_at' => $user->created_at->timestamp,
-            'news_email_subscription_status' => isset(
-                $user->email_subscription_topics,
-            )
-                ? in_array('news', $user->email_subscription_topics)
-                : false,
-            'lifestyle_email_subscription_status' => isset(
-                $user->email_subscription_topics,
-            )
-                ? in_array('lifestyle', $user->email_subscription_topics)
-                : false,
-            'community_email_subscription_status' => isset(
-                $user->email_subscription_topics,
-            )
-                ? in_array('community', $user->email_subscription_topics)
-                : false,
-            'scholarship_email_subscription_status' => isset(
-                $user->email_subscription_topics,
-            )
-                ? in_array('scholarships', $user->email_subscription_topics)
-                : false,
-            'clubs_email_subscription_status' => isset(
-                $user->email_subscription_topics,
-            )
-                ? in_array('clubs', $user->email_subscription_topics)
-                : false,
-            'general_sms_subscription_status' => isset(
-                $user->sms_subscription_topics,
-            )
-                ? in_array('general', $user->sms_subscription_topics)
-                : false,
-            'voting_sms_subscription_status' => isset(
-                $user->sms_subscription_topics,
-            )
-                ? in_array('voting', $user->sms_subscription_topics)
-                : false,
+
+            // These boolean fields are computed based on whether or not array values exist:
+            'news_email_subscription_status' => true,
+            'lifestyle_email_subscription_status' => false,
+            'community_email_subscription_status' => true,
+            'scholarship_email_subscription_status' => false,
+            'clubs_email_subscription_status' => false,
+            'general_sms_subscription_status' => true,
+            'voting_sms_subscription_status' => false,
             'animal_welfare' => true,
             'bullying' => false,
             'education' => true,
@@ -103,12 +83,15 @@ class UserModelTest extends BrowserKitTestCase
             'physical_health' => false,
             'racial_justice_equity' => false,
             'sexual_harassment_assault' => true,
+
             'voting_method' => null,
             'voting_plan_status' => null,
             'voting_plan_method_of_transport' => null,
             'voting_plan_time_of_day' => null,
             'voting_plan_attending_with' => null,
-        ]);
+        ];
+
+        $this->assertEquals($expected, $user->toCustomerIoPayload());
     }
 
     /** @test */
@@ -315,7 +298,6 @@ class UserModelTest extends BrowserKitTestCase
         $newClubName = 'DoSomething Staffers Club';
 
         // Ensure we query this Rogue club via GraphQL.
-        $this->graphqlMock = $this->mock(GraphQL::class);
         $this->graphqlMock
             ->shouldReceive('getClubById')
             ->with($newClubId)
@@ -362,7 +344,7 @@ class UserModelTest extends BrowserKitTestCase
         $user = factory(User::class)->create();
 
         // Ensure we don't find a Rogue club via GraphQL.
-        $this->mock(GraphQL::class)
+        $this->graphqlMock
             ->shouldReceive('getClubById', 'getSchoolById')
             ->andReturn(null);
 

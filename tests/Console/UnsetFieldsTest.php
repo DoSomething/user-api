@@ -13,7 +13,7 @@ class UnsetFieldsTest extends TestCase
 
         // Make sure all users have a `city`
         $usersWithCity = User::whereRaw([
-            'city' => [
+            'addr_city' => [
                 '$exists' => true,
             ],
         ])->count();
@@ -37,13 +37,13 @@ class UnsetFieldsTest extends TestCase
 
         // Run the command to unset `city` and `country`
         Artisan::call('northstar:unset', [
-            'field' => ['city', 'country'],
+            'field' => ['addr_city', 'country'],
             '--force' => true,
         ]);
 
         // Make sure NO users have a `city`
         $usersWithCity = User::whereRaw([
-            'city' => [
+            'addr_city' => [
                 '$exists' => true,
             ],
         ])->count();
