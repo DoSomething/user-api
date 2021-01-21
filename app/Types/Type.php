@@ -40,6 +40,6 @@ abstract class Type extends Enum
      */
     public static function get($type)
     {
-        return (static::toArray())[$type];
+        return static::toArray()[$type];
     }
 }

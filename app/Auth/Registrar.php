@@ -80,8 +80,9 @@ class Registrar
             'sms_subscription_topics.*' => 'in:general,voting',
             'last_messaged_at' => 'date',
             'email_subscription_status' => 'boolean',
-            'email_subscription_topics.*' =>
-                Rule::in(EmailSubscriptionTopicType::all()),
+            'email_subscription_topics.*' => Rule::in(
+                EmailSubscriptionTopicType::all(),
+            ),
 
             /*
              * Includes current values sent from Rock The Vote import, as well as older values for
@@ -89,8 +90,7 @@ class Registrar
              */
             'voter_registration_status' =>
                 'nullable|in:uncertain,ineligible,unregistered,confirmed,registration_complete,rejected,under-18,step-1,step-2,step-3,step-4',
-            'causes.*' =>
-            Rule::in(CauseInterestType::all()),
+            'causes.*' => Rule::in(CauseInterestType::all()),
         ];
 
         // If existing user is provided, merge indexes into the request so

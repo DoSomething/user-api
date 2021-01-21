@@ -41,9 +41,7 @@ trait CreatesApplication
         $app->make(Kernel::class)->bootstrap();
 
         // Configure a mock for any Customer.io API calls.
-        $this->customerIoMock = $this->mock(
-            \App\Services\CustomerIo::class,
-        );
+        $this->customerIoMock = $this->mock(\App\Services\CustomerIo::class);
         $this->customerIoMock->shouldReceive('updateCustomer')->andReturn(null);
         $this->customerIoMock->shouldReceive('trackEvent');
 

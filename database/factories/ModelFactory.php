@@ -7,9 +7,7 @@
  *
  * @var \Illuminate\Database\Eloquent\Factory $factory
  */
-$factory->define(App\Models\User::class, function (
-    Faker\Generator $faker
-) {
+$factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     $faker->addProvider(new FakerPhoneNumber($faker));
 
     return [
@@ -138,26 +136,18 @@ $factory->defineAs(App\Models\User::class, 'admin', function (
     ];
 });
 
-$factory->defineAs(
-    \App\Models\Client::class,
-    'authorization_code',
-    function (Faker\Generator $faker) {
-        return [
-            'client_id' => $faker->unique()->numerify('phpunit-###'),
-            'title' => $faker->company,
-            'description' => $faker->sentence,
-            'allowed_grant' => 'authorization_code',
-            'scope' => [
-                'user',
-                'openid',
-                'profile',
-                'role:staff',
-                'role:admin',
-            ],
-            'redirect_uri' => $faker->url,
-        ];
-    },
-);
+$factory->defineAs(\App\Models\Client::class, 'authorization_code', function (
+    Faker\Generator $faker
+) {
+    return [
+        'client_id' => $faker->unique()->numerify('phpunit-###'),
+        'title' => $faker->company,
+        'description' => $faker->sentence,
+        'allowed_grant' => 'authorization_code',
+        'scope' => ['user', 'openid', 'profile', 'role:staff', 'role:admin'],
+        'redirect_uri' => $faker->url,
+    ];
+});
 
 $factory->defineAs(\App\Models\Client::class, 'password', function (
     Faker\Generator $faker
@@ -171,16 +161,14 @@ $factory->defineAs(\App\Models\Client::class, 'password', function (
     ];
 });
 
-$factory->defineAs(
-    \App\Models\Client::class,
-    'client_credentials',
-    function (Faker\Generator $faker) {
-        return [
-            'client_id' => $faker->unique()->numerify('phpunit-###'),
-            'title' => $faker->company,
-            'description' => $faker->sentence,
-            'allowed_grant' => 'client_credentials',
-            'scope' => ['user', 'admin'],
-        ];
-    },
-);
+$factory->defineAs(\App\Models\Client::class, 'client_credentials', function (
+    Faker\Generator $faker
+) {
+    return [
+        'client_id' => $faker->unique()->numerify('phpunit-###'),
+        'title' => $faker->company,
+        'description' => $faker->sentence,
+        'allowed_grant' => 'client_credentials',
+        'scope' => ['user', 'admin'],
+    ];
+});

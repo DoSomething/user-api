@@ -49,8 +49,10 @@ class SubscriptionController extends Controller
     {
         $this->validate($request, [
             'email' => 'required|email',
-            'email_subscription_topic' =>
-                ['required', Rule::in(EmailSubscriptionTopicType::all())],
+            'email_subscription_topic' => [
+                'required',
+                Rule::in(EmailSubscriptionTopicType::all()),
+            ],
 
             'source' => 'required',
             'source_detail' => 'required',

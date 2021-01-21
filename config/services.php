@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Third Party Services
@@ -82,5 +81,4 @@ return [
         'prefix' => env('SIXPACK_COOKIE_PREFIX'),
         'timeout' => env('SIXPACK_TIMEOUT'),
     ],
-
 ];
