@@ -19,6 +19,7 @@ $factory->define(App\Models\User::class, function (
         'mobile' => $faker->unique()->phoneNumber,
         'mobilecommons_id' => $faker->randomNumber(5),
         'sms_status' => $faker->randomElement(['active', 'less']),
+        'email_subscription_status' => $faker->boolean,
         'facebook_id' => $faker->unique()->randomNumber(),
         'google_id' => $faker->unique()->randomNumber(),
         'password' => $faker->password,
