@@ -3,12 +3,12 @@
 use App\Models\User;
 use App\Services\Google;
 use Laravel\Socialite\AbstractUser;
+use Laravel\Socialite\Facades\Socialite;
 
-class GoogleTest extends BrowserKitTestCase
+class GoogleTest extends TestCase
 {
     /**
-     * Mock a Socialite user for the given
-     * method and user fields.
+     * Mock a Socialite user for the given method and user fields.
      *
      * @param  AbstractUser  $user
      * @param  string        $method
@@ -48,6 +48,7 @@ class GoogleTest extends BrowserKitTestCase
         $fields = compact('id', 'email', 'token');
 
         $user = new Laravel\Socialite\Two\User();
+
         $user->map($fields);
 
         $user->user['given_name'] = $first_name;
@@ -57,6 +58,8 @@ class GoogleTest extends BrowserKitTestCase
     }
 
     /**
+     * Mock a Google profile.
+     *
      * @see https://developers.google.com/people/api/rest/v1/people/get
      * @return object
      */
@@ -101,6 +104,7 @@ class GoogleTest extends BrowserKitTestCase
     private function defaultMock()
     {
         $googleId = '12345';
+
         $abstractUser = $this->mockSocialiteAbstractUser(
             'test@dosomething.org',
             'Puppet',
@@ -108,7 +112,9 @@ class GoogleTest extends BrowserKitTestCase
             $googleId,
             'token',
         );
+
         $this->mockSocialiteFromUser($abstractUser);
+
         $this->mock(Google::class)
             ->shouldReceive('getProfile')
             ->andReturn($this->mockGoogleProfile($googleId));
@@ -119,9 +125,14 @@ class GoogleTest extends BrowserKitTestCase
      */
     public function testGoogleRedirect()
     {
-        // $this->visit('/google/continue');
-        // @TODO: Test below results in a 404: "A request to [https://accounts.google.com/o/oauth2/auth?client_id=....M9] failed. Received status code [404]."
-        // $this->assertRedirectedTo('https://accounts.google.com');
+        $response = $this->get('/google/continue');
+
+        $response->assertStatus(302);
+
+        $redirectDomain = parse_url($response->headers->get('Location'));
+
+        // We just care that the host domain matches the expected value, excluding all the query params.
+        $this->assertEquals('accounts.google.com', $redirectDomain['host']);
     }
 
     /**
@@ -145,10 +156,15 @@ class GoogleTest extends BrowserKitTestCase
             ],
         ]);
 
-        $this->visit('/google/verify')->seePageIs('/profile/about');
-        $this->seeIsAuthenticated('web');
+        $response = $this->get('/google/verify');
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/profile/about');
+
+        $this->isAuthenticated('web');
 
         $user = auth()->user();
+
         $this->assertEquals($user->email, 'test@dosomething.org');
         $this->assertEquals($user->source, 'northstar');
         $this->assertEquals(
@@ -175,10 +191,15 @@ class GoogleTest extends BrowserKitTestCase
     {
         $this->defaultMock();
 
-        $this->visit('/google/verify')->seePageIs('/profile/about');
-        $this->seeIsAuthenticated('web');
+        $response = $this->get('/google/verify');
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/profile/about');
+
+        $this->isAuthenticated('web');
 
         $user = auth()->user();
+
         $this->assertEquals($user->email, 'test@dosomething.org');
         $this->assertEquals($user->first_name, 'Puppet');
         $this->assertEquals($user->last_name, 'Sloth');
@@ -194,6 +215,7 @@ class GoogleTest extends BrowserKitTestCase
     public function testGoogleMissingProfileFields()
     {
         $googleId = '12345';
+
         $abstractUser = $this->mockSocialiteAbstractUser(
             'test@dosomething.org',
             null,
@@ -201,13 +223,21 @@ class GoogleTest extends BrowserKitTestCase
             $googleId,
             'token',
         );
+
         $this->mockSocialiteFromUser($abstractUser);
+
         $this->mock(Google::class)
             ->shouldReceive('getProfile')
             ->andReturn($this->mockGoogleProfile($googleId));
 
-        $this->visit('/google/verify')->seePageIs('/register');
-        $this->see(
+        $response = $this->get('/google/verify');
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/register');
+
+        $redirectResponse = $this->followRedirects($response);
+
+        $redirectResponse->assertSeeText(
             'We need your first and last name to create your account! Please confirm that these are set on your Google profile and try again.',
         );
     }
@@ -219,6 +249,7 @@ class GoogleTest extends BrowserKitTestCase
     public function testGoogleMissingBirthday()
     {
         $googleId = '12345';
+
         $abstractUser = $this->mockSocialiteAbstractUser(
             'test@dosomething.org',
             'Puppet',
@@ -226,9 +257,11 @@ class GoogleTest extends BrowserKitTestCase
             $googleId,
             'token',
         );
+
         $this->mockSocialiteFromUser($abstractUser);
 
         $mockGoogleProfile = $this->mockGoogleProfile($googleId);
+
         // Remove the birthdays attribute from the mocked Google Profile payload.
         unset($mockGoogleProfile->birthdays);
 
@@ -236,8 +269,12 @@ class GoogleTest extends BrowserKitTestCase
             ->shouldReceive('getProfile')
             ->andReturn($mockGoogleProfile);
 
-        $this->visit('/google/verify')->seePageIs('/profile/about');
-        $this->seeIsAuthenticated('web');
+        $response = $this->get('/google/verify');
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/profile/about');
+
+        $this->isAuthenticated('web');
     }
 
     /**
@@ -254,9 +291,13 @@ class GoogleTest extends BrowserKitTestCase
 
         $this->defaultMock();
 
-        $this->visit('/google/verify')->seePageIs('/');
+        $response = $this->get('/google/verify');
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/');
 
         $user = auth()->user();
+
         $this->assertEquals($user->first_name, 'Joe');
         $this->assertEquals($user->last_name, 'Sloth');
         $this->assertEquals($user->birthdate, $factoryUser->birthdate);
