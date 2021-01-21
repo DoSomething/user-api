@@ -19,6 +19,13 @@ use Illuminate\Support\Str;
 class Client extends Model
 {
     /**
+     * The database connection that should be used by the model.
+     *
+     * @var string
+     */
+    protected $connection = 'mongodb';
+
+    /**
      * The primary key for the model.
      *
      * @var string

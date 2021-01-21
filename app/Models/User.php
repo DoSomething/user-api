@@ -95,6 +95,13 @@ class User extends Model implements
         SoftDeletes;
 
     /**
+     * The database connection that should be used by the model.
+     *
+     * @var string
+     */
+    protected $connection = 'mongodb';
+
+    /**
      * Should changes to this model's attributes be stored
      * in an audit property on the database record?
      *

@@ -15,6 +15,13 @@ namespace App\Models;
 class RefreshToken extends Model
 {
     /**
+     * The database connection that should be used by the model.
+     *
+     * @var string
+     */
+    protected $connection = 'mongodb';
+
+    /**
      * The database collection used by the model.
      *
      * @var string
