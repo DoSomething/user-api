@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mongodb'),
+    'default' => 'mysql',
 
     /*
     |--------------------------------------------------------------------------
@@ -35,27 +35,27 @@ return [
     'connections' => [
         'mongodb' => [
             'driver' => 'mongodb',
-            'host' => env('DB_HOST', 'localhost'),
-            'port' => env('DB_PORT', 27017),
-            'username' => env('DB_USERNAME', ''),
-            'password' => env('DB_PASSWORD', ''),
-            'database' => env('DB_DATABASE', 'userapi'),
+            'host' => env('MONGODB_HOST', 'localhost'),
+            'port' => env('MONGODB_PORT', 27017),
+            'username' => env('MONGODB_USERNAME', ''),
+            'password' => env('MONGODB_PASSWORD', ''),
+            'database' => env('MONGODB_DATABASE', 'userapi'),
             'options' => array_filter([
-                'replicaSet' => env('DB_REPL_SET_NAME'),
-                'database' => env('DB_AUTH_DATABASE', 'userapi'),
-                'ssl' => env('DB_SSL'),
+                'replicaSet' => env('MONGODB_REPL_SET_NAME'),
+                'database' => env('MONGODB_AUTH_DATABASE', 'userapi'),
+                'ssl' => env('MONGODB_SSL'),
             ]),
         ],
 
         'mysql' => [
             'driver' => 'mysql',
-            'url' => env('DB_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'unix_socket' => env('DB_SOCKET', ''),
+            'url' => env('MYSQL_URL'),
+            'host' => env('MYSQL_HOST', '127.0.0.1'),
+            'port' => env('MYSQL_PORT', '3306'),
+            'database' => env('MYSQL_DATABASE', 'forge'),
+            'username' => env('MYSQL_USERNAME', 'forge'),
+            'password' => env('MYSQL_PASSWORD', ''),
+            'unix_socket' => env('MYSQL_SOCKET', ''),
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
