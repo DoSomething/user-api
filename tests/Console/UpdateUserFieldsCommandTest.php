@@ -125,7 +125,8 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
 
         // Run the user update command.
         Artisan::call('northstar:update', [
-            'input' => 'tests/Console/files/example-email-subscription-status-updates.csv',
+            'input' =>
+                'tests/Console/files/example-email-subscription-status-updates.csv',
             '--field' => ['email_subscription_status'],
         ]);
 

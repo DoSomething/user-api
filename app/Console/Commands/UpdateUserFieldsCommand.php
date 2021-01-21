@@ -100,7 +100,10 @@ class UpdateUserFieldsCommand extends Command
                 }
 
                 if ($field === 'email_subscription_status') {
-                    $user->{$field} = filter_var($updateFieldValue, FILTER_VALIDATE_BOOLEAN);
+                    $user->{$field} = filter_var(
+                        $updateFieldValue,
+                        FILTER_VALIDATE_BOOLEAN,
+                    );
                     continue;
                 }
 
@@ -111,7 +114,9 @@ class UpdateUserFieldsCommand extends Command
 
             if ($this->option('verbose')) {
                 $this->line('northstar:update: Updated user - ' . $user->id);
-                $this->line('northstar:update: ' . $this->getMbUsed() . ' Mb used');
+                $this->line(
+                    'northstar:update: ' . $this->getMbUsed() . ' Mb used',
+                );
             }
 
             $this->logPercent();

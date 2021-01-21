@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Mail Driver
@@ -115,9 +114,7 @@ return [
     'markdown' => [
         'theme' => 'default',
 
-        'paths' => [
-            resource_path('views/vendor/mail'),
-        ],
+        'paths' => [resource_path('views/vendor/mail')],
     ],
 
     /*
@@ -132,5 +129,4 @@ return [
     */
 
     'log_channel' => env('MAIL_LOG_CHANNEL'),
-
 ];

@@ -31,9 +31,7 @@ class CauseUpdateController extends Controller
     {
         $this->authorize('edit-profile', $user);
 
-        if (
-            !in_array($cause, CauseInterestType::all())
-        ) {
+        if (!in_array($cause, CauseInterestType::all())) {
             abort(404, 'That cause does not exist.');
         }
 
@@ -48,9 +46,7 @@ class CauseUpdateController extends Controller
     {
         $this->authorize('edit-profile', $user);
 
-        if (
-            !in_array($cause, CauseInterestType::all())
-        ) {
+        if (!in_array($cause, CauseInterestType::all())) {
             abort(404, 'That cause does not exist.');
         }
 
