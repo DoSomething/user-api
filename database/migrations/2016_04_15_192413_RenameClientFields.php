@@ -15,7 +15,9 @@ class RenameClientFields extends Migration
         // @NOTE: Renamed app_id & api_key to client_id & client_secret!
 
         // Add an index for querying by client_id & client_secret
-        Schema::table('clients', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('clients', function (
+            Blueprint $collection
+        ) {
             $collection->index(['client_id', 'client_secret']);
         });
     }
@@ -28,7 +30,9 @@ class RenameClientFields extends Migration
     public function down()
     {
         // Remove index for client_id & client_secret
-        Schema::table('clients', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('clients', function (
+            Blueprint $collection
+        ) {
             $collection->dropIndex(['client_id', 'client_secret']);
         });
 

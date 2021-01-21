@@ -11,11 +11,13 @@ class AddKeyAndTokenIndexes extends Migration
      */
     public function up()
     {
-        Schema::table('tokens', function ($collection) {
+        Schema::connection('mongodb')->table('tokens', function ($collection) {
             $collection->index('key');
         });
 
-        Schema::table('api_keys', function ($collection) {
+        Schema::connection('mongodb')->table('api_keys', function (
+            $collection
+        ) {
             $collection->index('api_key');
         });
     }
@@ -27,11 +29,13 @@ class AddKeyAndTokenIndexes extends Migration
      */
     public function down()
     {
-        Schema::table('tokens', function ($collection) {
+        Schema::connection('mongodb')->table('tokens', function ($collection) {
             $collection->dropIndex('key_1');
         });
 
-        Schema::table('api_keys', function ($collection) {
+        Schema::connection('mongodb')->table('api_keys', function (
+            $collection
+        ) {
             $collection->dropIndex('api_key_1');
         });
     }

@@ -12,7 +12,9 @@ class AddIndexToGoogleId extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('users', function (
+            Blueprint $collection
+        ) {
             $collection->index('google_id', null, null, ['sparse' => true]);
         });
     }
@@ -24,7 +26,9 @@ class AddIndexToGoogleId extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('users', function (
+            Blueprint $collection
+        ) {
             $collection->dropIndex('google_id_1');
         });
     }

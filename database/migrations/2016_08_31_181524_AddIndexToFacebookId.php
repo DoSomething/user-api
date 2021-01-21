@@ -12,7 +12,9 @@ class AddIndexToFacebookId extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('users', function (
+            Blueprint $collection
+        ) {
             $collection->index('facebook_id', null, null, ['sparse' => true]);
         });
     }
@@ -24,7 +26,9 @@ class AddIndexToFacebookId extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('users', function (
+            Blueprint $collection
+        ) {
             $collection->dropIndex('facebook_id_1');
         });
     }

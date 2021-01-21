@@ -13,7 +13,9 @@ class AddIndexToSmsStatusAndTopicsFields extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('users', function (
+            Blueprint $collection
+        ) {
             $collection->index(
                 ['sms_status', 'sms_subscription_topics'],
                 null,
@@ -30,7 +32,9 @@ class AddIndexToSmsStatusAndTopicsFields extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('users', function (
+            Blueprint $collection
+        ) {
             $collection->dropIndex('sms_status_1_sms_subscription_topics_1');
         });
     }

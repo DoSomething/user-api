@@ -51,6 +51,7 @@ class StandardizeBirthdates extends Command
                 try {
                     $date = Carbon::parse($value);
                     app('db')
+                        ->connection('mongodb')
                         ->collection('users')
                         ->where(['_id' => $user->id])
                         ->update([

@@ -13,7 +13,9 @@ class AddIndexToDeletionRequestedAt extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('users', function (
+            Blueprint $collection
+        ) {
             $collection->index('deletion_requested_at', null, null, [
                 'sparse' => true,
             ]);
@@ -27,7 +29,9 @@ class AddIndexToDeletionRequestedAt extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('users', function (
+            Blueprint $collection
+        ) {
             $collection->dropIndex('deletion_requested_at_1');
         });
     }

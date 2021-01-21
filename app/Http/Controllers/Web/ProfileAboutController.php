@@ -55,8 +55,8 @@ class ProfileAboutController extends Controller
 
         $this->registrar->validate($request, null, [
             'birthdate' => 'nullable|date|before:now',
-            'email' => 'email|nullable|unique:users',
-            'mobile' => 'mobile|nullable|unique:users',
+            'email' => 'email|nullable|unique:mongodb.users',
+            'mobile' => 'mobile|nullable|unique:mongodb.users',
         ]);
 
         $completedFields = array_filter($request->all());

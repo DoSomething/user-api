@@ -50,7 +50,8 @@ class ClientController extends Controller
         $this->validate(
             $request,
             [
-                'client_id' => 'required|alpha_dash|unique:clients,client_id',
+                'client_id' =>
+                    'required|alpha_dash|unique:mongodb.clients,client_id',
                 'title' => 'required|string',
                 'description' => 'string',
                 'scope' => 'array|scope', // @see Scope::validateScopes

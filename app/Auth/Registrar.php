@@ -63,11 +63,11 @@ class Registrar
         $rules = [
             'first_name' => 'max:50',
             'email' =>
-                'email|nullable|unique:users,email,' .
+                'email|nullable|unique:mongodb.users,email,' .
                 $existingId .
                 ',_id|required_without:mobile',
             'mobile' =>
-                'mobile|nullable|unique:users,mobile,' .
+                'mobile|nullable|unique:mongodb.users,mobile,' .
                 $existingId .
                 ',_id|required_without:email',
             'birthdate' => 'nullable|date',

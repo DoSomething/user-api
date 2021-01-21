@@ -62,14 +62,16 @@ class UnsetFieldCommand extends Command
                 if ($burnItDown || $this->option('force')) {
                     info('Removing field from all users: ' . $field);
 
-                    $usersToUnset = DB::collection('users')
+                    $usersToUnset = DB::connection('mongodb')
+                        ->collection('users')
                         ->whereRaw([$field => ['$exists' => true]])
                         ->update(
                             ['$unset' => [$field => '']],
                             ['maxTimeMS' => -1],
                         );
 
-                    $usersLeft = DB::collection('users')
+                    $usersLeft = DB::connection('mongodb')
+                        ->collection('users')
                         ->whereRaw([$field => ['$exists' => true]])
                         ->count();
 

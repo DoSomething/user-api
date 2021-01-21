@@ -12,7 +12,9 @@ class AddIndexToTimestamps extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('users', function (
+            Blueprint $collection
+        ) {
             $collection->index('created_at');
             $collection->index('updated_at');
         });
@@ -25,7 +27,9 @@ class AddIndexToTimestamps extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('users', function (
+            Blueprint $collection
+        ) {
             $collection->dropIndex('created_at_1');
             $collection->dropIndex('updated_at_1');
         });

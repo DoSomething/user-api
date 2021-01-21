@@ -189,7 +189,7 @@ class ClientTest extends BrowserKitTestCase
         ]);
 
         $this->assertResponseStatus(200);
-        $this->seeInDatabase('clients', [
+        $this->seeInMongoDatabase('clients', [
             'title' => 'New Title',
             'client_id' => 'update_key',
             'scope' => ['admin', 'user'],
@@ -243,7 +243,7 @@ class ClientTest extends BrowserKitTestCase
         $this->assertResponseStatus(401);
 
         // It's still there!
-        $this->seeInDatabase('clients', ['client_id' => 'delete_me']);
+        $this->seeInMongoDatabase('clients', ['client_id' => 'delete_me']);
     }
 
     /**

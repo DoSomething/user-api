@@ -31,6 +31,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // ...
+        // Override MongoDB Password provider w/ multi-connection support:
+        $this->app->singleton('auth.password', function ($app) {
+            return new \App\Auth\PasswordBrokerManager($app);
+        });
+
+        $this->app->bind('auth.password.broker', function ($app) {
+            return $app->make('auth.password')->broker();
+        });
     }
 }

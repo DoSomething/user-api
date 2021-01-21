@@ -909,7 +909,7 @@ class User extends Model implements
     {
         if (!$token) {
             $tokenRepository = new DatabaseTokenRepository(
-                app('db')->connection(),
+                app('db')->connection('mongodb'),
                 app('hash'),
                 config('auth.passwords.users.table'),
                 config('app.key'),

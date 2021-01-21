@@ -48,7 +48,7 @@ class MergeController extends Controller
     public function store($id, Request $request)
     {
         $this->validate($request, [
-            'id' => ['required', 'exists:users,_id', 'not_in:' . $id],
+            'id' => ['required', 'exists:mongodb.users,_id', 'not_in:' . $id],
         ]);
 
         /** @var \App\Models\User $target */

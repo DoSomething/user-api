@@ -32,7 +32,7 @@ class OAuthTest extends BrowserKitTestCase
         $this->assertSame($scopes, $jwt->getClaim('scopes'));
 
         // Check that a refresh token was saved to the database.
-        $this->seeInDatabase('refresh_tokens', [
+        $this->seeInMongoDatabase('refresh_tokens', [
             'user_id' => $user->id,
             'client_id' => $client->client_id,
         ]);

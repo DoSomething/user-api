@@ -215,7 +215,7 @@ class AuthController extends Controller
         $this->registrar->validate($request, null, [
             'first_name' => 'required|max:50',
             'last_name' => 'required|max:50',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:mongodb.users',
             'password' => PasswordRules::register($request->email),
         ]);
 

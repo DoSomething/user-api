@@ -12,7 +12,9 @@ class AddIndexToSource extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('users', function (
+            Blueprint $collection
+        ) {
             $collection->index('source', null, null, ['sparse' => true]);
         });
     }
@@ -24,7 +26,9 @@ class AddIndexToSource extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('users', function (
+            Blueprint $collection
+        ) {
             $collection->dropIndex('source_1');
         });
     }
