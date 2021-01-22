@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Auth\Repositories\KeyRepository;
 use Illuminate\Console\Command;
+use League\Flysystem\FileExistsException;
 use phpseclib\Crypt\RSA;
 
 class KeysCommand extends Command
@@ -32,9 +33,13 @@ class KeysCommand extends Command
     {
         $keys = $rsa->createKey(4096);
 
-        $repository->writePublicKey($keys['publickey']);
-        $repository->writePrivateKey($keys['privatekey']);
+        try {
+            $repository->writePublicKey($keys['publickey']);
+            $repository->writePrivateKey($keys['privatekey']);
 
-        $this->info('Encryption keys generated successfully.');
+            $this->info('Encryption keys generated successfully.');
+        } catch (FileExistsException $exception) {
+            $this->info('Keys already exist.');
+        }
     }
 }
