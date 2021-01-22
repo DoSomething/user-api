@@ -28,7 +28,6 @@ abstract class PasswordRules extends NISTPasswordRules
 
         if ($requireConfirmation) {
             $rules[] = 'confirmed';
-
         }
 
         return array_merge($rules, [
