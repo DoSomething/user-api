@@ -76,7 +76,6 @@ class PasswordResetTest extends TestCase
             'password_confirmation' => 'new-top-secret-passphrase',
         ]);
 
-        $stepFourResponse->dump();
         $stepFourResponse->assertStatus(302);
         $stepFourResponse->assertRedirect(
             config('services.phoenix.url') . '/next/login',
