@@ -34,6 +34,7 @@ abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
     public function createMongoDocument($collection, array $contents)
     {
         $document = app('db')
+            ->connection('mongodb')
             ->collection($collection)
             ->insert($contents);
 
@@ -50,6 +51,7 @@ abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
     public function getMongoDocument($collection, $id)
     {
         $document = app('db')
+            ->connection('mongodb')
             ->collection($collection)
             ->where(['_id' => $id])
             ->first();
@@ -64,6 +66,18 @@ abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
         );
 
         return $document;
+    }
+
+    /**
+     * Assert that a given where condition exists in the MongoDB database.
+     *
+     * @param  string  $table
+     * @param  array  $data
+     * @return $this
+     */
+    protected function seeInMongoDatabase($table, array $data)
+    {
+        return $this->seeInDatabase($table, $data, 'mongodb');
     }
 
     /**

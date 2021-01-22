@@ -11,7 +11,7 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function ($collection) {
+        Schema::connection('mongodb')->create('users', function ($collection) {
             /* Database-generated ID */
             //$collection->index('doc_id');
 
@@ -60,6 +60,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('users');
+        Schema::connection('mongodb')->drop('users');
     }
 }

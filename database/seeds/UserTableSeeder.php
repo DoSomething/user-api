@@ -13,7 +13,9 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         // Clear the database.
-        DB::table('users')->delete();
+        DB::connection('mongodb')
+            ->table('users')
+            ->delete();
 
         // Create an example normal & admin user for local development.
         factory(User::class)->create([

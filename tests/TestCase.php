@@ -33,6 +33,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     public function createMongoDocument($collection, array $contents)
     {
         $document = app('db')
+            ->connection('mongodb')
             ->collection($collection)
             ->insert($contents);
 
@@ -49,6 +50,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     public function getMongoDocument($collection, $id)
     {
         $document = app('db')
+            ->connection('mongodb')
             ->collection($collection)
             ->where(['_id' => $id])
             ->first();
@@ -63,6 +65,18 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         );
 
         return $document;
+    }
+
+    /**
+     * Assert that a given where condition exists in the MongoDB database.
+     *
+     * @param  string  $table
+     * @param  array  $data
+     * @return $this
+     */
+    protected function assertMongoDatabaseHas($table, array $data)
+    {
+        return $this->assertDatabaseHas($table, $data, 'mongodb');
     }
 
     /**

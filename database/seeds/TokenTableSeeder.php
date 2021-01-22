@@ -11,6 +11,8 @@ class TokenTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('tokens')->delete();
+        DB::connection('mongodb')
+            ->table('tokens')
+            ->delete();
     }
 }

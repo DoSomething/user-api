@@ -11,8 +11,15 @@ use Jenssegers\Mongodb\Eloquent\Model as BaseModel;
  *
  * @mixin \Jenssegers\Mongodb\Query\Builder
  */
-class Model extends BaseModel
+class MongoModel extends BaseModel
 {
+    /**
+     * The database connection that should be used by the model.
+     *
+     * @var string
+     */
+    protected $connection = 'mongodb';
+
     /**
      * Set a given attribute on the model.
      *

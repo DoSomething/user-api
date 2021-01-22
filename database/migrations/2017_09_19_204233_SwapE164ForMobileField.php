@@ -13,14 +13,18 @@ class SwapE164ForMobileField extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('users', function (
+            Blueprint $collection
+        ) {
             $collection->dropIndex('mobile_1');
         });
 
         $this->renameField('users', 'mobile', '_old_mobile');
         $this->renameField('users', 'e164', 'mobile');
 
-        Schema::table('users', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('users', function (
+            Blueprint $collection
+        ) {
             $collection->index('mobile', null, null, [
                 'sparse' => true,
                 'unique' => true,
@@ -35,14 +39,18 @@ class SwapE164ForMobileField extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('users', function (
+            Blueprint $collection
+        ) {
             $collection->dropIndex('mobile_1');
         });
 
         $this->renameField('users', 'mobile', 'e164');
         $this->renameField('users', '_old_mobile', 'mobile');
 
-        Schema::table('users', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('users', function (
+            Blueprint $collection
+        ) {
             $collection->index('mobile', null, null, [
                 'sparse' => true,
                 'unique' => true,

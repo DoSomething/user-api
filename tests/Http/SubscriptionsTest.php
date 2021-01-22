@@ -25,7 +25,7 @@ class SubscriptionsTest extends BrowserKitTestCase
         $this->assertResponseStatus(200);
 
         // The email_subscription_topics should be added, but the source and source_detail should not change
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             'email' => $user->email,
             'email_subscription_status' => true,
             'email_subscription_topics' => ['scholarships'],
@@ -56,7 +56,7 @@ class SubscriptionsTest extends BrowserKitTestCase
         $this->assertResponseStatus(200);
 
         // The email_subscription_topics should have no duplicates
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             'email' => $user->email,
             'email_subscription_topics' => ['news'],
             'source' => $user->source,
@@ -81,7 +81,7 @@ class SubscriptionsTest extends BrowserKitTestCase
         $this->assertResponseStatus(201);
 
         // The user should be created with the given email_subscription_topics, source, and source_detail
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             'email' => 'topics@dosomething.org',
             'email_subscription_status' => true,
             'email_subscription_topics' => ['scholarships'],
@@ -107,7 +107,7 @@ class SubscriptionsTest extends BrowserKitTestCase
         $this->assertResponseStatus(201);
         $this->customerIoMock->shouldHaveReceived('trackEvent')->once();
 
-        $this->seeInDatabase('password_resets', [
+        $this->seeInMongoDatabase('password_resets', [
             'email' => 'topics@dosomething.org',
         ]);
     }

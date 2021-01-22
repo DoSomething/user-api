@@ -12,7 +12,9 @@ class AddMoreIndexesToRefreshTokens extends Migration
      */
     public function up()
     {
-        Schema::table('refresh_tokens', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('refresh_tokens', function (
+            Blueprint $collection
+        ) {
             $collection->index('user_id');
             $collection->index('client_id');
         });
@@ -25,7 +27,9 @@ class AddMoreIndexesToRefreshTokens extends Migration
      */
     public function down()
     {
-        Schema::table('refresh_tokens', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('refresh_tokens', function (
+            Blueprint $collection
+        ) {
             $collection->dropIndex('user_id_1');
             $collection->dropIndex('client_id_1');
         });

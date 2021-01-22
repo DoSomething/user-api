@@ -12,7 +12,9 @@ class AddIndexToAuthCodes extends Migration
      */
     public function up()
     {
-        Schema::table('auth_codes', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('auth_codes', function (
+            Blueprint $collection
+        ) {
             $collection->unique('code');
         });
     }
@@ -24,7 +26,9 @@ class AddIndexToAuthCodes extends Migration
      */
     public function down()
     {
-        Schema::table('auth_codes', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('auth_codes', function (
+            Blueprint $collection
+        ) {
             $collection->dropUnique('code');
         });
     }

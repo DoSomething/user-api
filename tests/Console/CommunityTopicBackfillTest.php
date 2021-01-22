@@ -17,7 +17,7 @@ class CommunityTopicBackfillTest extends BrowserKitTestCase
         Artisan::call('northstar:community');
 
         // Make sure no updates were made to this user
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $user->id,
             'email_subscription_status' => false,
             'email_subscription_topics' => null,
@@ -36,7 +36,7 @@ class CommunityTopicBackfillTest extends BrowserKitTestCase
         Artisan::call('northstar:community');
 
         // Make sure no updates were made to this user
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $user->id,
             'email_subscription_status' => true,
             'email_subscription_topics' => ['community'],
@@ -55,7 +55,7 @@ class CommunityTopicBackfillTest extends BrowserKitTestCase
         Artisan::call('northstar:community');
 
         // Make sure community was added to this user
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $user->id,
             'email_subscription_status' => true,
             'email_subscription_topics' => ['community'],
@@ -86,13 +86,13 @@ class CommunityTopicBackfillTest extends BrowserKitTestCase
         Artisan::call('northstar:community');
 
         // Make sure the updates were made
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $user1->id,
             'email_subscription_status' => true,
             'email_subscription_topics' => ['news', 'community'],
         ]);
 
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $user2->id,
             'email_subscription_status' => true,
             'email_subscription_topics' => [
@@ -102,7 +102,7 @@ class CommunityTopicBackfillTest extends BrowserKitTestCase
             ],
         ]);
 
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $user3->id,
             'email_subscription_status' => true,
             'email_subscription_topics' => [

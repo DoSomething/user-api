@@ -12,7 +12,9 @@ class AddIndexToRefreshTokens extends Migration
      */
     public function up()
     {
-        Schema::table('refresh_tokens', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('refresh_tokens', function (
+            Blueprint $collection
+        ) {
             $collection->unique('token');
         });
     }
@@ -24,7 +26,9 @@ class AddIndexToRefreshTokens extends Migration
      */
     public function down()
     {
-        Schema::table('refresh_tokens', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('refresh_tokens', function (
+            Blueprint $collection
+        ) {
             $collection->dropUnique('token');
         });
     }

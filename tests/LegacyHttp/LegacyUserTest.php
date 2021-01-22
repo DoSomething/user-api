@@ -395,7 +395,7 @@ class LegacyUserTest extends BrowserKitTestCase
             ],
         );
 
-        $this->seeInDatabase('users', ['_id' => $user->id]);
+        $this->seeInMongoDatabase('users', ['_id' => $user->id]);
 
         $document = $this->getMongoDocument('users', $user->id);
         $this->assertArrayNotHasKey('mobile', $document);
@@ -731,7 +731,7 @@ class LegacyUserTest extends BrowserKitTestCase
         );
 
         // The existing record should be unchanged.
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $user->id,
             'email' => 'upsert-me@dosomething.org',
             'mobile' => '+15556667777',
@@ -769,7 +769,7 @@ class LegacyUserTest extends BrowserKitTestCase
         $this->seeJsonField('data.mobile', '5543694724'); // unchanged user values should remain unchanged
 
         // Verify user data got updated
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $user->id,
             'mobile' => $user->mobile,
             'email' => 'newemail@dosomething.org',
@@ -797,7 +797,7 @@ class LegacyUserTest extends BrowserKitTestCase
         $this->assertResponseStatus(200);
 
         // Verify user data got updated
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $user->id,
             'email' => 'new-email@dosomething.org',
         ]);
@@ -1231,7 +1231,7 @@ class LegacyUserTest extends BrowserKitTestCase
         ]);
 
         $this->assertResponseStatus(201);
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             'first_name' => 'Batman',
             'email' => 'batman@example.com',
             'mobile' => '+12223335555',
@@ -1251,7 +1251,7 @@ class LegacyUserTest extends BrowserKitTestCase
         ]);
 
         $this->assertResponseStatus(201);
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             'mobile' => '+12223335555',
             'sms_status' => 'active',
         ]);

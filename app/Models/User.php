@@ -83,7 +83,7 @@ use libphonenumber\PhoneNumberFormat;
  * The feature flags this user has
  * @property object $feature_flags
  */
-class User extends Model implements
+class User extends MongoModel implements
     AuthenticatableContract,
     AuthorizableContract,
     ResetPasswordContract
@@ -902,7 +902,7 @@ class User extends Model implements
     {
         if (!$token) {
             $tokenRepository = new DatabaseTokenRepository(
-                app('db')->connection(),
+                app('db')->connection('mongodb'),
                 app('hash'),
                 config('auth.passwords.users.table'),
                 config('app.key'),

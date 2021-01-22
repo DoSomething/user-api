@@ -17,20 +17,27 @@ abstract class PasswordRules extends NISTPasswordRules
      * the "change password" rules. (We omit the "confirm" rule here, since
      * we don't ask users to confirm their password when registering.).
      */
-    public static function register($username)
+    public static function register($username, $requireConfirmation = false)
     {
-        return [
+        $rules = [
             'required',
             'string',
             'min:8',
             'max:512', // We enforce this maximum to prevent long passwords from bogging down hashing.
+        ];
+
+        if ($requireConfirmation) {
+            $rules[] = 'confirmed';
+        }
+
+        return array_merge($rules, [
             new SequentialCharacters(),
             new RepetitiveCharacters(),
             new DictionaryWords(),
             new ContextSpecificWords($username),
             new DerivativesOfContextSpecificWords($username),
             new BreachedPasswords(),
-        ];
+        ]);
     }
 
     public static function changePassword($username, $oldPassword = null)

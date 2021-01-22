@@ -93,8 +93,8 @@ return [
     */
 
     'failed' => [
-        'driver' => env('QUEUE_FAILED_DRIVER', 'mongodb'),
-        'database' => env('DB_CONNECTION', 'mongodb'),
+        'driver' => 'mongodb',
+        'database' => 'mongodb',
         'table' => 'failed_jobs',
     ],
 

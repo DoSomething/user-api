@@ -12,7 +12,9 @@ class AddIndexToRole extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('users', function (
+            Blueprint $collection
+        ) {
             $collection->index('role', null, null, ['sparse' => true]);
         });
     }
@@ -24,7 +26,9 @@ class AddIndexToRole extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('users', function (
+            Blueprint $collection
+        ) {
             $collection->dropIndex('role_1');
         });
     }

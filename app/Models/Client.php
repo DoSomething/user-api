@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
  * @property array $redirect_uri
  * @property array $scope
  */
-class Client extends Model
+class Client extends MongoModel
 {
     /**
      * The primary key for the model.

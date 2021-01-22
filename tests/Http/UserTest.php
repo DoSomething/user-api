@@ -302,7 +302,7 @@ class UserTest extends BrowserKitTestCase
         $this->assertResponseStatus(200);
 
         // The user should be updated.
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             'first_name' => 'Alexander',
             'last_name' => 'Hamilton',
             'club_id' => 2,
@@ -333,7 +333,7 @@ class UserTest extends BrowserKitTestCase
         $this->assertResponseStatus(200);
 
         // The user should be updated.
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             'first_name' => 'Pepper',
             'last_name' => 'Puppy',
             '_id' => $user->id,
@@ -392,7 +392,7 @@ class UserTest extends BrowserKitTestCase
         $this->assertResponseStatus(401);
 
         // The user should be updated.
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             'first_name' => $user1->first_name,
             'last_name' => $user1->last_name,
             '_id' => $user1->id,
@@ -419,7 +419,7 @@ class UserTest extends BrowserKitTestCase
         $this->assertResponseStatus(200);
 
         // The user should be updated.
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             'first_name' => 'Wilhelmina',
             'last_name' => 'Grubbly-Plank',
             '_id' => $user->id,
@@ -598,7 +598,7 @@ class UserTest extends BrowserKitTestCase
         ]);
 
         $this->assertResponseStatus(201);
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             'first_name' => 'Batman',
             'email' => 'batman@example.com',
             'mobile' => '+12223335555',
@@ -1011,7 +1011,7 @@ class UserTest extends BrowserKitTestCase
         $this->assertResponseStatus(200);
 
         // The email_subscription_topics should be updated with no duplicates
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $user->id,
             'email_subscription_topics' => ['news'],
         ]);
@@ -1033,7 +1033,7 @@ class UserTest extends BrowserKitTestCase
         $this->assertResponseStatus(200);
 
         // The email_subscription_topics should be updated with no duplicates
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $user->id,
             'sms_subscription_topics' => ['voting'],
         ]);
@@ -1056,7 +1056,7 @@ class UserTest extends BrowserKitTestCase
             ],
         );
 
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $nullStatusUser->id,
             'email_subscription_status' => true,
         ]);
@@ -1081,7 +1081,7 @@ class UserTest extends BrowserKitTestCase
             ],
         );
 
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $unsubscribedUser->id,
             'email_subscription_status' => true,
         ]);
@@ -1106,7 +1106,7 @@ class UserTest extends BrowserKitTestCase
             ],
         );
 
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $subscribedUser->id,
             'email_subscription_status' => true,
         ]);
@@ -1131,7 +1131,7 @@ class UserTest extends BrowserKitTestCase
             ],
         );
 
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $subscribedUser->id,
             'email_subscription_status' => false,
             'email_subscription_topics' => null,
@@ -1157,7 +1157,7 @@ class UserTest extends BrowserKitTestCase
             ],
         );
 
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $subscribedUser->id,
             'sms_status' => 'stop',
             'sms_subscription_topics' => null,

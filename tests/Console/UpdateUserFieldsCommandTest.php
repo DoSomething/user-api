@@ -22,25 +22,25 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
         ]);
 
         // Make sure the updates were made
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => '5acfbf609a89201c340543e2',
             'source' => 'source-1',
             'created_at' => Carbon::parse('2010-05-21 18:32:39'),
         ]);
 
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => '5acfbf609a89201c340543e3',
             'source' => 'source-2',
             'created_at' => Carbon::parse('2012-11-05 20:23:32'),
         ]);
 
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => '5acfbf609a89201c340543e4',
             'source' => 'source-3',
             'created_at' => Carbon::parse('2015-08-19 04:15:49'),
         ]);
 
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => '5acfbf609a89201c340543e5',
             'source' => 'source-4',
             'created_at' => Carbon::parse('2018-01-01 10:00:00'),
@@ -75,13 +75,13 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
         ]);
 
         // Updating user with no email topics
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => '5acfbf609a89201c340543e2',
             'email_subscription_topics' => ['lifestyle'],
         ]);
 
         // Updating user with 2 existing email topics
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => '5acfbf609a89201c340543e3',
             'email_subscription_topics' => [
                 'news',
@@ -91,13 +91,13 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
         ]);
 
         // Updating user to make sure a topic isn't duplicated
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => '5acfbf609a89201c340543e4',
             'email_subscription_topics' => ['lifestyle'],
         ]);
 
         // Updating user with 1 existing email topic
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => '5acfbf609a89201c340543e5',
             'email_subscription_topics' => ['lifestyle', 'news'],
         ]);
@@ -131,19 +131,19 @@ class UpdateUserFieldsCommandTest extends BrowserKitTestCase
         ]);
 
         // Verify users who have been unsubscribed
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => '5f3dc976ea73310d6443dfe2',
             'email_subscription_status' => false,
             'email_subscription_topics' => null,
         ]);
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => '5f3dc97cea73310d6443dff9',
             'email_subscription_status' => false,
             'email_subscription_topics' => null,
         ]);
 
         // Verify user who should be subscribed
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => '5f3dc97dea73310d6443e002',
             'email_subscription_status' => true,
             'email_subscription_topics' => null,

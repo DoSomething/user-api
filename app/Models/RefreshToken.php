@@ -12,7 +12,7 @@ namespace App\Models;
  *
  * @method static \Illuminate\Database\Eloquent\Builder where(string $field, string $comparison = '=', string $value)
  */
-class RefreshToken extends Model
+class RefreshToken extends MongoModel
 {
     /**
      * The database collection used by the model.

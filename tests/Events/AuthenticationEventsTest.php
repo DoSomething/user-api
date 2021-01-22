@@ -26,7 +26,7 @@ class AuthenticationEventsTest extends BrowserKitTestCase
         );
 
         // The user's `last_authenticated_at` timestamp should be updated.
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $user->id,
             'last_authenticated_at' => $now,
         ]);

@@ -81,10 +81,8 @@ trait CreatesApplication
         Carbon::setTestNow(null);
 
         // Reset the testing database & run migrations.
-        app()
-            ->make('db')
-            ->getMongoDB()
-            ->drop();
-        $this->artisan('migrate');
+        $mongoConnection = app('db')->connection('mongodb');
+        $mongoConnection->getMongoDB()->drop();
+        $this->artisan('migrate', ['--database' => 'mongodb']);
     }
 }

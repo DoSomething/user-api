@@ -13,7 +13,9 @@ class ClientTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('clients')->delete();
+        DB::connection('mongodb')
+            ->table('clients')
+            ->delete();
 
         // For easy testing, we'll seed one client for web authentication:
         factory(Client::class, 'authorization_code')->create([

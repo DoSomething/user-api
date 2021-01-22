@@ -53,7 +53,7 @@ class MergeTest extends BrowserKitTestCase
         ]);
 
         // The "target" user should have the dupe's profile fields.
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $user->id,
             'email' => $user->email,
             'mobile' => $duplicate->mobile,
@@ -64,7 +64,7 @@ class MergeTest extends BrowserKitTestCase
         ]);
 
         // The "duplicate" user should have the duplicate fields removed.
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $duplicate->id,
             'email' => 'merged-account-' . $user->id . '@dosomething.invalid',
             'mobile' => null,
@@ -102,7 +102,7 @@ class MergeTest extends BrowserKitTestCase
         );
 
         // The "duplicate" user should have the duplicate fields removed.
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $duplicate->id,
             'last_authenticated_at' => null,
         ]);
@@ -136,7 +136,7 @@ class MergeTest extends BrowserKitTestCase
         );
 
         // The "duplicate" user should have the duplicate fields removed.
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $duplicate->id,
             'last_authenticated_at' => null,
         ]);
@@ -170,7 +170,7 @@ class MergeTest extends BrowserKitTestCase
         );
 
         // The "duplicate" user should have the duplicate fields removed.
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $duplicate->id,
             'last_accessed_at' => null,
         ]);
@@ -203,7 +203,7 @@ class MergeTest extends BrowserKitTestCase
         $this->assertEquals($user->fresh()->language, 'yo');
 
         // The "duplicate" user should have the duplicate fields removed.
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $duplicate->id,
             'language' => null,
             'last_accessed_at' => null,
@@ -237,7 +237,7 @@ class MergeTest extends BrowserKitTestCase
         $this->assertEquals($user->fresh()->first_name, 'Keep Me');
 
         // The "duplicate" user should have the duplicate fields removed.
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $duplicate->id,
             'first_name' => null,
         ]);
@@ -270,7 +270,7 @@ class MergeTest extends BrowserKitTestCase
         $this->assertEquals($user->fresh()->last_name, 'Newer');
 
         // The "duplicate" user should have the duplicate fields removed.
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $duplicate->id,
             'first_name' => null,
         ]);
@@ -306,7 +306,7 @@ class MergeTest extends BrowserKitTestCase
         );
 
         // The "duplicate" user should have the duplicate fields removed.
-        $this->seeInDatabase('users', [
+        $this->seeInMongoDatabase('users', [
             '_id' => $duplicate->id,
             'first_name' => null,
         ]);

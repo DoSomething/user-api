@@ -13,7 +13,9 @@ class AddIndexToClubIdField extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('users', function (
+            Blueprint $collection
+        ) {
             $collection->index('club_id', null, null, ['sparse' => true]);
         });
     }
@@ -25,7 +27,9 @@ class AddIndexToClubIdField extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $collection) {
+        Schema::connection('mongodb')->table('users', function (
+            Blueprint $collection
+        ) {
             $collection->dropIndex('club_id');
         });
     }
