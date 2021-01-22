@@ -26,8 +26,10 @@ jobs:
           name: install php extensions
           command: |
             sudo pecl install mongodb redis
+            sudo apt-get install libpng-dev libjpeg-dev
+            sudo docker-php-ext-configure gd --with-jpeg
             sudo docker-php-ext-enable mongodb redis
-            sudo docker-php-ext-install bcmath
+            sudo docker-php-ext-install bcmath pdo_mysql gettext gd exif
       - restore_cache:
           keys:
             - composer-v1-{{ checksum "composer.lock" }}
