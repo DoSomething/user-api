@@ -47,6 +47,9 @@ class SetupCommand extends Command
             'Creating public/private key',
         );
 
-        $this->runArtisanCommand('migrate', 'Running database migrations');
+        $this->runArtisanCommand(
+            'migrate --database mongodb',
+            'Running database migrations',
+        );
     }
 }
