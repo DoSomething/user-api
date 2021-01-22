@@ -83,7 +83,7 @@ use libphonenumber\PhoneNumberFormat;
  * The feature flags this user has
  * @property object $feature_flags
  */
-class User extends Model implements
+class User extends MongoModel implements
     AuthenticatableContract,
     AuthorizableContract,
     ResetPasswordContract
@@ -93,13 +93,6 @@ class User extends Model implements
         CanResetPassword,
         Notifiable,
         SoftDeletes;
-
-    /**
-     * The database connection that should be used by the model.
-     *
-     * @var string
-     */
-    protected $connection = 'mongodb';
 
     /**
      * Should changes to this model's attributes be stored

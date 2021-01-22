@@ -17,15 +17,8 @@ use Carbon\Carbon;
  *
  * @method static \Illuminate\Database\Eloquent\Builder where(string $field, string $comparison = '=', string $value)
  */
-class AuthCode extends Model
+class AuthCode extends MongoModel
 {
-    /**
-     * The database connection that should be used by the model.
-     *
-     * @var string
-     */
-    protected $connection = 'mongodb';
-
     /**
      * The database collection used by the model.
      *

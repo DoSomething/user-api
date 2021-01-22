@@ -11,7 +11,7 @@ use Jenssegers\Mongodb\Eloquent\Model as BaseModel;
  *
  * @mixin \Jenssegers\Mongodb\Query\Builder
  */
-class Model extends BaseModel
+class MongoModel extends BaseModel
 {
     /**
      * The database connection that should be used by the model.
