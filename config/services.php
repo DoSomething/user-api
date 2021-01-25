@@ -81,4 +81,8 @@ return [
         'prefix' => env('SIXPACK_COOKIE_PREFIX'),
         'timeout' => env('SIXPACK_TIMEOUT'),
     ],
+
+    'slack' => [
+        'url' => env('SLACK_WEBHOOK_INTEGRATION_URL'),
+    ],
 ];

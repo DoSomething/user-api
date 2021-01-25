@@ -1,0 +1,17 @@
+$forge-path: '~@dosomething/forge/assets/';
+
+// Import Forge.
+@import '~@dosomething/forge/scss/forge';
+
+.-half {
+  width: 50%;
+
+  .button.-secondary {
+    float: right;
+  }
+}
+
+.footnote {
+  display: inline-block;
+  margin-left: 1%;
+}

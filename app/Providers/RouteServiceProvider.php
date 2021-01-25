@@ -6,6 +6,7 @@ use App\Auth\Registrar;
 use App\Services\Fastly;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -34,6 +35,10 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
+
+        Route::model('post', \App\Models\Post::class);
+
+        Route::model('signup', \App\Models\Signup::class);
 
         Route::bind('email', function ($value) {
             return app(Registrar::class)->resolveOrFail(['email' => $value]);

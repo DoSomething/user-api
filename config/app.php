@@ -124,6 +124,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Hashids Key (Custom)
+    |--------------------------------------------------------------------------
+    |
+    | This key is used to seed the random hash ID generator (used for image URLs)
+    | so that a user can't guess the URL for something with a sequential ID.
+    |
+    */
+
+    'hashid_key' => env('HASHID_KEY'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Autoloaded Service Providers
     |--------------------------------------------------------------------------
     |
@@ -162,13 +174,15 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
         /*
-         * Package Service Providers...
+         * Third-party Service Providers...
          */
+        Aws\Laravel\AwsServiceProvider::class,
         Fideloper\Proxy\TrustedProxyServiceProvider::class,
         Jenssegers\Mongodb\MongodbServiceProvider::class,
         Jenssegers\Mongodb\MongodbQueueServiceProvider::class,
         DoSomething\Gateway\Laravel\GatewayServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -181,6 +195,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\ValidationServiceProvider::class,
         App\Providers\SixpackServiceProvider::class,
+        App\Providers\ModelServiceProvider::class,
     ],
 
     /*
