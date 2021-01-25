@@ -108,12 +108,11 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         // Make sure we're logged out before trying to register.
         auth('web')->logout();
 
-        $this->visit('register');
-        $this->submitForm('register-submit', [
+        $this->post('/register', [
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'email' => $this->faker->unique->email,
-            'password' => 'secret456',
+            'password' => $this->faker->password(10),
         ]);
     }
 

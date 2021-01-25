@@ -84,130 +84,136 @@ class WebAuthenticationTest extends TestCase
         ]);
     }
 
-    // /**
-    //  * Test that users can't brute-force the login form.
-    //  */
-    // public function testLoginRateLimited()
-    // {
-    //     for ($i = 0; $i < 10; $i++) {
-    //         $this->visit('login');
-    //         $this->submitForm('Log In', [
-    //             'username' => 'target@example.com',
-    //             'password' => 'password' . $i,
-    //         ]);
+    /**
+     * Test that users can't brute-force the login form.
+     */
+    public function testLoginRateLimited()
+    {
+        for ($i = 0; $i < 10; $i++) {
+            $this->get('/login')->assertStatus(200);
 
-    //         $this->see('These credentials do not match our records.');
-    //     }
+            $this->post('/login', [
+                'username' => 'target@example.com',
+                'password' => 'password' . $i,
+            ])->assertSessionHasErrors([
+                'username' => 'These credentials do not match our records.',
+            ]);
+        }
 
-    //     // This next request should trigger a StatHat counter.
-    //     $this->expectsEvents(\App\Events\Throttled::class);
+        $this->expectsEvents(\App\Events\Throttled::class);
 
-    //     $this->visit('login');
-    //     $this->submitForm('Log In', [
-    //         'username' => 'target@example.com',
-    //         'password' => 'password11', // our attacker is very methodical.
-    //     ]);
+        $this->get('/login')->assertStatus(200);
 
-    //     $this->see('Too many attempts.');
-    // }
+        $this->post('/login', [
+            'username' => 'target@example.com',
+            'password' => 'password11', // our attacker is very methodical.
+        ])->assertSessionHas(
+            'status',
+            'Too many attempts. Please try again in 15 minutes.',
+        );
+    }
 
-    // /**
-    //  * Test that users who do not have a password on their account
-    //  * are asked to reset it.
-    //  */
-    // public function testLoginWithoutPasswordSet()
-    // {
-    //     factory(User::class)->create([
-    //         'email' => 'puppet-sloth@dosomething.org',
-    //         'password' => null,
-    //     ]);
+    /**
+     * Test that users who do not have a password on their account
+     * are asked to reset it.
+     */
+    public function testLoginWithoutPasswordSet()
+    {
+        factory(User::class)->create([
+            'email' => 'puppet-sloth@dosomething.org',
+            'password' => null,
+        ]);
 
-    //     // Puppet Sloth doesn't have a DS.org password yet, but he tries to enter
-    //     // "next-question" because that's his password everywhere else.
-    //     $this->visit('login')->submitForm('Log In', [
-    //         'username' => 'puppet-sloth@dosomething.org',
-    //         'password' => 'next-question',
-    //     ]);
+        // Puppet Sloth doesn't have a DS.org password yet, but he tries to enter
+        // "next-question" because that's his password everywhere else.
+        $this->post('/login', [
+            'username' => 'puppet-sloth@dosomething.org',
+            'password' => 'next-question',
+        ])->assertSessionHas('request_reset', true);
+    }
 
-    //     $this->seeText(
-    //         'You need to reset your password before you can log in.',
-    //     );
-    // }
+    /**
+     * Test that an authenticated user can log out.
+     */
+    public function testLogout()
+    {
+        $user = factory(User::class)->create();
 
-    // /**
-    //  * Test that an authenticated user can log out.
-    //  */
-    // public function testLogout()
-    // {
-    //     $user = factory(User::class)->create();
+        $this->be($user, 'web');
 
-    //     $this->be($user, 'web');
+        $response = $this->get('logout');
 
-    //     $this->get('logout')->followRedirects();
+        $response->assertStatus(302);
+        $response->assertRedirect('/login');
 
-    //     $this->seePageIs('login');
-    //     $this->dontSeeIsAuthenticated('web');
-    // }
+        $this->followRedirects($response);
 
-    // /**
-    //  * Test that we can specify a custom post-logout redirect.
-    //  */
-    // public function testLogoutRedirect()
-    // {
-    //     $user = factory(User::class)->create();
+        $this->assertGuest('web');
+    }
 
-    //     $this->be($user, 'web');
+    /**
+     * Test that we can specify a custom post-logout redirect.
+     */
+    public function testLogoutRedirect()
+    {
+        $user = factory(User::class)->create();
 
-    //     $this->get('logout?redirect=http://dev.dosomething.org:8888');
+        $this->be($user, 'web');
 
-    //     $this->dontSeeIsAuthenticated('web');
-    //     $this->assertResponseStatus(302);
-    //     $this->seeHeader('Location', 'http://dev.dosomething.org:8888');
-    // }
+        $response = $this->get(
+            'logout?redirect=http://dev.dosomething.org:8888',
+        );
 
-    // /**
-    //  * Test that we can't be redirected to a third party domain
-    //  * in the custom post-logout redirect.
-    //  */
-    // public function testLogoutRedirectThirdPartyDomain()
-    // {
-    //     $user = factory(User::class)->create();
+        $response->assertStatus(302);
+        $response->assertRedirect('http://dev.dosomething.org:8888');
 
-    //     $this->be($user, 'web');
+        $this->assertGuest('web');
+    }
 
-    //     $this->get('logout?redirect=http://dosomething.org.sloth.com');
+    /**
+     * Test that we can't be redirected to a third party domain
+     * in the custom post-logout redirect.
+     */
+    public function testLogoutRedirectThirdPartyDomain()
+    {
+        $user = factory(User::class)->create();
 
-    //     $this->dontSeeIsAuthenticated('web');
-    //     $this->assertResponseStatus(302);
+        $this->be($user, 'web');
 
-    //     $location = $this->response->headers->get('Location');
-    //     $this->assertNotEquals('http://dosomething.org.sloth.com', $location);
-    // }
+        $response = $this->get(
+            'logout?redirect=http://dosomething.org.sloth.com',
+        );
 
-    // /**
-    //  * Test that users can register via the web.
-    //  */
-    // public function testRegisterBeta()
-    // {
-    //     $this->withHeader('X-Fastly-Country-Code', 'US')
-    //         ->withHeader('X-Fastly-Postal-Code', '10010')
-    //         ->withHeader('X-Fastly-Region-Code', 'CA')
-    //         ->registerUpdated();
+        $response->assertStatus(302);
+        $response->assertRedirect('/login'); // Not third party domain sloth.com
 
-    //     $this->seeIsAuthenticated('web');
+        $this->assertGuest('web');
+    }
 
-    //     /** @var User $user */
-    //     $user = auth()->user();
+    /**
+     * Test that users can register via the web.
+     */
+    public function testRegisterBeta()
+    {
+        $this->withHeader('X-Fastly-Country-Code', 'US')
+            ->withHeader('X-Fastly-Postal-Code', '10010')
+            ->withHeader('X-Fastly-Region-Code', 'CA')
+            ->registerUpdated();
 
-    //     $this->assertEquals('US', $user->country);
-    //     $this->assertEquals('en', $user->language);
-    //     $this->assertEquals('10010', $user->addr_zip);
-    //     $this->assertEquals('CA', $user->addr_state);
+        $this->isAuthenticated('web');
 
-    //     // The user should be signed up for email messaging.
-    //     $this->assertEquals(true, $user->email_subscription_status);
-    //     $this->assertEquals(['community'], $user->email_subscription_topics);
-    // }
+        /** @var User $user */
+        $user = auth()->user();
+
+        $this->assertEquals('US', $user->country);
+        $this->assertEquals('en', $user->language);
+        $this->assertEquals('10010', $user->addr_zip);
+        $this->assertEquals('CA', $user->addr_state);
+
+        // The user should be signed up for email messaging.
+        $this->assertEquals(true, $user->email_subscription_status);
+        $this->assertEquals(['community'], $user->email_subscription_topics);
+    }
 
     // /**
     //  * Test that users can register & then log in with the same credentials.
