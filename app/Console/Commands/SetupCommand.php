@@ -48,8 +48,13 @@ class SetupCommand extends Command
         );
 
         $this->runArtisanCommand(
+            'migrate --database mysql',
+            'Running MySQL database migrations',
+        );
+
+        $this->runArtisanCommand(
             'migrate --database mongodb',
-            'Running database migrations',
+            'Running MongoDB database migrations',
         );
     }
 }
