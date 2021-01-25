@@ -79,6 +79,11 @@ class Handler extends ExceptionHandler
 
             return (new HttpFoundationFactory())->createResponse($psrResponse);
         }
+        // If Intervention can't parse a file (corrupted or wrong type), return 422.
+        // @TODO: Handle this with a validation rule on our v3 routes.
+        if ($e instanceof \Intervention\Image\Exception\NotReadableException) {
+            abort(422, 'Invalid image provided.');
+        }
 
         // Re-cast specific exceptions or uniquely render them:
         if ($e instanceof HttpException && $e->getStatusCode() === 429) {
