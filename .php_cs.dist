@@ -4,14 +4,16 @@ use PhpCsFixer\Finder;
 use function Weerd\PhpStyle\configure;
 
 $finder = Finder::create()
-    ->in([
-        __DIR__ . '/app',
-        __DIR__ . '/config',
-        __DIR__ . '/database',
-        __DIR__ . '/resources',
-        __DIR__ . '/routes',
-        __DIR__ . '/tests',
-    ])
-    ->notName('*.blade.php');
+  ->in([
+    __DIR__ . '/app',
+    __DIR__ . '/config',
+    __DIR__ . '/database',
+    __DIR__ . '/resources',
+    __DIR__ . '/routes',
+    __DIR__ . '/tests',
+  ])
+  ->notName('*.blade.php')
+  // Specific excluded files. Refer to file for details.
+  ->notName('2018_11_16_200157*.php');
 
 return configure($finder, ['base' => 'laravel-prettier']);

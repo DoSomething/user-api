@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 use App\Auth\Scope;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use libphonenumber\PhoneNumberUtil;
-use Illuminate\Support\Facades\Validator;
 
 class ValidationServiceProvider extends ServiceProvider
 {
