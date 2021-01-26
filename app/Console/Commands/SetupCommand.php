@@ -53,7 +53,7 @@ class SetupCommand extends Command
         );
 
         $this->runArtisanCommand(
-            'migrate --database mongodb',
+            'migrate --database mongodb --path="database/migrations-mongodb"',
             'Running MongoDB database migrations',
         );
     }
