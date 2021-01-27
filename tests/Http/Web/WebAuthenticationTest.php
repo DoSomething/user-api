@@ -90,8 +90,6 @@ class WebAuthenticationTest extends TestCase
     public function testLoginRateLimited()
     {
         for ($i = 0; $i < 10; $i++) {
-            // $this->get('/login')->assertStatus(200);
-
             $this->post('/login', [
                 'username' => 'target@example.com',
                 'password' => 'password' . $i,
@@ -101,8 +99,6 @@ class WebAuthenticationTest extends TestCase
         }
 
         $this->expectsEvents(\App\Events\Throttled::class);
-
-        // $this->get('/login')->assertStatus(200);
 
         $this->post('/login', [
             'username' => 'target@example.com',
