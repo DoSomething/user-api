@@ -52,7 +52,11 @@ jobs:
           name: check php code style
           command: vendor/bin/php-cs-fixer fix --dry-run --no-interaction --verbose
       - run: npm run build
-      - run: php artisan northstar:setup
+      - run:
+          name: setup environment
+          command: |
+            php artisan key:generate
+            php artisan northstar:keys
       - run:
           name: run phpunit tests
           command: |
