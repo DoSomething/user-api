@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Defuse\Crypto\Key;
 use DFurnes\Environmentalist\ConfiguresApplication;
 use Illuminate\Console\Command;
 
