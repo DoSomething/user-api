@@ -55,6 +55,7 @@ jobs:
       - run:
           name: setup environment
           command: |
+            cp .env.example .env
             php artisan key:generate
             php artisan northstar:keys
       - run:
