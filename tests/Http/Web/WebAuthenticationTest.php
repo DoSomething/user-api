@@ -90,7 +90,7 @@ class WebAuthenticationTest extends TestCase
     public function testLoginRateLimited()
     {
         for ($i = 0; $i < 10; $i++) {
-            $this->get('/login')->assertStatus(200);
+            // $this->get('/login')->assertStatus(200);
 
             $this->post('/login', [
                 'username' => 'target@example.com',
@@ -102,7 +102,7 @@ class WebAuthenticationTest extends TestCase
 
         $this->expectsEvents(\App\Events\Throttled::class);
 
-        $this->get('/login')->assertStatus(200);
+        // $this->get('/login')->assertStatus(200);
 
         $this->post('/login', [
             'username' => 'target@example.com',
@@ -215,289 +215,296 @@ class WebAuthenticationTest extends TestCase
         $this->assertEquals(['community'], $user->email_subscription_topics);
     }
 
-    // /**
-    //  * Test that users can register & then log in with the same credentials.
-    //  */
-    // public function testRegisterAndLogin()
-    // {
-    //     $this->visit('register');
+    /**
+     * Test that users can register & then log in with the same credentials.
+     */
+    public function testRegisterAndLogin()
+    {
+        $this->post('/register', [
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'email' => 'register-and-login@example.org',
+            'password' => 'my-top-secret-passphrase',
+        ]);
 
-    //     $this->submitForm('register-submit', [
-    //         'first_name' => $this->faker->firstName,
-    //         'last_name' => $this->faker->lastName,
-    //         'email' => 'register-and-login@example.org',
-    //         'password' => 'my-top-secret-passphrase',
-    //     ]);
+        $this->isAuthenticated('web');
 
-    //     $this->seeIsAuthenticated('web');
-    //     auth('web')->logout();
+        auth('web')->logout();
 
-    //     $this->visit('login');
+        $this->post('/login', [
+            'username' => 'register-and-login@example.org',
+            'password' => 'my-top-secret-passphrase',
+        ]);
 
-    //     $this->submitForm('login-submit', [
-    //         'username' => 'register-and-login@example.org',
-    //         'password' => 'my-top-secret-passphrase',
-    //     ]);
+        $this->isAuthenticated('web');
+    }
 
-    //     $this->seeIsAuthenticated('web');
-    // }
+    /**
+     * Test that a referrer_user_id in session is attached to the registering user.
+     */
+    public function testRegisterBetaWithReferrerUserId()
+    {
+        $referrerUserId = factory(User::class)->create()->id;
 
-    // /**
-    //  * Test that a referrer_user_id in session is attached to the registering user.
-    //  */
-    // public function testRegisterBetaWithReferrerUserId()
-    // {
-    //     $referrerUserId = factory(User::class)->create()->id;
+        // Mock a session for the user with ?referrer_user_id=x param, indicating a referred user.
+        $this->withSession([
+            'referrer_user_id' => $referrerUserId,
+        ])->registerUpdated();
 
-    //     // Mock a session for the user with ?referrer_user_id=x param, indicating a referred user.
-    //     $this->withSession([
-    //         'referrer_user_id' => $referrerUserId,
-    //     ])->registerUpdated();
+        $this->isAuthenticated('web');
 
-    //     $this->seeIsAuthenticated('web');
+        $user = auth()->user();
 
-    //     $user = auth()->user();
+        $this->assertEquals($referrerUserId, $user->referrer_user_id);
+    }
 
-    //     $this->assertEquals($referrerUserId, $user->referrer_user_id);
-    // }
+    /**
+     * Test that an invalid referrer_user_id in session is not attached to the registering user.
+     */
+    public function testRegisterBetaWithInvalidReferrerUserId()
+    {
+        // Mock a session for the user with ?referrer_user_id=x param, indicating a referred user.
+        $this->withSession(['referrer_user_id' => '123'])->registerUpdated();
 
-    // /**
-    //  * Test that an invalid referrer_user_id in session is not attached to the registering user.
-    //  */
-    // public function testRegisterBetaWithInvalidReferrerUserId()
-    // {
-    //     // Mock a session for the user with ?referrer_user_id=x param, indicating a referred user.
-    //     $this->withSession(['referrer_user_id' => '123'])->registerUpdated();
+        $this->isAuthenticated('web');
 
-    //     $this->seeIsAuthenticated('web');
+        $user = auth()->user();
 
-    //     $user = auth()->user();
+        $this->assertEquals(null, $user->referrer_user_id);
+    }
 
-    //     $this->assertEquals(null, $user->referrer_user_id);
-    // }
+    /**
+     * Test that users get feature_flags values when tests are on.
+     */
+    public function testRegisterBetaWithFeatureFlagsTest()
+    {
+        // Turn on the badges and refer-friends-scholarship test feature flags.
+        config([
+            'features.badges' => true,
+            'features.refer-friends-scholarship' => true,
+        ]);
 
-    // /**
-    //  * Test that users get feature_flags values when tests are on.
-    //  */
-    // public function testRegisterBetaWithFeatureFlagsTest()
-    // {
-    //     // Turn on the badges and refer-friends-scholarship test feature flags.
-    //     config([
-    //         'features.badges' => true,
-    //         'features.refer-friends-scholarship' => true,
-    //     ]);
+        $this->withHeader('X-Fastly-Country-Code', 'US')->registerUpdated();
 
-    //     $this->withHeader('X-Fastly-Country-Code', 'US')->registerUpdated();
+        $this->isAuthenticated('web');
 
-    //     $this->seeIsAuthenticated('web');
+        /** @var User $user */
+        $user = auth()->user();
 
-    //     /** @var User $user */
-    //     $user = auth()->user();
+        // The user should have a value set for 'badges'
+        $this->assertArrayHasKey('badges', $user->feature_flags);
+        // The user should have true set for 'refer-friends-scholarship'
+        $this->assertEquals(
+            true,
+            $user->feature_flags['refer-friends-scholarship'],
+        );
+    }
 
-    //     // The user should have a value set for 'badges'
-    //     $this->assertArrayHasKey('badges', $user->feature_flags);
-    //     // The user should have true set for 'refer-friends-scholarship'
-    //     $this->assertEquals(
-    //         true,
-    //         $user->feature_flags['refer-friends-scholarship'],
-    //     );
-    // }
+    /**
+     * Test that club referrals do not get feature flags set when the badges and refer-friends-scholarship
+     * tests are on.
+     */
+    public function testRegisterBetaFromClubsWithoutFeatureFlagsTest()
+    {
+        // Turn on badges and refer-friends-scholarship feature flags.
+        config([
+            'features.badges' => true,
+            'features.refer-friends-scholarship' => true,
+        ]);
 
-    // /**
-    //  * Test that club referrals do not get feature flags set when the badges and refer-friends-scholarship
-    //  * tests are on.
-    //  */
-    // public function testRegisterBetaFromClubsWithoutFeatureFlagsTest()
-    // {
-    //     // Turn on badges and refer-friends-scholarship feature flags.
-    //     config([
-    //         'features.badges' => true,
-    //         'features.refer-friends-scholarship' => true,
-    //     ]);
+        // Mock a session for the user with a ?utm_source=clubs param, indicating a clubs referral
+        $this->withSession(['source_detail' => ['utm_source' => 'clubs']])
+            ->withHeader('X-Fastly-Country-Code', 'US')
+            ->withHeader('X-Fastly-Postal-Code', '10010')
+            ->withHeader('X-Fastly-Region-Code', 'CA')
+            ->registerUpdated();
 
-    //     // Mock a session for the user with a ?utm_source=clubs param, indicating a clubs referral
-    //     $this->withSession(['source_detail' => ['utm_source' => 'clubs']])
-    //         ->withHeader('X-Fastly-Country-Code', 'US')
-    //         ->withHeader('X-Fastly-Postal-Code', '10010')
-    //         ->withHeader('X-Fastly-Region-Code', 'CA')
-    //         ->registerUpdated();
+        $this->isAuthenticated('web');
 
-    //     $this->seeIsAuthenticated('web');
+        /** @var User $user */
+        $user = auth()->user();
 
-    //     /** @var User $user */
-    //     $user = auth()->user();
+        $this->assertEquals('US', $user->country);
+        $this->assertEquals('en', $user->language);
+        $this->assertEquals('10010', $user->addr_zip);
+        $this->assertEquals('CA', $user->addr_state);
 
-    //     $this->assertEquals('US', $user->country);
-    //     $this->assertEquals('en', $user->language);
-    //     $this->assertEquals('10010', $user->addr_zip);
-    //     $this->assertEquals('CA', $user->addr_state);
+        // The user should not have any `feature_flags`.
+        $this->assertEquals(true, is_null($user->feature_flags));
+    }
 
-    //     // The user should not have any `feature_flags`.
-    //     $this->assertEquals(true, is_null($user->feature_flags));
-    // }
+    /**
+     * Test that users get refer-friends-scholarship feature_flag value when test is on, and no badges
+     * value when test is off.
+     */
+    public function testRegisterBetaWithReferFriendsAndNoBadgesTest()
+    {
+        // Turn off badges, turn on refer-friends-scholarship test feature flags.
+        config([
+            'features.badges' => false,
+            'features.refer-friends-scholarship' => true,
+        ]);
 
-    // /**
-    //  * Test that users get refer-friends-scholarship feature_flag value when test is on, and no badges
-    //  * value when test is off.
-    //  */
-    // public function testRegisterBetaWithReferFriendsAndNoBadgesTest()
-    // {
-    //     // Turn off badges, turn on refer-friends-scholarship test feature flags.
-    //     config([
-    //         'features.badges' => false,
-    //         'features.refer-friends-scholarship' => true,
-    //     ]);
+        $this->withHeader('X-Fastly-Country-Code', 'US')->registerUpdated();
 
-    //     $this->withHeader('X-Fastly-Country-Code', 'US')->registerUpdated();
+        $this->isAuthenticated('web');
 
-    //     $this->seeIsAuthenticated('web');
+        /** @var User $user */
+        $user = auth()->user();
 
-    //     /** @var User $user */
-    //     $user = auth()->user();
+        // The user should not have a value set for 'badges'
+        $this->assertArrayNotHasKey('badges', $user->feature_flags);
+        // The user should have true set for 'refer-friends-scholarship'
+        $this->assertEquals(
+            true,
+            $user->feature_flags['refer-friends-scholarship'],
+        );
+    }
 
-    //     // The user should not have a value set for 'badges'
-    //     $this->assertArrayNotHasKey('badges', $user->feature_flags);
-    //     // The user should have true set for 'refer-friends-scholarship'
-    //     $this->assertEquals(
-    //         true,
-    //         $user->feature_flags['refer-friends-scholarship'],
-    //     );
-    // }
+    /**
+     * Test that users get badges feature_flag value when test is on, and no refer-friends-scholarship
+     * value when test is off.
+     */
+    public function testRegisterBetaWithBadgesAndNoReferFriendsTest()
+    {
+        // Turn on badges, turn off refer-friends-scholarship test feature flags.
+        config([
+            'features.badges' => true,
+            'features.refer-friends-scholarship' => false,
+        ]);
 
-    // /**
-    //  * Test that users get badges feature_flag value when test is on, and no refer-friends-scholarship
-    //  * value when test is off.
-    //  */
-    // public function testRegisterBetaWithBadgesAndNoReferFriendsTest()
-    // {
-    //     // Turn on badges, turn off refer-friends-scholarship test feature flags.
-    //     config([
-    //         'features.badges' => true,
-    //         'features.refer-friends-scholarship' => false,
-    //     ]);
+        $this->withHeader('X-Fastly-Country-Code', 'US')->registerUpdated();
 
-    //     $this->withHeader('X-Fastly-Country-Code', 'US')->registerUpdated();
+        $this->isAuthenticated('web');
 
-    //     $this->seeIsAuthenticated('web');
+        /** @var User $user */
+        $user = auth()->user();
 
-    //     /** @var User $user */
-    //     $user = auth()->user();
+        // The user should have a value set for 'badges'
+        $this->assertArrayHasKey('badges', $user->feature_flags);
+        // The user should not have a value set for 'refer-friends-scholarship'
+        $this->assertArrayNotHasKey(
+            'refer-friends-scholarship',
+            $user->feature_flags,
+        );
+    }
 
-    //     // The user should have a value set for 'badges'
-    //     $this->assertArrayHasKey('badges', $user->feature_flags);
-    //     // The user should not have a value set for 'refer-friends-scholarship'
-    //     $this->assertArrayNotHasKey(
-    //         'refer-friends-scholarship',
-    //         $user->feature_flags,
-    //     );
-    // }
+    /**
+     * Test that users do not get feature flags set when the badges and refer-friends-scholarship
+     * tests are off.
+     */
+    public function testRegisterBetaWithoutFeatureFlagTests()
+    {
+        // Turn off the badges and refer-friends-scholarship test feature flags.
+        config([
+            'features.badges' => false,
+            'features.refer-friends-scholarship' => false,
+        ]);
 
-    // /**
-    //  * Test that users do not get feature flags set when the badges and refer-friends-scholarship
-    //  * tests are off.
-    //  */
-    // public function testRegisterBetaWithoutFeatureFlagTests()
-    // {
-    //     // Turn off the badges and refer-friends-scholarship test feature flags.
-    //     config([
-    //         'features.badges' => false,
-    //         'features.refer-friends-scholarship' => false,
-    //     ]);
+        $this->withHeader('X-Fastly-Country-Code', 'US')
+            ->withHeader('X-Fastly-Postal-Code', '10010')
+            ->withHeader('X-Fastly-Region-Code', 'CA')
+            ->registerUpdated();
 
-    //     $this->withHeader('X-Fastly-Country-Code', 'US')
-    //         ->withHeader('X-Fastly-Postal-Code', '10010')
-    //         ->withHeader('X-Fastly-Region-Code', 'CA')
-    //         ->registerUpdated();
+        $this->isAuthenticated('web');
 
-    //     $this->seeIsAuthenticated('web');
+        /** @var User $user */
+        $user = auth()->user();
 
-    //     /** @var User $user */
-    //     $user = auth()->user();
+        $this->assertEquals('US', $user->country);
+        $this->assertEquals('en', $user->language);
+        $this->assertEquals('10010', $user->addr_zip);
+        $this->assertEquals('CA', $user->addr_state);
 
-    //     $this->assertEquals('US', $user->country);
-    //     $this->assertEquals('en', $user->language);
-    //     $this->assertEquals('10010', $user->addr_zip);
-    //     $this->assertEquals('CA', $user->addr_state);
+        // The user should not have any `feature_flags`.
+        $this->assertEquals(true, is_null($user->feature_flags));
+    }
 
-    //     // The user should not have any `feature_flags`.
-    //     $this->assertEquals(true, is_null($user->feature_flags));
-    // }
+    /**
+     * Test that users can't enter invalid profile info.
+     */
+    public function testRegisterBetaInvalid()
+    {
+        $this->withHeader('X-Fastly-Country-Code', 'US');
 
-    // /**
-    //  * Test that users can't enter invalid profile info.
-    //  */
-    // public function testRegisterBetaInvalid()
-    // {
-    //     $this->withHeader('X-Fastly-Country-Code', 'US');
+        $response = $this->post('/register', [
+            'first_name' => $this->faker->text(150),
+            'email' => $this->faker->unique->email,
+            'password' => '123',
+        ]);
 
-    //     $this->visit('register');
-    //     $this->submitForm('register-submit', [
-    //         'first_name' => $this->faker->text(150),
-    //         'email' => $this->faker->unique->email,
-    //         'password' => '123',
-    //     ]);
+        $response->assertSessionHasErrors([
+            'first_name' =>
+                'The first name may not be greater than 50 characters.',
+        ]);
 
-    //     $this->see('The first name may not be greater than 50 characters');
-    //     //@TODO: find out what the backend error is for passwords that we expect to see
-    //     //tried using error thrown on the front-end for validation and failed the test
+        $this->assertGuest('web');
+    }
 
-    //     $this->dontSeeIsAuthenticated('web');
-    // }
+    /**
+     * Test that users can register from other countries
+     * and get the correct `country` and `language` fields.
+     */
+    public function testRegisterFromMexico()
+    {
+        $this->withHeader('X-Fastly-Country-Code', 'MX')->registerUpdated();
 
-    // /**
-    //  * Test that users can register from other countries
-    //  * and get the correct `country` and `language` fields.
-    //  */
-    // public function testRegisterFromMexico()
-    // {
-    //     $this->withHeader('X-Fastly-Country-Code', 'MX')->registerUpdated();
+        $this->isAuthenticated('web');
 
-    //     $this->seeIsAuthenticated('web');
+        /** @var User $user */
+        $user = auth()->user();
 
-    //     /** @var User $user */
-    //     $user = auth()->user();
+        $this->assertEquals('MX', $user->country);
+        $this->assertEquals('es-mx', $user->language);
+    }
 
-    //     $this->assertEquals('MX', $user->country);
-    //     $this->assertEquals('es-mx', $user->language);
-    // }
+    /**
+     * Test that users can't brute-force the login form.
+     */
+    public function testRegisterBetaRateLimited()
+    {
+        for ($i = 0; $i < 10; $i++) {
+            $this->registerUpdated();
+            $this->isAuthenticated('web');
+        }
 
-    // /**
-    //  * Test that users can't brute-force the login form.
-    //  */
-    // public function testRegisterBetaRateLimited()
-    // {
-    //     for ($i = 0; $i < 10; $i++) {
-    //         $this->registerUpdated();
-    //         $this->seeIsAuthenticated('web');
-    //     }
+        $this->expectsEvents(\App\Events\Throttled::class);
 
-    //     $this->registerUpdated();
+        $this->registerUpdated()->assertSessionHas(
+            'status',
+            'Too many attempts. Please try again in 15 minutes.',
+        );
 
-    //     $this->dontSeeIsAuthenticated('web');
-    //     $this->see('Too many attempts.');
-    // }
+        $this->assertGuest('web');
+    }
 
     /*
      * Test that the various optional variables for customizing the experience
      * display on the page.
      */
     // @TODO Remove or update post NS flow launch!
-    // public function testAuthorizeSessionVariablesExist()
-    // {
-    //     $client = factory(Client::class, 'authorization_code')->create();
+    public function testAuthorizeSessionVariablesExist()
+    {
+        $client = factory(Client::class, 'authorization_code')->create();
 
-    //     $this->get('authorize?'.http_build_query([
-    //         'response_type' => 'code',
-    //         'client_id' => $client->client_id,
-    //         'client_secret' => $client->client_secret,
-    //         'scope' => 'user',
-    //         'state' => csrf_token(),
-    //         'title' => 'test title',
-    //         'callToAction' => 'test call to action',
-    //     ]))->followRedirects();
+        $response = $this->get(
+            'authorize?' .
+                http_build_query([
+                    'response_type' => 'code',
+                    'client_id' => $client->client_id,
+                    'client_secret' => $client->client_secret,
+                    'scope' => 'user',
+                    'state' => csrf_token(),
+                    'title' => 'test title',
+                    'callToAction' => 'test call to action',
+                ]),
+        );
 
-    //     $this->seePageIs('register')
-    //         ->see('test title')
-    //         ->see('test call to action');
-    // }
+        $response->assertRedirect('/register');
+
+        // @TODO: Test this in a different way.
+        // Even if following redirects the session data is not passed along so the
+        // custom title and call to action are not set in the test.
+        // Might need to investigate how to pass session data through on test redirects.
+    }
 }
