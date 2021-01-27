@@ -497,10 +497,9 @@ class WebAuthenticationTest extends TestCase
         );
 
         $response->assertRedirect('/register');
-
-        // @TODO: Test this in a different way.
-        // Even if following redirects the session data is not passed along so the
-        // custom title and call to action are not set in the test.
-        // Might need to investigate how to pass session data through on test redirects.
+        $response->assertSessionHasAll([
+            'title' => 'test title',
+            'callToAction' => 'test call to action',
+        ]);
     }
 }
