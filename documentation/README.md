@@ -10,6 +10,8 @@ See [Authentication](authentication.md) for details on authorizing your requests
 
 ## Endpoints
 
+> :bulb: **Looking for something from Rogue?** We haven't finished moving over documentation from our old activity service. Click [here](https://github.com/DoSomething/rogue/tree/1c467c59c2f1069816c778ab88339d14cd759802/docs) to view this archived documentation!
+
 #### Authentication
 
 | Endpoint               | Functionality                                                                                           | Required Scope |

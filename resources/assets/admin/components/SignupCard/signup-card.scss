@@ -1,0 +1,22 @@
+@import '~@dosomething/forge/scss/toolkit';
+
+.signup-card {
+  border: 2px solid $light-gray;
+
+  .reportback-noun-verb {
+    color: $purple;
+  }
+
+  a {
+    color: $black;
+    font-weight: $weight-normal;
+  }
+
+  &:hover {
+    border: 2px solid $blue;
+
+    h2 {
+      color: $blue;
+    }
+  }
+}

@@ -83,6 +83,9 @@ trait CreatesApplication
         // Reset the testing database & run migrations.
         $mongoConnection = app('db')->connection('mongodb');
         $mongoConnection->getMongoDB()->drop();
-        $this->artisan('migrate', ['--database' => 'mongodb']);
+        $this->artisan('migrate', [
+            '--database' => 'mongodb',
+            '--path' => 'database/migrations-mongodb',
+        ]);
     }
 }

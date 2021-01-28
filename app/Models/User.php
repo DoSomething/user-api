@@ -540,12 +540,18 @@ class User extends MongoModel implements
     }
 
     /**
-     * Does this user have one of the given roles?
+     * Check to see if this user matches one of the given roles.
      *
+     * @param  array|mixed $roles - role(s) to check
      * @return bool
      */
-    public function hasRole(string ...$roles)
+    public function hasRole($roles)
     {
+        // Prepare an array of roles to check.
+        // e.g. $user->hasRole('admin') => ['admin']
+        //      $user->hasRole('admin, 'staff') => ['admin', 'staff']
+        $roles = is_array($roles) ? $roles : func_get_args();
+
         return in_array($this->role, $roles);
     }
 

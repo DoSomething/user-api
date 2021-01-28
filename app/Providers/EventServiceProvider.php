@@ -3,12 +3,13 @@
 namespace App\Providers;
 
 use App\Events\PasswordUpdated;
+use App\Events\PostTagged;
 use App\Events\Throttled;
 use App\Listeners\ReportFailedAuthenticationAttempt;
 use App\Listeners\ReportPasswordUpdated;
 use App\Listeners\ReportSuccessfulAuthentication;
 use App\Listeners\ReportThrottledRequest;
-use Event;
+use App\Listeners\SendTaggedNotification;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -25,6 +26,7 @@ class EventServiceProvider extends ServiceProvider
         Failed::class => [ReportFailedAuthenticationAttempt::class],
         Throttled::class => [ReportThrottledRequest::class],
         PasswordUpdated::class => [ReportPasswordUpdated::class],
+        PostTagged::class => [SendTaggedNotification::class],
     ];
 
     /**

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="51px" height="51px" viewBox="0 0 51 51" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.1 (39012) - http://www.bohemiancoding.com/sketch -->
+    <title>Combined Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Final-Mocks" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Post-signup-Action-L" transform="translate(-345.000000, -3558.000000)" fill="#9B9B9B">
+            <g id="Group" transform="translate(205.000000, 3400.000000)">
+                <path d="M170.28125,178.71875 L170.28125,162.775035 C170.28125,160.142626 168.140611,158 165.5,158 C162.864762,158 160.71875,160.137856 160.71875,162.775035 L160.71875,178.71875 L144.775035,178.71875 C142.142626,178.71875 140,180.859389 140,183.5 C140,186.135238 142.137856,188.28125 144.775035,188.28125 L160.71875,188.28125 L160.71875,204.224965 C160.71875,206.857374 162.859389,209 165.5,209 C168.135238,209 170.28125,206.862144 170.28125,204.224965 L170.28125,188.28125 L186.224965,188.28125 C188.857374,188.28125 191,186.140611 191,183.5 C191,180.864762 188.862144,178.71875 186.224965,178.71875 L170.28125,178.71875 Z" id="Combined-Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

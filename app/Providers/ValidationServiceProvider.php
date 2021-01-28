@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Auth\Scope;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use libphonenumber\PhoneNumberUtil;
 
@@ -24,9 +25,29 @@ class ValidationServiceProvider extends ServiceProvider
     {
         $this->validator = $this->app->make('validator');
 
+        // Add a custom validator for Mongo ObjectIDs.
+        Validator::extend(
+            'objectid',
+            function ($attribute, $value, $parameters, $validator) {
+                return preg_match('/^[a-f\d]{24}$/i', $value);
+            },
+            'The :attribute must be a valid ObjectID.',
+        );
+
+        Validator::extend(
+            'iso3166',
+            function ($attribute, $value, $parameters, $validator) {
+                $isoCodes = new \Sokil\IsoCodes\IsoCodesFactory();
+                $subDivisions = $isoCodes->getSubdivisions();
+
+                return !is_null($subDivisions->getByCode($value));
+            },
+            'The :attribute must be a valid ISO-3166-2 region code.',
+        );
+
         // Add custom validator for US mobile numbers.
-        // @see: Phoenix's dosomething_user_valid_mobile() function.
-        $this->validator->extend(
+        // @see: Ashes' dosomething_user_valid_mobile() function.
+        Validator::extend(
             'mobile',
             function ($attribute, $value, $parameters) {
                 $parser = PhoneNumberUtil::getInstance();
@@ -57,7 +78,7 @@ class ValidationServiceProvider extends ServiceProvider
         );
 
         // Add custom validator for OAuth scopes.
-        $this->validator->extend(
+        Validator::extend(
             'scope',
             function ($attribute, $value, $parameters) {
                 return Scope::validateScopes($value);
@@ -66,7 +87,7 @@ class ValidationServiceProvider extends ServiceProvider
         );
 
         // Add custom validator for country codes.
-        $this->validator->extend(
+        Validator::extend(
             'country',
             function ($attribute, $value, $parameters) {
                 return get_countries()->has(strtoupper($value));

@@ -1,0 +1,37 @@
+@import '~@dosomething/forge/scss/toolkit';
+
+.container__action {
+  border: solid 1px #ddd;
+  border-radius: 5px;
+  margin-top: 5%;
+  padding: 2%;
+
+  ul {
+    display: table;
+    width: 100%;
+  }
+
+  li {
+    display: table-cell;
+    list-style-type: none;
+    vertical-align: middle;
+    width: 33%;
+
+    .yes {
+      color: #5de230;
+    }
+
+    .no {
+      color: #ff1414;
+    }
+  }
+
+  h4 {
+    color: #999;
+  }
+
+  button {
+    float: right;
+    padding: 2% 2% 0 2%;
+  }
+}

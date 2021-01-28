@@ -1,13 +1,11 @@
 <?php
 
-/**
- * Define all of our model factories. Model factories give
- * you a convenient way to create models for testing and seeding your
- * database. Just tell the factory how a default model should look.
- *
- * @var \Illuminate\Database\Eloquent\Factory $factory
- */
-$factory->define(App\Models\User::class, function (Faker\Generator $faker) {
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
+
+use App\Models\User;
+use Faker\Generator as Faker;
+
+$factory->define(User::class, function (Faker $faker) {
     $faker->addProvider(new FakerPhoneNumber($faker));
 
     return [
@@ -55,9 +53,7 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->state(App\Models\User::class, 'email-subscribed', function (
-    Faker\Generator $faker
-) {
+$factory->state(User::class, 'email-subscribed', function (Faker $faker) {
     return [
         'email_subscription_status' => true,
         'email_subscription_topics' => $faker->randomElements(
@@ -67,17 +63,13 @@ $factory->state(App\Models\User::class, 'email-subscribed', function (
     ];
 });
 
-$factory->state(App\Models\User::class, 'email-unsubscribed', function (
-    Faker\Generator $faker
-) {
+$factory->state(User::class, 'email-unsubscribed', function () {
     return [
         'email_subscription_status' => false,
     ];
 });
 
-$factory->state(App\Models\User::class, 'sms-subscribed', function (
-    Faker\Generator $faker
-) {
+$factory->state(User::class, 'sms-subscribed', function () {
     return [
         'sms_status' => 'active',
         // Note: Not all users will have SMS subscription topics, it was added in March 2020.
@@ -85,18 +77,14 @@ $factory->state(App\Models\User::class, 'sms-subscribed', function (
     ];
 });
 
-$factory->state(App\Models\User::class, 'sms-unsubscribed', function (
-    Faker\Generator $faker
-) {
+$factory->state(User::class, 'sms-unsubscribed', function () {
     return [
         'sms_status' => 'stop',
         'sms_subscription_topics' => null,
     ];
 });
 
-$factory->defineAs(App\Models\User::class, 'staff', function (
-    Faker\Generator $faker
-) {
+$factory->defineAs(User::class, 'staff', function (Faker $faker) {
     $faker->addProvider(new FakerPhoneNumber($faker));
 
     return [
@@ -115,9 +103,7 @@ $factory->defineAs(App\Models\User::class, 'staff', function (
     ];
 });
 
-$factory->defineAs(App\Models\User::class, 'admin', function (
-    Faker\Generator $faker
-) {
+$factory->defineAs(User::class, 'admin', function (Faker $faker) {
     $faker->addProvider(new FakerPhoneNumber($faker));
 
     return [
@@ -133,42 +119,5 @@ $factory->defineAs(App\Models\User::class, 'admin', function (
         'language' => $faker->languageCode,
         'source' => 'factory',
         'role' => 'admin',
-    ];
-});
-
-$factory->defineAs(\App\Models\Client::class, 'authorization_code', function (
-    Faker\Generator $faker
-) {
-    return [
-        'client_id' => $faker->unique()->numerify('phpunit-###'),
-        'title' => $faker->company,
-        'description' => $faker->sentence,
-        'allowed_grant' => 'authorization_code',
-        'scope' => ['user', 'openid', 'profile', 'role:staff', 'role:admin'],
-        'redirect_uri' => $faker->url,
-    ];
-});
-
-$factory->defineAs(\App\Models\Client::class, 'password', function (
-    Faker\Generator $faker
-) {
-    return [
-        'client_id' => $faker->unique()->numerify('phpunit-###'),
-        'title' => $faker->company,
-        'description' => $faker->sentence,
-        'allowed_grant' => 'password',
-        'scope' => ['user', 'profile', 'role:staff', 'role:admin'],
-    ];
-});
-
-$factory->defineAs(\App\Models\Client::class, 'client_credentials', function (
-    Faker\Generator $faker
-) {
-    return [
-        'client_id' => $faker->unique()->numerify('phpunit-###'),
-        'title' => $faker->company,
-        'description' => $faker->sentence,
-        'allowed_grant' => 'client_credentials',
-        'scope' => ['user', 'admin'],
     ];
 });

@@ -37,4 +37,8 @@ return [
 
     // If this is enabled, we'll expose the new "admin" routes from Aurora:
     'admin' => env('DS_ENABLE_ADMIN_ROUTES', false),
+
+    'gambit' => env('DS_ENABLE_GAMBIT_RELAY', false),
+
+    'track_club_id' => env('DS_ENABLE_TRACK_CLUB_IDS', false),
 ];

@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Defuse\Crypto\Key;
 use DFurnes\Environmentalist\ConfiguresApplication;
 use Illuminate\Console\Command;
 
@@ -48,8 +47,13 @@ class SetupCommand extends Command
         );
 
         $this->runArtisanCommand(
-            'migrate --database mongodb',
-            'Running database migrations',
+            'migrate --database mysql',
+            'Running MySQL database migrations',
+        );
+
+        $this->runArtisanCommand(
+            'migrate --database mongodb --path="database/migrations-mongodb"',
+            'Running MongoDB database migrations',
         );
     }
 }

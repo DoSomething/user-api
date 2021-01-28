@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Post;
 use App\Services\Resources\Redirect;
 use App\Services\Resources\RedirectCollection;
 use DoSomething\Gateway\AuthorizesWithApiKey;
@@ -119,6 +120,32 @@ class Fastly extends RestApiClient
         return $this->delete(
             "service/$this->frontendServiceId/dictionary/$this->redirectsTableId/item/$key",
         );
+    }
+
+    /**
+     * Purge any cached content for the given post.
+     */
+    public function purge(Post $post): void
+    {
+        $this->purgeKey('post-' . $post->id);
+    }
+
+    /**
+     * Purge object from Fastly cache based on give cache key.
+     *
+     * @param $cacheKey String
+     */
+    protected function purgeKey($cacheKey): void
+    {
+        if (!$this->service) {
+            return;
+        }
+
+        $purgeResponse = $this->post(
+            "service/$this->backendServiceId/purge/$cacheKey",
+        );
+
+        info('image_cache_purge_successful', ['key' => $cacheKey]);
     }
 
     /**

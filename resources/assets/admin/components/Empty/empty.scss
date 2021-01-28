@@ -1,0 +1,19 @@
+@import '~@dosomething/forge/scss/toolkit';
+
+.empty {
+  text-align: center;
+
+  .empty__image {
+    background: transparent url('../../images/tonguecat.png');
+    background-size: cover;
+    content: '';
+    display: block;
+    width: 200px;
+    height: 200px;
+    margin: auto;
+  }
+
+  .heading.-gamma {
+    color: $purple;
+  }
+}
