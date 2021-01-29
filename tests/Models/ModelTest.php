@@ -2,7 +2,7 @@
 
 use App\Models\User;
 
-class ModelTest extends BrowserKitTestCase
+class ModelTest extends TestCase
 {
     /** @test */
     public function it_should_unset_null_fields()

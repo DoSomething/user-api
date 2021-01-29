@@ -3,7 +3,7 @@
 use App\Models\User;
 use App\Services\GraphQL;
 
-class UserModelTest extends BrowserKitTestCase
+class UserModelTest extends TestCase
 {
     /** @test */
     public function it_should_send_new_users_to_customer_io()
@@ -253,7 +253,7 @@ class UserModelTest extends BrowserKitTestCase
             'sms_status' => 'stop',
         ]);
 
-        $this->assertEquals($subscribedUser->sms_subscription_topics, []);
+        $this->assertEquals($unsubscribedUser->sms_subscription_topics, []);
     }
 
     public function doesNotChangeSubscriptionTopicsIfExistsWhenChangingSubscribedStatus()
