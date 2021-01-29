@@ -2,7 +2,7 @@
 
 use App\Models\User;
 
-class WebUserTest extends BrowserKitTestCase
+class WebUserTest extends TestCase
 {
     /**
      * Default headers for this test case.
@@ -22,32 +22,44 @@ class WebUserTest extends BrowserKitTestCase
     {
         $user = $this->makeAuthWebUser();
 
-        $this->visit('users/' . $user->id)->seePageIs('/');
+        $response = $this->get('users/' . $user->id);
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/');
     }
 
     /**
-     * Test that users can click to edit their profile from the homepage.
+     * Test that users are provided a button to edit their profile from the homepage.
      */
     public function testSeeProfileEditForm()
     {
         $user = $this->makeAuthWebUser();
 
-        $this->visit('/')
-            ->click('Edit Profile')
-            ->seePageIs('users/' . $user->id . '/edit');
+        $userEditUrl = 'users/' . $user->id . '/edit';
+
+        $stepOneResponse = $this->get('/');
+
+        $stepOneResponse->assertStatus(200);
+        $stepOneResponse->assertSee(
+            '<a href="' .
+                url($userEditUrl) .
+                '" class="button -secondary">Edit Profile</a>',
+        );
     }
 
     /**
-     * Test that users can cancel out of editing their profile and head
-     * back to the homepage.
+     * Test that users are provided a cancel button on the edit profile page.
      */
     public function testCancelProfileEdit()
     {
         $user = $this->makeAuthWebUser();
 
-        $this->visit('users/' . $user->id . '/edit')
-            ->click('Cancel')
-            ->seePageIs('/');
+        $userUrl = 'users/' . $user->id;
+
+        $response = $this->get($userUrl . '/edit');
+
+        $response->assertStatus(200);
+        $response->assertSee('<a href="' . url($userUrl) . '">Cancel</a>');
     }
 
     /**
@@ -57,11 +69,11 @@ class WebUserTest extends BrowserKitTestCase
     {
         $user = $this->makeAuthWebUser();
 
-        $this->visit('users/' . $user->id . '/edit')
-            ->type('Jean-Paul', 'first_name')
-            ->type('Beaubier-Lee', 'last_name')
-            ->press('Save')
-            ->seePageIs('/');
+        $this->patch('users/' . $user->id, [
+            'first_name' => 'Jean-Paul',
+            'last_name' => 'Beaubier-Lee',
+            'birthdate' => $user->birthdate,
+        ]);
 
         $updatedUser = User::find($user->id);
 
@@ -74,10 +86,13 @@ class WebUserTest extends BrowserKitTestCase
      */
     public function testProfileEditAccess()
     {
-        $authUser = $this->makeAuthWebUser();
+        $this->makeAuthWebUser();
 
         $randoUser = factory(User::class)->create();
 
-        $this->visit('users/' . $randoUser->id . '/edit')->seePageIs('/');
+        $response = $this->get('users/' . $randoUser->id . '/edit');
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/');
     }
 }

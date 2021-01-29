@@ -3,7 +3,7 @@
 use App\Models\Client;
 use App\Models\User;
 
-class WebAuthenticationTest extends BrowserKitTestCase
+class WebAuthenticationTest extends TestCase
 {
     /**
      * Default headers for this test case.
@@ -19,9 +19,10 @@ class WebAuthenticationTest extends BrowserKitTestCase
      */
     public function testHomepageAnonymousRedirect()
     {
-        $this->get('/')->followRedirects();
+        $response = $this->get('/');
 
-        $this->seePageIs('register');
+        $response->assertStatus(302);
+        $response->assertRedirect('/register');
     }
 
     /**
@@ -33,15 +34,14 @@ class WebAuthenticationTest extends BrowserKitTestCase
 
         $this->be($user, 'web');
 
-        $this->visit('/')
-            ->followRedirects()
-            ->see('You are logged in as');
+        $response = $this->followingRedirects()->get('/');
 
-        $this->assertResponseOk();
+        $response->assertStatus(200);
+        $response->assertSeeText('You are logged in as');
     }
 
     /**
-     * Test that users can log in via the web.
+     * Test that users can log in via the /login route.
      */
     public function testLogin()
     {
@@ -52,12 +52,12 @@ class WebAuthenticationTest extends BrowserKitTestCase
 
         $this->expectsEvents(\Illuminate\Auth\Events\Login::class);
 
-        $this->visit('login')
-            ->type('Login-Test@dosomething.org', 'username')
-            ->type('secret', 'password')
-            ->press('Log In');
+        $this->post('/login', [
+            'username' => 'Login-Test@dosomething.org',
+            'password' => 'secret',
+        ]);
 
-        $this->seeIsAuthenticatedAs($user, 'web');
+        $this->assertAuthenticatedAs($user, 'web');
     }
 
     /**
@@ -72,12 +72,16 @@ class WebAuthenticationTest extends BrowserKitTestCase
 
         $this->expectsEvents(\Illuminate\Auth\Events\Failed::class);
 
-        $this->visit('login')
-            ->type('Login-Test@dosomething.org', 'username')
-            ->type('open-sesame', 'password') // <-- wrong password!
-            ->press('Log In');
+        $response = $this->post('/login', [
+            'username' => 'Login-Test@dosomething.org',
+            'password' => 'open-sesame', // <-- wrong password!
+        ]);
 
-        $this->see('These credentials do not match our records.');
+        $response->assertStatus(302);
+        $response->assertRedirect('/');
+        $response->assertSessionHasErrors([
+            'username' => 'These credentials do not match our records.',
+        ]);
     }
 
     /**
@@ -86,25 +90,23 @@ class WebAuthenticationTest extends BrowserKitTestCase
     public function testLoginRateLimited()
     {
         for ($i = 0; $i < 10; $i++) {
-            $this->visit('login');
-            $this->submitForm('Log In', [
+            $this->post('/login', [
                 'username' => 'target@example.com',
                 'password' => 'password' . $i,
+            ])->assertSessionHasErrors([
+                'username' => 'These credentials do not match our records.',
             ]);
-
-            $this->see('These credentials do not match our records.');
         }
 
-        // This next request should trigger a StatHat counter.
         $this->expectsEvents(\App\Events\Throttled::class);
 
-        $this->visit('login');
-        $this->submitForm('Log In', [
+        $this->post('/login', [
             'username' => 'target@example.com',
             'password' => 'password11', // our attacker is very methodical.
-        ]);
-
-        $this->see('Too many attempts.');
+        ])->assertSessionHas(
+            'status',
+            'Too many attempts. Please try again in 15 minutes.',
+        );
     }
 
     /**
@@ -120,14 +122,10 @@ class WebAuthenticationTest extends BrowserKitTestCase
 
         // Puppet Sloth doesn't have a DS.org password yet, but he tries to enter
         // "next-question" because that's his password everywhere else.
-        $this->visit('login')->submitForm('Log In', [
+        $this->post('/login', [
             'username' => 'puppet-sloth@dosomething.org',
             'password' => 'next-question',
-        ]);
-
-        $this->seeText(
-            'You need to reset your password before you can log in.',
-        );
+        ])->assertSessionHas('request_reset', true);
     }
 
     /**
@@ -139,10 +137,14 @@ class WebAuthenticationTest extends BrowserKitTestCase
 
         $this->be($user, 'web');
 
-        $this->get('logout')->followRedirects();
+        $response = $this->get('logout');
 
-        $this->seePageIs('login');
-        $this->dontSeeIsAuthenticated('web');
+        $response->assertStatus(302);
+        $response->assertRedirect('/login');
+
+        $this->followRedirects($response);
+
+        $this->assertGuest('web');
     }
 
     /**
@@ -154,11 +156,14 @@ class WebAuthenticationTest extends BrowserKitTestCase
 
         $this->be($user, 'web');
 
-        $this->get('logout?redirect=http://dev.dosomething.org:8888');
+        $response = $this->get(
+            'logout?redirect=http://dev.dosomething.org:8888',
+        );
 
-        $this->dontSeeIsAuthenticated('web');
-        $this->assertResponseStatus(302);
-        $this->seeHeader('Location', 'http://dev.dosomething.org:8888');
+        $response->assertStatus(302);
+        $response->assertRedirect('http://dev.dosomething.org:8888');
+
+        $this->assertGuest('web');
     }
 
     /**
@@ -171,13 +176,14 @@ class WebAuthenticationTest extends BrowserKitTestCase
 
         $this->be($user, 'web');
 
-        $this->get('logout?redirect=http://dosomething.org.sloth.com');
+        $response = $this->get(
+            'logout?redirect=http://dosomething.org.sloth.com',
+        );
 
-        $this->dontSeeIsAuthenticated('web');
-        $this->assertResponseStatus(302);
+        $response->assertStatus(302);
+        $response->assertRedirect('/login'); // Not third party domain sloth.com
 
-        $location = $this->response->headers->get('Location');
-        $this->assertNotEquals('http://dosomething.org.sloth.com', $location);
+        $this->assertGuest('web');
     }
 
     /**
@@ -190,7 +196,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
             ->withHeader('X-Fastly-Region-Code', 'CA')
             ->registerUpdated();
 
-        $this->seeIsAuthenticated('web');
+        $this->isAuthenticated('web');
 
         /** @var User $user */
         $user = auth()->user();
@@ -210,26 +216,23 @@ class WebAuthenticationTest extends BrowserKitTestCase
      */
     public function testRegisterAndLogin()
     {
-        $this->visit('register');
-
-        $this->submitForm('register-submit', [
+        $this->post('/register', [
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'email' => 'register-and-login@example.org',
             'password' => 'my-top-secret-passphrase',
         ]);
 
-        $this->seeIsAuthenticated('web');
+        $this->isAuthenticated('web');
+
         auth('web')->logout();
 
-        $this->visit('login');
-
-        $this->submitForm('login-submit', [
+        $this->post('/login', [
             'username' => 'register-and-login@example.org',
             'password' => 'my-top-secret-passphrase',
         ]);
 
-        $this->seeIsAuthenticated('web');
+        $this->isAuthenticated('web');
     }
 
     /**
@@ -244,7 +247,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
             'referrer_user_id' => $referrerUserId,
         ])->registerUpdated();
 
-        $this->seeIsAuthenticated('web');
+        $this->isAuthenticated('web');
 
         $user = auth()->user();
 
@@ -259,7 +262,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
         // Mock a session for the user with ?referrer_user_id=x param, indicating a referred user.
         $this->withSession(['referrer_user_id' => '123'])->registerUpdated();
 
-        $this->seeIsAuthenticated('web');
+        $this->isAuthenticated('web');
 
         $user = auth()->user();
 
@@ -279,7 +282,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
 
         $this->withHeader('X-Fastly-Country-Code', 'US')->registerUpdated();
 
-        $this->seeIsAuthenticated('web');
+        $this->isAuthenticated('web');
 
         /** @var User $user */
         $user = auth()->user();
@@ -312,7 +315,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
             ->withHeader('X-Fastly-Region-Code', 'CA')
             ->registerUpdated();
 
-        $this->seeIsAuthenticated('web');
+        $this->isAuthenticated('web');
 
         /** @var User $user */
         $user = auth()->user();
@@ -340,7 +343,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
 
         $this->withHeader('X-Fastly-Country-Code', 'US')->registerUpdated();
 
-        $this->seeIsAuthenticated('web');
+        $this->isAuthenticated('web');
 
         /** @var User $user */
         $user = auth()->user();
@@ -368,7 +371,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
 
         $this->withHeader('X-Fastly-Country-Code', 'US')->registerUpdated();
 
-        $this->seeIsAuthenticated('web');
+        $this->isAuthenticated('web');
 
         /** @var User $user */
         $user = auth()->user();
@@ -399,7 +402,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
             ->withHeader('X-Fastly-Region-Code', 'CA')
             ->registerUpdated();
 
-        $this->seeIsAuthenticated('web');
+        $this->isAuthenticated('web');
 
         /** @var User $user */
         $user = auth()->user();
@@ -420,18 +423,18 @@ class WebAuthenticationTest extends BrowserKitTestCase
     {
         $this->withHeader('X-Fastly-Country-Code', 'US');
 
-        $this->visit('register');
-        $this->submitForm('register-submit', [
+        $response = $this->post('/register', [
             'first_name' => $this->faker->text(150),
             'email' => $this->faker->unique->email,
             'password' => '123',
         ]);
 
-        $this->see('The first name may not be greater than 50 characters');
-        //@TODO: find out what the backend error is for passwords that we expect to see
-        //tried using error thrown on the front-end for validation and failed the test
+        $response->assertSessionHasErrors([
+            'first_name' =>
+                'The first name may not be greater than 50 characters.',
+        ]);
 
-        $this->dontSeeIsAuthenticated('web');
+        $this->assertGuest('web');
     }
 
     /**
@@ -442,7 +445,7 @@ class WebAuthenticationTest extends BrowserKitTestCase
     {
         $this->withHeader('X-Fastly-Country-Code', 'MX')->registerUpdated();
 
-        $this->seeIsAuthenticated('web');
+        $this->isAuthenticated('web');
 
         /** @var User $user */
         $user = auth()->user();
@@ -458,13 +461,17 @@ class WebAuthenticationTest extends BrowserKitTestCase
     {
         for ($i = 0; $i < 10; $i++) {
             $this->registerUpdated();
-            $this->seeIsAuthenticated('web');
+            $this->isAuthenticated('web');
         }
 
-        $this->registerUpdated();
+        $this->expectsEvents(\App\Events\Throttled::class);
 
-        $this->dontSeeIsAuthenticated('web');
-        $this->see('Too many attempts.');
+        $this->registerUpdated()->assertSessionHas(
+            'status',
+            'Too many attempts. Please try again in 15 minutes.',
+        );
+
+        $this->assertGuest('web');
     }
 
     /*
@@ -472,22 +479,27 @@ class WebAuthenticationTest extends BrowserKitTestCase
      * display on the page.
      */
     // @TODO Remove or update post NS flow launch!
-    // public function testAuthorizeSessionVariablesExist()
-    // {
-    //     $client = factory(Client::class, 'authorization_code')->create();
+    public function testAuthorizeSessionVariablesExist()
+    {
+        $client = factory(Client::class, 'authorization_code')->create();
 
-    //     $this->get('authorize?'.http_build_query([
-    //         'response_type' => 'code',
-    //         'client_id' => $client->client_id,
-    //         'client_secret' => $client->client_secret,
-    //         'scope' => 'user',
-    //         'state' => csrf_token(),
-    //         'title' => 'test title',
-    //         'callToAction' => 'test call to action',
-    //     ]))->followRedirects();
+        $response = $this->get(
+            'authorize?' .
+                http_build_query([
+                    'response_type' => 'code',
+                    'client_id' => $client->client_id,
+                    'client_secret' => $client->client_secret,
+                    'scope' => 'user',
+                    'state' => csrf_token(),
+                    'title' => 'test title',
+                    'callToAction' => 'test call to action',
+                ]),
+        );
 
-    //     $this->seePageIs('register')
-    //         ->see('test title')
-    //         ->see('test call to action');
-    // }
+        $response->assertRedirect('/register');
+        $response->assertSessionHasAll([
+            'title' => 'test title',
+            'callToAction' => 'test call to action',
+        ]);
+    }
 }
