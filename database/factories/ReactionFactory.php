@@ -9,7 +9,7 @@ $factory->define(Reaction::class, function (Faker $faker) {
     $faker->addProvider(new FakerNorthstarId($faker));
 
     return [
-        'northstar_id' => $faker->northstar_id,
+        'northstar_id' => factory(User::class)->create(),
         'post_id' => $faker->randomNumber(7),
     ];
 });
