@@ -6,6 +6,7 @@ use App\Jobs\CreateCustomerIoEvent;
 use App\Jobs\SendPostToCustomerIo;
 use App\Jobs\SendReviewedPostToCustomerIo;
 use App\Models\Post;
+use App\Models\User;
 use App\Repositories\PostRepository;
 use App\Services\Fastly;
 
@@ -58,11 +59,15 @@ class PostManager
         SendPostToCustomerIo::dispatch($post);
 
         if ($post->referrer_user_id) {
-            CreateCustomerIoEvent::dispatch(
-                $post->referrer_user_id,
-                'referral_post_created',
-                $post->getReferralPostEventPayload(),
-            );
+            optional(User::find($post->referrer_user_id), function (
+                $referrerUser
+            ) use ($post) {
+                CreateCustomerIoEvent::dispatch(
+                    $referrerUser,
+                    'referral_post_created',
+                    $post->getReferralPostEventPayload(),
+                );
+            });
         }
 
         // Log that a post was created.
@@ -91,11 +96,15 @@ class PostManager
         SendPostToCustomerIo::dispatch($post);
 
         if ($post->referrer_user_id) {
-            CreateCustomerIoEvent::dispatch(
-                $post->referrer_user_id,
-                'referral_post_updated',
-                $post->getReferralPostEventPayload(),
-            );
+            optional(User::find($post->referrer_user_id), function (
+                $referrerUser
+            ) use ($post) {
+                CreateCustomerIoEvent::dispatch(
+                    $referrerUser,
+                    'referral_post_updated',
+                    $post->getReferralPostEventPayload(),
+                );
+            });
         }
 
         if ($log) {

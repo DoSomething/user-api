@@ -5,9 +5,16 @@ namespace App\Jobs;
 use App\Jobs\Middleware\CustomerIoRateLimit;
 use App\Models\Signup;
 use App\Services\CustomerIo;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
-class SendSignupToCustomerIo extends Job
+class SendSignupToCustomerIo implements ShouldQueue
 {
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
     /**
      * The signup to send to Customer.io.
      *
