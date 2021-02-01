@@ -42,9 +42,10 @@ class SendReviewedPostToCustomerIo extends Job
      */
     public function handle(CustomerIo $customerIo)
     {
-        $userId = $this->post->northstar_id;
-        $payload = $this->post->toCustomerIoPayload();
-
-        $customerIo->trackEvent($userId, 'campaign_review', $payload);
+        $customerIo->trackEvent(
+            $this->post->user(),
+            'campaign_review',
+            $this->post->toCustomerIoPayload(),
+        );
     }
 }

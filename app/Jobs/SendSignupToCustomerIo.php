@@ -49,9 +49,10 @@ class SendSignupToCustomerIo implements ShouldQueue
      */
     public function handle(CustomerIo $customerIo)
     {
-        $userId = $this->signup->northstar_id;
-        $payload = $this->signup->toCustomerIoPayload();
-
-        $customerIo->trackEvent($userId, 'campaign_signup', $payload);
+        $customerIo->trackEvent(
+            $this->signup->user(),
+            'campaign_signup',
+            $this->signup->toCustomerIoPayload(),
+        );
     }
 }

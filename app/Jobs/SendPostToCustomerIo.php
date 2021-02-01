@@ -49,9 +49,10 @@ class SendPostToCustomerIo implements ShouldQueue
      */
     public function handle(CustomerIo $customerIo)
     {
-        $userId = $this->post->northstar_id;
-        $payload = $this->post->toCustomerIoPayload();
-
-        $customerIo->trackEvent($userId, 'campaign_signup_post', $payload);
+        $customerIo->trackEvent(
+            $this->post->user(),
+            'campaign_signup_post',
+            $this->post->toCustomerIoPayload(),
+        );
     }
 }
