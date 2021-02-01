@@ -4,6 +4,7 @@ namespace App\Managers;
 
 use App\Jobs\CreateCustomerIoEvent;
 use App\Jobs\SendSignupToCustomerIo;
+use App\Models\User;
 use App\Repositories\SignupRepository;
 
 class SignupManager
@@ -41,11 +42,15 @@ class SignupManager
         SendSignupToCustomerIo::dispatch($signup);
 
         if ($signup->referrer_user_id) {
-            CreateCustomerIoEvent::dispatch(
-                $signup->referrer_user_id,
-                'referral_signup_created',
-                $signup->getReferralSignupEventPayload(),
-            );
+            optional(User::find($signup->referrer_user_id), function (
+                $referrerUser
+            ) use ($signup) {
+                CreateCustomerIoEvent::dispatch(
+                    $referrerUser,
+                    'referral_signup_created',
+                    $signup->getReferralSignupEventPayload(),
+                );
+            });
         }
 
         // Log that a signup was created.
