@@ -2,7 +2,9 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Models\Campaign;
 use App\Models\Signup;
+use App\Models\User;
 use Faker\Generator as Faker;
 
 $factory->define(Signup::class, function (Faker $faker) {
