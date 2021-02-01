@@ -70,10 +70,6 @@ class PostManager
             });
         }
 
-        // return optional(User::find($id), function ($user) {
-        //     return $user->name;
-        // });
-
         // Log that a post was created.
         info('post_created', [
             'id' => $post->id,
