@@ -3,14 +3,16 @@
 namespace App\Models;
 
 use App\Models\Traits\HasCursor;
+use App\Models\User;
 use App\Services\GraphQL;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
+use Jenssegers\Mongodb\Eloquent\HybridRelations;
 
 class Signup extends Model
 {
-    use SoftDeletes, HasCursor;
+    use HasCursor, HybridRelations, SoftDeletes;
 
     /**
      * The attributes that should be cast to native types.
@@ -104,6 +106,14 @@ class Signup extends Model
     public function group()
     {
         return $this->belongsTo(Group::class);
+    }
+
+    /**
+     * Get the user associated with this signup.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'northstar_id');
     }
 
     /**
@@ -264,17 +274,14 @@ class Signup extends Model
      */
     public function getReferralSignupEventPayload()
     {
-        $userId = $this->northstar_id;
-        $user = User::find($userId);
-
         $campaignWebsite = app(GraphQL::class)->getCampaignWebsiteByCampaignId(
             $this->campaign_id,
         );
 
         return [
             'id' => $this->id,
-            'user_id' => $userId,
-            'user_display_name' => $user->display_name,
+            'user_id' => $this->northstar_id,
+            'user_display_name' => $this->user->display_name,
             'campaign_id' => (string) $this->campaign_id,
             'campaign_title' => Arr::get($campaignWebsite, 'title'),
             'created_at' => $this->created_at->toIso8601String(),
