@@ -2,7 +2,11 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Models\Action;
+use App\Models\Campaign;
 use App\Models\Post;
+use App\Models\Signup;
+use App\Models\User;
 use Faker\Generator as Faker;
 
 $factory->define(Post::class, function (Faker $faker) {
@@ -26,7 +30,7 @@ $factory->define(Post::class, function (Faker $faker) {
                 'campaign_id' => $attributes['campaign_id'],
             ])->id;
         },
-        'northstar_id' => $this->faker->northstar_id,
+        'northstar_id' => factory(User::class)->create(),
         'text' => $faker->sentence(),
         'location' => 'US-' . $faker->stateAbbr(),
         'source' => 'phpunit',

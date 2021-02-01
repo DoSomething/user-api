@@ -2,14 +2,16 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Models\Campaign;
 use App\Models\Signup;
+use App\Models\User;
 use Faker\Generator as Faker;
 
 $factory->define(Signup::class, function (Faker $faker) {
     $faker->addProvider(new FakerNorthstarId($faker));
 
     return [
-        'northstar_id' => $faker->northstar_id,
+        'northstar_id' => factory(User::class)->create(),
         'campaign_id' => function () {
             return factory(Campaign::class)->create()->id;
         },

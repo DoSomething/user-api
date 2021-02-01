@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasCursor;
+use App\Models\User;
 use App\Notifications\PostTagged;
 use App\Services\GraphQL;
 use Hashids\Hashids;
@@ -13,10 +14,11 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use Jenssegers\Mongodb\Eloquent\HybridRelations;
 
 class Post extends Model
 {
-    use HasCursor, Notifiable, SoftDeletes;
+    use HasCursor, HybridRelations, Notifiable, SoftDeletes;
 
     /**
      * Always load a user's own reaction,
@@ -162,6 +164,14 @@ class Post extends Model
     public function signup()
     {
         return $this->belongsTo(Signup::class);
+    }
+
+    /**
+     * Get the user associated with this signup.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'northstar_id');
     }
 
     /**
@@ -692,16 +702,11 @@ class Post extends Model
      */
     public function getReferralPostEventPayload()
     {
-        $userId = $this->northstar_id;
-
-        // The associated user for this post.
-        $user = app(GraphQL::class)->getUserById($userId);
-
         return array_merge(
             [
                 'id' => $this->id,
-                'user_id' => $userId,
-                'user_display_name' => Arr::get($user, 'displayName'),
+                'user_id' => $this->northstar_id,
+                'user_display_name' => $this->user->display_name,
                 'type' => $this->type,
                 'status' => $this->status,
                 'action_id' => $this->action_id,
