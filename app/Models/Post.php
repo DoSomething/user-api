@@ -695,13 +695,13 @@ class Post extends Model
         $userId = $this->northstar_id;
 
         // The associated user for this post.
-        $user = app(GraphQL::class)->getUserById($userId);
+        $user = User::find($userId);
 
         return array_merge(
             [
                 'id' => $this->id,
                 'user_id' => $userId,
-                'user_display_name' => Arr::get($user, 'displayName'),
+                'user_display_name' => $user->display_name,
                 'type' => $this->type,
                 'status' => $this->status,
                 'action_id' => $this->action_id,

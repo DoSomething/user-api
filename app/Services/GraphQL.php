@@ -109,27 +109,4 @@ class GraphQL
 
         return $this->query($query, $variables)['campaignWebsiteByCampaignId'];
     }
-
-    /**
-     * Query for a User by ID.
-     *
-     * @deprecated
-     * @param  $userId String
-     * @return array
-     */
-    public function getUserById($userId)
-    {
-        $query = '
-        query GetUserById($userId: String!) {
-          user(id: $userId) {
-            displayName
-          }
-        }';
-
-        $variables = [
-            'userId' => $userId,
-        ];
-
-        return $this->query($query, $variables)['user'];
-    }
 }

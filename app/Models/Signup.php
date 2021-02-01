@@ -265,7 +265,7 @@ class Signup extends Model
     public function getReferralSignupEventPayload()
     {
         $userId = $this->northstar_id;
-        $user = app(GraphQL::class)->getUserById($userId);
+        $user = User::find($userId);
 
         $campaignWebsite = app(GraphQL::class)->getCampaignWebsiteByCampaignId(
             $this->campaign_id,
@@ -274,7 +274,7 @@ class Signup extends Model
         return [
             'id' => $this->id,
             'user_id' => $userId,
-            'user_display_name' => Arr::get($user, 'displayName'),
+            'user_display_name' => $user->display_name,
             'campaign_id' => (string) $this->campaign_id,
             'campaign_title' => Arr::get($campaignWebsite, 'title'),
             'created_at' => $this->created_at->toIso8601String(),
