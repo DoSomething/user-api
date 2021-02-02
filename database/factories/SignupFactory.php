@@ -11,7 +11,9 @@ $factory->define(Signup::class, function (Faker $faker) {
     $faker->addProvider(new FakerNorthstarId($faker));
 
     return [
-        'northstar_id' => factory(User::class)->create(),
+        'northstar_id' => function () {
+            return factory(User::class)->create()->id;
+        },
         'campaign_id' => function () {
             return factory(Campaign::class)->create()->id;
         },
