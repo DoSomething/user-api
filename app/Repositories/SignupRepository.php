@@ -26,7 +26,7 @@ class SignupRepository
             : null;
         $signup->source = isset($data['source'])
             ? $data['source']
-            : token()->client();
+            : client_id();
         $signup->source_details = isset($data['source_details'])
             ? $data['source_details']
             : null;
