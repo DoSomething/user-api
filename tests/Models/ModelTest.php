@@ -2,7 +2,7 @@
 
 use App\Models\User;
 
-class ModelTest extends BrowserKitTestCase
+class ModelTest extends TestCase
 {
     /** @test */
     public function it_should_unset_null_fields()
@@ -20,6 +20,7 @@ class ModelTest extends BrowserKitTestCase
 
         // Make sure the field is unset on the actual document.
         $document = $this->getMongoDocument('users', $user->id);
+
         $this->assertArrayNotHasKey('mobile', $document);
         $this->assertArrayNotHasKey('last_name', $document);
     }
@@ -39,6 +40,7 @@ class ModelTest extends BrowserKitTestCase
 
         // Make sure the audit prop with audit info is added for the set attribute.
         $document = $this->getMongoDocument('users', $user->id);
+
         $this->assertArrayHasKey('audit', $document);
         $this->assertEquals(
             ['source' => 'northstar', 'updated_at' => $time],

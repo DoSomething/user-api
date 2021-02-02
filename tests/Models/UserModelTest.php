@@ -1,9 +1,8 @@
 <?php
 
 use App\Models\User;
-use App\Services\GraphQL;
 
-class UserModelTest extends BrowserKitTestCase
+class UserModelTest extends TestCase
 {
     /** @test */
     public function it_should_send_new_users_to_customer_io()
@@ -136,6 +135,7 @@ class UserModelTest extends BrowserKitTestCase
         $type = 'forgot-password';
 
         $user = factory(User::class)->create(['email' => $email]);
+
         $result = $user->getPasswordResetUrl($token, $type);
 
         $this->assertEquals(
@@ -154,6 +154,7 @@ class UserModelTest extends BrowserKitTestCase
         $subscribedStatusUser = factory(User::class)
             ->states('email-subscribed')
             ->create();
+
         $result = $subscribedStatusUser->toCustomerIoPayload();
 
         $this->assertTrue($result['email_subscription_status']);
@@ -166,6 +167,7 @@ class UserModelTest extends BrowserKitTestCase
         $unsubscribedStatusUser = factory(User::class)
             ->states('email-unsubscribed')
             ->create();
+
         $result = $unsubscribedStatusUser->toCustomerIoPayload();
 
         $this->assertFalse($result['email_subscription_status']);
@@ -176,6 +178,7 @@ class UserModelTest extends BrowserKitTestCase
     public function it_should_exclude_unsubscribed_in_customerio_payload_if_email_subscription_status_not_set()
     {
         $unknownStatusUser = factory(User::class)->create();
+
         $result = $unknownStatusUser->toCustomerIoPayload();
 
         $this->assertFalse(isset($result['email_subscription_status']));
@@ -253,7 +256,7 @@ class UserModelTest extends BrowserKitTestCase
             'sms_status' => 'stop',
         ]);
 
-        $this->assertEquals($subscribedUser->sms_subscription_topics, []);
+        $this->assertEquals($unsubscribedUser->sms_subscription_topics, []);
     }
 
     public function doesNotChangeSubscriptionTopicsIfExistsWhenChangingSubscribedStatus()
