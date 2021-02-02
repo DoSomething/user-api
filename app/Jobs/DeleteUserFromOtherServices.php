@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Jobs\Job;
 use App\Services\CustomerIo;
 use App\Services\Gambit;
 use App\Services\Rogue;

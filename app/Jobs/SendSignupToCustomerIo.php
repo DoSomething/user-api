@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Jobs\Job;
 use App\Jobs\Middleware\CustomerIoRateLimit;
 use App\Models\Signup;
 use App\Services\CustomerIo;

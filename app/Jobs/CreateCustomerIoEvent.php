@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Jobs\Job;
 use App\Models\User;
 use App\Services\CustomerIo;
 use Illuminate\Support\Facades\Redis;
