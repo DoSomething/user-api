@@ -4,17 +4,10 @@ namespace App\Jobs;
 
 use App\Models\User;
 use App\Services\CustomerIo;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Redis;
 
-class SendPasswordResetToCustomerIo implements ShouldQueue
+class SendPasswordResetToCustomerIo extends Job
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
     /**
      * The serialized user model.
      *
