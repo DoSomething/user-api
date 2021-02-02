@@ -542,7 +542,7 @@ function getAgeFromBirthdate($birthdate)
  */
 function getNorthstarId($request)
 {
-    if (is_admin_user() && !empty($request['northstar_id'])) {
+    if (is_staff_user() && !empty($request['northstar_id'])) {
         return $request['northstar_id'];
     }
 
