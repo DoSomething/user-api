@@ -69,7 +69,7 @@ trait WithAuthentication
     {
         $user = factory(User::class)->create();
 
-        return $this->asUser($user, ['user']);
+        return $this->asUser($user);
     }
 
     /**
@@ -81,7 +81,7 @@ trait WithAuthentication
     {
         $staff = factory(User::class, 'staff')->create();
 
-        return $this->asUser($staff, ['user', 'role:staff']);
+        return $this->asUser($staff);
     }
 
     /**
@@ -93,7 +93,7 @@ trait WithAuthentication
     {
         $admin = factory(User::class, 'admin')->create();
 
-        return $this->asUser($admin, ['user', 'client', 'role:admin', 'write']);
+        return $this->asUser($admin);
     }
 
     /**
@@ -156,8 +156,10 @@ trait WithAuthentication
      * @param array $scopes
      * @return $this
      */
-    public function asUser($user, $scopes = [])
-    {
+    public function asUser(
+        $user,
+        $scopes = ['user', 'activity', 'client', 'role:admin', 'write']
+    ) {
         return $this->withAccessToken($scopes, $user);
     }
 }
