@@ -1,12 +1,12 @@
 <?php
 
-use App\Auth\Role;
-use App\Auth\Scope;
 use App\Auth\Entities\ClientEntity;
 use App\Auth\Normalizer;
 use App\Auth\Repositories\AccessTokenRepository;
 use App\Auth\Repositories\KeyRepository;
 use App\Auth\Repositories\ScopeRepository;
+use App\Auth\Role;
+use App\Auth\Scope;
 use App\Models\Client;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
