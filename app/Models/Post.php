@@ -21,6 +21,13 @@ class Post extends Model
     use HasCursor, HybridRelations, Notifiable, SoftDeletes;
 
     /**
+     * The database connection that should be used by the model.
+     *
+     * @var string
+     */
+    protected $connection = 'mysql';
+
+    /**
      * Always load a user's own reaction,
      * if they're logged-in.
      */

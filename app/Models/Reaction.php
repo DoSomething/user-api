@@ -10,6 +10,13 @@ class Reaction extends Model
     use SoftDeletes;
 
     /**
+     * The database connection that should be used by the model.
+     *
+     * @var string
+     */
+    protected $connection = 'mysql';
+
+    /**
      * All of the relationships to be touched.
      *
      * @var array
