@@ -2,19 +2,13 @@
 
 namespace App\Jobs;
 
+use App\Jobs\Job;
 use App\Jobs\Middleware\CustomerIoRateLimit;
 use App\Models\Post;
 use App\Services\CustomerIo;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 
-class SendPostToCustomerIo implements ShouldQueue
+class SendPostToCustomerIo extends Job
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
     /**
      * The post to send to Customer.io.
      *

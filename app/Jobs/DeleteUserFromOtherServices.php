@@ -2,20 +2,14 @@
 
 namespace App\Jobs;
 
+use App\Jobs\Job;
 use App\Services\CustomerIo;
 use App\Services\Gambit;
 use App\Services\Rogue;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Redis;
 
-class DeleteUserFromOtherServices implements ShouldQueue
+class DeleteUserFromOtherServices extends Job
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
     /**
      * The user's ID.
      *

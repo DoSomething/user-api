@@ -2,18 +2,12 @@
 
 namespace App\Jobs;
 
+use App\Jobs\Job;
 use App\Models\User;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use Redis;
 
-class GetEmailSubStatusFromCustomerIo implements ShouldQueue
+class GetEmailSubStatusFromCustomerIo extends Job
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
     /**
      * The serialized user model.
      *
