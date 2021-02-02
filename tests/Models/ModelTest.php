@@ -20,6 +20,7 @@ class ModelTest extends TestCase
 
         // Make sure the field is unset on the actual document.
         $document = $this->getMongoDocument('users', $user->id);
+
         $this->assertArrayNotHasKey('mobile', $document);
         $this->assertArrayNotHasKey('last_name', $document);
     }
@@ -39,6 +40,7 @@ class ModelTest extends TestCase
 
         // Make sure the audit prop with audit info is added for the set attribute.
         $document = $this->getMongoDocument('users', $user->id);
+
         $this->assertArrayHasKey('audit', $document);
         $this->assertEquals(
             ['source' => 'northstar', 'updated_at' => $time],

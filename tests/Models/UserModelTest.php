@@ -136,6 +136,7 @@ class UserModelTest extends TestCase
         $type = 'forgot-password';
 
         $user = factory(User::class)->create(['email' => $email]);
+
         $result = $user->getPasswordResetUrl($token, $type);
 
         $this->assertEquals(
@@ -154,6 +155,7 @@ class UserModelTest extends TestCase
         $subscribedStatusUser = factory(User::class)
             ->states('email-subscribed')
             ->create();
+
         $result = $subscribedStatusUser->toCustomerIoPayload();
 
         $this->assertTrue($result['email_subscription_status']);
@@ -166,6 +168,7 @@ class UserModelTest extends TestCase
         $unsubscribedStatusUser = factory(User::class)
             ->states('email-unsubscribed')
             ->create();
+
         $result = $unsubscribedStatusUser->toCustomerIoPayload();
 
         $this->assertFalse($result['email_subscription_status']);
@@ -176,6 +179,7 @@ class UserModelTest extends TestCase
     public function it_should_exclude_unsubscribed_in_customerio_payload_if_email_subscription_status_not_set()
     {
         $unknownStatusUser = factory(User::class)->create();
+
         $result = $unknownStatusUser->toCustomerIoPayload();
 
         $this->assertFalse(isset($result['email_subscription_status']));

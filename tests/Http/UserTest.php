@@ -313,13 +313,17 @@ class UserTest extends TestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff', 'write'])
-            ->json('PUT', 'v2/users/' . $user->id, [
-                'first_name' => 'Alexander',
-                'last_name' => 'Hamilton',
-                'club_id' => 2,
-            ])
-            ->assertStatus(200);
+        $response = $this->asUser($staff, [
+            'user',
+            'role:staff',
+            'write',
+        ])->json('PUT', 'v2/users/' . $user->id, [
+            'first_name' => 'Alexander',
+            'last_name' => 'Hamilton',
+            'club_id' => 2,
+        ]);
+
+        $response->assertStatus(200);
 
         // The user should be updated.
         $this->assertMongoDatabaseHas('users', [
@@ -339,14 +343,18 @@ class UserTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $this->asUser($user, ['user', 'write'])
-            ->json('PUT', 'v2/users/' . $user->id, [
+        $response = $this->asUser($user, ['user', 'write'])->json(
+            'PUT',
+            'v2/users/' . $user->id,
+            [
                 'first_name' => 'Pepper',
                 'last_name' => 'Puppy',
                 'school_id' => '7110001',
                 'club_id' => 2,
-            ])
-            ->assertStatus(200);
+            ],
+        );
+
+        $response->assertStatus(200);
 
         // The user should be updated.
         $this->assertMongoDatabaseHas('users', [
@@ -370,12 +378,16 @@ class UserTest extends TestCase
 
         $user = factory(User::class)->create();
 
-        $this->asUser($user, ['user', 'write'])
-            ->json('PUT', 'v2/users/' . $user->id, [
+        $response = $this->asUser($user, ['user', 'write'])->json(
+            'PUT',
+            'v2/users/' . $user->id,
+            [
                 'first_name' => 'Pepper',
                 'last_name' => 'Puppy',
-            ])
-            ->assertStatus(200);
+            ],
+        );
+
+        $response->assertStatus(200);
 
         // Should not see the badges feature flag.
         $user->refresh();
@@ -393,12 +405,16 @@ class UserTest extends TestCase
         $user1 = factory(User::class)->create();
         $user2 = factory(User::class)->create();
 
-        $this->asUser($user2, ['user', 'role:staff', 'write'])
-            ->json('PUT', 'v2/users/' . $user1->id, [
-                'first_name' => 'Burt',
-                'last_name' => 'Macklin',
-            ])
-            ->assertStatus(401);
+        $response = $this->asUser($user2, [
+            'user',
+            'role:staff',
+            'write',
+        ])->json('PUT', 'v2/users/' . $user1->id, [
+            'first_name' => 'Burt',
+            'last_name' => 'Macklin',
+        ]);
+
+        $response->assertStatus(401);
 
         // The user should be updated.
         $this->assertMongoDatabaseHas('users', [
@@ -417,15 +433,15 @@ class UserTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $this->asMachine()
-            ->json('PUT', 'v2/users/' . $user->id, [
-                'first_name' => 'Wilhelmina',
-                'last_name' => 'Grubbly-Plank',
-                'school_id' => '11122019',
-                'club_id' => 2,
-                'referrer_user_id' => '5e7aa023fdce2754fc584dea',
-            ])
-            ->assertStatus(200);
+        $response = $this->asMachine()->json('PUT', 'v2/users/' . $user->id, [
+            'first_name' => 'Wilhelmina',
+            'last_name' => 'Grubbly-Plank',
+            'school_id' => '11122019',
+            'club_id' => 2,
+            'referrer_user_id' => '5e7aa023fdce2754fc584dea',
+        ]);
+
+        $response->assertStatus(200);
 
         // The user should be updated.
         $this->assertMongoDatabaseHas('users', [
@@ -471,11 +487,15 @@ class UserTest extends TestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff', 'write'])
-            ->json('PUT', 'v2/users/' . $user->id, [
-                'mobile' => '',
-            ])
-            ->assertStatus(200);
+        $response = $this->asUser($staff, [
+            'user',
+            'role:staff',
+            'write',
+        ])->json('PUT', 'v2/users/' . $user->id, [
+            'mobile' => '',
+        ]);
+
+        $response->assertStatus(200);
 
         // The user field should have been removed.
         $this->assertNull($user->fresh()->mobile);
@@ -487,11 +507,15 @@ class UserTest extends TestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff', 'write'])
-            ->json('PUT', 'v2/users/' . $user->id, [
-                'mobile' => null,
-            ])
-            ->assertStatus(200);
+        $response = $this->asUser($staff, [
+            'user',
+            'role:staff',
+            'write',
+        ])->json('PUT', 'v2/users/' . $user->id, [
+            'mobile' => null,
+        ]);
+
+        $response->assertStatus(200);
 
         // The user field should have been removed.
         $this->assertNull($user->fresh()->mobile);
@@ -507,11 +531,15 @@ class UserTest extends TestCase
         $user = factory(User::class)->create();
         $staff = factory(User::class, 'staff')->create();
 
-        $this->asUser($staff, ['user', 'role:staff'])
-            ->json('PUT', 'v2/users/' . $user->id, [
+        $response = $this->asUser($staff, ['user', 'role:staff'])->json(
+            'PUT',
+            'v2/users/' . $user->id,
+            [
                 'role' => 'admin',
-            ])
-            ->assertStatus(401);
+            ],
+        );
+
+        $response->assertStatus(401);
     }
 
     /**
@@ -612,19 +640,19 @@ class UserTest extends TestCase
      */
     public function testV2ValidatesCountryCode()
     {
-        $this->asAdminUser()
-            ->json('POST', 'v2/users', [
-                'email' => 'american@example.com',
-                'country' => 'united states',
-            ])
-            ->assertStatus(422);
+        $responseOne = $this->asAdminUser()->json('POST', 'v2/users', [
+            'email' => 'american@example.com',
+            'country' => 'united states',
+        ]);
 
-        $this->asAdminUser()
-            ->json('POST', 'v1/users', [
-                'email' => 'american@example.com',
-                'country' => 'us',
-            ])
-            ->assertStatus(201);
+        $responseOne->assertStatus(422);
+
+        $responseTwo = $this->asAdminUser()->json('POST', 'v1/users', [
+            'email' => 'american@example.com',
+            'country' => 'us',
+        ]);
+
+        $responseTwo->assertStatus(201);
     }
 
     /**
@@ -674,26 +702,26 @@ class UserTest extends TestCase
      */
     public function testV2ValidatesSmsSubscriptionTopics()
     {
-        $this->asAdminUser()
-            ->json('POST', 'v2/users', [
-                'email' => 'test@example.com',
-                'sms_subscription_topics' => ['bugs'],
-            ])
-            ->assertStatus(422);
+        $responseOne = $this->asAdminUser()->json('POST', 'v2/users', [
+            'email' => 'test@example.com',
+            'sms_subscription_topics' => ['bugs'],
+        ]);
 
-        $this->asAdminUser()
-            ->json('POST', 'v2/users', [
-                'email' => 'test@example.com',
-                'sms_subscription_topics' => 'bugs',
-            ])
-            ->assertStatus(500);
+        $responseOne->assertStatus(422);
 
-        $this->asAdminUser()
-            ->json('POST', 'v2/users', [
-                'email' => 'test@example.com',
-                'sms_subscription_topics' => ['voting'],
-            ])
-            ->assertStatus(201);
+        $responseTwo = $this->asAdminUser()->json('POST', 'v2/users', [
+            'email' => 'test@example.com',
+            'sms_subscription_topics' => 'bugs',
+        ]);
+
+        $responseTwo->assertStatus(500);
+
+        $responseThree = $this->asAdminUser()->json('POST', 'v2/users', [
+            'email' => 'test@example.com',
+            'sms_subscription_topics' => ['voting'],
+        ]);
+
+        $responseThree->assertStatus(201);
     }
 
     /**
@@ -703,17 +731,17 @@ class UserTest extends TestCase
      */
     public function testV2ValidatesMobile()
     {
-        $this->asAdminUser()
-            ->json('POST', 'v2/users', [
-                'mobile' => '000-00-0000',
-            ])
-            ->assertStatus(422);
+        $responseOne = $this->asAdminUser()->json('POST', 'v2/users', [
+            'mobile' => '000-00-0000',
+        ]);
 
-        $this->asAdminUser()
-            ->json('POST', 'v2/users', [
-                'mobile' => '212-254-2390',
-            ])
-            ->assertStatus(201);
+        $responseOne->assertStatus(422);
+
+        $responseTwo = $this->asAdminUser()->json('POST', 'v2/users', [
+            'mobile' => '212-254-2390',
+        ]);
+
+        $responseTwo->assertStatus(201);
     }
 
     /**
@@ -723,19 +751,19 @@ class UserTest extends TestCase
      */
     public function testV2ValidatesClubId()
     {
-        $this->asAdminUser()
-            ->json('POST', 'v2/users', [
-                'email' => 'test@example.com',
-                'club_id' => 'something bad',
-            ])
-            ->assertStatus(422);
+        $responseOne = $this->asAdminUser()->json('POST', 'v2/users', [
+            'email' => 'test@example.com',
+            'club_id' => 'something bad',
+        ]);
 
-        $this->asAdminUser()
-            ->json('POST', 'v2/users', [
-                'email' => 'test@example.com',
-                'club_id' => 1,
-            ])
-            ->assertStatus(201);
+        $responseOne->assertStatus(422);
+
+        $responseTwo = $this->asAdminUser()->json('POST', 'v2/users', [
+            'email' => 'test@example.com',
+            'club_id' => 1,
+        ]);
+
+        $responseTwo->assertStatus(201);
     }
 
     /**
