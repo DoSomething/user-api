@@ -5,8 +5,11 @@ use App\Auth\Normalizer;
 use App\Auth\Repositories\AccessTokenRepository;
 use App\Auth\Repositories\KeyRepository;
 use App\Auth\Repositories\ScopeRepository;
+use App\Auth\Role;
+use App\Auth\Scope;
 use App\Models\Client;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use libphonenumber\PhoneNumber;
@@ -539,17 +542,11 @@ function getAgeFromBirthdate($birthdate)
  */
 function getNorthstarId($request)
 {
-    if (
-        token()->role() === 'admin' ||
-        token()->role() === 'staff' ||
-        in_array('admin', token()->scopes())
-    ) {
-        return isset($request['northstar_id'])
-            ? $request['northstar_id']
-            : auth()->id();
+    if (is_staff_user() && !empty($request['northstar_id'])) {
+        return $request['northstar_id'];
     }
 
-    return auth()->id();
+    return Auth::id();
 }
 
 /**
@@ -561,7 +558,7 @@ function getNorthstarId($request)
 function is_admin_user(): bool
 {
     // If this is a machine client, then it's de-facto an admin:
-    if (token()->exists() && !token()->id()) {
+    if (Scope::allows('admin') && !Auth::id()) {
         return true;
     }
 
@@ -576,7 +573,7 @@ function is_admin_user(): bool
  */
 function is_staff_user(): bool
 {
-    return is_admin_user() || optional(auth()->user())->role === 'staff';
+    return is_admin_user() || optional(Auth::user())->role === 'staff';
 }
 
 /**
@@ -587,7 +584,7 @@ function is_staff_user(): bool
  */
 function is_owner($resource): bool
 {
-    return auth()->id() === $resource->northstar_id;
+    return Auth::id() === $resource->northstar_id;
 }
 
 /**

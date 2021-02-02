@@ -15,6 +15,13 @@ class Signup extends Model
     use HasCursor, HybridRelations, SoftDeletes;
 
     /**
+     * The database connection that should be used by the model.
+     *
+     * @var string
+     */
+    protected $connection = 'mysql';
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array

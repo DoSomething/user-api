@@ -68,6 +68,18 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     }
 
     /**
+     * Assert that a given where condition exists in the MySQL database.
+     *
+     * @param  string  $table
+     * @param  array  $data
+     * @return $this
+     */
+    protected function assertMysqlDatabaseHas($table, array $data)
+    {
+        return $this->assertDatabaseHas($table, $data, 'mysql');
+    }
+
+    /**
      * Assert that a given where condition exists in the MongoDB database.
      *
      * @param  string  $table

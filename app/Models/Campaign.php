@@ -16,6 +16,13 @@ class Campaign extends Model
     use HasCursor, Searchable, SoftDeletes;
 
     /**
+     * The database connection that should be used by the model.
+     *
+     * @var string
+     */
+    protected $connection = 'mysql';
+
+    /**
      * The accessors to append to the model's array form.
      *
      * @var array

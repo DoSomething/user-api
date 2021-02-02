@@ -55,6 +55,12 @@ trait CreatesApplication
             'name' => 'DoSomething Staffers Club',
             'leaderId' => new \MongoDB\BSON\ObjectId(),
         ]);
+        $this->graphqlMock
+            ->shouldReceive('getCampaignWebsiteByCampaignId')
+            ->andReturn([
+                'title' => 'Test Example Campaign',
+                'slug' => 'test-example-campaign',
+            ]);
 
         return $app;
     }
