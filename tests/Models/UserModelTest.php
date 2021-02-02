@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\User;
-use App\Services\GraphQL;
 
 class UserModelTest extends TestCase
 {
