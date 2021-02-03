@@ -347,13 +347,6 @@ class SignupTest extends TestCase
 
         $response->assertOk();
         $response->assertJsonCount(0, 'data.0.posts.data');
-
-        // $decodedResponse = $response->decodeResponseJson();
-
-        // $this->assertEquals(
-        //     true,
-        //     empty($decodedResponse['data'][0]['posts']['data']),
-        // );
     }
 
     /**
