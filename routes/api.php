@@ -1,6 +1,8 @@
 <?php
 
-/**
+use Illuminate\Support\Facades\Route;
+
+/*
  * Here is where you can register API routes for your application. These
  * routes are loaded by the RouteServiceProvider within a group which
  * contains the "api" middleware group. Now create something great!
@@ -8,6 +10,19 @@
  * @var \Illuminate\Routing\Router $router
  * @see \App\Providers\RouteServiceProvider
  */
+
+Route::group(
+    // TODO: Do we want to use 'api/' prefix for v1 & v2 routes too?
+    ['prefix' => 'api/v3', 'middleware' => ['guard:api']],
+    function () {
+        // signups
+        Route::post('signups', 'SignupsController@store');
+        Route::get('signups', 'SignupsController@index');
+        Route::get('signups/{signup}', 'SignupsController@show');
+        Route::patch('signups/{signup}', 'SignupsController@update');
+        Route::delete('signups/{signup}', 'SignupsController@destroy');
+    },
+);
 
 // https://profile.dosomething.org/v2/
 Route::group(['prefix' => 'v2', 'as' => 'v2.'], function () {
