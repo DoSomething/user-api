@@ -10,27 +10,45 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Validation\ValidationException;
 
 abstract class Controller extends BaseController
 {
     use DispatchesJobs,
         AuthorizesRequests,
-        ValidatesRequests,
         FiltersRequests,
         TransformsResponses;
+    use ValidatesRequests {
+        validate as traitValidate;
+    }
 
     /**
-     * Throw the failed validation exception with our custom formatting. Overrides the
-     * `throwValidationException` method from the `ValidatesRequests` trait.
+     * Validate the given request with the given rules.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Illuminate\Contracts\Validation\Validator $validator
-     * @throws NorthstarValidationException
+     * @param  \Illuminate\Http\Request  $request
+     * @param  array  $rules
+     * @param  array  $messages
+     * @param  array  $customAttributes
+     * @return array
+     *
+     * @throws \Illuminate\Validation\ValidationException
      */
-    protected function throwValidationException(Request $request, $validator)
-    {
-        throw new NorthstarValidationException(
-            $this->formatValidationErrors($validator),
-        );
+    public function validate(
+        Request $request,
+        array $rules,
+        array $messages = [],
+        array $customAttributes = []
+    ) {
+        try {
+            return $this->traitValidate(
+                $request,
+                $rules,
+                $messages,
+                $customAttributes,
+            );
+        } catch (ValidationException $exception) {
+            // This tells our handler to use Northstar's custom response formatting.
+            throw new NorthstarValidationException($exception->errors());
+        }
     }
 }

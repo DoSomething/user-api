@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Auth\Role;
 use App\Http\Transformers\SignupTransformer;
 use App\Managers\SignupManager;
 use App\Models\Campaign;
@@ -9,6 +10,7 @@ use App\Models\Signup;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class SignupsController extends ActivityApiController
@@ -42,12 +44,12 @@ class SignupsController extends ActivityApiController
         $this->signups = $signups;
         $this->transformer = new SignupTransformer();
 
-        $this->middleware('scopes:activity');
+        $this->middleware('scope:activity');
         $this->middleware('auth:api', [
             'only' => ['store', 'update', 'destroy'],
         ]);
         $this->middleware('role:admin,staff', ['only' => ['destroy']]);
-        $this->middleware('scopes:write', [
+        $this->middleware('scope:write', [
             'only' => ['store', 'update', 'destroy'],
         ]);
     }
@@ -180,10 +182,8 @@ class SignupsController extends ActivityApiController
         ]);
 
         // Only allow an admin or the user who owns the signup to update.
-        if (
-            token()->role() === 'admin' ||
-            auth()->id() === $signup->northstar_id
-        ) {
+        // TODO: Should be using a policy method here.
+        if (Role::allows(['admin']) || Auth::id() === $signup->northstar_id) {
             // why_participated is the only thing that can be changed
             $this->signups->update($signup, $validatedRequest);
 

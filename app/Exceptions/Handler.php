@@ -162,21 +162,15 @@ class Handler extends ExceptionHandler
     protected function invalidated($request, $e)
     {
         $wantsJson = $request->ajax() || $request->wantsJson();
-        if ($wantsJson && $e instanceof ValidationException) {
-            return response()->json(
-                [
-                    'error' => [
-                        'code' => 422,
-                        'message' => 'Failed validation.',
-                        'fields' => $e->errors(),
-                    ],
-                ],
-                422,
-            );
-        }
 
+        // TODO: We use a custom response format for validation errors that used to
+        // be a part of Northstar, our identity API. We should standardize these.
         if ($wantsJson && $e instanceof NorthstarValidationException) {
             return $e->getResponse();
+        }
+
+        if ($wantsJson) {
+            return $this->invalidJson($request, $e);
         }
 
         return redirect()
