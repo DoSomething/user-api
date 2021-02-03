@@ -42,16 +42,12 @@ class SignupTest extends TestCase
         ]);
 
         // Make sure the signup is persisted.
-        $this->assertMysqlDatabaseHas(
-            'signups',
-            [
-                'northstar_id' => $user->id,
-                'campaign_id' => $campaignId,
-                'quantity' => null,
-                'details' => 'affiliate-messaging',
-            ],
-            'mysql',
-        );
+        $this->assertMysqlDatabaseHas('signups', [
+            'northstar_id' => $user->id,
+            'campaign_id' => $campaignId,
+            'quantity' => null,
+            'details' => 'affiliate-messaging',
+        ]);
     }
 
     /**
