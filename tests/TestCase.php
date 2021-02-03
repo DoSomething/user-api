@@ -1,13 +1,14 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\CreatesApplication;
 use Tests\WithAuthentication;
 use Tests\WithMocks;
 
 abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
-    use CreatesApplication, WithMocks, WithAuthentication;
+    use CreatesApplication, RefreshDatabase, WithMocks, WithAuthentication;
 
     /**
      * The base URL to use while testing the application.
