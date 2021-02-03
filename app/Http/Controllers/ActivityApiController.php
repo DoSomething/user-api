@@ -18,19 +18,4 @@ abstract class ActivityApiController extends BaseController
         ValidatesRequests,
         FiltersActivityRequests,
         TransformsResponses;
-
-    /**
-     * Throw the failed validation exception with our custom formatting. Overrides the
-     * `throwValidationException` method from the `ValidatesRequests` trait.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Illuminate\Contracts\Validation\Validator $validator
-     * @throws NorthstarValidationException
-     */
-    protected function throwValidationException(Request $request, $validator)
-    {
-        throw new NorthstarValidationException(
-            $this->formatValidationErrors($validator),
-        );
-    }
 }
