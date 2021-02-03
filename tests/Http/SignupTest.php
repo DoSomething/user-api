@@ -697,7 +697,7 @@ class SignupTest extends TestCase
     public function testSignupIndexWithIncludedUser()
     {
         $user = factory(User::class)->create([
-            'addr_ztp' => '10010',
+            'addr_zip' => '10010',
         ]);
 
         factory(Signup::class)->create([
