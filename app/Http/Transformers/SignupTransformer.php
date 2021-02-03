@@ -56,10 +56,8 @@ class SignupTransformer extends TransformerAbstract
      */
     public function includePosts(Signup $signup)
     {
-        // Only allow an admin or the user who owns the signup to see the signup's unapproved posts.
-        $post = $signup->visiblePosts;
-
-        return $this->collection($post, new PostTransformer());
+        // When including posts, only include posts the user should be able to see:
+        return $this->collection($signup->visiblePosts, new PostTransformer());
     }
 
     /**
@@ -70,13 +68,7 @@ class SignupTransformer extends TransformerAbstract
      */
     public function includeUser(Signup $signup)
     {
-        $northstar_id = $signup->northstar_id;
-
-        return $this->item(
-            // TODO: Update to use Northstar's Registrar method.
-            User::find($northstar_id),
-            new UserTransformer(),
-        );
+        return $this->item($signup->user, new UserTransformer());
     }
 
     /**
