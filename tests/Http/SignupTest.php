@@ -696,7 +696,9 @@ class SignupTest extends TestCase
      */
     public function testSignupIndexWithIncludedUser()
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create([
+            'addr_ztp' => '10010',
+        ]);
 
         factory(Signup::class)->create([
             'northstar_id' => $user->id,
@@ -708,10 +710,7 @@ class SignupTest extends TestCase
         );
 
         $response->assertOk();
-        $response->assertJsonPath(
-            'data.0.user.data.first_name',
-            $user->first_name,
-        );
+        $response->assertJsonPath('data.0.user.data.addr_zip', '10010');
     }
 
     /**
