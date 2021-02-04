@@ -38,7 +38,7 @@ class CampaignTest extends TestCase
 
         $response = $this->getJson('api/v3/campaigns');
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertJsonPath('meta.pagination.count', 5);
     }
 
@@ -56,12 +56,12 @@ class CampaignTest extends TestCase
 
         $responseOne = $this->getJson('api/v3/campaigns?filter[is_open]=true');
 
-        $responseOne->assertStatus(200);
+        $responseOne->assertOk();
         $responseOne->assertJsonPath('meta.pagination.count', 5);
 
         $responseTwo = $this->getJson('api/v3/campaigns?filter[is_open]=false');
 
-        $responseTwo->assertStatus(200);
+        $responseTwo->assertOk();
         $responseTwo->assertJsonPath('meta.pagination.count', 3);
     }
 
@@ -83,14 +83,14 @@ class CampaignTest extends TestCase
             'api/v3/campaigns?filter[has_website]=true',
         );
 
-        $responseOne->assertStatus(200);
+        $responseOne->assertOk();
         $responseOne->assertJsonPath('meta.pagination.count', 5);
 
         $responseTwo = $this->getJson(
             'api/v3/campaigns?filter[has_website]=false',
         );
 
-        $responseTwo->assertStatus(200);
+        $responseTwo->assertOk();
         $responseTwo->assertJsonPath('meta.pagination.count', 3);
     }
 
@@ -120,7 +120,7 @@ class CampaignTest extends TestCase
                 'api/v3/campaigns?filter[cause]=' . $cause,
             );
 
-            $response->assertStatus(200);
+            $response->assertOk();
             $response->assertJsonPath('meta.pagination.count', 1);
             $response->assertJsonPath(
                 'data.0.id',
@@ -134,7 +134,7 @@ class CampaignTest extends TestCase
                 implode(',', array_slice($causes, 0, 3)),
         );
 
-        $responseTwo->assertStatus(200);
+        $responseTwo->assertOk();
         $responseTwo->assertJsonPath('meta.pagination.count', 1);
         $responseTwo->assertJsonPath(
             'data.0.id',
@@ -244,7 +244,7 @@ class CampaignTest extends TestCase
 
         $response = $this->getJson('api/v3/campaigns/' . $campaign->id);
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertJsonPath('data.id', $campaign->id);
     }
 
