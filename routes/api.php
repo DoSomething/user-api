@@ -21,6 +21,11 @@ Route::group(
         Route::get('signups/{signup}', 'SignupsController@show');
         Route::patch('signups/{signup}', 'SignupsController@update');
         Route::delete('signups/{signup}', 'SignupsController@destroy');
+
+        // campaigns
+        Route::get('campaigns', 'CampaignsController@index');
+        Route::get('campaigns/{campaign}', 'CampaignsController@show');
+        Route::patch('campaigns/{campaign}', 'CampaignsController@update');
     },
 );
 
