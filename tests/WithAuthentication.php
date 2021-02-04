@@ -28,20 +28,6 @@ trait WithAuthentication
     }
 
     /**
-     * Make a new authenticated admin user.
-     *
-     * @return \App\Models\User
-     */
-    protected function makeAuthAdminUser()
-    {
-        $admin = factory(User::class, 'admin')->create();
-
-        $this->be($admin, 'web');
-
-        return $admin;
-    }
-
-    /**
      * Use the given API key for this request.
      *
      * @param Client $client

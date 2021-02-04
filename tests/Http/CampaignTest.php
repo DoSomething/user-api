@@ -39,7 +39,6 @@ class CampaignTest extends TestCase
         $response = $this->getJson('api/v3/campaigns');
 
         $response->assertStatus(200);
-
         $response->assertJsonPath('meta.pagination.count', 5);
     }
 
