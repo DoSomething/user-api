@@ -123,4 +123,25 @@ class CustomerIo
 
         return $this->client->delete('customers/' . $id);
     }
+
+    /**
+     * Sends a transactional email.
+     * @see https://customer.io/docs/api/#operation/sendEmail
+     *
+     * @param string $to
+     */
+    public function sendEmail(string $to, $transactionalMessageId = 2)
+    {
+        $response = $this->client->post('send/email', [
+            'json' => [
+                'to' => $to,
+                'transactional_message_id' => $transactionalMessageId,
+                'identifiers' => [
+                    'id' => 'taft',
+                ],
+            ],
+        ]);
+
+        info('Sent Customer.io transactional email', ['to' => $to]);
+    }
 }
