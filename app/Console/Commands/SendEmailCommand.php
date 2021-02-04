@@ -44,6 +44,6 @@ class SendEmailCommand extends Command
 
         SendCustomerIoEmail::dispatch($to, $transactionalMessageId, $data);
 
-        $this->info('Dispatched email with transactional_message_id ' . $transactionalMessageId . ' to ' . $to );
+        $this->info('Dispatched email with transactional_message_id ' . $transactionalMessageId . ' to ' . $to);
     }
 }

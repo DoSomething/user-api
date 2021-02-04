@@ -8,17 +8,33 @@ use Exception;
 class CustomerIo
 {
     /**
-     * The Customer.io client.
+     * The Customer.io App API client.
      *
      * @var Client
      */
-    protected $client;
+    protected $appApiClient;
 
     /**
-     * Create a new Customer.io API client.
+     * The Customer.io Track API client.
+     *
+     * @var Client
+     */
+    protected $trackApiClient;
+
+    /**
+     * Create new clients for the Customer.io App API and Track API.
      */
     public function __construct()
     {
+        $appApiConfig = config('services.customerio.app_api');
+
+        $this->appApiClient = new \GuzzleHttp\Client([
+            'base_uri' => $appApiConfig['url'],
+            'headers' => [
+                'Authorization' => 'Bearer ' . $appApiConfig['api_key'],
+            ],
+        ]);
+
         $trackApiConfig = config('services.customerio.track_api');
 
         $this->trackApiClient = new \GuzzleHttp\Client([
@@ -26,15 +42,6 @@ class CustomerIo
             'auth' => [
                 $trackApiConfig['username'],
                 $trackApiConfig['password'],
-            ],
-        ]);
-
-        $appApiConfig = config('services.customerio.app_api');
-
-        $this->appApiClient = new \GuzzleHttp\Client([
-            'base_uri' => $appApiConfig['url'],
-            'headers' => [
-                'Authorization' => 'Bearer ' . $appApiConfig['api_key'],
             ],
         ]);
     }
@@ -146,8 +153,6 @@ class CustomerIo
      */
     public function sendEmail($to, $transactionalMessageId, $messageData = [])
     {
-        logger('Sending Customer.io transactional email', ['to' => $to, 'data' => $messageData]);
-
         $response = $this->appApiClient->post('send/email', [
             'json' => [
                 'identifiers' => [
@@ -158,7 +163,5 @@ class CustomerIo
                 'transactional_message_id' => $transactionalMessageId,
             ],
         ]);
-
-        logger('Sent Customer.io transactional email', ['to' => $to]);
     }
 }
