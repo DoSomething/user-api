@@ -38,6 +38,12 @@ class SendEmailCommand extends Command
      */
     public function handle()
     {
-        SendCustomerIoEmail::dispatch($this->argument('to'));
+        $to = $this->argument('to');
+        $data = ['actionUrl' => 'https://www.dosomething.org'];
+        $transactionalMessageId = 2;
+
+        SendCustomerIoEmail::dispatch($to, $transactionalMessageId, $data);
+
+        $this->info('Dispatched email with transactional_message_id ' . $transactionalMessageId . ' to ' . $to );
     }
 }

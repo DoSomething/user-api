@@ -19,11 +19,23 @@ class CustomerIo
      */
     public function __construct()
     {
-        $config = config('services.customerio');
+        $trackApiConfig = config('services.customerio.track_api');
 
-        $this->client = new \GuzzleHttp\Client([
-            'base_uri' => $config['url'],
-            'auth' => [$config['username'], $config['password']],
+        $this->trackApiClient = new \GuzzleHttp\Client([
+            'base_uri' => $trackApiConfig['url'],
+            'auth' => [
+                $trackApiConfig['username'],
+                $trackApiConfig['password'],
+            ],
+        ]);
+
+        $appApiConfig = config('services.customerio.app_api');
+
+        $this->appApiClient = new \GuzzleHttp\Client([
+            'base_uri' => $appApiConfig['url'],
+            'headers' => [
+                'Authorization' => 'Bearer ' . $appApiConfig['api_key'],
+            ],
         ]);
     }
 
@@ -57,7 +69,7 @@ class CustomerIo
             return;
         }
 
-        $response = $this->client->post('customers/' . $user->id . '/events', [
+        $response = $this->trackApiClient->post('customers/' . $user->id . '/events', [
             'json' => ['name' => $eventName, 'data' => $eventData],
         ]);
 
@@ -93,7 +105,7 @@ class CustomerIo
             return;
         }
 
-        $response = $this->client->put('customers/' . $user->id, [
+        $response = $this->trackApiClient->put('customers/' . $user->id, [
             'json' => $payload,
         ]);
 
@@ -121,7 +133,7 @@ class CustomerIo
             return;
         }
 
-        return $this->client->delete('customers/' . $id);
+        return $this->trackApiClient->delete('customers/' . $id);
     }
 
     /**
@@ -129,19 +141,24 @@ class CustomerIo
      * @see https://customer.io/docs/api/#operation/sendEmail
      *
      * @param string $to
+     * @param int $transactionalMessageId
+     * @param array $messageData
      */
-    public function sendEmail(string $to, $transactionalMessageId = 2)
+    public function sendEmail($to, $transactionalMessageId, $messageData = [])
     {
-        $response = $this->client->post('send/email', [
+        logger('Sending Customer.io transactional email', ['to' => $to, 'data' => $messageData]);
+
+        $response = $this->appApiClient->post('send/email', [
             'json' => [
-                'to' => $to,
-                'transactional_message_id' => $transactionalMessageId,
                 'identifiers' => [
                     'id' => 'taft',
                 ],
+                'message_data' => $messageData,
+                'to' => $to,
+                'transactional_message_id' => $transactionalMessageId,
             ],
         ]);
 
-        info('Sent Customer.io transactional email', ['to' => $to]);
+        logger('Sent Customer.io transactional email', ['to' => $to]);
     }
 }

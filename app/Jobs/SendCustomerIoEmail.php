@@ -21,14 +21,32 @@ class SendCustomerIoEmail implements ShouldQueue
     protected $to;
 
     /**
+     * The Customer.io transactional message ID to send.
+     *
+     * @var string
+     */
+    protected $transactionalMessageId;
+
+    /**
+     * Key/value pairs to use within the transactional email content.
+     *
+     * @var string
+     */
+    protected $messageData;
+
+    /**
      * Create a new job instance.
      *
      * @param string $to
+     * @param int $transactionalMessageId
+     * @param array $messageData
      * @return void
      */
-    public function __construct($to)
+    public function __construct($to, $transactionalMessageId, $messageData)
     {
         $this->to = $to;
+        $this->transactionalMessageId = $transactionalMessageId;
+        $this->messageData = $messageData;
     }
 
     /**
@@ -38,16 +56,21 @@ class SendCustomerIoEmail implements ShouldQueue
      */
     public function handle(CustomerIo $customerIo)
     {
-        // Rate limit Customer.io API requests to 10/s.
+        /**
+         * Rate limit Customer.io API requests to 100/s.
+         * @see https://customer.io/docs/api/#tag/appLimit
+         */
         $throttler = Redis::throttle('customerio')
-            ->allow(10)
+            ->allow(100)
             ->every(1);
 
         $throttler->then(
             function () use ($customerIo) {
-                $customerIo->sendEmail($this->to);
-
-                logger('Sent Customer.io transactional email', ['to' => $this->to]);
+                $customerIo->sendEmail(
+                    $this->to,
+                    $this->transactionalMessageId,
+                    $this->messageData,
+                );
             },
             function () {
                 // Could not obtain lock... release to the queue.
