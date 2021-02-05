@@ -26,6 +26,13 @@ Route::group(
         Route::get('campaigns', 'CampaignsController@index');
         Route::get('campaigns/{campaign}', 'CampaignsController@show');
         Route::patch('campaigns/{campaign}', 'CampaignsController@update');
+
+        // posts
+        Route::post('posts', 'PostsController@store');
+        Route::get('posts', 'PostsController@index');
+        Route::get('posts/{post}', 'PostsController@show');
+        Route::patch('posts/{post}', 'PostsController@update');
+        Route::delete('posts/{post}', 'PostsController@destroy');
     },
 );
 
