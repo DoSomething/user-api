@@ -56,6 +56,15 @@ $factory->state(Post::class, 'voter-reg', [
     'type' => 'voter-reg',
 ]);
 
+$factory->state(Post::class, 'anonymous', [
+    'action_id' => function (array $attributes) {
+        return factory(Action::class)->create([
+            'campaign_id' => $attributes['campaign_id'],
+            'anonymous' => true,
+        ])->id;
+    },
+]);
+
 /*
  * Post status factory states.
  */
