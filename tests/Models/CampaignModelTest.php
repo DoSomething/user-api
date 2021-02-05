@@ -4,7 +4,7 @@ use App\Models\Action;
 use App\Models\Campaign;
 use App\Models\GroupType;
 
-class CampaignTest extends TestCase
+class CampaignModelTest extends TestCase
 {
     /**
      * Test expected payload for Laravel Scout / Algolia.
