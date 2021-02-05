@@ -42,7 +42,7 @@ class SendCustomerIoEmail implements ShouldQueue
      * @param array $messageData
      * @return void
      */
-    public function __construct($to, $transactionalMessageId, $messageData)
+    public function __construct($to, $transactionalMessageId, $messageData = [])
     {
         $this->to = $to;
         $this->transactionalMessageId = $transactionalMessageId;

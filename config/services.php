@@ -22,11 +22,11 @@ return [
         'app_api' => [
             'api_key' => env('CUSTOMER_IO_APP_API_KEY'),
             'url' => 'https://api.customer.io/v1/',
-            'profile_id' => env('CUSTOMER_IO_APP_PROFILE_ID'),
+            'identifier_id' => env('CUSTOMER_IO_APP_IDENTIFIER_ID', 'taft'),
             'transactional_message_ids' => [
                 'forgot_password' => env('CUSTOMER_IO_FORGOT_PASSWORD_TRANSACTIONAL_MESSAGE_ID'),
                 'password_updated' => env('CUSTOMER_IO_PASSWORD_UPDATED_TRANSACTIONAL_MESSAGE_ID'),
-            ],
+            ], 
         ],
         'track_api' => [
             'url' => 'https://track.customer.io/api/v1/',

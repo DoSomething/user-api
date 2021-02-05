@@ -39,10 +39,9 @@ class SendEmailCommand extends Command
     public function handle()
     {
         $to = $this->argument('to');
-        $data = ['actionUrl' => 'https://www.dosomething.org'];
-        $transactionalMessageId = 2;
+        $transactionalMessageId = config('services.customerio.app_api.transactional_message_ids.password_updated');
 
-        SendCustomerIoEmail::dispatch($to, $transactionalMessageId, $data);
+        SendCustomerIoEmail::dispatch($to, $transactionalMessageId);
 
         $this->info('Dispatched email with transactional_message_id ' . $transactionalMessageId . ' to ' . $to);
     }

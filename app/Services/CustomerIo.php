@@ -153,15 +153,18 @@ class CustomerIo
      */
     public function sendEmail($to, $transactionalMessageId, $messageData = [])
     {
-        $response = $this->appApiClient->post('send/email', [
-            'json' => [
-                'identifiers' => [
-                    'id' => 'taft',
-                ],
-                'message_data' => $messageData,
-                'to' => $to,
-                'transactional_message_id' => $transactionalMessageId,
+        $payload = [
+            'identifiers' => [
+                'id' => config('services.customerio.app_api.identifier_id'),
             ],
-        ]);
+            'to' => $to,
+            'transactional_message_id' => $transactionalMessageId,
+        ];
+
+        if ($messageData) {
+            $payload['message_data'] = $messageData;
+        }
+
+        $response = $this->appApiClient->post('send/email', ['json' => $payload]);
     }
 }
