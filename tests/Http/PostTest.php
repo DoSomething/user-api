@@ -980,7 +980,7 @@ class PostTest extends TestCase
         $response = $this->asStaffUser()->getJson('api/v3/posts');
 
         $response->assertOk();
-        $response->assertJsonPath('data.1.northstar_id', $post->northstar_id);
+        $response->assertJsonPath('data.0.northstar_id', $post->northstar_id);
     }
 
     /**
