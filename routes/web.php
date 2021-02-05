@@ -33,6 +33,11 @@ Route::post('totp', 'TotpController@verify');
 Route::get('totp/configure', 'TotpController@configure');
 Route::post('totp/configure', 'TotpController@store');
 
+// Campaigns
+Route::resource('campaigns', 'CampaignsController', [
+    'except' => ['index', 'show'],
+]);
+
 // Facebook Continue
 Route::get('facebook/continue', 'FacebookController@redirectToProvider');
 Route::get('facebook/verify', 'FacebookController@handleProviderCallback');

@@ -16,7 +16,7 @@ class CampaignsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:web');
         $this->middleware('role:admin,staff');
 
         $this->rules = [
