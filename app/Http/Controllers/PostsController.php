@@ -59,12 +59,12 @@ class PostsController extends ActivityApiController
         $this->signups = $signups;
         $this->transformer = $transformer;
 
-        $this->middleware('scopes:activity');
+        $this->middleware('scope:activity');
         $this->middleware('auth:api', [
             'only' => ['store', 'update', 'destroy'],
         ]);
         $this->middleware('role:admin,staff', ['only' => ['destroy']]);
-        $this->middleware('scopes:write', [
+        $this->middleware('scope:write', [
             'only' => ['store', 'update', 'destroy'],
         ]);
     }
