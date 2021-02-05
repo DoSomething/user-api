@@ -3,7 +3,7 @@
 namespace App\Http\Transformers;
 
 use App\Models\Post;
-use Gate;
+use Illuminate\Support\Facades\Gate;
 use League\Fractal\TransformerAbstract;
 
 class PostTransformer extends TransformerAbstract
