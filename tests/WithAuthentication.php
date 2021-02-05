@@ -158,7 +158,14 @@ trait WithAuthentication
      */
     public function asUser(
         $user,
-        $scopes = ['user', 'activity', 'client', 'role:admin', 'write']
+        $scopes = [
+            'user',
+            'activity',
+            'client',
+            'role:staff',
+            'role:admin',
+            'write',
+        ]
     ) {
         return $this->withAccessToken($scopes, $user);
     }
