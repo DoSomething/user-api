@@ -26,7 +26,7 @@ return [
             'transactional_message_ids' => [
                 'forgot_password' => env('CUSTOMER_IO_FORGOT_PASSWORD_TRANSACTIONAL_MESSAGE_ID'),
                 'password_updated' => env('CUSTOMER_IO_PASSWORD_UPDATED_TRANSACTIONAL_MESSAGE_ID'),
-            ], 
+            ],
         ],
         'track_api' => [
             'url' => 'https://track.customer.io/api/v1/',
