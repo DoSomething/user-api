@@ -23,14 +23,14 @@ class SendCustomerIoEmail implements ShouldQueue
     /**
      * The Customer.io transactional message ID to send.
      *
-     * @var string
+     * @var int
      */
     protected $transactionalMessageId;
 
     /**
      * Key/value pairs to use within the transactional email content.
      *
-     * @var string
+     * @var array
      */
     protected $messageData;
 
