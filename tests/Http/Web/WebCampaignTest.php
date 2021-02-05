@@ -107,12 +107,6 @@ class WebCampaignTest extends TestCase
         // Make sure the campaign is deleted.
         $response = $this->getJson('api/v3/campaigns/' . $campaign->id);
 
-        $response->dump();
-
         $response->assertNotFound();
-        $response->assertJsonPath(
-            'error.message',
-            'That resource could not be found.',
-        );
     }
 }

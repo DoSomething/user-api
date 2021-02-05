@@ -32,8 +32,6 @@ class CampaignTest extends TestCase
      */
     public function testCampaignIndex()
     {
-        $this->withoutExceptionHandling();
-
         factory(Campaign::class, 5)->create();
 
         $response = $this->getJson('api/v3/campaigns');
@@ -106,7 +104,7 @@ class CampaignTest extends TestCase
 
         // Let's test against pairs of three causes each so that we have a first, last, and middle cause
         // (ensuring we're testing our filtering logic against surrounding commas).
-        $campaignWithFirstThreeCauses = factory(Campaign::class, 1)->create([
+        $campaignWithFirstThreeCauses = factory(Campaign::class)->create([
             'cause' => array_slice($causes, 0, 3),
         ]);
 
@@ -124,7 +122,7 @@ class CampaignTest extends TestCase
             $response->assertJsonPath('meta.pagination.count', 1);
             $response->assertJsonPath(
                 'data.0.id',
-                $campaignWithFirstThreeCauses->first()['id'],
+                $campaignWithFirstThreeCauses->id,
             );
         }
 
@@ -138,7 +136,7 @@ class CampaignTest extends TestCase
         $responseTwo->assertJsonPath('meta.pagination.count', 1);
         $responseTwo->assertJsonPath(
             'data.0.id',
-            $campaignWithFirstThreeCauses->first()['id'],
+            $campaignWithFirstThreeCauses->id,
         );
 
         // Test that invalid causes are rejected by the filter:
@@ -169,9 +167,7 @@ class CampaignTest extends TestCase
         $responseOne->assertJsonCount(3, 'data');
 
         // Then, we'll use the last post's cursor to fetch the remaining two:
-        $json = $responseOne->json();
-
-        $lastCursor = $json['data'][2]['cursor'];
+        $lastCursor = $responseOne->json('data.2.cursor');
 
         $responseTwo = $this->asAdminUser()->getJson(
             $endpoint . '&cursor[after]=' . $lastCursor,
