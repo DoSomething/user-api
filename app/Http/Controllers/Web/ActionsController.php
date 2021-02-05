@@ -17,7 +17,7 @@ class ActionsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:web');
         $this->middleware('role:admin,staff');
 
         $this->rules = [
@@ -69,7 +69,11 @@ class ActionsController extends Controller
         $this->validate(
             $request,
             array_merge_recursive($this->rules, [
-                'campaign_id' => ['required', 'integer', 'exists:campaigns,id'],
+                'campaign_id' => [
+                    'required',
+                    'integer',
+                    'exists:mysql.campaigns,id',
+                ],
                 'callpower_campaign_id' => [Rule::unique('actions')],
             ]),
         );
