@@ -24,8 +24,8 @@ return [
             'url' => 'https://api.customer.io/v1/',
             'identifier_id' => env('CUSTOMER_IO_APP_IDENTIFIER_ID', 'taft'),
             'transactional_message_ids' => [
-                'forgot_password' => env('CUSTOMER_IO_FORGOT_PASSWORD_TRANSACTIONAL_MESSAGE_ID'),
-                'password_updated' => env('CUSTOMER_IO_PASSWORD_UPDATED_TRANSACTIONAL_MESSAGE_ID'),
+                'forgot_password' => env('CUSTOMER_IO_FORGOT_PASSWORD_TRANSACTIONAL_MESSAGE_ID', 2),
+                'password_updated' => env('CUSTOMER_IO_PASSWORD_UPDATED_TRANSACTIONAL_MESSAGE_ID', 3),
             ],
         ],
         'track_api' => [
