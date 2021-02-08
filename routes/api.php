@@ -15,24 +15,28 @@ Route::group(
     // TODO: Do we want to use 'api/' prefix for v1 & v2 routes too?
     ['prefix' => 'api/v3', 'middleware' => ['guard:api']],
     function () {
-        // signups
-        Route::post('signups', 'SignupsController@store');
-        Route::get('signups', 'SignupsController@index');
-        Route::get('signups/{signup}', 'SignupsController@show');
-        Route::patch('signups/{signup}', 'SignupsController@update');
-        Route::delete('signups/{signup}', 'SignupsController@destroy');
+        // Actions
+        Route::get('actions', 'ActionsController@index');
+        Route::get('actions/{action}', 'ActionsController@show');
 
-        // campaigns
+        // Campaigns
         Route::get('campaigns', 'CampaignsController@index');
         Route::get('campaigns/{campaign}', 'CampaignsController@show');
         Route::patch('campaigns/{campaign}', 'CampaignsController@update');
-
+      
         // Posts
         Route::post('posts', 'PostsController@store');
         Route::get('posts', 'PostsController@index');
         Route::get('posts/{post}', 'PostsController@show');
         Route::patch('posts/{post}', 'PostsController@update');
         Route::delete('posts/{post}', 'PostsController@destroy');
+
+        // Signups
+        Route::post('signups', 'SignupsController@store');
+        Route::get('signups', 'SignupsController@index');
+        Route::get('signups/{signup}', 'SignupsController@show');
+        Route::patch('signups/{signup}', 'SignupsController@update');
+        Route::delete('signups/{signup}', 'SignupsController@destroy');
     },
 );
 
