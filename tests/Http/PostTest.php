@@ -1389,12 +1389,9 @@ class PostTest extends TestCase
         $response = $this->asStaffUser()->getJson('api/v3/posts/' . $post->id);
 
         $response->assertOk();
+        $response->assertJsonPath('data.id', $post->id);
 
         $this->assertPostStructure($response);
-
-        $json = $response->json();
-
-        $this->assertEquals($post->id, $json['data']['id']);
     }
 
     /**
@@ -1429,8 +1426,7 @@ class PostTest extends TestCase
             ],
         ]);
 
-        $json = $response->json();
-        $this->assertEquals($post->id, $json['data']['id']);
+        $response->assertJsonPath('data.id', $post->id);
     }
 
     /**
