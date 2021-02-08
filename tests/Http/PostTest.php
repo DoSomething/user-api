@@ -1691,20 +1691,6 @@ class PostTest extends TestCase
     }
 
     /**
-     * Test deleteing a post without the activity scope.
-     *
-     * @return void
-     */
-    public function testDeletingAPostWithoutActivityScope()
-    {
-        $post = factory(Post::class)->create();
-
-        $response = $this->deleteJson('api/v3/posts/' . $post->id);
-
-        $response->assertUnauthorized();
-    }
-
-    /**
      * Test that non-authenticated user's/apps can't delete posts.
      *
      * @return void
