@@ -33,6 +33,11 @@ Route::post('totp', 'TotpController@verify');
 Route::get('totp/configure', 'TotpController@configure');
 Route::post('totp/configure', 'TotpController@store');
 
+// Actions
+Route::resource('actions', 'ActionsController', [
+    'except' => ['index', 'show'],
+]);
+
 // Campaigns
 Route::resource('campaigns', 'CampaignsController', [
     'except' => ['index', 'show'],
