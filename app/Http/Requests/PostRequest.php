@@ -39,7 +39,7 @@ class PostRequest extends Request
             // @TODO: eventually, deprecate action in the payload and make action_id required when all systems have been updated.
             'action' => 'required_without:action_id|string',
             'action_id' =>
-                'required_without:action,campaign_id|integer|exists:actions,id',
+                'required_without:action,campaign_id|integer|exists:mysql.actions,id',
             'why_participated' => 'nullable|string',
             'text' => 'nullable|string|max:500',
             'location' => 'nullable|string',

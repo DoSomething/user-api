@@ -182,6 +182,14 @@ class Post extends Model
     }
 
     /**
+     * Get the user associated with this signup.
+     */
+    public function referrerUser()
+    {
+        return $this->belongsTo(User::class, 'referrer_user_id');
+    }
+
+    /**
      * Each post has one review.
      */
     public function review()

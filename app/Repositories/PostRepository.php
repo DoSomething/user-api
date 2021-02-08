@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Auth\Scope;
 use App\Models\Action;
 use App\Models\Post;
 use App\Models\Review;
@@ -112,7 +113,7 @@ class PostRepository
             'school_id' => isset($data['school_id'])
                 ? $data['school_id']
                 : null,
-            'source' => token()->client(),
+            'source' => client_id(),
             'source_details' => isset($data['source_details'])
                 ? $data['source_details']
                 : null,
@@ -126,12 +127,8 @@ class PostRepository
         // If this is a share-social type post, auto-accept.
         $post->status = $post->type === 'share-social' ? 'accepted' : 'pending';
 
-        $isAdminOrStaff = is_staff_user();
-
-        $hasAdminScope = in_array('admin', token()->scopes());
-
         // Admin users may provide a source, status, and created_at when uploading a post.
-        if ($isAdminOrStaff || $hasAdminScope) {
+        if (is_staff_user()) {
             // If the admin sets a custom status, set this status.
             if (isset($data['status'])) {
                 $post->status = $data['status'];
@@ -139,7 +136,7 @@ class PostRepository
 
             $post->source = isset($data['source'])
                 ? $data['source']
-                : token()->client();
+                : client_id();
 
             // If there is a created_at property, fill this in (e.g. if created_at is sent when creating a record with the importer app).
             if (isset($data['created_at'])) {

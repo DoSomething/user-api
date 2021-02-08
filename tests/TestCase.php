@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\CreatesApplication;
 use Tests\WithAuthentication;
@@ -90,6 +91,30 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     protected function assertMongoDatabaseHas($table, array $data)
     {
         return $this->assertDatabaseHas($table, $data, 'mongodb');
+    }
+
+    /**
+     * Assert that the given Customer.io event was fired.
+     *
+     * @param User $user
+     * @param string $name
+     */
+    public function assertCustomerIoEvent(User $user, string $eventName)
+    {
+        $userMatcher = Mockery::on(function ($argument) use ($user) {
+            // If this is an as-yet unresolved Eloquent relationship, figure out where
+            // it will go so we can make a comparison against the expected user:
+            if ($argument instanceof Relation) {
+                $argument = $argument->getResults();
+            }
+
+            return $user->is($argument);
+        });
+
+        // We should have tracked this event for the provided user:
+        $this->customerIoMock
+            ->shouldHaveReceived('trackEvent')
+            ->with($userMatcher, $eventName, Mockery::any());
     }
 
     /**
