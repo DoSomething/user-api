@@ -283,9 +283,9 @@ class PostTest extends TestCase
     }
 
     /**
-     * test validation for creating a post.
+     * Test validation for creating a post.
      *
-     * post /api/v3/posts
+     * POST /api/v3/posts
      * @return void
      */
     public function testCreatingAPostWithValidationErrors()
@@ -308,9 +308,9 @@ class PostTest extends TestCase
     }
 
     /**
-     * test validation for creating a post with invalid hours_spent.
+     * Test validation for creating a post with invalid hours_spent.
      *
-     * post /api/v3/posts
+     * POST /api/v3/posts
      * @return void
      */
     public function testCreatingAPostWithInvalidHoursSpent()
