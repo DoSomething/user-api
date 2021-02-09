@@ -78,4 +78,18 @@ class SendCustomerIoEmail implements ShouldQueue
             },
         );
     }
+
+    /**
+     * Return the parameters passed to the job.
+     *
+     * @return array
+     */
+    public function getParams()
+    {
+        return [
+            'to' => $this->to,
+            'transactionalMessageId' => $this->transactionalMessageId,
+            'messageData' => $this->messageData,
+        ];
+    }
 }

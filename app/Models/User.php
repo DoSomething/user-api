@@ -3,7 +3,8 @@
 namespace App\Models;
 
 use App\Auth\Role;
-use App\Jobs\SendPasswordResetToCustomerIo;
+use App\Jobs\CreateCustomerIoEvent;
+use App\Jobs\SendCustomerIoEmail;
 use App\Services\GraphQL;
 use App\Types\PasswordResetType;
 use Carbon\Carbon;
@@ -876,6 +877,18 @@ class User extends MongoModel implements
      */
     public function getPasswordResetUrl($token, $type)
     {
+        if (!$token) {
+            $tokenRepository = new DatabaseTokenRepository(
+                app('db')->connection('mongodb'),
+                app('hash'),
+                config('auth.passwords.users.table'),
+                config('app.key'),
+                config('auth.passwords.users.expire'),
+            );
+
+            $token = $tokenRepository->create($this);
+        }
+
         return route('password.reset', [
             $token,
             'email' => $this->email,
@@ -906,18 +919,26 @@ class User extends MongoModel implements
      */
     public function sendPasswordReset($type, $token = null)
     {
-        if (!$token) {
-            $tokenRepository = new DatabaseTokenRepository(
-                app('db')->connection('mongodb'),
-                app('hash'),
-                config('auth.passwords.users.table'),
-                config('app.key'),
-                config('auth.passwords.users.expire'),
-            );
-            $token = $tokenRepository->create($this);
+        $data = [
+            'actionUrl' => $this->getPasswordResetUrl($token, $type),
+            'type' => $this->type,
+            'userId' => $this->id,
+        ];
+
+        /*
+         * Use Customer.io events to track activate account emails, so admins can customize the
+         * user's messaging journey per their source (e.g., Rock The Vote, newsletter subscription).
+         */
+        if (Str::contains($type, 'activate-account')) {
+            return CreateCustomerIoEvent::dispatch($this, 'call_to_action_email', $data);
         }
 
-        SendPasswordResetToCustomerIo::dispatch($this, $token, $type);
+        // Send transactional emails for forgot password requests that don't need to be tracked.
+        return SendCustomerIoEmail::dispatch(
+            $this->email,
+            config('services.customerio.app_api.transactional_message_ids.forgot_password'),
+            $data
+        );
     }
 
     /**
