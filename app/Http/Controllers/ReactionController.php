@@ -28,19 +28,20 @@ class ReactionController extends ActivityApiController
     {
         $this->transformer = new ReactionTransformer();
 
-        $this->middleware('scopes:activity');
         $this->middleware('auth:api', ['only' => ['store']]);
-        $this->middleware('scopes:write', ['only' => ['store']]);
+
+        $this->middleware('scope:activity');
+        $this->middleware('scope:write', ['only' => ['store']]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
      * @param \App\Models\Post $post
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Post $post)
+    public function store(Post $post, Request $request)
     {
         $northstarId = getNorthstarId($request);
 
@@ -52,7 +53,7 @@ class ReactionController extends ActivityApiController
 
         if ($reaction->wasRecentlyCreated || $reaction->trashed()) {
             // We're adding a new reaction in these cases.
-            $code = 200;
+            $code = 200; // TODO: This should be a '201 Created'.
             $action = 'liked';
 
             if ($reaction->trashed()) {
@@ -61,7 +62,7 @@ class ReactionController extends ActivityApiController
             }
         } else {
             // Otherwise, we must be removing.
-            $code = 201;
+            $code = 201; // TODO: This should be a '200 OK'.
             $action = 'unliked';
             $reaction->delete();
         }
