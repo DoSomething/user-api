@@ -4,7 +4,7 @@ use App\Models\ActionStat;
 use App\Models\Group;
 use App\Models\GroupType;
 
-class ActionStatsTest extends TestCase
+class ActionStatTest extends TestCase
 {
     protected $url = 'api/v3/action-stats';
 
