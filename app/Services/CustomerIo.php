@@ -153,6 +153,15 @@ class CustomerIo
      */
     public function sendEmail($to, $transactionalMessageId, $messageData = [])
     {
+        if (!$this->enabled()) {
+            info('Transactional email would have been sent from Customer.io', [
+                'transactional_message_id' => $transactionalMessageId,
+                'data' => $messageData,
+            ]);
+
+            return;
+        }
+
         $payload = [
             'identifiers' => [
                 'id' => config('services.customerio.app_api.identifier_id'),
