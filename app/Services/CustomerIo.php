@@ -8,22 +8,41 @@ use Exception;
 class CustomerIo
 {
     /**
-     * The Customer.io client.
+     * The Customer.io App API client.
      *
      * @var Client
      */
-    protected $client;
+    protected $appApiClient;
 
     /**
-     * Create a new Customer.io API client.
+     * The Customer.io Track API client.
+     *
+     * @var Client
+     */
+    protected $trackApiClient;
+
+    /**
+     * Create new clients for the Customer.io App API and Track API.
      */
     public function __construct()
     {
-        $config = config('services.customerio');
+        $appApiConfig = config('services.customerio.app_api');
 
-        $this->client = new \GuzzleHttp\Client([
-            'base_uri' => $config['url'],
-            'auth' => [$config['username'], $config['password']],
+        $this->appApiClient = new \GuzzleHttp\Client([
+            'base_uri' => $appApiConfig['url'],
+            'headers' => [
+                'Authorization' => 'Bearer ' . $appApiConfig['api_key'],
+            ],
+        ]);
+
+        $trackApiConfig = config('services.customerio.track_api');
+
+        $this->trackApiClient = new \GuzzleHttp\Client([
+            'base_uri' => $trackApiConfig['url'],
+            'auth' => [
+                $trackApiConfig['username'],
+                $trackApiConfig['password'],
+            ],
         ]);
     }
 
@@ -57,7 +76,7 @@ class CustomerIo
             return;
         }
 
-        $response = $this->client->post('customers/' . $user->id . '/events', [
+        $response = $this->trackApiClient->post('customers/' . $user->id . '/events', [
             'json' => ['name' => $eventName, 'data' => $eventData],
         ]);
 
@@ -93,7 +112,7 @@ class CustomerIo
             return;
         }
 
-        $response = $this->client->put('customers/' . $user->id, [
+        $response = $this->trackApiClient->put('customers/' . $user->id, [
             'json' => $payload,
         ]);
 
@@ -121,6 +140,40 @@ class CustomerIo
             return;
         }
 
-        return $this->client->delete('customers/' . $id);
+        return $this->trackApiClient->delete('customers/' . $id);
+    }
+
+    /**
+     * Sends a transactional email.
+     * @see https://customer.io/docs/api/#operation/sendEmail
+     *
+     * @param string $to
+     * @param int $transactionalMessageId
+     * @param array $messageData
+     */
+    public function sendEmail($to, $transactionalMessageId, $messageData = [])
+    {
+        if (!$this->enabled()) {
+            info('Transactional email would have been sent from Customer.io', [
+                'transactional_message_id' => $transactionalMessageId,
+                'data' => $messageData,
+            ]);
+
+            return;
+        }
+
+        $payload = [
+            'identifiers' => [
+                'id' => config('services.customerio.app_api.identifier_id'),
+            ],
+            'to' => $to,
+            'transactional_message_id' => $transactionalMessageId,
+        ];
+
+        if ($messageData) {
+            $payload['message_data'] = $messageData;
+        }
+
+        $response = $this->appApiClient->post('send/email', ['json' => $payload]);
     }
 }
