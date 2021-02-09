@@ -19,6 +19,9 @@ Route::group(
         Route::get('actions', 'ActionsController@index');
         Route::get('actions/{action}', 'ActionsController@show');
 
+        // Action Stats
+        Route::get('action-stats', 'ActionStatsController@index');
+
         // Campaigns
         Route::get('campaigns', 'CampaignsController@index');
         Route::get('campaigns/{campaign}', 'CampaignsController@show');

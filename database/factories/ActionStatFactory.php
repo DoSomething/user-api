@@ -2,10 +2,13 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Models\Action;
 use App\Models\ActionStat;
 use Faker\Generator as Faker;
 
 $factory->define(ActionStat::class, function (Faker $faker) {
+    $faker->addProvider(new FakerSchoolId($faker));
+
     $school = $faker->unique()->school;
 
     return [
