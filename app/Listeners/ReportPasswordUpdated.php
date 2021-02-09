@@ -36,8 +36,8 @@ class ReportPasswordUpdated
         }
 
         /*
-         * Send transactional emails for to send confirmation for password updates that don't need
-         * to be tracked (e.g., forgot password email, udpating via profile).
+         * Send transactional emails for password updates that don't need to be tracked
+         * (e.g., forgot password email, udpating via profile).
          */
         return SendCustomerIoEmail::dispatch(
             $event->user->email,
