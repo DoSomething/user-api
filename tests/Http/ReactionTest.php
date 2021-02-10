@@ -19,7 +19,7 @@ class ReactionTest extends TestCase
 
         $response = $this->getJson('api/v3/posts/' . $post->id . '/reactions');
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertJsonStructure([
             'data' => [
                 '*' => [
