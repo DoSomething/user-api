@@ -51,6 +51,11 @@ Route::get('facebook/verify', 'FacebookController@handleProviderCallback');
 Route::get('google/continue', 'GoogleController@redirectToProvider');
 Route::get('google/verify', 'GoogleController@handleProviderCallback');
 
+// Groups
+Route::resource('groups', 'GroupsController', [
+    'except' => ['create', 'index', 'show'],
+]);
+
 // Registration
 Route::get('register', 'AuthController@getRegister');
 Route::post('register', 'AuthController@postRegister');
