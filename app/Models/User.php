@@ -78,6 +78,7 @@ use libphonenumber\PhoneNumberFormat;
  * @property Carbon $last_accessed_at - The timestamp of the user's last token refresh
  * @property Carbon $last_authenticated_at - The timestamp of the user's last successful login
  * @property Carbon $last_messaged_at - The timestamp of the last message this user sent
+  * @property Carbon $promotions_muted_at - The timestamp of the last time promotions have been musted for this user
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
@@ -179,6 +180,7 @@ class User extends MongoModel implements
         'sms_status',
         'sms_paused',
         'last_messaged_at',
+        'promotions_muted_at',
         'feature_flags',
         'totp',
         'referrer_user_id',
@@ -255,6 +257,7 @@ class User extends MongoModel implements
         'last_accessed_at',
         'last_authenticated_at',
         'last_messaged_at',
+        'promotions_muted_at',
         self::UPDATED_AT,
         self::CREATED_AT,
     ];
@@ -429,6 +432,16 @@ class User extends MongoModel implements
     public function setLastMessagedAtAttribute($value)
     {
         $this->setArbitraryDateString('last_messaged_at', $value);
+    }
+
+    /**
+     * Mutator for setting the promotions_muted_at field.
+     *
+     * @param string|Carbon $value
+     */
+    public function setPromotionsMutedAtAttribute($value)
+    {
+        $this->setArbitraryDateString('promotions_muted_at', $value);
     }
 
     /**
