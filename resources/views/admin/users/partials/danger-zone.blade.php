@@ -1,5 +1,31 @@
 <div class="danger-zone">
     <h4 class="danger-zone__heading">Danger Zone&#8482;</h4>
+
+    <div class="danger-zone__block">
+        <form method="POST" action="{{ route('admin.users.resets.create', ['user' => $user->id]) }}">
+            {{ method_field('POST')}}
+            {{ csrf_field() }}
+
+            <div class="form-item">  
+                <label for="password-reset-type" class="field-label">Send Password Reset</label>
+
+                <select id="password-reset-type" name="type">
+                  <option value="forgot-password">Forgot Password</option>
+
+                  <option value="rock-the-vote-activate-account">Rock The Vote Activate Account</option>
+                </select>
+
+                <p class="footnote">This will email the user a link to reset their password.</p>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="button -secondary">
+                    Send
+                </button>
+            </div>
+        </form>
+    </div>
+
     <div class="danger-zone__block">
         <form method="POST" action="{{ route('admin.users.destroy', ['user' => $user->id]) }}">
             {{ method_field('DELETE')}}

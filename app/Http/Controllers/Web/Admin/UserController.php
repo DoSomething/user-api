@@ -133,4 +133,23 @@ class UserController extends Controller
             ->route('admin.users.index')
             ->with('flash', 'User deleted.');
     }
+
+    /**
+     * Send a Northstar user a password reset email.
+     *
+     * @param User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function sendPasswordReset(User $user, Request $request)
+    {
+        $this->authorize('delete', $user);
+
+        $type = $request['type'];
+
+        $user->sendPasswordReset($type);
+
+        return redirect()
+            ->route('admin.users.show', $user->id)
+            ->with('flash', 'Sent ' . $type . ' email to user.');
+    }
 }

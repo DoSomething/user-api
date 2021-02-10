@@ -92,6 +92,10 @@ if (config('features.admin')) {
             Route::resource('users', 'Admin\UserController', [
                 'except' => ['create', 'store'],
             ]);
+            Route::post('users/{user}/resets', [
+                'as' => 'users.resets.create',
+                'uses' => 'Admin\UserController@sendPasswordReset',
+            ]);
 
             // Fastly Redirects
             Route::resource('redirects', 'Admin\RedirectsController');
