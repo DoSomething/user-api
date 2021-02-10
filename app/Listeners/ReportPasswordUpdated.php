@@ -5,7 +5,7 @@ namespace App\Listeners;
 use App\Events\PasswordUpdated;
 use App\Jobs\CreateCustomerIoEvent;
 use App\Jobs\SendCustomerIoEmail;
-use Illuminate\Support\Str;
+use App\Types\PasswordResetType;
 
 class ReportPasswordUpdated
 {
@@ -17,11 +17,13 @@ class ReportPasswordUpdated
      */
     public function handle(PasswordUpdated $event)
     {
+        $passwordResetType = $event->updatedVia;
+
         /*
          * Use Customer.io events to track account activations, so admins can customize the
          * user's messaging journey per their source (e.g., Rock The Vote, newsletter subscription).
          */
-        if (Str::contains($event->updatedVia, 'activate-account')) {
+        if (PasswordResetType::isActivateAccount($passwordResetType)) {
             return CreateCustomerIoEvent::dispatch(
                 $event->user,
                 /*
@@ -30,7 +32,7 @@ class ReportPasswordUpdated
                  */
                 'password_updated',
                 [
-                    'updated_via' => $event->updatedVia,
+                    'updated_via' => $passwordResetType,
                 ]
             );
         }

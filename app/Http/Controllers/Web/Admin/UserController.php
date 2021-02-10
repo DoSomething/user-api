@@ -137,7 +137,7 @@ class UserController extends Controller
     }
 
     /**
-     * Send a Northstar user a password reset email.
+     * Sends user a password reset email.
      *
      * @param User $user
      * @return \Illuminate\Http\Response
