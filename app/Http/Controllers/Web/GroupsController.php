@@ -14,7 +14,7 @@ class GroupsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:web');
         $this->middleware('role:admin,staff');
 
         $this->rules = [
@@ -44,7 +44,7 @@ class GroupsController extends Controller
             $request,
             array_merge_recursive($this->rules, [
                 'name' => [
-                    Rule::unique('groups')->where(
+                    Rule::unique('mysql.groups')->where(
                         'group_type_id',
                         $request->group_type_id,
                     ),
