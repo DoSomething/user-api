@@ -28,8 +28,8 @@ Route::group(
         Route::patch('campaigns/{campaign}', 'CampaignsController@update');
 
         // Groups
-        // Route::get('groups', 'GroupsController@index');
-        // Route::get('groups/{group}', 'GroupsController@show');
+        Route::get('groups', 'GroupsController@index');
+        Route::get('groups/{group}', 'GroupsController@show');
 
         // Posts
         Route::post('posts', 'PostsController@store');
