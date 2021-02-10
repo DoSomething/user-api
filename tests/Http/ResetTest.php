@@ -38,7 +38,7 @@ class ResetTest extends BrowserKitTestCase
         ]);
         $this->assertResponseStatus(200);
         $this->seeJsonStructure(['success']);
-        $this->customerIoMock->shouldHaveReceived('trackEvent')->once();
+        $this->customerIoMock->shouldHaveReceived('sendEmail')->once();
 
         $this->seeInMongoDatabase('password_resets', ['email' => $user->email]);
     }

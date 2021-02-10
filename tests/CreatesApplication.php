@@ -44,6 +44,7 @@ trait CreatesApplication
         $this->customerIoMock = $this->mock(\App\Services\CustomerIo::class);
         $this->customerIoMock->shouldReceive('updateCustomer')->andReturn(null);
         $this->customerIoMock->shouldReceive('trackEvent');
+        $this->customerIoMock->shouldReceive('sendEmail');
 
         // Configure a mock for GraphQL calls.
         $this->graphqlMock = $this->mock(\App\Services\GraphQL::class);
