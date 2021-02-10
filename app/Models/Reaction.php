@@ -28,7 +28,7 @@ class Reaction extends Model
      *
      * @var array
      */
-    protected $fillable = ['id', 'northstar_id', 'post_id'];
+    protected $fillable = ['northstar_id', 'post_id'];
 
     /**
      * Each reaction has events.

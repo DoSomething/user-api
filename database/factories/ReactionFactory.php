@@ -3,6 +3,7 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\Models\Reaction;
+use App\Models\User;
 use Faker\Generator as Faker;
 
 $factory->define(Reaction::class, function (Faker $faker) {

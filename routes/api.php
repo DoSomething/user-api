@@ -38,6 +38,10 @@ Route::group(
         Route::patch('posts/{post}', 'PostsController@update');
         Route::delete('posts/{post}', 'PostsController@destroy');
 
+        // Posts: Reactions
+        Route::post('posts/{post}/reactions', 'ReactionController@store');
+        Route::get('posts/{post}/reactions', 'ReactionController@index');
+
         // Signups
         Route::post('signups', 'SignupsController@store');
         Route::get('signups', 'SignupsController@index');
