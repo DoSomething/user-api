@@ -877,17 +877,7 @@ class User extends MongoModel implements
      */
     public function getPasswordResetUrl($token, $type)
     {
-        if (!$token) {
-            $tokenRepository = new DatabaseTokenRepository(
-                app('db')->connection('mongodb'),
-                app('hash'),
-                config('auth.passwords.users.table'),
-                config('app.key'),
-                config('auth.passwords.users.expire'),
-            );
 
-            $token = $tokenRepository->create($this);
-        }
 
         return route('password.reset', [
             $token,
@@ -919,6 +909,17 @@ class User extends MongoModel implements
      */
     public function sendPasswordReset($type, $token = null)
     {
+        if (!$token) {
+            $tokenRepository = new DatabaseTokenRepository(
+                app('db')->connection('mongodb'),
+                app('hash'),
+                config('auth.passwords.users.table'),
+                config('app.key'),
+                config('auth.passwords.users.expire'),
+            );
+            $token = $tokenRepository->create($this);
+        }
+
         $data = [
             'actionUrl' => $this->getPasswordResetUrl($token, $type),
             'type' => $this->type,
