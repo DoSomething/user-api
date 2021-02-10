@@ -9,7 +9,7 @@ class WebGroupTest extends TestCase
     /** @test */
     public function testAdminCanCreateGroup()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class, 'admin')->make();
 
         $groupType = factory(GroupType::class)->create();
 
@@ -31,11 +31,11 @@ class WebGroupTest extends TestCase
     /** @test */
     public function testAdminCannotCreateDuplicateGroup()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class, 'admin')->make();
 
         $group = factory(Group::class)->create();
 
-        $response = $this->actingAs($admin, 'web')->post('groups', [
+        $response = $this->actingAs($admin, 'web')->post('/groups', [
             'group_type_id' => $group->group_type_id,
             'name' => $group->name,
         ]);
@@ -49,13 +49,13 @@ class WebGroupTest extends TestCase
     /** @test */
     public function testStaffCanCreateGroup()
     {
-        $staff = factory(User::class, 'staff')->create();
+        $staff = factory(User::class, 'staff')->make();
 
         $groupType = factory(GroupType::class)->create();
 
         $name = $this->faker->sentence;
 
-        $response = $this->actingAs($staff, 'web')->post('groups', [
+        $response = $this->actingAs($staff, 'web')->post('/groups', [
             'group_type_id' => $groupType->id,
             'name' => $name,
         ]);
