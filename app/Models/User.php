@@ -877,8 +877,6 @@ class User extends MongoModel implements
      */
     public function getPasswordResetUrl($token, $type)
     {
-
-
         return route('password.reset', [
             $token,
             'email' => $this->email,
