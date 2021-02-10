@@ -17,7 +17,7 @@ class GroupTypeTest extends TestCase
 
         $response->assertOk();
 
-        $this->assertEquals('meta.pagination.count', 5);
+        $response->assertJsonPath('meta.pagination.count', 5);
     }
 
     /**
@@ -35,6 +35,6 @@ class GroupTypeTest extends TestCase
 
         $response->assertOk();
 
-        $this->assertEquals('data.id', $groupType->id);
+        $response->assertJsonPath('data.id', $groupType->id);
     }
 }

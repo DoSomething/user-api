@@ -9,7 +9,7 @@ class WebGroupTest extends TestCase
     /** @test */
     public function testAdminCanCreateGroup()
     {
-        $admin = factory(User::class, 'admin')->make();
+        $admin = factory(User::class, 'admin')->create();
 
         $groupType = factory(GroupType::class)->create();
 
@@ -31,7 +31,7 @@ class WebGroupTest extends TestCase
     /** @test */
     public function testAdminCannotCreateDuplicateGroup()
     {
-        $admin = factory(User::class, 'admin')->make();
+        $admin = factory(User::class, 'admin')->create();
 
         $group = factory(Group::class)->create();
 
@@ -49,7 +49,7 @@ class WebGroupTest extends TestCase
     /** @test */
     public function testStaffCanCreateGroup()
     {
-        $staff = factory(User::class, 'staff')->make();
+        $staff = factory(User::class, 'staff')->create();
 
         $groupType = factory(GroupType::class)->create();
 

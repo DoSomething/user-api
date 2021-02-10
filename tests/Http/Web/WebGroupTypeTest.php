@@ -8,7 +8,7 @@ class WebGroupTypeTest extends TestCase
     /** @test */
     public function testAdminCanCreateGroupType()
     {
-        $admin = factory(User::class, 'admin')->make();
+        $admin = factory(User::class, 'admin')->create();
 
         $name = $this->faker->sentence;
 
@@ -28,7 +28,7 @@ class WebGroupTypeTest extends TestCase
     /** @test */
     public function testAdminCannotCreateDuplicateGroupType()
     {
-        $admin = factory(User::class, 'admin')->make();
+        $admin = factory(User::class, 'admin')->create();
 
         $groupType = factory(GroupType::class)->create();
 
@@ -42,7 +42,7 @@ class WebGroupTypeTest extends TestCase
     /** @test */
     public function testStaffCannotCreateGroupType()
     {
-        $staff = factory(User::class, 'staff')->make();
+        $staff = factory(User::class, 'staff')->create();
 
         $name = $this->faker->sentence;
 
@@ -64,7 +64,7 @@ class WebGroupTypeTest extends TestCase
     /** @test */
     public function testUnsettingFilterByState()
     {
-        $admin = factory(User::class, 'admin')->make();
+        $admin = factory(User::class, 'admin')->create();
 
         $groupType = factory(GroupType::class)->create([
             'filter_by_location' => true,
