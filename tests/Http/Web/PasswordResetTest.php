@@ -89,7 +89,7 @@ class PasswordResetTest extends TestCase
             $job
         ) use ($user) {
             $params = $job->getParams();
-  
+
             $this->assertEquals($params['to'], $user->email);
 
             return true;
