@@ -3,7 +3,8 @@
 namespace App\Models;
 
 use App\Auth\Role;
-use App\Jobs\SendPasswordResetToCustomerIo;
+use App\Jobs\CreateCustomerIoEvent;
+use App\Jobs\SendCustomerIoEmail;
 use App\Services\GraphQL;
 use App\Types\PasswordResetType;
 use Carbon\Carbon;
@@ -917,7 +918,26 @@ class User extends MongoModel implements
             $token = $tokenRepository->create($this);
         }
 
-        SendPasswordResetToCustomerIo::dispatch($this, $token, $type);
+        $data = [
+            'actionUrl' => $this->getPasswordResetUrl($token, $type),
+            'type' => $this->type,
+            'userId' => $this->id,
+        ];
+
+        /*
+         * Use Customer.io events to track activate account emails, so admins can customize the
+         * user's messaging journey per their source (e.g., Rock The Vote, newsletter subscription).
+         */
+        if (Str::contains($type, 'activate-account')) {
+            return CreateCustomerIoEvent::dispatch($this, 'call_to_action_email', $data);
+        }
+
+        // Send transactional emails for forgot password requests that don't need to be tracked.
+        return SendCustomerIoEmail::dispatch(
+            $this->email,
+            config('services.customerio.app_api.transactional_message_ids.forgot_password'),
+            $data
+        );
     }
 
     /**

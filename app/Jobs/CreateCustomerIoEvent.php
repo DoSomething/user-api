@@ -71,4 +71,18 @@ class CreateCustomerIoEvent extends Job
             },
         );
     }
+
+    /**
+     * Return the parameters passed to the job.
+     *
+     * @return array
+     */
+    public function getParams()
+    {
+        return [
+            'user' => $this->user,
+            'eventName' => $this->eventName,
+            'eventData' => $this->eventData,
+        ];
+    }
 }

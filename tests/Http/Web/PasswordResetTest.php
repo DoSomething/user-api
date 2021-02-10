@@ -1,7 +1,8 @@
 <?php
 
 use App\Auth\Registrar;
-use App\Jobs\SendPasswordResetToCustomerIo;
+use App\Jobs\CreateCustomerIoEvent;
+use App\Jobs\SendCustomerIoEmail;
 use App\Models\User;
 use Illuminate\Support\Facades\Bus;
 
@@ -51,16 +52,14 @@ class PasswordResetTest extends TestCase
         $stepTwoResponse->assertRedirect('/password/reset');
 
         // Assert that the event was created & take note of reset URL for the next step.
-        Bus::assertDispatched(SendPasswordResetToCustomerIo::class, function (
+        Bus::assertDispatched(SendCustomerIoEmail::class, function (
             $job
         ) use (&$resetPasswordUrl) {
-            $resetPasswordUrl = $job->getUrl();
+            $params = $job->getParams();
+            $resetPasswordUrl = $params['messageData']['actionUrl'];
 
             return true;
         });
-
-        // @TODO: Not sure why we are logging this, and if so should we do it for the test below with a $resetPasswordUrl?
-        info('testForgotPasswordResetFlow ' . $resetPasswordUrl);
 
         // The user should visit the link that was sent via email & set a new password.
         $stepThreeResponse = $this->get($resetPasswordUrl);
@@ -145,10 +144,11 @@ class PasswordResetTest extends TestCase
         $stepOneResponse->assertJsonStructure(['success']);
 
         // Assert that the event was created & take note of reset URL for the next step.
-        Bus::assertDispatched(SendPasswordResetToCustomerIo::class, function (
+        Bus::assertDispatched(CreateCustomerIoEvent::class, function (
             $job
         ) use (&$resetPasswordUrl) {
-            $resetPasswordUrl = $job->getUrl();
+            $params = $job->getParams();
+            $resetPasswordUrl = $params['eventData']['actionUrl'];
 
             return true;
         });
