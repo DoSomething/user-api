@@ -51,12 +51,14 @@ class PasswordResetTest extends TestCase
         $stepTwoResponse->assertStatus(302);
         $stepTwoResponse->assertRedirect('/password/reset');
 
-        // Assert that the event was created & take note of reset URL for the next step.
+        // Assert that the email was sent & take note of reset URL for the next step.
         Bus::assertDispatched(SendCustomerIoEmail::class, function (
             $job
-        ) use (&$resetPasswordUrl) {
+        ) use (&$resetPasswordUrl, $user) {
             $params = $job->getParams();
             $resetPasswordUrl = $params['messageData']['actionUrl'];
+
+            $this->assertEquals($params['to'], $user->email);
 
             return true;
         });
@@ -81,6 +83,17 @@ class PasswordResetTest extends TestCase
         );
 
         $this->followRedirects($stepFourResponse);
+
+        // Assert that the email was sent.
+        Bus::assertDispatched(SendCustomerIoEmail::class, function (
+            $job
+        ) use ($user) {
+            $params = $job->getParams();
+  
+            $this->assertEquals($params['to'], $user->email);
+
+            return true;
+        });
 
         // The user should be logged-in to Northstar, and redirected to Phoenix's OAuth flow.
         $this->isAuthenticated();
@@ -146,14 +159,18 @@ class PasswordResetTest extends TestCase
         // Assert that the event was created & take note of reset URL for the next step.
         Bus::assertDispatched(CreateCustomerIoEvent::class, function (
             $job
-        ) use (&$resetPasswordUrl) {
+        ) use (&$resetPasswordUrl, $user) {
             $params = $job->getParams();
             $resetPasswordUrl = $params['eventData']['actionUrl'];
+
+            $this->assertEquals($params['user']->id, $user->id);
 
             return true;
         });
 
         $this->refreshApplication();
+
+        Bus::fake();
 
         // User goes to password reset URL.
         $stepTwoResponse = $this->get($resetPasswordUrl);
@@ -183,6 +200,18 @@ class PasswordResetTest extends TestCase
 
         // Continue redirect to complete process and land on about or edit profile page.
         $this->followRedirects($stepThreeResponse);
+
+        // Assert that the event was created.
+        Bus::assertDispatched(CreateCustomerIoEvent::class, function (
+            $job
+        ) use ($user) {
+            $params = $job->getParams();
+
+            $this->assertEquals($params['user']->id, $user->id);
+            $this->assertEquals($params['eventData']['updated_via'], 'rock-the-vote-activate-account');
+
+            return true;
+        });
 
         // The user should be logged-in to Northstar, and redirected to Phoenix's OAuth flow.
         $this->isAuthenticated();
