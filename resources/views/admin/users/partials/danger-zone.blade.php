@@ -10,9 +10,9 @@
                 <label for="password-reset-type" class="field-label">Send Password Reset</label>
 
                 <select id="password-reset-type" name="type">
-                  <option value="forgot-password">Forgot Password</option>
-
-                  <option value="rock-the-vote-activate-account">Rock The Vote Activate Account</option>
+                  @foreach ( $passwordResetTypes as $value => $label )
+                      <option value="{{$value}}">{{$label}}</option>
+                  @endforeach
                 </select>
 
                 <p class="footnote">This will email the user a link to reset their password.</p>

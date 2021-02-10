@@ -7,6 +7,7 @@ use App\Auth\Role;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Types\CauseInterestType;
+use App\Types\PasswordResetType;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -54,6 +55,7 @@ class UserController extends Controller
         return view('admin.users.show', [
             'user' => $user,
             'title' => $user->display_name,
+            'passwordResetTypes' => PasswordResetType::labels(),
         ]);
     }
 
