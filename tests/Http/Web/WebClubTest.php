@@ -130,16 +130,13 @@ class WebClubTest extends TestCase
 
         $schooolId = $this->faker->school->school_id;
 
-        $response = $this->actingAs($admin, 'web')->patch(
-            '/clubs' . '/' . $club->id,
-            [
-                'name' => $name,
-                'leader_id' => $leaderId,
-                'location' => $location,
-                'city' => $city,
-                'school_id' => $schooolId,
-            ],
-        );
+        $response = $this->actingAs($admin, 'web')->patch("/clubs/$club->id", [
+            'name' => $name,
+            'leader_id' => $leaderId,
+            'location' => $location,
+            'city' => $city,
+            'school_id' => $schooolId,
+        ]);
 
         $response->assertRedirect();
 
@@ -166,13 +163,10 @@ class WebClubTest extends TestCase
 
         $name = $this->faker->company;
 
-        $response = $this->actingAs($admin, 'web')->patch(
-            '/clubs' . '/' . $club->id,
-            [
-                'name' => $name,
-                'leader_id' => $club->leader_id,
-            ],
-        );
+        $response = $this->actingAs($admin, 'web')->patch("/clubs/$club->id", [
+            'name' => $name,
+            'leader_id' => $club->leader_id,
+        ]);
 
         $response->assertRedirect();
 
@@ -194,16 +188,13 @@ class WebClubTest extends TestCase
 
         $club = factory(Club::class)->create();
 
-        $response = $this->actingAs($admin, 'web')->patch(
-            '/clubs' . '/' . $club->id,
-            [
-                'name' => 123, // This should be a string.
-                'leader_id' => 'Maddy is the leader!', // This should be a MongoDB ObjectID.
-                'location' => 'wakanda', // This should be an iso3166 string.
-                'city' => 789, // This should be a string.
-                'school_id' => 101112, // This should be a string.
-            ],
-        );
+        $response = $this->actingAs($admin, 'web')->patch("/clubs/$club->id", [
+            'name' => 123, // This should be a string.
+            'leader_id' => 'Maddy is the leader!', // This should be a MongoDB ObjectID.
+            'location' => 'wakanda', // This should be an iso3166 string.
+            'city' => 789, // This should be a string.
+            'school_id' => 101112, // This should be a string.
+        ]);
 
         $response->assertRedirect();
         $response->assertSessionHasErrors([

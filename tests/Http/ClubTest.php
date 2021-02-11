@@ -62,9 +62,9 @@ class ClubTest extends TestCase
         $clubOne = factory(Club::class)->create();
         $clubTwo = factory(Club::class)->create();
 
-        $response = $this->getJson(
-            '/api/v3/clubs?cursor[after]=' . $clubOne->getCursor(),
-        );
+        $cursor = $clubOne->getCursor();
+
+        $response = $this->getJson("/api/v3/clubs?cursor[after]=$cursor");
 
         $response->assertOk();
         $response->assertJsonPath('meta.cursor.count', 1);
@@ -83,7 +83,7 @@ class ClubTest extends TestCase
         // Create a specific club to search for.
         $club = factory(Club::class)->create();
 
-        $response = $this->getJson('/api/v3/clubs/' . $club->id);
+        $response = $this->getJson("/api/v3/clubs/$club->id");
 
         $response->assertOk();
         $response->assertJsonPath('data.id', $club->id);
