@@ -137,7 +137,7 @@ class ReviewsTest extends TestCase
     public function test404IfPostDoesntExist()
     {
         $response = $this->asAdminUser()->postJson(
-            '/api/v3/reviews/posts/1909832489/reviews',
+            '/api/v3/reviews/posts/8675309/reviews',
             [
                 'status' => 'accepted',
             ],
