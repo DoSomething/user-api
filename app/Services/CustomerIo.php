@@ -180,4 +180,17 @@ class CustomerIo
 
         $response = $this->appApiClient->post('send/email', ['json' => $payload]);
     }
+
+    /**
+     * Returns the Transactional Message ID to use for a given email type.
+     *
+     * @param string $emailType
+     * @return int
+     */
+    public function getTransactionalMessageId($emailType)
+    {
+        $ids = config('services.customerio.app_api.transactional_message_ids');
+
+        return $ids[$emailType];
+    }
 }

@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 use App\Events\PasswordUpdated;
 use App\Jobs\CreateCustomerIoEvent;
-use App\Jobs\SendCustomerIoEmail;
+use App\Jobs\SendPaswordUpdatedEmail;
 use App\Types\PasswordResetType;
 
 class ReportPasswordUpdated
@@ -41,9 +41,6 @@ class ReportPasswordUpdated
          * Send transactional emails for password updates that don't need to be tracked
          * (e.g., forgot password email, udpating via profile).
          */
-        return SendCustomerIoEmail::dispatch(
-            $event->user->email,
-            config('services.customerio.app_api.transactional_message_ids.password_updated')
-        );
+        return SendPasswordUpdatedEmail::dispatch($event->user->email);
     }
 }

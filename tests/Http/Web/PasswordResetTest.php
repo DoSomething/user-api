@@ -2,8 +2,10 @@
 
 use App\Auth\Registrar;
 use App\Jobs\CreateCustomerIoEvent;
-use App\Jobs\SendCustomerIoEmail;
+use App\Jobs\SendForgotPasswordEmail;
+use App\Jobs\SendPasswordUpdatedEmail;
 use App\Models\User;
+use App\Services\CustomerIo;
 use Illuminate\Support\Facades\Bus;
 
 class PasswordResetTest extends TestCase
@@ -52,13 +54,14 @@ class PasswordResetTest extends TestCase
         $stepTwoResponse->assertRedirect('/password/reset');
 
         // Assert that the email was sent & take note of reset URL for the next step.
-        Bus::assertDispatched(SendCustomerIoEmail::class, function (
+        Bus::assertDispatched(SendForgotPasswordEmail::class, function (
             $job
         ) use (&$resetPasswordUrl, $user) {
             $params = $job->getParams();
-            $resetPasswordUrl = $params['messageData']['actionUrl'];
+            $resetPasswordUrl = $params['url'];
 
-            $this->assertEquals($params['to'], $user->email);
+            $this->assertEquals($params['user']->id, $user->id);
+            $this->assertEquals($params['transactionalMessageId'], CustomerIo::getTransactionalMessageId('forgot_password'));
 
             return true;
         });
@@ -85,12 +88,12 @@ class PasswordResetTest extends TestCase
         $this->followRedirects($stepFourResponse);
 
         // Assert that the email was sent.
-        Bus::assertDispatched(SendCustomerIoEmail::class, function (
+        Bus::assertDispatched(SendPasswordUpdatedEmail::class, function (
             $job
         ) use ($user) {
             $params = $job->getParams();
 
-            $this->assertEquals($params['to'], $user->email);
+            $this->assertEquals($params['user']->id, $user->id);
 
             return true;
         });
@@ -164,6 +167,7 @@ class PasswordResetTest extends TestCase
             $resetPasswordUrl = $params['eventData']['actionUrl'];
 
             $this->assertEquals($params['user']->id, $user->id);
+
 
             return true;
         });
