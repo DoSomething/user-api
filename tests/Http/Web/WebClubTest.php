@@ -167,7 +167,7 @@ class ClubTest extends TestCase
         $name = $this->faker->company;
 
         $response = $this->actingAs($admin, 'web')->patch(
-            'clubs/' . $club->id,
+            '/clubs' . '/' . $club->id,
             [
                 'name' => $name,
                 'leader_id' => $club->leader_id,
@@ -195,7 +195,7 @@ class ClubTest extends TestCase
         $club = factory(Club::class)->create();
 
         $response = $this->actingAs($admin, 'web')->patch(
-            'clubs/' . $club->id,
+            '/clubs' . '/' . $club->id,
             [
                 'name' => 123, // This should be a string.
                 'leader_id' => 'Maddy is the leader!', // This should be a MongoDB ObjectID.
