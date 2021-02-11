@@ -44,4 +44,18 @@ class SignupObserver
             }
         }
     }
+
+    /**
+     * Handle the Signup "deleting" event.
+     *
+     * @param  \App\Models\User  $user
+     * @return void
+     */
+    public function deleting(Signup $signup)
+    {
+        $signup->update([
+            'why_participated' => null,
+            'details' => null,
+        ]);
+    }
 }

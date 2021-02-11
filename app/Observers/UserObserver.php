@@ -5,7 +5,9 @@ namespace App\Observers;
 use App\Jobs\CreateCustomerIoEvent;
 use App\Jobs\DeleteUserFromOtherServices;
 use App\Jobs\SendUserToCustomerIo;
+use App\Models\Post;
 use App\Models\RefreshToken;
+use App\Models\Signup;
 use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
@@ -176,8 +178,12 @@ class UserObserver
             $user->drop($fields);
         }
 
+        // @see: PostObserver@deleting' & SignupObserver@deleting
+        $user->posts->each->delete();
+        $user->signups->each->delete();
+
         // Delete refresh tokens to end any active sessions:
-        $token = RefreshToken::where('user_id', $user->id)->delete();
+        RefreshToken::where('user_id', $user->id)->delete();
 
         // And finally, delete the user from other services:
         DeleteUserFromOtherServices::dispatch($user->id);

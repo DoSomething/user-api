@@ -4,9 +4,20 @@ namespace App\Observers;
 
 use App\Models\Group;
 use App\Models\Post;
+use App\Services\Fastly;
+use App\Services\ImageStorage;
 
 class PostObserver
 {
+    /**
+     * Create model observer.
+     */
+    public function __construct(ImageStorage $storage, Fastly $fastly)
+    {
+        $this->storage = $storage;
+        $this->fastly = $fastly;
+    }
+
     /**
      * Handle the Post "creating" event.
      *
@@ -55,5 +66,23 @@ class PostObserver
     public function updated(Post $post)
     {
         $post->updateOrCreateActionStats();
+    }
+
+    /**
+     * Handle the Post "deleting" event.
+     *
+     * @param  \App\Models\User  $user
+     * @return void
+     */
+    public function deleting(Post $post)
+    {
+        $this->storage->delete($post);
+        $this->fastly->purge($post);
+
+        $post->update([
+            'text' => null,
+            'details' => null,
+            'url' => null,
+        ]);
     }
 }
