@@ -27,6 +27,25 @@
     </div>
 
     <div class="danger-zone__block">
+        <form method="POST" action="{{ route('admin.users.mute-promotions', ['user' => $user->id]) }}">
+            {{ method_field('POST')}}
+            {{ csrf_field() }}
+
+            <div class="form-item">  
+                <label for="mute-promotions" class="field-label">Mute Promotions</label>
+
+                <p class="footnote">This will delete the user's Customer.io profile.</p>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="button -secondary">
+                    Mute promotions
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="danger-zone__block">
         <form method="POST" action="{{ route('admin.users.destroy', ['user' => $user->id]) }}">
             {{ method_field('DELETE')}}
             <div class="form-item">

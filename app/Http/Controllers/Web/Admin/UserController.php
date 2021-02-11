@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Types\CauseInterestType;
 use App\Types\PasswordResetType;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -153,5 +154,25 @@ class UserController extends Controller
         return redirect()
             ->route('admin.users.show', $user->id)
             ->with('flash', 'Sent ' . $type . ' email to user.');
+    }
+
+    /**
+     * Mutes promotions for user
+     *
+     * @param User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function mutePromotions(User $user)
+    {
+        $this->authorize('delete', $user);
+
+        logger('Muting promotions', ['user' => $user->id]);
+
+        $user->promotions_muted_at = Carbon::now();
+        $user->save();
+
+        return redirect()
+            ->route('admin.users.show', $user->id)
+            ->with('flash', 'Promotions muted for user. Shhh....');
     }
 }
