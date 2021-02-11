@@ -43,6 +43,11 @@ Route::resource('campaigns', 'CampaignsController', [
     'except' => ['index', 'show'],
 ]);
 
+// Clubs
+Route::resource('clubs', 'ClubsController', [
+    'except' => ['index', 'show', 'destroy'],
+]);
+
 // Facebook Continue
 Route::get('facebook/continue', 'FacebookController@redirectToProvider');
 Route::get('facebook/verify', 'FacebookController@handleProviderCallback');
