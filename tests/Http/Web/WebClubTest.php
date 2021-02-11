@@ -3,7 +3,7 @@
 use App\Models\Club;
 use App\Models\User;
 
-class ClubTest extends TestCase
+class WebClubTest extends TestCase
 {
     /**
      * Test that admin can create a new club.
