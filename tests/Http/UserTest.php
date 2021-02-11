@@ -1018,32 +1018,16 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function testV2AdminCanDeleteUser()
+    public function testCanDeleteUser()
     {
-        $userToDelete = factory(User::class)->create();
+        $user = factory(User::class)->create();
 
-        $this->mock(Rogue::class)
-            ->shouldReceive('deleteUser')
-            ->once();
+        $response = $this->asAdminUser()->deleteJson("v2/users/$user->id");
 
-        $this->mock(Gambit::class)
-            ->shouldReceive('deleteUser')
-            ->once();
+        $response->assertOk();
 
-        $this->customerIoMock->shouldReceive('deleteUser')->once();
-
-        $response = $this->asAdminUser()->json(
-            'DELETE',
-            'v2/users/' . $userToDelete->id,
-            [
-                'first_name' => 'Hercules',
-                'last_name' => 'Mulligan',
-                'email' => $this->faker->email,
-                'country' => 'us',
-            ],
-        );
-
-        $response->assertStatus(200);
+        $this->customerIoMock->shouldHaveReceived('deleteUser');
+        $this->gambitMock->shouldHaveReceived('deleteUser');
     }
 
     /**
