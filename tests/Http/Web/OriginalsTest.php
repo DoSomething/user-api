@@ -18,9 +18,10 @@ class OriginalsTest extends TestCase
             ->states('photo', 'accepted')
             ->create();
 
-        $this->be($admin, 'web');
+        $response = $this->actingAs($admin, 'web')->get(
+            'originals/' . $post->id,
+        );
 
-        $response = $this->get('originals/' . $post->id);
         $response->assertSuccessful();
     }
 
@@ -37,9 +38,10 @@ class OriginalsTest extends TestCase
             ->states('photo', 'accepted')
             ->create();
 
-        $this->be($somebodyElse, 'web');
+        $response = $this->actingAs($somebodyElse, 'web')->get(
+            'originals/' . $post->id,
+        );
 
-        $response = $this->get('originals/' . $post->id);
-        $response->assertStatus(302); // Redirect to 'register'.
+        $response->assertStatus(302); // TODO: This should show an error page rather than double-redirect.
     }
 }
