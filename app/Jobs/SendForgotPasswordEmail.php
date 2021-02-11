@@ -2,11 +2,10 @@
 
 namespace App\Jobs;
 
-use App\Jobs\Middleware\CustomerIoRateLimit;
 use App\Models\User;
 use App\Services\CustomerIo;
 
-class SendForgotPasswordEmail extends Job
+class SendForgotPasswordEmail extends CustomerIoJob
 {
     /**
      * The user to send a transactional email to.
@@ -33,16 +32,6 @@ class SendForgotPasswordEmail extends Job
     {
         $this->user = $user;
         $this->url = $url;
-    }
-
-    /**
-     * Get the middleware the job should pass through.
-     *
-     * @return array
-     */
-    public function middleware()
-    {
-        return [new CustomerIoRateLimit()];
     }
 
     /**
