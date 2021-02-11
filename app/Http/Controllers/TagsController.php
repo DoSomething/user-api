@@ -34,9 +34,10 @@ class TagsController extends ActivityApiController
         $this->transformer = new PostTransformer();
 
         $this->middleware('auth:api');
+
         $this->middleware('role:admin,staff');
-        $this->middleware('scopes:write');
-        $this->middleware('scopes:activity');
+        $this->middleware('scope:write');
+        $this->middleware('scope:activity');
     }
 
     /**

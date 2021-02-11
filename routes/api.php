@@ -46,6 +46,9 @@ Route::group(
         Route::post('posts/{post}/reactions', 'ReactionController@store');
         Route::get('posts/{post}/reactions', 'ReactionController@index');
 
+        // Posts: Tags
+        Route::post('posts/{post}/tags', 'TagsController@store');
+
         // Posts: Reviews
         Route::post('posts/{post}/reviews', 'ReviewsController@reviews');
 
