@@ -31,6 +31,10 @@ Route::group(
         Route::get('groups', 'GroupsController@index');
         Route::get('groups/{group}', 'GroupsController@show');
 
+        // Group Types
+        Route::get('group-types', 'GroupTypesController@index');
+        Route::get('group-types/{groupType}', 'GroupTypesController@show');
+
         // Posts
         Route::post('posts', 'PostsController@store');
         Route::get('posts', 'PostsController@index');
@@ -44,6 +48,9 @@ Route::group(
 
         // Posts: Tags
         Route::post('posts/{post}/tags', 'TagsController@store');
+
+        // Posts: Reviews
+        Route::post('posts/{post}/reviews', 'ReviewsController@reviews');
 
         // Signups
         Route::post('signups', 'SignupsController@store');

@@ -14,7 +14,7 @@ class GroupTypesController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:web');
         $this->middleware('role:admin');
 
         $this->rules = [
@@ -40,7 +40,7 @@ class GroupTypesController extends Controller
         $values = $this->validate(
             $request,
             array_merge_recursive($this->rules, [
-                'name' => [Rule::unique('group_types')],
+                'name' => [Rule::unique('mysql.group_types')],
             ]),
         );
         // @see ActionsController->fillInOmittedCheckboxes
@@ -77,7 +77,9 @@ class GroupTypesController extends Controller
         $values = $this->validate(
             $request,
             array_merge_recursive($this->rules, [
-                'name' => [Rule::unique('group_types')->ignore($groupType->id)],
+                'name' => [
+                    Rule::unique('mysql.group_types')->ignore($groupType->id),
+                ],
             ]),
         );
         // @see ActionsController->fillInOmittedCheckboxes

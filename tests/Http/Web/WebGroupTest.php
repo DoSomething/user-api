@@ -35,7 +35,7 @@ class WebGroupTest extends TestCase
 
         $group = factory(Group::class)->create();
 
-        $response = $this->actingAs($admin, 'web')->post('groups', [
+        $response = $this->actingAs($admin, 'web')->post('/groups', [
             'group_type_id' => $group->group_type_id,
             'name' => $group->name,
         ]);
@@ -55,7 +55,7 @@ class WebGroupTest extends TestCase
 
         $name = $this->faker->sentence;
 
-        $response = $this->actingAs($staff, 'web')->post('groups', [
+        $response = $this->actingAs($staff, 'web')->post('/groups', [
             'group_type_id' => $groupType->id,
             'name' => $name,
         ]);
