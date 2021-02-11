@@ -49,7 +49,7 @@
             <div class="container__block -half">
                 <div class="container -padded">
                     @if(Auth::user()->hasRole('admin'))
-                      @include('admin.users.partials.danger-zone')
+                      @include('admin.users.partials.danger-zone', ['passwordResetTypes' => $passwordResetTypes])
                     @endif
                 </div>
             </div>

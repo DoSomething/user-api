@@ -153,11 +153,13 @@ class CustomerIo
      */
     public function sendEmail($to, $transactionalMessageId, $messageData = [])
     {
+        $logInfo = [
+            'transactional_message_id' => $transactionalMessageId,
+            'data' => $messageData,
+        ];
+
         if (!$this->enabled()) {
-            info('Transactional email would have been sent from Customer.io', [
-                'transactional_message_id' => $transactionalMessageId,
-                'data' => $messageData,
-            ]);
+            info('Transactional email would have been sent from Customer.io', $logInfo);
 
             return;
         }
@@ -173,6 +175,8 @@ class CustomerIo
         if ($messageData) {
             $payload['message_data'] = $messageData;
         }
+
+        logger('Sending Customer.io email', $logInfo);
 
         $response = $this->appApiClient->post('send/email', ['json' => $payload]);
     }

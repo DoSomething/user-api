@@ -915,6 +915,7 @@ class User extends MongoModel implements
                 config('app.key'),
                 config('auth.passwords.users.expire'),
             );
+
             $token = $tokenRepository->create($this);
         }
 
@@ -928,7 +929,7 @@ class User extends MongoModel implements
          * Use Customer.io events to track activate account emails, so admins can customize the
          * user's messaging journey per their source (e.g., Rock The Vote, newsletter subscription).
          */
-        if (Str::contains($type, 'activate-account')) {
+        if (PasswordResetType::isActivateAccount($type)) {
             return CreateCustomerIoEvent::dispatch($this, 'call_to_action_email', $data);
         }
 
