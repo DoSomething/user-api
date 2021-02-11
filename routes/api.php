@@ -129,6 +129,9 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.'], function () {
     Route::post('profile', 'Legacy\ProfileController@update');
 });
 
+// Assets
+Route::get('images/{hash}', 'Web\ImagesController@show');
+
 // Discovery
 Route::group(['prefix' => '.well-known'], function () {
     Route::get('openid-configuration', 'DiscoveryController@index');
