@@ -83,7 +83,7 @@ class ClubTest extends TestCase
         // Create a specific club to search for.
         $club = factory(Club::class)->create();
 
-        $response = $this->getJson('api/v3/clubs/' . $club->id);
+        $response = $this->getJson('/api/v3/clubs/' . $club->id);
 
         $response->assertOk();
         $response->assertJsonPath('data.id', $club->id);
