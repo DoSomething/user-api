@@ -47,7 +47,7 @@ Route::group(
         Route::get('posts/{post}/reactions', 'ReactionController@index');
 
         // Posts: Reviews
-        Route::post('posts/{post}/reviews', 'ReviewsController@reviews');
+        Route::post('posts/{post}/reviews', 'ReviewsController@store');
 
         // Signups
         Route::post('signups', 'SignupsController@store');

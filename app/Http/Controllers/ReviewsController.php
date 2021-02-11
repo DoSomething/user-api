@@ -40,13 +40,14 @@ class ReviewsController extends ActivityApiController
     }
 
     /**
-     * Update a post(s)'s status when reviewed.
+     * Create a new review.
      *
+     * @param Post $post
      * @param Request $request
      *
      * @return \Illuminate\Http\Response
      */
-    public function reviews(Request $request, Post $post)
+    public function store(Post $post, Request $request)
     {
         $request->validate([
             'status' => 'in:pending,accepted,rejected',
