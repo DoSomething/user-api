@@ -157,7 +157,7 @@ class UserController extends Controller
     }
 
     /**
-     * Mutes promotions for user
+     * Mutes promotions for user.
      *
      * @param User $user
      * @return \Illuminate\Http\Response
