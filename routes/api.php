@@ -49,6 +49,9 @@ Route::group(
         // Posts: Reviews
         Route::post('posts/{post}/reviews', 'ReviewsController@store');
 
+        // Posts: Rotate
+        Route::post('posts/{post}/rotate', 'RotationController@update');
+
         // Signups
         Route::post('signups', 'SignupsController@store');
         Route::get('signups', 'SignupsController@index');

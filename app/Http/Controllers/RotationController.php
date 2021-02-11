@@ -7,7 +7,6 @@ use App\Models\Post;
 use App\Services\Fastly;
 use App\Services\ImageStorage;
 use Illuminate\Http\Request;
-use Storage;
 
 class RotationController extends Controller
 {
@@ -35,17 +34,14 @@ class RotationController extends Controller
      *
      * @param Filesystem $filesystem
      */
-    public function __construct(
-        Fastly $fastly,
-        ImageStorage $storage,
-        PostTransformer $transformer
-    ) {
+    public function __construct(Fastly $fastly, ImageStorage $storage)
+    {
         $this->fastly = $fastly;
         $this->storage = $storage;
-        $this->transformer = $transformer;
+        $this->transformer = new PostTransformer();
 
-        $this->middleware('auth', ['only' => 'update']);
-        $this->middleware('role:staff,admin', ['only' => 'update']);
+        $this->middleware('auth:api');
+        $this->middleware('role:staff,admin');
     }
 
     /**
