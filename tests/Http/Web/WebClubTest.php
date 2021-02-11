@@ -15,9 +15,9 @@ class ClubTest extends TestCase
     {
         $admin = factory(User::class, 'admin')->create();
 
-        $name = $this->faker->sentence;
-
         $leaderId = factory(User::class)->create()->id;
+
+        $name = $this->faker->sentence;
 
         $response = $this->actingAs($admin, 'web')->post('/clubs', [
             'name' => $name,
@@ -42,9 +42,9 @@ class ClubTest extends TestCase
     {
         $staff = factory(User::class, 'staff')->create();
 
-        $name = $this->faker->sentence;
-
         $leaderId = factory(User::class)->create()->id;
+
+        $name = $this->faker->sentence;
 
         $response = $this->actingAs($staff, 'web')->post('/clubs', [
             'name' => $name,
@@ -95,8 +95,6 @@ class ClubTest extends TestCase
      */
     public function testCreatingAClubWithDuplicateLeaderId()
     {
-        $this->markTestSkipped();
-
         $admin = factory(User::class, 'admin')->create();
 
         $club = factory(Club::class)->create();
@@ -106,7 +104,8 @@ class ClubTest extends TestCase
             'leader_id' => $club->leaderId,
         ]);
 
-        $response->assertJsonValidationErrors(['leader_id']);
+        $response->assertRedirect();
+        $response->assertSessionHasErrors(['leader_id']);
     }
 
     /**
@@ -117,17 +116,13 @@ class ClubTest extends TestCase
      */
     public function testUpdatingAClub()
     {
-        $this->faker->addProvider(new FakerNorthstarId($this->faker));
-        $this->faker->addProvider(new FakerSchoolId($this->faker));
-
         $admin = factory(User::class, 'admin')->create();
+
+        $leaderId = factory(User::class)->create()->id;
 
         $club = factory(Club::class)->create();
 
         $name = $this->faker->company;
-
-        $leaderId = $this->faker->unique()->northstar_id;
-        // $leaderId = factory(User::class)->create()->id; // @TODO: which is better?
 
         $location = 'US-' . $this->faker->stateAbbr;
 
@@ -148,12 +143,13 @@ class ClubTest extends TestCase
 
         $response->assertRedirect();
 
-        // Make sure that the club's updated attributes are persisted in the database.
-        $this->assertEquals($club->fresh()->name, $name);
-        $this->assertEquals($club->fresh()->leader_id, $leaderId);
-        $this->assertEquals($club->fresh()->location, $location);
-        $this->assertEquals($club->fresh()->city, $city);
-        $this->assertEquals($club->fresh()->school_id, $schooolId);
+        $this->assertMysqlDatabaseHas('clubs', [
+            'name' => $name,
+            'leader_id' => $leaderId,
+            'location' => $location,
+            'city' => $city,
+            'school_id' => $schooolId,
+        ]);
     }
 
     /**
@@ -164,15 +160,13 @@ class ClubTest extends TestCase
      */
     public function testUpdatingAClubWithoutChangingTheLeaderId()
     {
-        $this->markTestSkipped();
-
         $admin = factory(User::class, 'admin')->create();
 
         $club = factory(Club::class)->create();
 
         $name = $this->faker->company;
 
-        $response = $this->actingAs($admin, 'web')->patchJson(
+        $response = $this->actingAs($admin, 'web')->patch(
             'clubs/' . $club->id,
             [
                 'name' => $name,
@@ -180,11 +174,12 @@ class ClubTest extends TestCase
             ],
         );
 
-        $response->assertStatus(302);
+        $response->assertRedirect();
 
-        // Make sure that the club's updated attributes are persisted in the database.
-        $this->assertEquals($club->fresh()->name, $name);
-        $this->assertEquals($club->fresh()->leader_id, $club->leader_id);
+        $this->assertMysqlDatabaseHas('clubs', [
+            'name' => $name,
+            'leader_id' => $club->leader_id,
+        ]);
     }
 
     /**
@@ -195,26 +190,28 @@ class ClubTest extends TestCase
      */
     public function testUpdatingAClubWithValidationErrors()
     {
-        $this->markTestSkipped();
-
         $admin = factory(User::class, 'admin')->create();
 
         $club = factory(Club::class)->create();
 
-        $this->actingAs($admin, 'web')
-            ->patchJson('clubs/' . $club->id, [
+        $response = $this->actingAs($admin, 'web')->patch(
+            'clubs/' . $club->id,
+            [
                 'name' => 123, // This should be a string.
                 'leader_id' => 'Maddy is the leader!', // This should be a MongoDB ObjectID.
                 'location' => 'wakanda', // This should be an iso3166 string.
                 'city' => 789, // This should be a string.
                 'school_id' => 101112, // This should be a string.
-            ])
-            ->assertJsonValidationErrors([
-                'name',
-                'leader_id',
-                'location',
-                'city',
-                'school_id',
-            ]);
+            ],
+        );
+
+        $response->assertRedirect();
+        $response->assertSessionHasErrors([
+            'name',
+            'leader_id',
+            'location',
+            'city',
+            'school_id',
+        ]);
     }
 }
