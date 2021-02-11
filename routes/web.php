@@ -56,6 +56,12 @@ Route::resource('groups', 'GroupsController', [
     'except' => ['create', 'index', 'show'],
 ]);
 
+// Group Types
+Route::resource('group-types', 'GroupTypesController', [
+    'except' => ['index', 'show'],
+]);
+Route::get('group-types/{id}/groups/create', 'GroupsController@create');
+
 // Registration
 Route::get('register', 'AuthController@getRegister');
 Route::post('register', 'AuthController@postRegister');
