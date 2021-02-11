@@ -336,7 +336,7 @@ class Post extends Model
     {
         $path = parse_url($this->url, PHP_URL_PATH);
 
-        // We store local URLs prefixed with `/storage` when using the "public" adapter.
+        // We store local URLs prefixed with `/storage` when using the "local" adapter.
         if (config('filesystems.default') == 'local') {
             return str_replace('/storage/', '', $path);
         }
