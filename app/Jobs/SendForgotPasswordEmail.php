@@ -44,7 +44,7 @@ class SendForgotPasswordEmail extends CustomerIoJob
         $customerIo->sendEmail(
             $this->user,
             CustomerIo::getTransactionalMessageId('FORGOT_PASSWORD'),
-            ['actionUrl' => $this->url],
+            ['url' => $this->url],
         );
     }
 
