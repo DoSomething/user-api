@@ -29,7 +29,7 @@ class OriginalsTest extends TestCase
      *
      * @return void
      */
-    public function test()
+    public function testGetOriginalImageAsNonOwner()
     {
         $somebodyElse = factory(User::class)->create();
 
