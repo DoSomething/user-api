@@ -61,7 +61,6 @@ class PasswordResetTest extends TestCase
             $resetPasswordUrl = $params['url'];
 
             $this->assertEquals($params['user']->id, $user->id);
-            $this->assertEquals($params['transactionalMessageId'], CustomerIo::getTransactionalMessageId('forgot_password'));
 
             return true;
         });
@@ -167,7 +166,6 @@ class PasswordResetTest extends TestCase
             $resetPasswordUrl = $params['eventData']['actionUrl'];
 
             $this->assertEquals($params['user']->id, $user->id);
-
 
             return true;
         });

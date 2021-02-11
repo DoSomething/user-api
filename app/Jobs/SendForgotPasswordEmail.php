@@ -9,13 +9,6 @@ use App\Services\CustomerIo;
 class SendForgotPasswordEmail extends Job
 {
     /**
-     * The Customer.io transactional message ID to use for email content.
-     *
-     * @var int
-     */
-    protected $transactionalMessageId;
-
-    /**
      * The user to send a transactional email to.
      *
      * @var User
@@ -39,7 +32,6 @@ class SendForgotPasswordEmail extends Job
     public function __construct(User $user, string $url)
     {
         $this->user = $user;
-        $this->transactionalMessageId = CustomerIo::getTransactionalMessageIds('forgot_password');
         $this->url = $url;
     }
 
@@ -61,9 +53,9 @@ class SendForgotPasswordEmail extends Job
     public function handle(CustomerIo $customerIo)
     {
         $customerIo->sendEmail(
-            $this->user->email,
-            $this->transactionalMessageId,
-            ['url' => $this->url],
+            $this->user,
+            CustomerIo::getTransactionalMessageId('FORGOT_PASSWORD'),
+            ['actionUrl' => $this->url],
         );
     }
 
@@ -75,8 +67,7 @@ class SendForgotPasswordEmail extends Job
     public function getParams()
     {
         return [
-            'transactionalMessageId' => $this->transactionalMessageId,
-            'url' => $this->messageData,
+            'url' => $this->url,
             'user' => $this->user,
         ];
     }

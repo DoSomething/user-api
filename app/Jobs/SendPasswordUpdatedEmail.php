@@ -9,13 +9,6 @@ use App\Services\CustomerIo;
 class SendPasswordUpdatedEmail extends Job
 {
     /**
-     * The Customer.io transactional message ID to use for email content.
-     *
-     * @var int
-     */
-    protected $transactionalMessageId;
-
-    /**
      * The user to send a transactional email to.
      *
      * @var User
@@ -32,7 +25,6 @@ class SendPasswordUpdatedEmail extends Job
     public function __construct(User $user)
     {
         $this->user = $user;
-        $this->transactionalMessageId = CustomerIo::getTransactionalMessageIds('password_updated');
     }
 
     /**
@@ -53,8 +45,8 @@ class SendPasswordUpdatedEmail extends Job
     public function handle(CustomerIo $customerIo)
     {
         $customerIo->sendEmail(
-            $this->user->email,
-            $this->transactionalMessageId,
+            $this->user,
+            CustomerIo::getTransactionalMessageId('PASSWORD_UPDATED'),
         );
     }
 
@@ -66,7 +58,6 @@ class SendPasswordUpdatedEmail extends Job
     public function getParams()
     {
         return [
-            'transactionalMessageId' => $this->transactionalMessageId,
             'user' => $this->user,
         ];
     }

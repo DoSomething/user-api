@@ -919,12 +919,11 @@ class User extends MongoModel implements
             $token = $tokenRepository->create($this);
         }
 
-        $url =  $this->getPasswordResetUrl($token, $type);
+        $url = $this->getPasswordResetUrl($token, $type);
 
         $data = [
             'actionUrl' => $url,
             'type' => $this->type,
-            'userId' => $this->id,
         ];
 
         /*
