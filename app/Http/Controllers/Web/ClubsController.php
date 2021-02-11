@@ -14,7 +14,7 @@ class ClubsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:web');
         $this->middleware('role:admin,staff');
 
         $this->rules = [
@@ -43,7 +43,7 @@ class ClubsController extends Controller
         $this->validate(
             $request,
             array_merge_recursive($this->rules, [
-                'leader_id' => 'required|objectid|unique:clubs',
+                'leader_id' => 'required|objectid|unique:mysql.clubs',
             ]),
         );
 
@@ -84,7 +84,7 @@ class ClubsController extends Controller
                 'leader_id' => [
                     'required',
                     'objectid',
-                    Rule::unique('clubs')->ignore($club),
+                    Rule::unique('mysql.clubs')->ignore($club),
                 ],
             ]),
         );
