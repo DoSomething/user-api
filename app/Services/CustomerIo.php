@@ -128,19 +128,30 @@ class CustomerIo
 
     /**
      * Delete the given user's profile in Customer.io.
-     * @see https://customer.io/docs/api/#apitrackcustomerscustomers_delete
+     * @see https://customer.io/docs/api/#operation/delete
      *
      * @param string $id
      */
     public function deleteUser(string $id)
     {
+        return $this->trackApiClient->delete('customers/' . $id);
+    }
+
+    /**
+     * Suppress the given user's profile in Customer.io.
+     * @see https://customer.io/docs/api/#operation/suppress
+     *
+     * @param string $id
+     */
+    public function suppressUser(string $id)
+    {
         if (!config('features.delete-api')) {
-            info('User ' . $id . ' would have been deleted in Customer.io.');
+            info('User ' . $id . ' would have been suppressed in Customer.io.');
 
             return;
         }
 
-        return $this->trackApiClient->delete('customers/' . $id);
+        return $this->trackApiClient->post('customers/' . $id . '/suppress');
     }
 
     /**

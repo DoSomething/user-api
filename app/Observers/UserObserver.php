@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Jobs\CreateCustomerIoEvent;
+use App\Jobs\DeleteCustomerIoProfile;
 use App\Jobs\DeleteUserFromOtherServices;
 use App\Jobs\SendUserToCustomerIo;
 use App\Models\RefreshToken;
@@ -63,6 +64,15 @@ class UserObserver
     public function updating(User $user)
     {
         $changed = $user->getDirty();
+
+        // If we're setting the promotions muted field, delete Customer.io profile and exit.
+        if (
+            isset($changed['promotions_muted_at'])
+        ) {
+            info('Deleting Customer.io profile for user ' . $user->id);
+
+            return DeleteCustomerIoProfile::dispatch($user);
+        }
 
         // If we're unsubscribing from email, clear all topics.
         if (
@@ -136,6 +146,17 @@ class UserObserver
      */
     public function updated(User $user)
     {
+        // If this user has promotions muted, we don't want to send updates to Customer.io.
+        if (isset($user->promotions_muted_at)) {
+            if (!app()->runningInConsole()) {
+                logger('Skipping profile update for muted user', [
+                    'id' => $user->id,
+                ]);
+            }
+
+            return;
+        }
+
         // Send payload to Blink for Customer.io profile.
         $queueLevel = config('queue.jobs.users');
         $queue = config('queue.names.' . $queueLevel);
