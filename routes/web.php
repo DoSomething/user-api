@@ -86,6 +86,9 @@ Route::get('password/reset/{type}/{token}', [
 ]);
 Route::post('password/reset/{type}', 'ResetPasswordController@reset');
 
+// Originals
+Route::get('originals/{post}', 'OriginalsController@show');
+
 // Administration
 if (config('features.admin')) {
     Route::prefix('admin')
