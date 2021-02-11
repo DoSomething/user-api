@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\Post;
-use App\Models\User;
 use App\Models\Signup;
+use App\Models\User;
 
 class UserTest extends TestCase
 {
