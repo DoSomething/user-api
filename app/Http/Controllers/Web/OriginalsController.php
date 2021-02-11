@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
-use Storage;
 
 class OriginalsController extends Controller
 {
@@ -15,17 +14,16 @@ class OriginalsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:web');
     }
 
     /**
      * Display the specified resource.
      *
      * @param  Post $post
-     * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post, Request $request)
+    public function show(Post $post)
     {
         $this->authorize('viewAll', $post);
 

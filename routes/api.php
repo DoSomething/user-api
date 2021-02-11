@@ -54,7 +54,10 @@ Route::group(
         Route::post('posts/{post}/tags', 'TagsController@store');
 
         // Posts: Reviews
-        Route::post('posts/{post}/reviews', 'ReviewsController@reviews');
+        Route::post('posts/{post}/reviews', 'ReviewsController@store');
+
+        // Posts: Rotate
+        Route::post('posts/{post}/rotate', 'RotationController@update');
 
         // Signups
         Route::post('signups', 'SignupsController@store');
@@ -132,6 +135,9 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.'], function () {
     Route::get('profile', 'Legacy\ProfileController@show');
     Route::post('profile', 'Legacy\ProfileController@update');
 });
+
+// Assets
+Route::get('images/{hash}', 'Web\ImagesController@show');
 
 // Discovery
 Route::group(['prefix' => '.well-known'], function () {

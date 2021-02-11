@@ -47,6 +47,9 @@ trait CreatesApplication
         $this->customerIoMock->shouldReceive('trackEvent');
         $this->customerIoMock->shouldReceive('sendEmail');
 
+        $this->fastlyMock = $this->mock(\App\Services\Fastly::class);
+        $this->fastlyMock->shouldReceive('purge');
+
         // Configure a mock for GraphQL calls.
         $this->graphqlMock = $this->mock(\App\Services\GraphQL::class);
         $this->graphqlMock->shouldReceive('getSchoolById')->andReturn([

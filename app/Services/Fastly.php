@@ -137,7 +137,7 @@ class Fastly extends RestApiClient
      */
     protected function purgeKey($cacheKey): void
     {
-        if (!$this->service) {
+        if (!$this->backendServiceId) {
             return;
         }
 
