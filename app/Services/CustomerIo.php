@@ -147,11 +147,11 @@ class CustomerIo
      * Sends a transactional email.
      * @see https://customer.io/docs/api/#operation/sendEmail
      *
-     * @param string $to
+     * @param User $user
      * @param int $transactionalMessageId
      * @param array $messageData
      */
-    public function sendEmail($to, $transactionalMessageId, $messageData = [])
+    public function sendEmail(User $user, $transactionalMessageId, $messageData = [])
     {
         $logInfo = [
             'transactional_message_id' => $transactionalMessageId,
@@ -168,7 +168,7 @@ class CustomerIo
             'identifiers' => [
                 'id' => config('services.customerio.app_api.identifier_id'),
             ],
-            'to' => $to,
+            'to' => $user->email,
             'transactional_message_id' => $transactionalMessageId,
         ];
 
@@ -179,5 +179,18 @@ class CustomerIo
         logger('Sending Customer.io email', $logInfo);
 
         $response = $this->appApiClient->post('send/email', ['json' => $payload]);
+    }
+
+    /**
+     * Returns the Transactional Message ID to use for a given email type.
+     *
+     * @param string $emailType
+     * @return int
+     */
+    public static function getTransactionalMessageId($emailType)
+    {
+        $ids = config('services.customerio.app_api.transactional_message_ids');
+
+        return $ids[$emailType];
     }
 }

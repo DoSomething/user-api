@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Auth\Role;
 use App\Jobs\CreateCustomerIoEvent;
-use App\Jobs\SendCustomerIoEmail;
+use App\Jobs\SendForgotPasswordEmail;
 use App\Services\GraphQL;
 use App\Types\PasswordResetType;
 use Carbon\Carbon;
@@ -919,10 +919,11 @@ class User extends MongoModel implements
             $token = $tokenRepository->create($this);
         }
 
+        $url = $this->getPasswordResetUrl($token, $type);
+
         $data = [
-            'actionUrl' => $this->getPasswordResetUrl($token, $type),
+            'actionUrl' => $url,
             'type' => $this->type,
-            'userId' => $this->id,
         ];
 
         /*
@@ -934,11 +935,7 @@ class User extends MongoModel implements
         }
 
         // Send transactional emails for forgot password requests that don't need to be tracked.
-        return SendCustomerIoEmail::dispatch(
-            $this->email,
-            config('services.customerio.app_api.transactional_message_ids.forgot_password'),
-            $data
-        );
+        return SendForgotPasswordEmail::dispatch($this, $url);
     }
 
     /**
