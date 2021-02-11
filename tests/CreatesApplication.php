@@ -4,6 +4,7 @@ namespace Tests;
 
 use Carbon\Carbon;
 use FakerPhoneNumber;
+use FakerSchoolId;
 use Illuminate\Contracts\Console\Kernel;
 
 trait CreatesApplication
@@ -83,6 +84,7 @@ trait CreatesApplication
         // Get a new Faker generator from Laravel.
         $this->faker = app(\Faker\Generator::class);
         $this->faker->addProvider(new FakerPhoneNumber($this->faker));
+        $this->faker->addProvider(new FakerSchoolId($this->faker));
 
         // Reset to the current time, if mocked.
         Carbon::setTestNow(null);
