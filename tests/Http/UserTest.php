@@ -1,8 +1,8 @@
 <?php
 
+use App\Models\Post;
 use App\Models\User;
-use App\Services\Gambit;
-use App\Services\Rogue;
+use App\Models\Signup;
 
 class UserTest extends TestCase
 {
@@ -1022,12 +1022,28 @@ class UserTest extends TestCase
     {
         $user = factory(User::class)->create();
 
+        $signups = factory(Signup::class, 4)->create([
+            'northstar_id' => $user->id,
+        ]);
+
+        $posts = factory(Post::class, 10)->create([
+            'signup_id' => $signups->random()->id,
+            'northstar_id' => $user->id,
+        ]);
+
         $response = $this->asAdminUser()->deleteJson("v2/users/$user->id");
 
         $response->assertOk();
 
         $this->customerIoMock->shouldHaveReceived('deleteUser');
         $this->gambitMock->shouldHaveReceived('deleteUser');
+
+        $this->assertUserAnonymized($user);
+
+        // The user's posts & signups should be soft deleted, and fields that may
+        // contain personally-identifiable information should be erased:
+        $this->assertAnonymized($posts, ['text', 'url', 'details']);
+        $this->assertAnonymized($signups, ['why_participated', 'details']);
     }
 
     /**

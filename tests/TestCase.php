@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\CreatesApplication;
@@ -155,11 +156,33 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     }
 
     /**
+     * Assert the given models are soft-deleted and the provided
+     * fields have been nulled out.
+     *
+     * @param Collection $collection
+     * @param array $fields
+     */
+    public function assertAnonymized(Collection $collection, array $fields = [])
+    {
+        foreach ($collection as $model) {
+            $identifier = [$model->getKeyName() => $model->getKey()];
+            $nulledFields = array_fill_keys($fields, null);
+
+            $this->assertSoftDeleted(
+                $model->getTable(),
+                array_merge($identifier, $nulledFields),
+                $model->getConnectionName(),
+                $model->getDeletedAtColumn(),
+            );
+        }
+    }
+
+    /**
      * Assert that the given model has been anonymized.
      *
      * @param User $before
      */
-    protected function assertAnonymized(User $before)
+    protected function assertUserAnonymized(User $before)
     {
         $after = $before->fresh();
         $attributes = $after->getAttributes();

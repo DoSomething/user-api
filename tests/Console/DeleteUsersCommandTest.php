@@ -34,7 +34,7 @@ class DeleteUsersCommandTest extends TestCase
         Artisan::call('northstar:delete', ['input' => $input]);
 
         // The command should remove
-        $this->assertAnonymized($user1);
-        $this->assertAnonymized($user2);
+        $this->assertUserAnonymized($user1);
+        $this->assertUserAnonymized($user2);
     }
 }

@@ -36,8 +36,8 @@ class ProcessDeletionsCommandTest extends TestCase
         Artisan::call('northstar:process-deletions');
 
         // The command should remove the users queued for > 14 days:
-        $this->assertAnonymized($user1);
-        $this->assertAnonymized($user2);
+        $this->assertUserAnonymized($user1);
+        $this->assertUserAnonymized($user2);
 
         // ...but not the one that was queued more recently, or not at all:
         $this->assertArrayNotHasKey(
