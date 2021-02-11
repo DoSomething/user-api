@@ -113,6 +113,7 @@ if (config('features.admin')) {
             Route::delete('users/{user}/promotions', [
                 'as' => 'users.promotions.destroy',
                 'uses' => 'Admin\PromotionsController@destroy',
+
             ]);
 
             // Fastly Redirects
