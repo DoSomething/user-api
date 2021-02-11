@@ -27,6 +27,10 @@ Route::group(
         Route::get('campaigns/{campaign}', 'CampaignsController@show');
         Route::patch('campaigns/{campaign}', 'CampaignsController@update');
 
+        // Clubs
+        Route::get('clubs', 'ClubsController@index');
+        Route::get('clubs/{club}', 'ClubsController@show');
+
         // Groups
         Route::get('groups', 'GroupsController@index');
         Route::get('groups/{group}', 'GroupsController@show');
