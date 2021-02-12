@@ -39,7 +39,8 @@ class DeleteUserFromOtherServices extends Job
             ->allow(1)
             ->every(1)
             ->then(function () {
-                app(CustomerIo::class)->suppressUser($this->id);
+                // TODO: Use suppressUser instead.
+                app(CustomerIo::class)->deleteUser($this->id);
                 app(Gambit::class)->deleteUser($this->id);
                 app(Rogue::class)->deleteUser($this->id);
             });
