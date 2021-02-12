@@ -46,6 +46,7 @@ trait CreatesApplication
         $this->customerIoMock->shouldReceive('updateCustomer')->andReturn(null);
         $this->customerIoMock->shouldReceive('trackEvent');
         $this->customerIoMock->shouldReceive('sendEmail');
+        $this->customerIoMock->shouldReceive('deleteUser');
 
         $this->fastlyMock = $this->mock(\App\Services\Fastly::class);
         $this->fastlyMock->shouldReceive('purge');
