@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\SendUserToCustomerIo;
+use App\Jobs\UpsertCustomerIoProfile;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
@@ -37,7 +37,7 @@ class BackfillCustomerIo extends Command
             $users->each(function (User $user) use ($progress) {
                 $queue = config('queue.names.low');
 
-                dispatch(new SendUserToCustomerIo($user))->onQueue($queue);
+                dispatch(new UpsertCustomerIoProfile($user))->onQueue($queue);
                 $progress->advance();
             });
         });

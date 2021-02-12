@@ -5,7 +5,7 @@ namespace App\Observers;
 use App\Jobs\CreateCustomerIoEvent;
 use App\Jobs\DeleteCustomerIoProfile;
 use App\Jobs\DeleteUserFromOtherServices;
-use App\Jobs\SendUserToCustomerIo;
+use App\Jobs\UpsertCustomerIoProfile;
 use App\Models\RefreshToken;
 use App\Models\User;
 use Illuminate\Support\Arr;
@@ -49,7 +49,7 @@ class UserObserver
         // Send payload to Blink for Customer.io profile.
         $queueLevel = config('queue.jobs.users');
         $queue = config('queue.names.' . $queueLevel);
-        SendUserToCustomerIo::dispatch($user)->onQueue($queue);
+        UpsertCustomerIoProfile::dispatch($user)->onQueue($queue);
 
         // Send metrics to StatHat.
         Log::info('user_created', ['source' => $user->source]);
@@ -66,13 +66,13 @@ class UserObserver
         $changed = $user->getDirty();
 
         // If we're setting the promotions muted field, delete Customer.io profile and exit.
-        if (
-            isset($changed['promotions_muted_at'])
-        ) {
+        if (isset($changed['promotions_muted_at'])) {
             info('Deleting Customer.io profile for user ' . $user->id);
 
             return DeleteCustomerIoProfile::dispatch($user);
         }
+
+        // @TODO: If a muted user is re-subscribing, unset the promotions_muted_at field.
 
         // If we're unsubscribing from email, clear all topics.
         if (
@@ -160,7 +160,7 @@ class UserObserver
         // Send payload to Blink for Customer.io profile.
         $queueLevel = config('queue.jobs.users');
         $queue = config('queue.names.' . $queueLevel);
-        SendUserToCustomerIo::dispatch($user)->onQueue($queue);
+        UpsertCustomerIoProfile::dispatch($user)->onQueue($queue);
     }
 
     /**

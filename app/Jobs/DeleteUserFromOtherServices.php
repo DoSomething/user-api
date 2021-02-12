@@ -40,6 +40,7 @@ class DeleteUserFromOtherServices extends Job
             ->every(1)
             ->then(function () {
                 // TODO: Use suppressUser instead.
+                // @see https://www.pivotaltracker.com/n/projects/2328687/stories/176808789
                 app(CustomerIo::class)->deleteUser($this->id);
                 app(Gambit::class)->deleteUser($this->id);
                 app(Rogue::class)->deleteUser($this->id);
