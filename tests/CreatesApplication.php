@@ -45,7 +45,6 @@ trait CreatesApplication
         $this->customerIoMock = $this->mock(\App\Services\CustomerIo::class);
         $this->customerIoMock->shouldReceive('deleteCustomer');
         $this->customerIoMock->shouldReceive('sendEmail');
-        $this->customerIoMock->shouldReceive('suppressCustomer');
         $this->customerIoMock->shouldReceive('trackEvent');
         $this->customerIoMock->shouldReceive('updateCustomer')->andReturn(null);
 

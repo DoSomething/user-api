@@ -391,7 +391,7 @@ class UserModelTest extends TestCase
         $user->last_name = 'Morales';
         $user->save();
 
-        // Only one request should have been made, when the profile was upserted upon user create.
+        // Only one update request should have been made, upon creating the user.
         $this->customerIoMock->shouldHaveReceived('updateCustomer')->once();
         $this->customerIoMock->shouldHaveReceived('deleteCustomer')->once();
     }
