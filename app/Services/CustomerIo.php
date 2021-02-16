@@ -134,6 +134,8 @@ class CustomerIo
      */
     public function deleteCustomer(string $id)
     {
+        logger('Deleting Customer.io profile', ['user_id' => $id]);
+
         return $this->trackApiClient->delete('customers/' . $id);
     }
 
@@ -151,7 +153,9 @@ class CustomerIo
             return;
         }
 
-        return $this->trackApiClient->post('customers/' . $id . '/suppress');
+        logger('Suppressing Customer.io profile', ['user_id' => $id]);
+
+        return $this->trackApiClient->post('customers/' . $id . '/suppress', ['json' => []]);
     }
 
     /**
