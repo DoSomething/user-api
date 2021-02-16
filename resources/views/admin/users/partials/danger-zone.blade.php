@@ -27,8 +27,8 @@
     </div>
 
     <div class="danger-zone__block">
-        <form method="POST" action="{{ route('admin.users.mute-promotions', ['user' => $user->id]) }}">
-            {{ method_field('POST')}}
+        <form method="POST" action="{{ route('admin.users.promotions.destroy', ['user' => $user->id]) }}">
+            {{ method_field('DELETE')}}
             {{ csrf_field() }}
 
             <div class="form-item">  
