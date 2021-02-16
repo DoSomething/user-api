@@ -18,7 +18,6 @@ class DeleteCustomerIoProfile extends CustomerIoJob
      * Create a new job instance.
      *
      * @param User $user
-     * @param string $url
      * @return void
      */
     public function __construct(User $user)
