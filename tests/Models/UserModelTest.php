@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Carbon\Carbon;
 
 class UserModelTest extends TestCase
 {
@@ -185,6 +186,7 @@ class UserModelTest extends TestCase
         $this->assertFalse(isset($result['unsubscribed']));
     }
 
+    /** @test */
     public function testIsSmsSubscribedisTrueIfSmsStatusIsActive()
     {
         $user = factory(User::class)->create([
@@ -194,6 +196,7 @@ class UserModelTest extends TestCase
         $this->assertTrue($user->isSmsSubscribed());
     }
 
+    /** @test */
     public function testIsSmsSubscribedisTrueIfSmsStatusIsLess()
     {
         $user = factory(User::class)->create([
@@ -203,6 +206,7 @@ class UserModelTest extends TestCase
         $this->assertTrue($user->isSmsSubscribed());
     }
 
+    /** @test */
     public function testIsSmsSubscribedisFalseIfSmsStatusIsNull()
     {
         $user = factory(User::class)->create([
@@ -212,6 +216,7 @@ class UserModelTest extends TestCase
         $this->assertFalse($user->isSmsSubscribed());
     }
 
+    /** @test */
     public function testIsSmsSubscribedisFalseIfSmsStatusIsStop()
     {
         $user = factory(User::class)->create([
@@ -221,6 +226,7 @@ class UserModelTest extends TestCase
         $this->assertFalse($user->isSmsSubscribed());
     }
 
+    /** @test */
     public function testHasSmsSubscriptionTopicsisTrueIfTopicsExist()
     {
         $user = factory(User::class)
@@ -230,6 +236,7 @@ class UserModelTest extends TestCase
         $this->assertTrue($user->hasSmsSubscriptionTopics());
     }
 
+    /** @test */
     public function testHasSmsSubscriptionTopicsisFalseIfTopicsIsNull()
     {
         $user = factory(User::class)
@@ -239,6 +246,7 @@ class UserModelTest extends TestCase
         $this->assertFalse($user->hasSmsSubscriptionTopics());
     }
 
+    /** @test */
     public function addsDefaultSmsSubscriptionTopicsIfSubscribed()
     {
         // By default our factory creates with SMS status active or less.
@@ -250,15 +258,17 @@ class UserModelTest extends TestCase
         ]);
     }
 
+    /** @test */
     public function addsEmptySmsSubscriptionTopicsIfUnsubscribed()
     {
         $unsubscribedUser = factory(User::class)->create([
             'sms_status' => 'stop',
         ]);
 
-        $this->assertEquals($unsubscribedUser->sms_subscription_topics, []);
+        $this->assertEquals($unsubscribedUser->sms_subscription_topics, null);
     }
 
+    /** @test */
     public function doesNotChangeSubscriptionTopicsIfExistsWhenChangingSubscribedStatus()
     {
         $user = factory(User::class)->create([
@@ -272,6 +282,7 @@ class UserModelTest extends TestCase
         $this->assertEquals($user->sms_subscription_topics, ['voting']);
     }
 
+    /** @test */
     public function addsDefaultSmsSubscriptionTopicsIfChangingToSubscribed()
     {
         $user = factory(User::class)->create([
@@ -367,5 +378,21 @@ class UserModelTest extends TestCase
         $payload = $evildoer->toCustomerIoPayload();
 
         $this->assertEquals('click here', $payload['first_name']);
+    }
+
+    /** @test */
+    public function testSettingPromotionsMutedAt()
+    {
+        $user = factory(User::class)->create();
+
+        $user->promotions_muted_at = Carbon::now();
+        $user->save();
+
+        $user->last_name = 'Morales';
+        $user->save();
+
+        // Only one update request should have been made, upon creating the user.
+        $this->customerIoMock->shouldHaveReceived('updateCustomer')->once();
+        $this->customerIoMock->shouldHaveReceived('deleteCustomer')->once();
     }
 }
