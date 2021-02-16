@@ -102,9 +102,9 @@ if (config('features.admin')) {
                 'as' => 'users.resets.create',
                 'uses' => 'Admin\UserController@sendPasswordReset',
             ]);
-            Route::post('users/{user}/mute-promotions', [
-                'as' => 'users.mute-promotions',
-                'uses' => 'Admin\UserController@mutePromotions',
+            Route::delete('users/{user}/promotions', [
+                'as' => 'users.promotions.destroy',
+                'uses' => 'Admin\PromotionsController@destroy',
             ]);
 
             // Fastly Redirects
