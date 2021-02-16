@@ -1030,7 +1030,7 @@ class UserTest extends TestCase
             ->shouldReceive('deleteUser')
             ->once();
 
-        $this->customerIoMock->shouldReceive('suppressUser')->once();
+        $this->customerIoMock->shouldReceive('suppressCustomer')->once();
 
         $response = $this->asAdminUser()->json(
             'DELETE',

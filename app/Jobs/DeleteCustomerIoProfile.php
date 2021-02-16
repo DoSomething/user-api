@@ -33,6 +33,6 @@ class DeleteCustomerIoProfile extends CustomerIoJob
      */
     public function handle(CustomerIo $customerIo)
     {
-        $customerIo->deleteUser($this->user->id);
+        $customerIo->deleteCustomer($this->user->id);
     }
 }

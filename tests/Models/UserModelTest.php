@@ -385,17 +385,14 @@ class UserModelTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $this->customerIoMock->shouldHaveReceived('updateCustomer');
-
         $user->promotions_muted_at = Carbon::now();
         $user->save();
 
         $user->last_name = 'Morales';
         $user->save();
 
-        // We should have made one request to Customer.io when we created the user,
-        // but all other requests should not have been tracked.
+        // Only one request should have been made, when the profile was upserted upon user create.
         $this->customerIoMock->shouldHaveReceived('updateCustomer')->once();
-        $this->customerIoMock->shouldHaveReceived('deleteUser')->once();
+        $this->customerIoMock->shouldHaveReceived('deleteCustomer')->once();
     }
 }

@@ -865,7 +865,7 @@ class LegacyUserTest extends BrowserKitTestCase
             ->shouldReceive('deleteUser')
             ->once();
         $this->mock(CustomerIo::class)
-            ->shouldReceive('suppressUser')
+            ->shouldReceive('suppressCustomer')
             ->once();
 
         // Only 'admin' scoped keys should be able to delete users.
