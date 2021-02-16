@@ -136,6 +136,9 @@ class UserTransformer extends BaseTransformer
                 $user->last_authenticated_at,
             );
             $response['last_messaged_at'] = iso8601($user->last_messaged_at);
+            $response['promotions_muted_at'] = iso8601(
+                $user->promotions_muted_at,
+            );
         }
 
         $response['updated_at'] = iso8601($user->updated_at);
