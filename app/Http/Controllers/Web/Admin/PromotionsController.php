@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Web\Admin;
 
-use App\Auth\Registrar;
 use App\Auth\Role;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -11,17 +10,8 @@ use Illuminate\Http\Request;
 
 class PromotionsController extends Controller
 {
-    /**
-     * Northstar's user registrar.
-     *
-     * @var Registrar
-     */
-    protected $registrar;
-
-    public function __construct(Registrar $registrar)
+    public function __construct()
     {
-        $this->registrar = $registrar;
-
         $this->middleware('auth:web');
         $this->middleware('role:admin,staff,intern');
 
