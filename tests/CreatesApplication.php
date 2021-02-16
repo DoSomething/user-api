@@ -43,10 +43,10 @@ trait CreatesApplication
 
         // Configure a mock for any Customer.io API calls.
         $this->customerIoMock = $this->mock(\App\Services\CustomerIo::class);
-        $this->customerIoMock->shouldReceive('deleteCustomer');
-        $this->customerIoMock->shouldReceive('sendEmail');
-        $this->customerIoMock->shouldReceive('trackEvent');
         $this->customerIoMock->shouldReceive('updateCustomer')->andReturn(null);
+        $this->customerIoMock->shouldReceive('trackEvent');
+        $this->customerIoMock->shouldReceive('sendEmail');
+        $this->customerIoMock->shouldReceive('deleteCustomer');
 
         $this->fastlyMock = $this->mock(\App\Services\Fastly::class);
         $this->fastlyMock->shouldReceive('purge');
