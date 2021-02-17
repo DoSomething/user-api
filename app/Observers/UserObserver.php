@@ -8,6 +8,7 @@ use App\Jobs\DeleteUserFromOtherServices;
 use App\Jobs\UpsertCustomerIoProfile;
 use App\Models\RefreshToken;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
@@ -72,13 +73,27 @@ class UserObserver
             return DeleteCustomerIoProfile::dispatch($user);
         }
 
-        // @TODO: If a muted user is re-subscribing, unset the promotions_muted_at field.
+        $currentlySubscribed = [
+            'email' => $user->email_subscription_status,
+            'sms' => User::isSubscribedSmsStatus($user->sms_status),
+        ];
+        // Initialize variables for tracking any subscription changes.
+        $isSubscribing = [
+            'email' => false,
+            'sms' => false,
+        ];
+        $isUnsubscribing = [
+            'email' => false,
+            'sms' => false,
+        ];
 
         // If we're unsubscribing from email, clear all topics.
         if (
             isset($changed['email_subscription_status']) &&
             !$changed['email_subscription_status']
         ) {
+            $isUnsubscribing['email'] = true;
+
             $user->email_subscription_topics = [];
         } elseif (
             /*
@@ -91,6 +106,8 @@ class UserObserver
             count($changed['email_subscription_topics']) &&
             !$user->email_subscription_status
         ) {
+            $isSubscribing['email'] = true;
+
             $user->email_subscription_status = true;
         }
 
@@ -102,15 +119,39 @@ class UserObserver
              * isn't a need to change sms_status if an unsubscribed user adds a SMS topic.
              */
             if (User::isUnsubscribedSmsStatus($changed['sms_status'])) {
+                $isUnsubscribing['sms'] = true;
+
                 $user->clearSmsSubscriptionTopics();
-            } elseif (
-                // If resubscribing and not adding topics, add the default topics if user has none.
-                User::isSubscribedSmsStatus($changed['sms_status']) &&
-                !isset($changed['sms_subscription_topics']) &&
-                !$user->hasSmsSubscriptionTopics()
-            ) {
-                $user->addDefaultSmsSubscriptionTopics();
+            } elseif (User::isSubscribedSmsStatus($changed['sms_status'])) {
+                $isSubscribing['sms'] = true;
+
+                // Set default SMS topics if user has none.
+                if (!isset($changed['sms_subscription_topics']) && !$user->hasSmsSubscriptionTopics()) {
+                    $user->addDefaultSmsSubscriptionTopics();
+                }
             }
+        }
+
+        // If promotions are muted and this update is resubscribing, unmute promotions.
+        if (
+            isset($user->promotions_muted_at) &&
+            ($isSubscribing['sms'] || $isSubscribing['email'])
+        ) {
+            // TODO: Send promotions_resubscribe event.
+            $user->promotions_muted_at = null;
+        }
+
+        // If this update means user will be unsubscribed from both platforms, mute promotions.
+        if (
+            ($isUnsubscribing['sms'] && $isUnsubscribing['email']) ||
+            ($isUnsubscribing['sms'] && !$currentlySubscribed['email']) ||
+            ($isUnsubscribing['email'] && !$currentlySubscribed['sms'])
+        ) {
+            info('Muting promotions for user ' . $user->id);
+
+            $user->promotions_muted_at = Carbon::now();
+
+            DeleteCustomerIoProfile::dispatch($user);
         }
 
         // If we're updating a user's club, dispatch a Customer.io event.
