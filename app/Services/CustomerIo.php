@@ -76,16 +76,6 @@ class CustomerIo
             return;
         }
 
-        // If this user had their profile deleted, unmute promotions to recreate it.
-        // TODO: Let's move this logic out of the Customer.io service and into the User model, or
-        // a job that handles the logic.
-        if (isset($user->promotions_muted_at)) {
-            // TODO: Addtionally, track a promotions_resubscribe event.
-            $user->promotions_muted_at = null;
-            // @see UserObserver@updating
-            $user->save();
-        }
-
         $response = $this->trackApiClient->post('customers/' . $user->id . '/events', [
             'json' => ['name' => $eventName, 'data' => $eventData],
         ]);

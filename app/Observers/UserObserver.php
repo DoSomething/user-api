@@ -137,7 +137,7 @@ class UserObserver
             isset($user->promotions_muted_at) &&
             ($isSubscribing['sms'] || $isSubscribing['email'])
         ) {
-            // TODO: Send promotions_resubscribe event.
+            // TODO: Track a promotions_resubscribe event for the user.
             $user->promotions_muted_at = null;
         }
 

@@ -395,4 +395,52 @@ class UserModelTest extends TestCase
         $this->customerIoMock->shouldHaveReceived('updateCustomer')->once();
         $this->customerIoMock->shouldHaveReceived('deleteCustomer')->once();
     }
+
+    /** @test */
+    public function testMutingAndUnmutingPromotionsViaEmailStatusChange()
+    {
+        // Creating subscribed user should trigger a Customer.io update.
+        $user = factory(User::class)->states('email-subscribed')->create([
+            'sms_status' => null,
+        ]);
+
+        // Unsubscribing from all platforms should delete Customer.io profile.
+        $user->email_subscription_status = false;
+        $user->save();
+
+        $this->assertNotNull($user->promotions_muted_at);
+
+        // Resubscribing should re-create Customer.io profile.
+        $user->email_subscription_topics = ['news'];
+        $user->save();
+
+        $this->assertNull($user->promotions_muted_at);
+
+        $this->customerIoMock->shouldHaveReceived('updateCustomer')->twice();
+        $this->customerIoMock->shouldHaveReceived('deleteCustomer')->once();
+    }
+
+    /** @test */
+    public function testMutingAndUnmutingPromotionsViaSmsStatusChange()
+    {
+        // Creating subscribed user should trigger a Customer.io update.
+        $user = factory(User::class)->states('sms-subscribed')->create([
+            'email_subscription_status' => null,
+        ]);
+
+        // Unsubscribing from all platforms should delete Customer.io profile.
+        $user->sms_status = 'stop';
+        $user->save();
+
+        $this->assertNotNull($user->promotions_muted_at);
+
+        // Resubscribing should re-create Customer.io profile.
+        $user->sms_status = 'less';
+        $user->save();
+
+        $this->assertNull($user->promotions_muted_at);
+
+        $this->customerIoMock->shouldHaveReceived('updateCustomer')->twice();
+        $this->customerIoMock->shouldHaveReceived('deleteCustomer')->once();
+    }
 }
