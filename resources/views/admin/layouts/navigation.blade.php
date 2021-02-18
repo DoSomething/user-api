@@ -14,21 +14,12 @@
                     </a>
                 </li>
 
-                {{-- <li>
-                    <a href="/users">
+                <li>
+                    <a href="{{ route('admin.users.index') }}">
                         <strong class="navigation__title">Users</strong>
                         <span class="navigation__subtitle">Profiles & search</span>
                     </a>
-                </li> --}}
-
-                {{-- @if (Auth::user()->hasRole('admin', 'staff')) --}}
-                    <li>
-                        <a href="{{ route('admin.users.index') }}">
-                            <strong class="navigation__title">Users</strong>
-                            <span class="navigation__subtitle">Member profiles</span>
-                        </a>
-                    </li>
-                {{-- @endif --}}
+                </li>
 
                 <li>
                     <a href="#"> {{-- /clubs --}}
