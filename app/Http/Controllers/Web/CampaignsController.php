@@ -36,7 +36,7 @@ class CampaignsController extends Controller
      */
     public function create()
     {
-        return view('campaigns.create')
+        return view('admin.campaigns.create')
             ->with('causes', Cause::labels())
             ->with('group_types', GroupType::labels());
     }

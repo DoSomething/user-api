@@ -21,14 +21,14 @@
         <link rel="stylesheet" href="{{ elixir('app.css', 'dist') }}">
         <script src="{{ asset('dist/modernizr.js') }}"></script>
     @show
-    
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body class="chromeless modernizr-no-js">
     <div class="chrome">
-        @if (session('status'))
-            <div class="messages">{{ session('status') }}</div>
+        @if (session('flash'))
+            <div class="messages">{{ session('flash') }}</div>
         @endif
         <div class="wrapper">
             <nav class="navigation">

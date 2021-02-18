@@ -1,6 +1,8 @@
-@extends('layouts.admin')
+@extends('admin.layouts.main')
 
-@section('subtitle', 'Let\'s administer this.')
+@section('header_content')
+    @include('admin.layouts.header', ['subtitle' => 'Let\'s administer this.'])
+@endsection
 
 @section('main_content')
     <div class="container -padded">

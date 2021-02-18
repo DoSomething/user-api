@@ -1,7 +1,10 @@
-@extends('layouts.admin')
+@extends('admin.layouts.main')
 
 @section('title', 'Redirects')
-@section('subtitle', 'Create & manage URL redirects.')
+
+@section('header_content')
+    @include('admin.layouts.header', ['subtitle' => 'Create & manage URL redirects.'])
+@endsection
 
 @section('main_content')
 

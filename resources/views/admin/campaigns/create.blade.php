@@ -1,9 +1,10 @@
-@extends('layouts.master')
+@extends('admin.layouts.main')
+
+@section('header_content')
+    @include('admin.layouts.header', ['title' => 'Campaign Creation'])
+@endsection
 
 @section('main_content')
-
-    @include('layouts.header', ['header' => 'Campaign Creation'])
-
     <div class="container -padded">
         <div class="wrapper">
             <div class="container__block -narrow">
