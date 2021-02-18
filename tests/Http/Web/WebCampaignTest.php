@@ -75,7 +75,7 @@ class WebCampaignTest extends TestCase
         );
 
         // Make sure the campaign update is persisted.
-        $response = $this->getJson('api/v3/campaigns/' . $campaign->id);
+        $response = $this->getJson("api/v3/campaigns/$campaign->id");
 
         $response->assertOk();
         $response->assertJson([
@@ -105,7 +105,7 @@ class WebCampaignTest extends TestCase
         );
 
         // Make sure the campaign is deleted.
-        $response = $this->getJson('api/v3/campaigns/' . $campaign->id);
+        $response = $this->getJson("api/v3/campaigns/$campaign->id");
 
         $response->assertNotFound();
     }
