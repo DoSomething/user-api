@@ -77,9 +77,11 @@ class UserObserver
             'email' => $user->email_subscription_status,
             'sms' => User::isSubscribedSmsStatus($user->sms_status),
         ];
-        // Initialize variables for tracking any subscription changes.
+        // Initialize variables to track any subscription changes.
         $isSubscribing = [
-            'email' => false,
+            // If topics have been updated with a non-zero count, user is subscribed.
+            'email' => isset($changed['email_subscription_topics']) &&
+            count($changed['email_subscription_topics']),
             'sms' => false,
         ];
         $isUnsubscribing = [
@@ -102,12 +104,8 @@ class UserObserver
              * Note: We intentionally do not auto-unsubscribe if we're updating topics with an empty array.
              * @see https://www.pivotaltracker.com/n/projects/2401401/stories/170599403/comments/211127349.
              */
-            isset($changed['email_subscription_topics']) &&
-            count($changed['email_subscription_topics']) &&
-            !$user->email_subscription_status
+            $isSubscribing['email'] && !$user->email_subscription_status
         ) {
-            $isSubscribing['email'] = true;
-
             $user->email_subscription_status = true;
         }
 

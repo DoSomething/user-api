@@ -443,4 +443,28 @@ class UserModelTest extends TestCase
         $this->customerIoMock->shouldHaveReceived('updateCustomer')->twice();
         $this->customerIoMock->shouldHaveReceived('deleteCustomer')->once();
     }
+
+    /** @test */
+    public function testUnmutingPromotionsViaEmailTopicsChange()
+    {
+        // Creating subscribed user should trigger a Customer.io update.
+        $user = factory(User::class)->states('email-subscribed')->create([
+            'sms_status' => null,
+        ]);
+
+        // Manually mute promotions for the user.
+        $user->promotions_muted_at = Carbon::now();
+        $user->save();
+
+        $this->assertNotNull($user->promotions_muted_at);
+
+        // Updating topics should re-create Customer.io profile.
+        $user->email_subscription_topics = ['news', 'community'];
+        $user->save();
+
+        $this->assertNull($user->promotions_muted_at);
+
+        $this->customerIoMock->shouldHaveReceived('updateCustomer')->twice();
+        $this->customerIoMock->shouldHaveReceived('deleteCustomer')->once();
+    }
 }
