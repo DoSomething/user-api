@@ -51,7 +51,7 @@ class TotpController extends Controller
         // If we aren't fulfilling a login prompt, then no code will be valid:
         if (!$id) {
             return redirect('/login')->with(
-                'status',
+                'flash',
                 'That wasn\'t a valid two-factor code. Try again!',
             );
         }
@@ -61,7 +61,7 @@ class TotpController extends Controller
         $totp = Factory::loadFromProvisioningUri($user->totp);
         if (!$totp->verify($request->code)) {
             return redirect('/login')->with(
-                'status',
+                'flash',
                 'That wasn\'t a valid two-factor code. Try again!',
             );
         }
@@ -84,7 +84,7 @@ class TotpController extends Controller
         // Don't overwrite an existing code.
         if ($user->totp) {
             return redirect('/')->with(
-                'status',
+                'flash',
                 'You\'ve already configured a two-factor device.',
             );
         }
@@ -125,7 +125,7 @@ class TotpController extends Controller
         // Don't overwrite an existing code.
         if ($user->totp) {
             return redirect('/')->with(
-                'status',
+                'flash',
                 'You\'ve already configured a two-factor device.',
             );
         }
@@ -133,7 +133,7 @@ class TotpController extends Controller
         // Verify the provided code & provisoning URI:
         $otp = Factory::loadFromProvisioningUri($request->uri);
         if (!$otp->verify($request->code)) {
-            return back()->with('status', 'That code isn\'t valid. Try again!');
+            return back()->with('flash', 'That code isn\'t valid. Try again!');
         }
 
         // Store the TOTP provisioning URI on the user now that
@@ -142,7 +142,7 @@ class TotpController extends Controller
         $user->save();
 
         return redirect('/')->with(
-            'status',
+            'flash',
             'You now have two-factor authentication enabled!',
         );
     }
