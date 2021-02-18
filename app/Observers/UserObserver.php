@@ -77,25 +77,22 @@ class UserObserver
             'email' => $user->email_subscription_status,
             'sms' => User::isSubscribedSmsStatus($user->sms_status),
         ];
-        // Initialize variables to track any subscription changes.
         $isSubscribing = [
-            // If topics have been updated with a non-zero count, user is subscribed.
+            // Users subscribe to email by selecting topics from their Subscriptions profile page.
             'email' => isset($changed['email_subscription_topics']) &&
             count($changed['email_subscription_topics']),
+            // Initialize as false for now (will get set later if subscribing to SMS).
             'sms' => false,
         ];
         $isUnsubscribing = [
-            'email' => false,
+            'email' => isset($changed['email_subscription_status']) &&
+            !$changed['email_subscription_status'],
+            // Initialize as false for now (will get set later if unsubscribing to SMS).
             'sms' => false,
         ];
 
         // If we're unsubscribing from email, clear all topics.
-        if (
-            isset($changed['email_subscription_status']) &&
-            !$changed['email_subscription_status']
-        ) {
-            $isUnsubscribing['email'] = true;
-
+        if ($isUnsubscribing['email']) {
             $user->email_subscription_topics = [];
         } elseif (
             /*
