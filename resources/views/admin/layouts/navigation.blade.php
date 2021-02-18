@@ -7,7 +7,8 @@
         @auth
             <ul class="navigation__primary">
                 <li>
-                    <a href="#"> {{-- /campaigns --}}
+                    {{-- @TODO: set to create route for now, but should be changed to index. --}}
+                    <a href="{{ route('admin.campaigns.create') }}">
                         <strong class="navigation__title">Campaigns</strong>
                         <span class="navigation__subtitle">Review & edit</span>
                     </a>
