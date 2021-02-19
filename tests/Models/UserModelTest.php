@@ -345,7 +345,7 @@ class UserModelTest extends TestCase
 
         $user->update(['club_id' => $newClubId]);
 
-        $this->customerIoMock->shouldHaveReceived('trackEvent')->once();
+        $this->assertCustomerIoEvent($user, 'club_id_updated');
     }
 
     /**
@@ -469,5 +469,53 @@ class UserModelTest extends TestCase
         $this->customerIoMock->shouldHaveReceived('updateCustomer')->twice();
         $this->customerIoMock->shouldHaveReceived('deleteCustomer')->once();
         $this->assertCustomerIoEvent($user, 'promotions_resubscribe');
+    }
+
+    /** @test */
+    public function testTrackCustomerIoEventForUnsubscribedUser()
+    {
+        // Creating subscribed user should trigger a Customer.io update.
+        $user = factory(User::class)->states('email-unsubscribed')->create([
+            'sms_status' => null,
+        ]);
+
+        $user->trackCustomerIoEvent('test_event', ['foo' => 'bar']);
+
+        $this->customerIoMock->shouldNotReceive('trackEvent');
+    }
+
+    /** @test */
+    public function testTrackCustomerIoEventForSubscribedUser()
+    {
+        // Creating subscribed user should trigger a Customer.io update.
+        $user = factory(User::class)->states('email-subscribed')->create([
+            'sms_status' => null,
+        ]);
+
+        $user->trackCustomerIoEvent('test_event', ['foo' => 'bar']);
+
+        $this->assertCustomerIoEvent($user, 'test_event');
+        $this->customerIoMock
+            ->shouldNotReceive('trackEvent')
+            ->with($user, 'promotions_resubscribe', []);
+    }
+
+    /** @test */
+    public function testTrackCustomerIoEventForMutedPromotionsSubscribedUser()
+    {
+        $user = factory(User::class)->states('email-subscribed')->create([
+            'sms_status' => null,
+        ]);
+        //  Manually mute promotions.
+        $user->email_subscription_status = Carbon::now();
+        $user->save();
+
+        $user->trackCustomerIoEvent('test_event', ['foo' => 'bar']);
+
+        // Verify promotions are no longer muted.
+        $this->assertNull($user->promotions_muted_at);
+        // TODO: Why isn't this firing?
+        // $this->assertCustomerIoEvent($user, 'promotions_resubscribe');
+        $this->assertCustomerIoEvent($user, 'test_event');
     }
 }

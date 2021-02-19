@@ -1136,14 +1136,22 @@ class User extends MongoModel implements
     }
 
     /**
-     * Tracks a Customer.io event with given name and data.
+     * Tracks a Customer.io event with given name and data if user is a subscriber.
      * Unmutes promotions if muted.
      *
      * @param string $eventName
-     * @param array $eventDataa
+     * @param array $eventData
      */
     public function trackCustomerIoEvent($eventName, $eventData)
     {
+        // If user is not subscribed to any platform, do not send to Customer.io.
+        if (
+            !$this->email_subscription_status &&
+            !static::isSubscribedSmsStatus($this->sms_status)
+        ) {
+            return;
+        }
+
         if (!isset($user->promotions_muted_at)) {
             return CreateCustomerIoEvent::dispatch($this, $eventName, $eventData);
         }
@@ -1152,7 +1160,11 @@ class User extends MongoModel implements
         $this->promotions_muted_at = null;
         $this->save();
 
-        // But there's no guarantee this will happen after the profile update.
-        CreateCustomerIoEvent::dispatch($this, $eventName, $eventData);
+        /*
+         * Note: there's no guarantee this will happen after the profile update, so a user who has
+         * been unmuted may never receive a transactional email from campaigns triggered by this
+         * given eventName.
+         */
+        return CreateCustomerIoEvent::dispatch($this, $eventName, $eventData);
     }
 }

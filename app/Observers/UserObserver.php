@@ -149,11 +149,7 @@ class UserObserver
 
             // We'll only dispatch the event if the club is valid and we have the expected event payload.
             if ($customerIoPayload) {
-                CreateCustomerIoEvent::dispatch(
-                    $user,
-                    'club_id_updated',
-                    $customerIoPayload,
-                );
+                $user->trackCustomerIoEvent('club_id_updated', $customerIoPayload);
             }
         }
 
