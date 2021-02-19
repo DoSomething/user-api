@@ -41,4 +41,7 @@ return [
     'gambit' => env('DS_ENABLE_GAMBIT_RELAY', false),
 
     'track_club_id' => env('DS_ENABLE_TRACK_CLUB_IDS', false),
+
+    // If this is enabled, suppress logging memory usage.
+    'hide-memory-usage-log' => env('DS_HIDE_MEMORY_USAGE_LOG', false),
 ];

@@ -21,12 +21,14 @@ class LogMemoryUsage
     {
         $response = $next($request);
 
-        // Log how much memory this request used.
-        $megabytes = memory_get_peak_usage() / 1000000;
-        Log::debug('memory_usage', [
-            'mb' => $megabytes,
-            'path' => $request->path(),
-        ]);
+        if (!config('features.hide-memory-usage-log')) {
+            // Log how much memory this request used.
+            $megabytes = memory_get_peak_usage() / 1000000;
+            Log::debug('memory_usage', [
+                'mb' => $megabytes,
+                'path' => $request->path(),
+            ]);       
+        }
 
         return $response;
     }
