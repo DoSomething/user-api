@@ -170,17 +170,10 @@ class UserObserver
      */
     public function updated(User $user)
     {
-        $log = $user->getChanged();
-        unset($log['audit']);
-
-        logger('User updated hook', array_merge(['user_id' => $user->id], $log));
-
         $mutedPromotions = isset($user->promotions_muted_at);
 
         // If we just made a change to mute promotions:
         if ($user->wasChanged('promotions_muted_at')) {
-            logger('promotions_muted_at was changed', ['user_id' => $user->id, 'value' => $user->promotions_muted_at]);
-
             // And we set it, delete the Customer.io profile.
             if ($mutedPromotions) {
                 return DeleteCustomerIoProfile::dispatch($user);
@@ -188,8 +181,6 @@ class UserObserver
 
             // Otherwise, it's null and we need to track resubscribe.
             $shouldTrackPromotionsResubscribe = true;
-        } else {
-            logger('promotions_muted_at was not changed', ['user_id' => $user->id]);
         }
 
         // If this user has promotions muted, don't send updates to Customer.io.
