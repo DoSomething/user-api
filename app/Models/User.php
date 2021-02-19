@@ -944,7 +944,7 @@ class User extends MongoModel implements
          * user's messaging journey per their source (e.g., Rock The Vote, newsletter subscription).
          */
         if (PasswordResetType::isActivateAccount($type)) {
-            return CreateCustomerIoEvent::dispatch($this, 'call_to_action_email', $data);
+            return $this->trackCustomerIoEvent('call_to_action_email', $data);
         }
 
         // Send transactional emails for forgot password requests that don't need to be tracked.
@@ -1152,7 +1152,8 @@ class User extends MongoModel implements
             return;
         }
 
-        if (!isset($user->promotions_muted_at)) {
+        // If promotions are not muted, send our event.
+        if (!isset($this->promotions_muted_at)) {
             return CreateCustomerIoEvent::dispatch($this, $eventName, $eventData);
         }
 
