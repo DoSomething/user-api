@@ -79,9 +79,11 @@ class MongoModel extends BaseModel
      */
     public function removeNullAttributes()
     {
+        /*
         $this->attributes = array_filter($this->attributes, function ($value) {
             return !is_null($value);
         });
+        */
     }
 
     /**

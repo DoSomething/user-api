@@ -170,7 +170,10 @@ class UserObserver
      */
     public function updated(User $user)
     {
-        logger('User updated hook', ['user_id' => $user->id]);
+        $log = $user->getChanged();
+        unset($log['audit']);
+
+        logger('User updated hook', array_merge(['user_id' => $user->id], $log));
 
         $mutedPromotions = isset($user->promotions_muted_at);
 
