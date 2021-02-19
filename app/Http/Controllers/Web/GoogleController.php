@@ -31,7 +31,7 @@ class GoogleController extends Controller
     protected function redirectUnsuccessfulRequest($message = null)
     {
         return redirect('/register')->with(
-            'status',
+            'flash',
             $message ?: 'Unable to verify Google account.',
         );
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Web\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Campaign;
@@ -36,7 +36,7 @@ class CampaignsController extends Controller
      */
     public function create()
     {
-        return view('campaigns.create')
+        return view('admin.campaigns.create')
             ->with('causes', Cause::labels())
             ->with('group_types', GroupType::labels());
     }
@@ -70,7 +70,7 @@ class CampaignsController extends Controller
      */
     public function edit(Campaign $campaign)
     {
-        return view('campaigns.edit', [
+        return view('admin.campaigns.edit', [
             'campaign' => $campaign,
             'causes' => Cause::labels(),
             'group_types' => GroupType::labels(),
@@ -127,6 +127,6 @@ class CampaignsController extends Controller
     {
         // We can't use Laravel's built-in Route::redirect here
         // since it doesn't support redirecting with parameters:
-        return redirect('campaigns/' . $id);
+        return redirect('/admin/campaigns/' . $id);
     }
 }

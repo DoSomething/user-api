@@ -104,7 +104,7 @@ class WebAuthenticationTest extends TestCase
             'username' => 'target@example.com',
             'password' => 'password11', // our attacker is very methodical.
         ])->assertSessionHas(
-            'status',
+            'flash',
             'Too many attempts. Please try again in 15 minutes.',
         );
     }
@@ -467,7 +467,7 @@ class WebAuthenticationTest extends TestCase
         $this->expectsEvents(\App\Events\Throttled::class);
 
         $this->registerUpdated()->assertSessionHas(
-            'status',
+            'flash',
             'Too many attempts. Please try again in 15 minutes.',
         );
 
