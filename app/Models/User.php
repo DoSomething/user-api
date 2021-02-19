@@ -1134,4 +1134,25 @@ class User extends MongoModel implements
         $this->deletion_requested_at = now();
         $this->save();
     }
+
+    /**
+     * Tracks a Customer.io event with given name and data.
+     * Unmutes promotions if muted.
+     *
+     * @param string $eventName
+     * @param array $eventDataa
+     */
+    public function trackCustomerIoEvent($eventName, $eventData)
+    {
+        if (!isset($user->promotions_muted_at)) {
+            return CreateCustomerIoEvent::dispatch($this, $eventName, $eventData);
+        }
+
+        // Unmute promotions to recreate the profile in Customer.io.
+        $this->promotions_muted_at = null;
+        $this->save();
+
+        // But there's no guarantee this will happen after the profile update.
+        CreateCustomerIoEvent::dispatch($this, $eventName, $eventData);
+    }
 }
