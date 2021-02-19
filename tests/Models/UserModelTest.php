@@ -418,6 +418,7 @@ class UserModelTest extends TestCase
 
         $this->customerIoMock->shouldHaveReceived('updateCustomer')->twice();
         $this->customerIoMock->shouldHaveReceived('deleteCustomer')->once();
+        $this->assertCustomerIoEvent($user, 'promotions_resubscribe');
     }
 
     /** @test */
@@ -442,6 +443,7 @@ class UserModelTest extends TestCase
 
         $this->customerIoMock->shouldHaveReceived('updateCustomer')->twice();
         $this->customerIoMock->shouldHaveReceived('deleteCustomer')->once();
+        $this->assertCustomerIoEvent($user, 'promotions_resubscribe');
     }
 
     /** @test */
@@ -466,5 +468,6 @@ class UserModelTest extends TestCase
 
         $this->customerIoMock->shouldHaveReceived('updateCustomer')->twice();
         $this->customerIoMock->shouldHaveReceived('deleteCustomer')->once();
+        $this->assertCustomerIoEvent($user, 'promotions_resubscribe');
     }
 }

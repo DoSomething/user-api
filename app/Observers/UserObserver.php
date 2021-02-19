@@ -65,7 +65,6 @@ class UserObserver
     public function updating(User $user)
     {
         $changed = $user->getDirty();
-
         $currentlySubscribed = [
             'email' => $user->email_subscription_status,
             'sms' => User::isSubscribedSmsStatus($user->sms_status),
@@ -136,6 +135,11 @@ class UserObserver
         ) {
             $user->promotions_muted_at = Carbon::now();
         }
+
+        /*
+         * Note: Is it cleaner to move the rest of this function code into our updated hook?
+         * We're no longer altering the values to save within this transaction here.
+         */
 
         // If we're updating a user's club, dispatch a Customer.io event.
         if (isset($changed['club_id'])) {
