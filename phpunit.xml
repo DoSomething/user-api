@@ -21,6 +21,7 @@
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SIXPACK_ENABLED" value="false"/>
+        <env name="DS_ENABLE_ADMIN_ROUTES" value="true"/>
         <env name="DS_ENABLE_CUSTOMER_IO" value="true"/>
         <env name="DS_ENABLE_DELETE_APIS" value="true"/>
         <env name="DS_ENABLE_RATE_LIMITING" value="true"/>
