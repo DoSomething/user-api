@@ -27,7 +27,7 @@ class LogMemoryUsage
             Log::debug('memory_usage', [
                 'mb' => $megabytes,
                 'path' => $request->path(),
-            ]);       
+            ]);
         }
 
         return $response;
