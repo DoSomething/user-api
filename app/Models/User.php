@@ -153,6 +153,9 @@ class User extends MongoModel implements
         'email_subscription_status',
         'email_subscription_topics',
 
+        // Promotions:
+        'promotions_muted_at',
+
         // Voting Method/Plan fields:
         'voting_method',
         'voting_plan_attending_with',
