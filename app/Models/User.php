@@ -277,6 +277,22 @@ class User extends MongoModel implements
     ];
 
     /**
+     * A user has many posts.
+     */
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'northstar_id');
+    }
+
+    /**
+     * A user has many signups.
+     */
+    public function signups()
+    {
+        return $this->hasMany(Signup::class, 'northstar_id');
+    }
+
+    /**
      * Computed last initial field, for public profiles.
      *
      * @return string

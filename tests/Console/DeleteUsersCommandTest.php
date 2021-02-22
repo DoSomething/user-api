@@ -21,20 +21,15 @@ class DeleteUsersCommandTest extends TestCase
             ->create(['_id' => '5d3630a0fdce2742ff6c64d5'])
             ->first();
 
-        // Mock the external service APIs & assert that we make two "delete" requests:
-        $this->mock(Rogue::class)
-            ->shouldReceive('deleteUser')
-            ->twice();
-        $this->mock(Gambit::class)
-            ->shouldReceive('deleteUser')
-            ->twice();
-        $this->customerIoMock->shouldReceive('suppressCustomer')->twice();
-
         // Run the 'northstar:delete' command on the 'example-identify-output.csv' file:
         Artisan::call('northstar:delete', ['input' => $input]);
 
+        // Did we delete these two users from external services?
+        $this->gambitMock->shouldHaveReceived('deleteUser')->twice();
+        $this->customerIoMock->shouldHaveReceived('suppressCustomer')->twice();
+
         // The command should remove
-        $this->assertAnonymized($user1);
-        $this->assertAnonymized($user2);
+        $this->assertUserAnonymized($user1);
+        $this->assertUserAnonymized($user2);
     }
 }

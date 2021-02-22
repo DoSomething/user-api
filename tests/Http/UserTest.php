@@ -1,8 +1,8 @@
 <?php
 
+use App\Models\Post;
+use App\Models\Signup;
 use App\Models\User;
-use App\Services\Gambit;
-use App\Services\Rogue;
 
 class UserTest extends TestCase
 {
@@ -1018,32 +1018,32 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function testV2AdminCanDeleteUser()
+    public function testCanDeleteUser()
     {
-        $userToDelete = factory(User::class)->create();
+        $user = factory(User::class)->create();
 
-        $this->mock(Rogue::class)
-            ->shouldReceive('deleteUser')
-            ->once();
+        $signups = factory(Signup::class, 4)->create([
+            'northstar_id' => $user->id,
+        ]);
 
-        $this->mock(Gambit::class)
-            ->shouldReceive('deleteUser')
-            ->once();
+        $posts = factory(Post::class, 10)->create([
+            'signup_id' => $signups->random()->id,
+            'northstar_id' => $user->id,
+        ]);
 
-        $this->customerIoMock->shouldReceive('suppressCustomer')->once();
+        $response = $this->asAdminUser()->deleteJson("v2/users/$user->id");
 
-        $response = $this->asAdminUser()->json(
-            'DELETE',
-            'v2/users/' . $userToDelete->id,
-            [
-                'first_name' => 'Hercules',
-                'last_name' => 'Mulligan',
-                'email' => $this->faker->email,
-                'country' => 'us',
-            ],
-        );
+        $response->assertOk();
 
-        $response->assertStatus(200);
+        $this->customerIoMock->shouldHaveReceived('suppressCustomer')->once();
+        $this->gambitMock->shouldHaveReceived('deleteUser');
+
+        $this->assertUserAnonymized($user);
+
+        // The user's posts & signups should be soft deleted, and fields that may
+        // contain personally-identifiable information should be erased:
+        $this->assertAnonymized($posts, ['text', 'url', 'details']);
+        $this->assertAnonymized($signups, ['why_participated', 'details']);
     }
 
     /**

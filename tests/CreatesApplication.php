@@ -47,6 +47,13 @@ trait CreatesApplication
         $this->customerIoMock->shouldReceive('trackEvent');
         $this->customerIoMock->shouldReceive('sendEmail');
         $this->customerIoMock->shouldReceive('deleteCustomer');
+        $this->customerIoMock->shouldReceive('suppressCustomer');
+
+        $this->fastlyMock = $this->mock(\App\Services\Fastly::class);
+        $this->fastlyMock->shouldReceive('purge');
+
+        $this->gambitMock = $this->mock(\App\Services\Gambit::class);
+        $this->gambitMock->shouldReceive('deleteUser');
 
         $this->fastlyMock = $this->mock(\App\Services\Fastly::class);
         $this->fastlyMock->shouldReceive('purge');

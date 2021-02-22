@@ -82,10 +82,6 @@ return [
         'url' => env('PHOENIX_URL'),
     ],
 
-    'rogue' => [
-        'url' => env('ROGUE_URL'),
-    ],
-
     'sixpack' => [
         'enabled' => env('SIXPACK_ENABLED'),
         'url' => env('SIXPACK_BASE_URL'),
