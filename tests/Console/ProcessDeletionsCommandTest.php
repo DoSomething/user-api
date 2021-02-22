@@ -23,14 +23,12 @@ class ProcessDeletionsCommandTest extends TestCase
         ]);
         $user4 = factory(User::class)->create();
 
-        // Mock the external service APIs & assert that we make two "delete" requests:
-        $this->mock(Gambit::class)
-            ->shouldReceive('deleteUser')
-            ->twice();
-        $this->customerIoMock->shouldReceive('suppressCustomer')->twice();
-
         // Run the 'northstar:delete' command on the 'example-identify-output.csv' file:
         Artisan::call('northstar:process-deletions');
+
+        // Did we delete these two users from external services?
+        $this->gambitMock->shouldHaveReceived('deleteUser')->twice();
+        $this->customerIoMock->shouldHaveReceived('suppressCustomer')->twice();
 
         // The command should remove the users queued for > 14 days:
         $this->assertUserAnonymized($user1);
