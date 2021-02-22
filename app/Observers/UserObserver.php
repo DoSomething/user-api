@@ -65,14 +65,6 @@ class UserObserver
     public function updating(User $user)
     {
         $changed = $user->getDirty();
-
-        // If we're setting the promotions muted field, delete Customer.io profile and exit.
-        if (isset($changed['promotions_muted_at'])) {
-            info('Deleting Customer.io profile for user ' . $user->id);
-
-            return DeleteCustomerIoProfile::dispatch($user);
-        }
-
         $currentlySubscribed = [
             'email' => $user->email_subscription_status,
             'sms' => User::isSubscribedSmsStatus($user->sms_status),
@@ -132,7 +124,6 @@ class UserObserver
             isset($user->promotions_muted_at) &&
             ($isSubscribing['sms'] || $isSubscribing['email'])
         ) {
-            // TODO: Track a promotions_resubscribe event for the user.
             $user->promotions_muted_at = null;
         }
 
@@ -142,12 +133,13 @@ class UserObserver
             ($isUnsubscribing['sms'] && !$currentlySubscribed['email']) ||
             ($isUnsubscribing['email'] && !$currentlySubscribed['sms'])
         ) {
-            info('Muting promotions for user ' . $user->id);
-
             $user->promotions_muted_at = Carbon::now();
-
-            DeleteCustomerIoProfile::dispatch($user);
         }
+
+        /*
+         * Note: Is it cleaner to move the rest of this function code into our updated hook?
+         * We're no longer altering the values to save within this transaction here.
+         */
 
         // If we're updating a user's club, dispatch a Customer.io event.
         if (isset($changed['club_id'])) {
@@ -157,11 +149,7 @@ class UserObserver
 
             // We'll only dispatch the event if the club is valid and we have the expected event payload.
             if ($customerIoPayload) {
-                CreateCustomerIoEvent::dispatch(
-                    $user,
-                    'club_id_updated',
-                    $customerIoPayload,
-                );
+                $user->trackCustomerIoEvent('club_id_updated', $customerIoPayload);
             }
         }
 
@@ -182,8 +170,22 @@ class UserObserver
      */
     public function updated(User $user)
     {
-        // If this user has promotions muted, we don't want to send updates to Customer.io.
-        if (isset($user->promotions_muted_at)) {
+        $mutedPromotions = isset($user->promotions_muted_at);
+        $shouldTrackPromotionsResubscribe = false;
+
+        // If we just made a change to mute promotions:
+        if ($user->wasChanged('promotions_muted_at')) {
+            // And we set it, delete the Customer.io profile.
+            if ($mutedPromotions) {
+                return DeleteCustomerIoProfile::dispatch($user);
+            }
+
+            // Otherwise, it's null and we need to track resubscribe.
+            $shouldTrackPromotionsResubscribe = true;
+        }
+
+        // If this user has promotions muted, don't send updates to Customer.io.
+        if ($mutedPromotions) {
             if (!app()->runningInConsole()) {
                 logger('Skipping profile update for muted user', [
                     'id' => $user->id,
@@ -193,10 +195,19 @@ class UserObserver
             return;
         }
 
-        // Send payload to Blink for Customer.io profile.
         $queueLevel = config('queue.jobs.users');
         $queue = config('queue.names.' . $queueLevel);
-        UpsertCustomerIoProfile::dispatch($user)->onQueue($queue);
+
+        if ($shouldTrackPromotionsResubscribe) {
+            UpsertCustomerIoProfile::withChain([
+                // TODO: Refactor this to be a new TrackPromotionsResubscribeCustomerIoEvent job.
+                new CreateCustomerIoEvent($user, 'promotions_resubscribe', []),
+            ])->dispatch($user)->onQueue($queue);
+
+            return;
+        }
+
+        return UpsertCustomerIoProfile::dispatch($user);
     }
 
     /**

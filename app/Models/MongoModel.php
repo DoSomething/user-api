@@ -79,9 +79,15 @@ class MongoModel extends BaseModel
      */
     public function removeNullAttributes()
     {
-        $this->attributes = array_filter($this->attributes, function ($value) {
-            return !is_null($value);
-        });
+        $this->attributes = array_filter($this->attributes, function ($value, $key) {
+            /*
+             * We need to save null values for promotions_muted_at to determine whether a user
+             * profile should be recreated in Customer.io.
+             * @see UserObserver@updated
+             * @see https://github.com/DoSomething/northstar/pull/1127#discussion_r579494892
+             */
+            return $key === 'promotions_muted_at' ? true : !is_null($value);
+        }, ARRAY_FILTER_USE_BOTH);
     }
 
     /**

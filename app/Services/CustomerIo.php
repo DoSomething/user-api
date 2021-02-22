@@ -76,9 +76,16 @@ class CustomerIo
             return;
         }
 
-        $response = $this->trackApiClient->post('customers/' . $user->id . '/events', [
-            'json' => ['name' => $eventName, 'data' => $eventData],
-        ]);
+        $payload = ['name' => $eventName];
+
+        if ($eventData) {
+            $payload['data'] = $eventData;
+        }
+
+        $response = $this->trackApiClient->post(
+            'customers/' . $user->id . '/events',
+            ['json' => $payload]
+        );
 
         // For this endpoint, any status besides 200 means something is wrong:
         if ($response->getStatusCode() !== 200) {

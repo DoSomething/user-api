@@ -944,7 +944,7 @@ class User extends MongoModel implements
          * user's messaging journey per their source (e.g., Rock The Vote, newsletter subscription).
          */
         if (PasswordResetType::isActivateAccount($type)) {
-            return CreateCustomerIoEvent::dispatch($this, 'call_to_action_email', $data);
+            return $this->trackCustomerIoEvent('call_to_action_email', $data);
         }
 
         // Send transactional emails for forgot password requests that don't need to be tracked.
@@ -1133,5 +1133,39 @@ class User extends MongoModel implements
     {
         $this->deletion_requested_at = now();
         $this->save();
+    }
+
+    /**
+     * Tracks a Customer.io event with given name and data if user is a subscriber.
+     * Unmutes promotions if muted.
+     *
+     * @param string $eventName
+     * @param array $eventData
+     */
+    public function trackCustomerIoEvent($eventName, $eventData)
+    {
+        // If user is not subscribed to any platform, do not send to Customer.io.
+        if (
+            !$this->email_subscription_status &&
+            !static::isSubscribedSmsStatus($this->sms_status)
+        ) {
+            return;
+        }
+
+        // If promotions are not muted, send our event.
+        if (!isset($this->promotions_muted_at)) {
+            return CreateCustomerIoEvent::dispatch($this, $eventName, $eventData);
+        }
+
+        // Unmute promotions to recreate the profile in Customer.io.
+        $this->promotions_muted_at = null;
+        $this->save();
+
+        /*
+         * Note: there's no guarantee this will happen after the profile update, so a user who has
+         * been unmuted may never receive a transactional email from campaigns triggered by this
+         * given eventName.
+         */
+        return CreateCustomerIoEvent::dispatch($this, $eventName, $eventData);
     }
 }
