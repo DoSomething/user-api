@@ -171,6 +171,7 @@ class UserObserver
     public function updated(User $user)
     {
         $mutedPromotions = isset($user->promotions_muted_at);
+        $shouldTrackPromotionsResubscribe = false;
 
         // If we just made a change to mute promotions:
         if ($user->wasChanged('promotions_muted_at')) {
@@ -197,11 +198,13 @@ class UserObserver
         $queueLevel = config('queue.jobs.users');
         $queue = config('queue.names.' . $queueLevel);
 
-        if (isset($shouldTrackPromotionsResubscribe)) {
-            return UpsertCustomerIoProfile::withChain([
+        if ($shouldTrackPromotionsResubscribe) {
+            UpsertCustomerIoProfile::withChain([
                 // TODO: Refactor this to be a new TrackPromotionsResubscribeCustomerIoEvent job.
                 new CreateCustomerIoEvent($user, 'promotions_resubscribe', []),
             ])->dispatch($user)->onQueue($queue);
+
+            return;
         }
 
         return UpsertCustomerIoProfile::dispatch($user);
