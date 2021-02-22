@@ -858,9 +858,6 @@ class LegacyUserTest extends BrowserKitTestCase
     {
         $user = User::create(['email' => 'delete-me@example.com']);
 
-        $this->mock(Rogue::class)
-            ->shouldReceive('deleteUser')
-            ->once();
         $this->mock(Gambit::class)
             ->shouldReceive('deleteUser')
             ->once();

@@ -24,9 +24,6 @@ class ProcessDeletionsCommandTest extends TestCase
         $user4 = factory(User::class)->create();
 
         // Mock the external service APIs & assert that we make two "delete" requests:
-        $this->mock(Rogue::class)
-            ->shouldReceive('deleteUser')
-            ->twice();
         $this->mock(Gambit::class)
             ->shouldReceive('deleteUser')
             ->twice();
