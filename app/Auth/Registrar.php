@@ -79,6 +79,7 @@ class Registrar
             'sms_paused' => 'boolean',
             'sms_subscription_topics.*' => 'in:general,voting',
             'last_messaged_at' => 'date',
+            'promotions_muted_at' => 'date',
             'email_subscription_status' => 'boolean',
             'email_subscription_topics.*' => Rule::in(
                 EmailSubscriptionTopicType::all(),
