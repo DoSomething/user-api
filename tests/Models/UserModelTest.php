@@ -482,6 +482,7 @@ class UserModelTest extends TestCase
         $user->trackCustomerIoEvent('test_event', ['foo' => 'bar']);
 
         $this->customerIoMock->shouldNotReceive('trackEvent');
+        $this->customerIoMock->shouldNotReceive('updateCustomer');
     }
 
     /** @test */
@@ -495,9 +496,7 @@ class UserModelTest extends TestCase
         $user->trackCustomerIoEvent('test_event', ['foo' => 'bar']);
 
         $this->assertCustomerIoEvent($user, 'test_event');
-        $this->customerIoMock
-            ->shouldNotReceive('trackEvent')
-            ->with($user, 'promotions_resubscribe', []);
+        $this->customerIoMock->shouldNotReceive('updateCustomer');
     }
 
     /** @test */
@@ -514,8 +513,6 @@ class UserModelTest extends TestCase
 
         // Verify promotions are no longer muted.
         $this->assertNull($user->promotions_muted_at);
-        // TODO: Why isn't this firing? This is happening when I manually test.
-        // $this->assertCustomerIoEvent($user, 'promotions_resubscribe');
         $this->assertCustomerIoEvent($user, 'test_event');
     }
 }
