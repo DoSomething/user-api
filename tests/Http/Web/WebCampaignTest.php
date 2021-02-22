@@ -27,7 +27,7 @@ class WebCampaignTest extends TestCase
 
         $groupType = factory(GroupType::class)->create();
 
-        $this->actingAs($admin, 'web')->post('/campaigns', [
+        $this->actingAs($admin, 'web')->post('/admin/campaigns', [
             'internal_title' => $firstCampaignTitle,
             'cause' => ['animal-welfare'],
             'impact_doc' => 'https://www.google.com',
@@ -42,7 +42,7 @@ class WebCampaignTest extends TestCase
         ]);
 
         // Try to create a second campaign with the same title and make sure it doesn't duplicate.
-        $this->actingAs($admin, 'web')->postJson('campaigns', [
+        $this->actingAs($admin, 'web')->postJson('/admin/campaigns', [
             'internal_title' => $firstCampaignTitle,
         ]);
 
@@ -65,7 +65,7 @@ class WebCampaignTest extends TestCase
 
         // Update the title.
         $response = $this->actingAs($admin, 'web')->patch(
-            'campaigns/' . $campaign->id,
+            "/admin/campaigns/$campaign->id",
             [
                 'internal_title' => 'Updated Title',
                 'impact_doc' => 'https://www.bing.com/',
@@ -75,7 +75,7 @@ class WebCampaignTest extends TestCase
         );
 
         // Make sure the campaign update is persisted.
-        $response = $this->getJson('api/v3/campaigns/' . $campaign->id);
+        $response = $this->getJson("api/v3/campaigns/$campaign->id");
 
         $response->assertOk();
         $response->assertJson([
@@ -101,11 +101,11 @@ class WebCampaignTest extends TestCase
 
         // Delete the campaign.
         $this->actingAs($admin, 'web')->deleteJson(
-            'campaigns/' . $campaign->id,
+            "/admin/campaigns/$campaign->id",
         );
 
         // Make sure the campaign is deleted.
-        $response = $this->getJson('api/v3/campaigns/' . $campaign->id);
+        $response = $this->getJson("api/v3/campaigns/$campaign->id");
 
         $response->assertNotFound();
     }

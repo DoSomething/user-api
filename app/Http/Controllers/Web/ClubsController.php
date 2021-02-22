@@ -53,7 +53,7 @@ class ClubsController extends Controller
         info('club_created', ['id' => $club->id]);
 
         return redirect('clubs/' . $club->id . '/edit')->with(
-            'status',
+            'flash',
             'Club successfully created!',
         );
     }
@@ -96,6 +96,6 @@ class ClubsController extends Controller
 
         return redirect()
             ->back()
-            ->with('status', 'Club successfully updated!');
+            ->with('flash', 'Club successfully updated!');
     }
 }

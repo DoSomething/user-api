@@ -1,7 +1,10 @@
-@extends('layouts.admin')
+@extends('admin.layouts.main')
 
 @section('title', 'Users')
-@section('subtitle', 'View & edit member profiles.')
+
+@section('header_content')
+    @include('admin.layouts.header', ['subtitle' => 'View & edit member profiles.'])
+@endsection
 
 @section('main_content')
     <div class="container">
@@ -17,7 +20,9 @@
 
             <div class="container__block profile-settings">
                 <h1>{{ $user->display_name }}</h1>
+
                 @include('forms.errors')
+
                 <dt>Source:</dt>
                 <dd>
                     {{ $user->source ?? '—' }}
@@ -34,15 +39,20 @@
                 <dt>Feature Flags:</dt><dd><code>{{ isset($user->feature_flags) ? json_encode($user->feature_flags) :  '—'}}</code></dd>
                 @include('admin.partials.field', ['field' => 'role'])
             </div>
+
             <div class="container__block -half profile-settings">
                 @include('admin.users.partials.profile')
+
                 <div class="container profile-section">
                     <h3>Subscriptions</h3>
                     @include('admin.users.partials.subscriptions')
                 </div>
+
                 <div class="container -padded">
                     <h3>Interests</h3>
-                    <dt>Causes:</dt><dd>{{ $user->causes ? implode(",  ",$user->causes) : '—'}}</dd>
+
+                    <dt>Causes:</dt>
+                    <dd>{{ $user->causes ? implode(",  ",$user->causes) : '—'}}</dd>
                 </div>
             </div>
 
@@ -55,14 +65,17 @@
             </div>
         </div>
     </div>
+
     <div class="container">
         <div class="wrapper">
             <div class="container__block -half">
                 @if(Auth::user()->hasRole('admin'))
                     <a class="primary" href="{{ route('admin.users.edit', ['user' => $user->id]) }}">Edit user's profile</a>
                 @endif
+
                 <p class="footnote">
                     <strong>Updated:</strong> {{ $user->updated_at->format('F d, Y g:ia') }} ({{ $user->created_at->diffForHumans() }})<br />
+
                     <strong>Created:</strong> {{ $user->created_at->format('F d, Y g:ia') }} ({{ $user->created_at->diffForHumans() }})<br />
                 </p>
             </div>
@@ -73,13 +86,16 @@
         <div class="wrapper">
             <div class="container__block -narrow profile-settings">
                 <h3>Links</h3>
+
                 <ul>
                     <li>
                         <a href="{{ config('services.customerio.profile_url') }}/{{ $user->id }}">Customer.io</a>
                     </li>
+
                     <li>
                         <a href="{{ config('services.gambit.profile_url') }}/{{ $user->id }}">Gambit</a>
                     </li>
+
                     <li>
                         <a href="{{ config('services.rogue.url') }}/users/{{ $user->id }}">Rogue</a>
                     </li>

@@ -27,12 +27,35 @@
     </div>
 
     <div class="danger-zone__block">
+        <form method="POST" action="{{ route('admin.users.promotions.destroy', ['user' => $user->id]) }}">
+            {{ method_field('DELETE')}}
+            {{ csrf_field() }}
+
+            <div class="form-item">  
+                <label for="mute-promotions" class="field-label">Mute Promotions</label>
+
+                <p class="footnote">This will delete the user's Customer.io profile.</p>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="button -secondary">
+                    Mute promotions
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="danger-zone__block">
         <form method="POST" action="{{ route('admin.users.destroy', ['user' => $user->id]) }}">
             {{ method_field('DELETE')}}
+            {{ csrf_field() }}
+
             <div class="form-item">
                 <label for="id" class="field-label">Delete Account</label>
+
                 <p class="footnote">This will <strong>permanently destroy</strong> this user's Northstar & Customer.io profiles, Rogue campaign activity, and Gambit conversation history.</p>
             </div>
+
             <div class="form-actions">
                 <button type="submit" class="button -secondary -danger" data-confirm="Are you sure you want to immediately & permanently destroy all of {{ $user->display_name}}'s data? THIS CANNOT BE UNDONE.">
                     Delete Immediately

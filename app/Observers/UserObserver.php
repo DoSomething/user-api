@@ -3,12 +3,14 @@
 namespace App\Observers;
 
 use App\Jobs\CreateCustomerIoEvent;
+use App\Jobs\DeleteCustomerIoProfile;
 use App\Jobs\DeleteUserFromOtherServices;
-use App\Jobs\SendUserToCustomerIo;
+use App\Jobs\UpsertCustomerIoProfile;
 use App\Models\Post;
 use App\Models\RefreshToken;
 use App\Models\Signup;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
@@ -50,7 +52,7 @@ class UserObserver
         // Send payload to Blink for Customer.io profile.
         $queueLevel = config('queue.jobs.users');
         $queue = config('queue.names.' . $queueLevel);
-        SendUserToCustomerIo::dispatch($user)->onQueue($queue);
+        UpsertCustomerIoProfile::dispatch($user)->onQueue($queue);
 
         // Send metrics to StatHat.
         Log::info('user_created', ['source' => $user->source]);
@@ -66,11 +68,33 @@ class UserObserver
     {
         $changed = $user->getDirty();
 
+        // If we're setting the promotions muted field, delete Customer.io profile and exit.
+        if (isset($changed['promotions_muted_at'])) {
+            info('Deleting Customer.io profile for user ' . $user->id);
+
+            return DeleteCustomerIoProfile::dispatch($user);
+        }
+
+        $currentlySubscribed = [
+            'email' => $user->email_subscription_status,
+            'sms' => User::isSubscribedSmsStatus($user->sms_status),
+        ];
+        $isSubscribing = [
+            // Users subscribe to email by selecting topics from their Subscriptions profile page.
+            'email' => isset($changed['email_subscription_topics']) &&
+            count($changed['email_subscription_topics']),
+            // Initialize as false for now (will get set later if subscribing to SMS).
+            'sms' => false,
+        ];
+        $isUnsubscribing = [
+            'email' => isset($changed['email_subscription_status']) &&
+            !$changed['email_subscription_status'],
+            // Initialize as false for now (will get set later if unsubscribing to SMS).
+            'sms' => false,
+        ];
+
         // If we're unsubscribing from email, clear all topics.
-        if (
-            isset($changed['email_subscription_status']) &&
-            !$changed['email_subscription_status']
-        ) {
+        if ($isUnsubscribing['email']) {
             $user->email_subscription_topics = [];
         } elseif (
             /*
@@ -79,9 +103,7 @@ class UserObserver
              * Note: We intentionally do not auto-unsubscribe if we're updating topics with an empty array.
              * @see https://www.pivotaltracker.com/n/projects/2401401/stories/170599403/comments/211127349.
              */
-            isset($changed['email_subscription_topics']) &&
-            count($changed['email_subscription_topics']) &&
-            !$user->email_subscription_status
+            $isSubscribing['email'] && !$user->email_subscription_status
         ) {
             $user->email_subscription_status = true;
         }
@@ -94,15 +116,39 @@ class UserObserver
              * isn't a need to change sms_status if an unsubscribed user adds a SMS topic.
              */
             if (User::isUnsubscribedSmsStatus($changed['sms_status'])) {
+                $isUnsubscribing['sms'] = true;
+
                 $user->clearSmsSubscriptionTopics();
-            } elseif (
-                // If resubscribing and not adding topics, add the default topics if user has none.
-                User::isSubscribedSmsStatus($changed['sms_status']) &&
-                !isset($changed['sms_subscription_topics']) &&
-                !$user->hasSmsSubscriptionTopics()
-            ) {
-                $user->addDefaultSmsSubscriptionTopics();
+            } elseif (User::isSubscribedSmsStatus($changed['sms_status'])) {
+                $isSubscribing['sms'] = true;
+
+                // Set default SMS topics if user has none.
+                if (!isset($changed['sms_subscription_topics']) && !$user->hasSmsSubscriptionTopics()) {
+                    $user->addDefaultSmsSubscriptionTopics();
+                }
             }
+        }
+
+        // If promotions are muted and this update is resubscribing, unmute promotions.
+        if (
+            isset($user->promotions_muted_at) &&
+            ($isSubscribing['sms'] || $isSubscribing['email'])
+        ) {
+            // TODO: Track a promotions_resubscribe event for the user.
+            $user->promotions_muted_at = null;
+        }
+
+        // If this update means user will be unsubscribed from both platforms, mute promotions.
+        if (
+            ($isUnsubscribing['sms'] && $isUnsubscribing['email']) ||
+            ($isUnsubscribing['sms'] && !$currentlySubscribed['email']) ||
+            ($isUnsubscribing['email'] && !$currentlySubscribed['sms'])
+        ) {
+            info('Muting promotions for user ' . $user->id);
+
+            $user->promotions_muted_at = Carbon::now();
+
+            DeleteCustomerIoProfile::dispatch($user);
         }
 
         // If we're updating a user's club, dispatch a Customer.io event.
@@ -138,10 +184,21 @@ class UserObserver
      */
     public function updated(User $user)
     {
+        // If this user has promotions muted, we don't want to send updates to Customer.io.
+        if (isset($user->promotions_muted_at)) {
+            if (!app()->runningInConsole()) {
+                logger('Skipping profile update for muted user', [
+                    'id' => $user->id,
+                ]);
+            }
+
+            return;
+        }
+
         // Send payload to Blink for Customer.io profile.
         $queueLevel = config('queue.jobs.users');
         $queue = config('queue.names.' . $queueLevel);
-        SendUserToCustomerIo::dispatch($user)->onQueue($queue);
+        UpsertCustomerIoProfile::dispatch($user)->onQueue($queue);
     }
 
     /**

@@ -38,11 +38,6 @@ Route::resource('actions', 'ActionsController', [
     'except' => ['index', 'show'],
 ]);
 
-// Campaigns
-Route::resource('campaigns', 'CampaignsController', [
-    'except' => ['index', 'show'],
-]);
-
 // Clubs
 Route::resource('clubs', 'ClubsController', [
     'except' => ['index', 'show', 'destroy'],
@@ -102,13 +97,24 @@ if (config('features.admin')) {
             // Homepage
             Route::view('/', 'admin.home');
 
+            // Campaigns
+            Route::resource('/campaigns', 'Admin\CampaignsController', [
+                'except' => ['index', 'show'],
+            ]);
+
             // Users
             Route::resource('users', 'Admin\UserController', [
                 'except' => ['create', 'store'],
             ]);
+
             Route::post('users/{user}/resets', [
                 'as' => 'users.resets.create',
                 'uses' => 'Admin\UserController@sendPasswordReset',
+            ]);
+
+            Route::delete('users/{user}/promotions', [
+                'as' => 'users.promotions.destroy',
+                'uses' => 'Admin\PromotionsController@destroy',
             ]);
 
             // Fastly Redirects

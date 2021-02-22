@@ -10,7 +10,7 @@ class GroupTest extends TestCase
      *
      * @return void
      */
-    public function testGroupTypeIndex()
+    public function testGroupIndex()
     {
         $groupType = factory(GroupType::class)->create();
 
@@ -30,23 +30,23 @@ class GroupTest extends TestCase
             ]);
         }
 
-        $responseOne = $this->getJson('api/v3/groups');
+        $responseOne = $this->getJson('/api/v3/groups');
 
         $responseOne->assertOk();
         $responseOne->assertJsonPath('meta.pagination.count', 6);
 
-        $responseTwo = $this->getJson('api/v3/groups?filter[name]=new');
+        $responseTwo = $this->getJson('/api/v3/groups?filter[name]=new');
 
         $responseTwo->assertOk();
         $responseTwo->assertJsonPath('meta.pagination.count', 2);
 
-        $responseThree = $this->getJson('api/v3/groups?filter[name]=san');
+        $responseThree = $this->getJson('/api/v3/groups?filter[name]=san');
 
         $responseThree->assertOk();
         $responseThree->assertJsonPath('meta.pagination.count', 3);
 
         // Test for encoded special characters.
-        $response = $this->getJson('api/v3/groups?filter[name]=g%5C');
+        $response = $this->getJson('/api/v3/groups?filter[name]=g%5C');
 
         $response->assertOk();
         $response->assertJsonPath('meta.pagination.count', 0);
@@ -64,7 +64,7 @@ class GroupTest extends TestCase
         // Create a specific group type to search for.
         $group = factory(Group::class)->create();
 
-        $response = $this->getJson('api/v3/groups/' . $group->id);
+        $response = $this->getJson("/api/v3/groups/$group->id");
 
         $response->assertOk();
         $response->assertJsonPath('data.id', $group->id);

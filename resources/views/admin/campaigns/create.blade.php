@@ -1,16 +1,17 @@
-@extends('layouts.master')
+@extends('admin.layouts.main')
+
+@section('header_content')
+    @include('admin.layouts.header', ['title' => 'Campaign Creation'])
+@endsection
 
 @section('main_content')
-
-    @include('layouts.header', ['header' => 'Campaign Creation'])
-
     <div class="container -padded">
         <div class="wrapper">
             <div class="container__block -narrow">
                 <h1>Create Campaign ID</h1>
                 <p>Please reach out in the #help-product channel for help creating a campaign ID for your campaign.</p>
                 <br>
-                <form method="post" enctype="application/x-www-form-urlencoded" action="{{ route('campaigns.store') }}">
+                <form method="post" enctype="application/x-www-form-urlencoded" action="{{ route('admin.campaigns.store') }}">
                 {{ csrf_field()}}
 
                     <div class="form-item">

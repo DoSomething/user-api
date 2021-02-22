@@ -60,7 +60,7 @@ class FacebookController extends Controller
             logger()->warning('facebook_token_mismatch');
 
             return redirect('/register')->with(
-                'status',
+                'flash',
                 'Unable to verify Facebook account.',
             );
         }
@@ -72,7 +72,7 @@ class FacebookController extends Controller
             logger()->info('facebook_email_hidden');
 
             return redirect('/register')->with(
-                'status',
+                'flash',
                 'We need your email to contact you if you win a scholarship.',
             );
         }

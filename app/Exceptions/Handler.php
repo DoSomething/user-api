@@ -149,7 +149,7 @@ class Handler extends ExceptionHandler
 
         return redirect()
             ->back()
-            ->with('status', $message);
+            ->with('flash', $message);
     }
 
     /**

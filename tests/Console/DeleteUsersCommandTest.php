@@ -28,7 +28,7 @@ class DeleteUsersCommandTest extends TestCase
         $this->mock(Gambit::class)
             ->shouldReceive('deleteUser')
             ->twice();
-        $this->customerIoMock->shouldReceive('deleteUser')->twice();
+        $this->customerIoMock->shouldReceive('suppressCustomer')->twice();
 
         // Run the 'northstar:delete' command on the 'example-identify-output.csv' file:
         Artisan::call('northstar:delete', ['input' => $input]);
