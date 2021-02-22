@@ -2,7 +2,7 @@
 
 We integrate with Customer.io to send transactional and promotional messaging to DoSomething members.
 
-Historically, we've maintained a Customer.io profile for every DoSomething member (a.k.a. Northstar user). We're [currently working on changing this](https://www.pivotaltracker.com/epic/show/4721712) so that we only maintain profiles for active members who are subscribed to receive email and/or SMS promotional messaging.
+Historically, we've maintained a Customer.io profile for every DoSomething member (a.k.a. Northstar user). We're [currently working on changing this](https://www.pivotaltracker.com/epic/show/4721712) so that we only maintain profiles for active members who are subscribed to receive email and/or SMS promotional messaging. If a member's `promotions_muted_at` field is updated via API request, their corresponding Customer.io profile will be deleted. 
 
 ## Track API
 
