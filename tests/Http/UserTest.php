@@ -1035,7 +1035,7 @@ class UserTest extends TestCase
 
         $response->assertOk();
 
-        $this->customerIoMock->shouldReceive('suppressCustomer')->once();
+        $this->customerIoMock->shouldHaveReceived('suppressCustomer')->once();
         $this->gambitMock->shouldHaveReceived('deleteUser');
 
         $this->assertUserAnonymized($user);
