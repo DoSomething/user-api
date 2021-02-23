@@ -1214,27 +1214,4 @@ class UserTest extends TestCase
             'sms_subscription_topics' => null,
         ]);
     }
-
-    /**
-     * Test that the promotions_muted_at field is editable for admins.
-     *
-     * @return void
-     */
-    public function testSettingPromotionsMutedAt()
-    {
-        $user = factory(User::class)->states('email-subscribed')->create();
-
-        $newTimestamp = '2021-11-02T18:42:00.000Z';
-
-        $response = $this->asAdminUser()->putJson('v2/users/' . $user->id, [
-            'promotions_muted_at' => $newTimestamp,
-        ]);
-
-        $response->assertStatus(200);
-
-        $this->assertEquals(
-            '2021-11-02T18:42:00+00:00',
-            $user->fresh()->promotions_muted_at->toIso8601String(),
-        );
-    }
 }

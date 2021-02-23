@@ -78,7 +78,7 @@ use libphonenumber\PhoneNumberFormat;
  * @property Carbon $last_accessed_at - The timestamp of the user's last token refresh
  * @property Carbon $last_authenticated_at - The timestamp of the user's last successful login
  * @property Carbon $last_messaged_at - The timestamp of the last message this user sent
- * @property Carbon $promotions_muted_at - The timestamp of the last time promotions have been muted for this user
+ * @property Carbon $promotions_muted_at - The timestamp of the last time promotions have been musted for this user
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
@@ -152,9 +152,6 @@ class User extends MongoModel implements
         // Email Subscription:
         'email_subscription_status',
         'email_subscription_topics',
-
-        // Promotions:
-        'promotions_muted_at',
 
         // Voting Method/Plan fields:
         'voting_method',
