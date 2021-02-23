@@ -403,7 +403,6 @@ PUT /v2/users/:user_id
   role: String; // Can only be modified by admins. Either 'user' (default), 'staff', or 'admin'.
   sms_status: String; // Either 'active', 'stop', less', 'undeliverable', 'pending', or 'unknown'
   sms_paused: Boolean; // Whether a user is in a support conversation.
-  promotions_muted_at: Date; // Used to delete the user's Customer.io profile.
 
   // Hidden fields (optional):
   race: String;
