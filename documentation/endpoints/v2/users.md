@@ -268,6 +268,7 @@ curl -X GET \
     }
 }
 ```
+</details>
 
 ## Retrieve a User By Mobile
 
@@ -316,6 +317,7 @@ curl -X GET \
     }
 }
 ```
+</details>
 
 ## Retrieve a User By Email
 
