@@ -34,6 +34,7 @@ See [Authentication](authentication.md) for details on authorizing your requests
 | `POST v1/users/:id/merge` | [Merge User Accounts](endpoints/users.md#merge-user-accounts)      | `role:admin,staff` or `admin` |
 | `GET v2/mobile/:id`       | [Retrieve A User](endpoints/v2/users.md#retrieve-a-user-by-mobile) | `role:admin` or `admin`       |
 | `GET v2/email/:id`        | [Retrieve A User](endpoints/v2/users.md#retrieve-a-user-by-email)  | `role:admin` or `admin`       |
+| `DELETE v2/users/:id/promotions` | [Mute User Promotions](endpoints/v2/users.md#mute-promotions)      | `role:admin,staff` or `admin` |
 
 <details>
   <summary>view deprecated endpoints</summary>

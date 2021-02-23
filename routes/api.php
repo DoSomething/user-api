@@ -98,6 +98,9 @@ Route::group(['prefix' => 'v2', 'as' => 'v2.'], function () {
         'SubscriptionUpdateController@destroy',
     );
 
+    // Promotions
+    Route::delete('users/{user}/promotions', 'PromotionsController@destroy');
+
     // Cause Preferences
     Route::post('users/{user}/causes/{cause}', 'CauseUpdateController@store');
     Route::delete(
