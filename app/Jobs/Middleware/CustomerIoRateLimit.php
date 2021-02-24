@@ -15,9 +15,13 @@ class CustomerIoRateLimit
      */
     public function handle($job, $next)
     {
-        // Rate limit to 10 requests/second.
+        /*
+         * Rate limit to 100 requests/second for App and Track API requests.
+         * @see https://customer.io/docs/api/#tag/trackLimit
+         * @see https://customer.io/docs/api/#tag/appLimit
+         */
         $throttler = Redis::throttle('customerio')
-            ->allow(10)
+            ->allow(100)
             ->every(1);
 
         $throttler->then(

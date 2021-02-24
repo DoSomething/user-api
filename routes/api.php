@@ -98,6 +98,15 @@ Route::group(['prefix' => 'v2', 'as' => 'v2.'], function () {
         'SubscriptionUpdateController@destroy',
     );
 
+    // Promotions
+    Route::delete('users/{user}/promotions', 'PromotionsController@destroy');
+    /*
+     * HACK: Gateway PHP does not correctly parse our delete request response, so expose a POST
+     * route to mute promotions and inspect the response.
+     * @see https://github.com/DoSomething/chompy/pull/202
+     */
+    Route::post('users/{user}/promotions', 'PromotionsController@destroy');
+
     // Cause Preferences
     Route::post('users/{user}/causes/{cause}', 'CauseUpdateController@store');
     Route::delete(

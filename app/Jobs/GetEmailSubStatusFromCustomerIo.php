@@ -31,6 +31,10 @@ class GetEmailSubStatusFromCustomerIo extends Job
      */
     public function handle()
     {
+        /*
+         * Rate limit to 10 requests/second for Beta API requests.
+         * @see https://customer.io/docs/api/#tag/betaLimit
+         */
         Redis::throttle('customerioemailsubstatus')
             ->allow(10)
             ->every(1)

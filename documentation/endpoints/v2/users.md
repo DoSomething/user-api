@@ -268,6 +268,7 @@ curl -X GET \
     }
 }
 ```
+</details>
 
 ## Retrieve a User By Mobile
 
@@ -316,6 +317,7 @@ curl -X GET \
     }
 }
 ```
+</details>
 
 ## Retrieve a User By Email
 
@@ -623,8 +625,44 @@ curl -X DELETE \
 
 </details>
 
-## Notes
+### Notes
 
 - Northstar will automatically set the `email_subscription_status` field to `true` if a user is created or updated with one or more `email_subscription_topics`.
 
 - Northstar will automatically set the `email_subscription_topics` field to an empty array if a user is updated with a `email_subscription_status` value of `false`.
+
+## Mute Promotions
+
+Mute promotions for a user resource. The `user_id` property of the user to mute promotions for must be provided in the URL path, and refers to the user's Northstar ID. This requires either the `admin` scope, or "admin" or "staff" role with the appropriate scope.
+
+```
+DELETE /v2/users/:user_id/promotions
+```
+
+<details>
+<summary><strong>Example Request</strong></summary>
+
+```sh
+curl -X DELETE \
+  -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+  https://northstar.dosomething.org/v2/users/555b9ca8bffebc30068b456e/promotions
+```
+
+</details>
+
+<details>
+<summary><strong>Example Response</strong></summary>
+
+```js
+// 200 OK
+
+{
+    "data": {
+        "id": "555b9ca8bffebc30068b456e",
+        "promotions_muted_at": "2021-02-25T19:33:24+0000",
+        // the rest of the profile...
+    }
+}
+```
+
+</details>
