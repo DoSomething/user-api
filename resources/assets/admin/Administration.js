@@ -28,71 +28,96 @@ const Application = () => {
     <ApolloProvider client={graphql(endpoint)}>
       <BrowserRouter>
         <Switch>
-          <Route path="/action-stats" exact>
+          <Route path="/admin/action-stats" exact>
             <ActionStatIndex />
           </Route>
-          <Route path="/actions/:id">
+
+          <Route path="/admin/actions/:id">
             <ShowAction />
           </Route>
-          <Route path="/campaigns" exact>
+
+          <Route path="/admin/campaigns" exact>
             <CampaignIndex isOpen={true} />
           </Route>
-          <Route path="/campaigns/closed" exact>
+
+          <Route path="/admin/campaigns/closed" exact>
             <CampaignIndex isOpen={false} />
           </Route>
-          <Route path="/campaigns/:id" exact>
+
+          <Route path="/admin/campaigns/:id" exact>
             <ShowCampaign />
           </Route>
-          <Redirect from="/campaigns/:id/inbox" to="/campaigns/:id/pending" />
-          <Route path="/campaigns/:id/:status">
+
+          <Redirect
+            from="/admin/campaigns/:id/inbox"
+            to="/admin/campaigns/:id/pending"
+          />
+
+          <Route path="/admin/campaigns/:id/:status">
             <ShowCampaign />
           </Route>
-          <Route path="/clubs" exact>
+
+          <Route path="/admin/clubs" exact>
             <ClubIndex />
           </Route>
-          <Route path="/clubs/:id">
+
+          <Route path="/admin/clubs/:id">
             <ShowClub />
           </Route>
-          <Route path="/groups" exact>
+
+          <Route path="/admin/groups" exact>
             <GroupTypeIndex />
           </Route>
-          <Route path="/group-types" exact>
+
+          <Route path="/admin/group-types" exact>
             <GroupTypeIndex />
           </Route>
-          <Route path="/group-types/:id">
+
+          <Route path="/admin/group-types/:id">
             <ShowGroupType />
           </Route>
-          <Route path="/groups/:id/posts" exact>
+
+          <Route path="/admin/groups/:id/posts" exact>
             <ShowGroup selectedTab="posts" />
           </Route>
-          <Route path="/groups/:id">
+
+          <Route path="/admin/groups/:id">
             <ShowGroup />
           </Route>
-          <Route path="/users" exact>
+
+          <Route path="/admin/users" exact>
             <UserIndex />
           </Route>
-          <Route path="/users/:id/posts" exact>
+
+          <Route path="/admin/users/:id/posts" exact>
             <ShowUser selectedTab="posts" />
           </Route>
-          <Route path="/users/:id/referrals" exact>
+
+          <Route path="/admin/users/:id/referrals" exact>
             <ShowUser selectedTab="referrals" />
           </Route>
-          <Route path="/users/:id">
+
+          <Route path="/admin/users/:id">
             <ShowUser />
           </Route>
-          <Route path="/posts" exact>
+
+          <Route path="/admin/posts" exact>
             <PostIndex />
           </Route>
-          <Route path="/posts/:id">
+
+          <Route path="/admin/posts/:id">
             <ShowPost />
           </Route>
-          <Route path="/signups" exact>
+
+          <Route path="/admin/signups" exact>
             <SignupIndex />
           </Route>
-          <Route path="/signups/:id">
+
+          <Route path="/admin/signups/:id">
             <ShowSignup />
           </Route>
-          <Route path="/schools/:id">
+
+          <Route path="/admin/schools/:id">
             <ShowSchool />
           </Route>
         </Switch>
