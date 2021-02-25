@@ -7,8 +7,7 @@
         @auth
             <ul class="navigation__primary">
                 <li>
-                    {{-- @TODO: set to create route for now, but should be changed to index. --}}
-                    <a href="{{ route('admin.campaigns.create') }}">
+                    <a href="/admin/campaigns">
                         <strong class="navigation__title">Campaigns</strong>
                         <span class="navigation__subtitle">Review & edit</span>
                     </a>
@@ -22,14 +21,14 @@
                 </li>
 
                 <li>
-                    <a href="#"> {{-- /clubs --}}
+                    <a href="{{ url('/admin/clubs') }}">
                         <strong class="navigation__title">Clubs</strong>
                         <span class="navigation__subtitle">Review & edit</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="#"> {{-- /faq --}}
+                    <a href="{{ url('/admin/faq') }}">
                         <strong class="navigation__title">FAQ</strong>
                         <span class="navigation__subtitle">How do I...</span>
                     </a>

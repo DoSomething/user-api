@@ -1,19 +1,17 @@
-@extends('layouts.master')
+@extends('admin.layouts.main')
+
+@section('header_content')
+    @include('admin.layouts.header', ['title' => 'FAQ'])
+@endsection
 
 @section('main_content')
-
-    @include('layouts.header', ['header' => 'FAQ'])
-
     <div class="container -padded">
         <div class="wrapper">
             <div class="container__block -narrow">
-                <h3>What is Rogue?</h3>
-                <p>Rogue is an internal tool where staff and interns review and view more information about campaign actions. It is the tool you should use when looking for content for a sponsor, decks, media, etc!</p>
+                <h3>What is Northstar Admin?</h3>
+                <p>Northstar Admin is an internal tool where staff and interns review and view more information about campaign actions. It is the tool you should use when looking for content for a sponsor, decks, media, etc!</p>
 
-                <p>Additionally, Rogue is the source of truth for all member activity (signups, posts, impact) and campaign/action metadata. Member activity from Rogue is sent to Looker and powers all campaign dashboards.</p>
-
-                <h3>Is Rogue an internal or external term?</h3>
-                <p>Rogue is an internal term - it's named for <a href="https://en.wikipedia.org/wiki/Rogue_(comics)" target="_blank">this</a> superhero!</p>
+                <p>Additionally, Northstar Admin is the source of truth for all member activity (signups, posts, impact) and campaign/action metadata. Member activity from Northstar Admin is sent to Looker and powers all campaign dashboards.</p>
 
                 <h3>There's a lot of terms flying around, can I get some definitions?</h3>
                 <ul class='list'>
@@ -24,7 +22,7 @@
                     <li><b>Reportback:</b> This is an internal term. If a member submits proof of their action (a post), they have reported back. If a member sends in multiple proofs of their action (posts), this is still just one reportback.</li>
                 </ul>
 
-                <p>Here's a visualization of how things get into the Rogue system and are structured:</p>
+                <p>Here's a visualization of how things get into the system and are structured:</p>
                 <img src="https://images.ctfassets.net/81iqaqpfd8fy/6hAMqF2PfcFX9p2GICR87F/c73dc36d02d74839bc814488d789d84e/Rogue_RB_Flow_Diagram.jpg" alt="Rogue RB flow diagram"/>
 
                 <h3>Why are tags important?</h3>
@@ -68,7 +66,8 @@
                     <p><h4>Group Photo:</h4> Use this if it's a group photo.</p>
 
 
-                <h3>In Rogue, can I...</h3>
+                {{-- @TODO: Commenting the following sections out since it contains info and links for our old Rogue setup. Needs updating! --}}
+                {{-- <h3>In Rogue, can I...</h3>
                 <ul class="list">
                     <li>Upload a photo for a member?</li>
                     <li>Change the quantity for a member?</li>
@@ -82,9 +81,9 @@
                     <li><a href="https://docs.google.com/document/u/1/d/1wpwwSWmYBIXwt5RKVCJkBZIMDXyZRza22527CW6eTdY/edit#heading=h.hg3m91ssxcr1" target="_blank">Rogue Admin 101</a></li>
                     <li><a href="https://docs.google.com/document/d/1WVAQWk9d3G8VgZ-tOxQyWYYpM5E20C4VrUnzv1NUoHY/edit?ts=5755892b" target="_blank">Reportback Reviewing 101</a></li>
                     <li><a href="https://github.com/DoSomething/rogue/wiki" target="_blank">Rogue Technical Documentation</a></li>
-                </ul>
+                </ul> --}}
 
-                <p>Got questions that aren't answered here or in the documentation linked above? Please ask in the #help-product channel!</p>
+                <p>Got questions that aren't answered here or in the documentation linked above? Please ask in the <a href="https://dosomething.slack.com/archives/C09ANFQLA" target="_blank">#help-product</a> channel!</p>
             </div>
         </div>
     </div>
