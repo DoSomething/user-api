@@ -102,6 +102,9 @@ if (config('features.admin')) {
                 'except' => ['index', 'show'],
             ]);
 
+            // FAQ
+            Route::view('/faq', 'admin.pages.faq');
+
             // Users
             Route::resource('users', 'Admin\UserController', [
                 'except' => ['create', 'store'],
@@ -119,5 +122,18 @@ if (config('features.admin')) {
 
             // Fastly Redirects
             Route::resource('redirects', 'Admin\RedirectsController');
+        });
+
+    // Client-side Admin routes:
+    Route::prefix('admin')
+        ->middleware('auth:web', 'role:staff,admin')
+        ->group(function () {
+            // Campaigns
+            Route::view('/campaigns', 'admin.app');
+            Route::view('/campaigns/{id}', 'admin.app');
+
+            // Clubs
+            Route::view('/clubs', 'admin.app');
+            Route::view('/clubs/{id}', 'admin.app');
         });
 }
