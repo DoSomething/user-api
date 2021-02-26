@@ -81,7 +81,7 @@ const ClubsTable = ({ filter }) => {
         {clubs.map(({ node, cursor }) => (
           <tr key={cursor}>
             <td>
-              <EntityLabel id={node.id} name={node.name} path="clubs" />
+              <EntityLabel id={node.id} name={node.name} path="admin/clubs" />
             </td>
             <td>{node.city ? `${node.city}, ${node.location}` : null}</td>
             <td>
@@ -89,7 +89,7 @@ const ClubsTable = ({ filter }) => {
                 <EntityLabel
                   id={node.leader.id}
                   name={node.leader.displayName}
-                  path="users"
+                  path="admin/users"
                 />
               ) : (
                 node.leaderId
@@ -100,7 +100,7 @@ const ClubsTable = ({ filter }) => {
                 <EntityLabel
                   id={node.schoolId}
                   name={node.schoolId}
-                  path="schools"
+                  path="admin/schools"
                 />
               ) : null}
             </td>

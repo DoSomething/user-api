@@ -8,6 +8,8 @@ use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
 $factory->define(Club::class, function (Faker $faker) {
+    $faker->addProvider(new FakerSchoolId($faker));
+
     return [
         'leader_id' => function () {
             return factory(User::class)->create()->id;

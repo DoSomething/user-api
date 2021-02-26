@@ -38,11 +38,6 @@ Route::resource('actions', 'ActionsController', [
     'except' => ['index', 'show'],
 ]);
 
-// Clubs
-Route::resource('clubs', 'ClubsController', [
-    'except' => ['index', 'show', 'destroy'],
-]);
-
 // Facebook Continue
 Route::get('facebook/continue', 'FacebookController@redirectToProvider');
 Route::get('facebook/verify', 'FacebookController@handleProviderCallback');
@@ -100,6 +95,11 @@ if (config('features.admin')) {
             // Campaigns
             Route::resource('/campaigns', 'Admin\CampaignsController', [
                 'except' => ['index', 'show'],
+            ]);
+
+            // Clubs
+            Route::resource('/clubs', 'Admin\ClubsController', [
+                'except' => ['index', 'show', 'destroy'],
             ]);
 
             // FAQ

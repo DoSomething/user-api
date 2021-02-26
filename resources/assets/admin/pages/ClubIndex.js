@@ -22,7 +22,7 @@ const ClubIndex = () => {
         </div>
 
         <div className="container__block -half form-actions -inline text-right">
-          <a className="button -tertiary" href="/clubs/create">
+          <a className="button -tertiary" href="/admin/clubs/create">
             New Club
           </a>
         </div>

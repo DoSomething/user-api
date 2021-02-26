@@ -57,12 +57,14 @@ const ShowClub = () => {
               City: city || '--',
               Location: location || '--',
               Leader: leader ? (
-                <Link to={`/users/${leader.id}`}>{leader.displayName}</Link>
+                <Link to={`/admin/users/${leader.id}`}>
+                  {leader.displayName}
+                </Link>
               ) : (
                 leaderId
               ),
               School: schoolId ? (
-                <Link to={`/schools/${schoolId}`}>{schoolId}</Link>
+                <Link to={`/admin/schools/${schoolId}`}>{schoolId}</Link>
               ) : (
                 '--'
               ),
@@ -71,7 +73,7 @@ const ShowClub = () => {
         </div>
 
         <div className="container__block -half form-actions -inline text-right">
-          <a className="button -tertiary" href={`/clubs/${id}/edit`}>
+          <a className="button -tertiary" href={`/admin/clubs/${id}/edit`}>
             Edit Club #{id}
           </a>
         </div>
