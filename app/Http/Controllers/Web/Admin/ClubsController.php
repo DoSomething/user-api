@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Web\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Club;
@@ -30,7 +30,7 @@ class ClubsController extends Controller
      */
     public function create()
     {
-        return view('clubs.create');
+        return view('admin.clubs.create');
     }
 
     /**
@@ -52,7 +52,7 @@ class ClubsController extends Controller
         // Log that a club was created.
         info('club_created', ['id' => $club->id]);
 
-        return redirect('clubs/' . $club->id . '/edit')->with(
+        return redirect("/admin/clubs/$club->id/edit")->with(
             'flash',
             'Club successfully created!',
         );
@@ -65,7 +65,7 @@ class ClubsController extends Controller
      */
     public function edit(Club $club)
     {
-        return view('clubs.edit')->with([
+        return view('admin.clubs.edit')->with([
             'club' => $club,
         ]);
     }
