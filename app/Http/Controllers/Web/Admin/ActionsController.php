@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Web\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Action;
@@ -44,11 +44,13 @@ class ActionsController extends Controller
     }
 
     /**
-     * Create a new action.
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
      */
     public function create($campaignId)
     {
-        return view('actions.create')->with([
+        return view('admin.actions.create')->with([
             'postTypes' => PostType::labels(),
             'actionTypes' => ActionType::labels(),
             'timeCommitments' => TimeCommitment::labels(),
@@ -61,6 +63,7 @@ class ActionsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -93,18 +96,18 @@ class ActionsController extends Controller
             info('action_created', ['id' => $action->id]);
         }
 
-        return redirect('actions/' . $action->id);
+        return redirect("/admin/actions/$action->id");
     }
 
     /**
-     * Edit an existing action.
+     * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Action  $action
-     * @param  $campaignId
+     * @return \Illuminate\Http\Response
      */
     public function edit(Action $action)
     {
-        return view('actions.edit')->with([
+        return view('admin.actions.edit')->with([
             'action' => $action,
             'postTypes' => PostType::labels(),
             'actionTypes' => ActionType::labels(),
@@ -118,6 +121,7 @@ class ActionsController extends Controller
      *
      * @param  \App\Models\Action  $action
      * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
     public function update(Action $action, Request $request)
     {
@@ -137,13 +141,14 @@ class ActionsController extends Controller
         // Log that an action was updated.
         info('action_updated', ['id' => $action->id]);
 
-        return redirect('actions/' . $action->id);
+        return redirect("/admin/actions/$action->id");
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Action  $action
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Action $action)
     {

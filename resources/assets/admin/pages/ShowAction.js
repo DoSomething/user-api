@@ -24,6 +24,7 @@ const SHOW_ACTION_QUERY = gql`
 const ShowAction = () => {
   const { id } = useParams();
   const title = `Action #${id}`;
+
   document.title = title;
 
   const [location, setLocation] = useState(null);
@@ -52,8 +53,11 @@ const ShowAction = () => {
 
       <ul className="form-actions margin-vertical">
         <li>
-          <a className="button -tertiary" href={`/campaigns/${campaign.id}`}>
-            View all Actions for Campaign {campaign.internalTitle}
+          <a
+            className="button -tertiary"
+            href={`/admin/campaigns/${campaign.id}`}
+          >
+            View all Actions for Campaign "{campaign.internalTitle}"
           </a>
         </li>
       </ul>
@@ -68,6 +72,7 @@ const ShowAction = () => {
             />
           </div>
         </div>
+
         <div className="container__block">
           <ActionStatsTable
             actionId={data.action.id}
