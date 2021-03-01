@@ -66,19 +66,21 @@ const ShowGroup = ({ selectedTab }) => {
               City: city || '--',
               Location: location || '--',
               School: schoolId ? (
-                <Link to={`/schools/${schoolId}`}>{schoolId}</Link>
+                <Link to={`/admin/schools/${schoolId}`}>{schoolId}</Link>
               ) : (
                 '--'
               ),
             }}
           />
         </div>
+
         <div className="container__block -half form-actions -inline text-right">
-          <a className="button -tertiary" href={`/groups/${id}/edit`}>
+          <a className="button -tertiary" href={`/admin/groups/${id}/edit`}>
             Edit Group #{id}
           </a>
         </div>
       </div>
+
       <div className="container__row">
         <div className="container__block">
           {selectedTab === 'posts' ? (
@@ -88,9 +90,13 @@ const ShowGroup = ({ selectedTab }) => {
           )}
         </div>
       </div>
+
       <ul className="form-actions margin-vertical">
         <li>
-          <a className="button -tertiary" href={`/group-types/${groupType.id}`}>
+          <a
+            className="button -tertiary"
+            href={`/admin/group-types/${groupType.id}`}
+          >
             View all {groupType.name} Groups
           </a>
         </li>
