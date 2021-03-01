@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Auth\Scope;
 use Closure;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Auth\Factory as Auth;
@@ -55,6 +56,12 @@ class Authenticate
     {
         if (empty($guards)) {
             $guards = ['api'];
+        }
+
+        // If we're using the API guard and a request comes in with the 'admin'
+        // scope, then treat it as authenticated (as a machine client):
+        if (in_array('api', $guards) && Scope::allows('admin')) {
+            return;
         }
 
         // Check if any of the guards let the user in.
