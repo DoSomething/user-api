@@ -43,7 +43,7 @@ class SendPostToCustomerIo extends Job
     public function handle(CustomerIo $customerIo)
     {
         $customerIo->trackEvent(
-            $this->post->user(),
+            $this->post->user,
             'campaign_signup_post',
             $this->post->toCustomerIoPayload(),
         );

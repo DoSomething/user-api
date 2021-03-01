@@ -103,12 +103,6 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     public function assertCustomerIoEvent(User $user, string $eventName)
     {
         $userMatcher = Mockery::on(function ($argument) use ($user) {
-            // If this is an as-yet unresolved Eloquent relationship, figure out where
-            // it will go so we can make a comparison against the expected user:
-            if ($argument instanceof Relation) {
-                $argument = $argument->getResults();
-            }
-
             return $user->is($argument);
         });
 
