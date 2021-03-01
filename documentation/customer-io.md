@@ -1,6 +1,6 @@
 # Customer.io
 
-We integrate with Customer.io to send transactional and promotional messaging to DoSomething members.
+We integrate with [Customer.io](https://customer.io/) to send transactional and promotional messaging to DoSomething members.
 
 We maintain Customer.io profiles for active members who are subscribed to receive email and/or SMS promotional messaging.
 
@@ -18,9 +18,11 @@ Admins can run a Mute Promotions import from [Chompy](https://github.com/DoSomet
 
 ## Integration
 
+Northstar uses [queued jobs](https://laravel.com/docs/6.x/queues) to execute Customer.io API requests.
+
 ### Track API
 
-We use the [Track API](https://customer.io/docs/api/#tag/trackOverview) to track member activity in Customer.io, and send both promotional and transactional emails to subscribers. The documentation [here](http://docs.dosomething.org/customer-io) and [here](http://docs.dosomething.org/non-traditional-member-activation) provide more detail, and will soon be moved into this repo.
+We use the [Track API](https://customer.io/docs/api/#tag/trackOverview) to upsert a profile for each active, subscribed member, and to track their [events](https://customer.io/docs/events). The documentation [here](http://docs.dosomething.org/customer-io) and [here](http://docs.dosomething.org/non-traditional-member-activation) provide more detail, and will soon be moved into this repo.
 
 ### App API
 
