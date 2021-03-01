@@ -4,12 +4,17 @@ We integrate with Customer.io to send transactional and promotional messaging to
 
 We maintain Customer.io profiles for active members who are subscribed to receive email and/or SMS promotional messaging.
 
-## Subscription updates
+### Subscription updates
+
+* When a new account is created (via web or SMS), the member is subscribed for promotions by default, and a Customer.io profile is created for them.
 
 * If a member unsubscribes from both SMS and email promotions, their `promotions_muted_at` field will be set to the datetime they've unsubscribed. This will trigger their Customer.io profile deletion.
 
 * If a member whose promotions have been muted resubscribes to either email and/or SMS, their `promotions_muted_at` field will be set to null. This will trigger their Customer.io profile to be re-created, and additionally track a `promotions_resubscribe` Customer.io event.
 
+### Mute Promotions import
+
+Admins can run a Mute Promotions import from [Chompy](https://github.com/DoSomething/chompy/tree/master/docs/imports#mute-promotions) to manually set a user's `promotions_muted_at` field and delete their Customer.io profile.
 
 ## Integration
 
@@ -25,4 +30,4 @@ We use the [send email](https://customer.io/docs/api/#operation/sendEmail) endpo
 
 ## History
 
-When we first launched our Customer.io integration in 2016, we maintained a Customer.io profile for every DoSomething member (a.k.a. Northstar user). We changed this in 2021 to only maintain profiles for [active members who are subscribed](https://www.pivotaltracker.com/epic/show/4721712), running the first Mute Promotions import at the end of February 2021.
+When we first launched our Customer.io integration in 2016, we maintained a Customer.io profile for every DoSomething member (a.k.a. Northstar user). We changed this in 2021 to only maintain profiles for [active members who are subscribed](https://www.pivotaltracker.com/epic/show/4721712), running the first [Mute Promotions import](#mute-promotions-import) at the end of February 2021.
