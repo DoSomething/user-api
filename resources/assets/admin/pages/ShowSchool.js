@@ -57,7 +57,7 @@ const ShowSchool = () => {
           <EntityLabel
             id={group.id}
             name={group.groupType.name}
-            path="groups"
+            path="admin/groups"
           />
         </li>
       ))}
