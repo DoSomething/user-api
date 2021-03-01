@@ -23,8 +23,6 @@ const SHOW_CAMPAIGN_QUERY = gql`
 `;
 
 const ShowCampaign = () => {
-  console.log('poooooooopie!');
-
   const { id, status } = useParams();
   const [tag, setTag] = useState('');
   const history = useHistory();
