@@ -27,10 +27,11 @@ const ShowCampaign = () => {
   const [tag, setTag] = useState('');
   const history = useHistory();
   const title = `Campaign #${id}`;
+
   document.title = title;
 
   const setStatus = value => {
-    history.replace(`/campaigns/${id}/${value}`);
+    history.replace(`/admin/campaigns/${id}/${value}`);
   };
 
   const { loading, error, data } = useQuery(SHOW_CAMPAIGN_QUERY, {

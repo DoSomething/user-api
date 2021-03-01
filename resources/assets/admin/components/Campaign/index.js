@@ -73,9 +73,9 @@ const Campaign = ({ id }) => {
     if (confirmed) {
       // Make API request to Rogue to delete the action.
       apiClient
-        .delete(`actions/${action.id}`)
+        .delete(`/admin/actions/${action.id}`)
         .then(() => {
-          window.location.href = `/campaigns/${id}`;
+          window.location.href = `/admin/campaigns/${id}`;
           alert(`Deleted Action ID ${action.id}`);
         })
         .catch(error =>
@@ -93,22 +93,27 @@ const Campaign = ({ id }) => {
       <div className="container__block -narrow -half">
         <h3>Campaign Information</h3>
       </div>
+
       <div className="container__block -narrow -half">
         <a
           className="button -secondary"
-          href={`/campaigns/${campaign.id}/pending`}
+          href={`/admin/campaigns/${campaign.id}/pending`}
         >
           Campaign Inbox
         </a>
       </div>
+
       <div className="container__block -narrow">
         <h4>Internal Campaign Name</h4>
+
         <p>{campaign.internalTitle}</p>
 
         <h4>Campaign ID</h4>
+
         <p>{campaign.id}</p>
 
         <h4>Contentful Campaign ID</h4>
+
         {campaign.contentfulCampaignId ? (
           <p>{campaign.contentfulCampaignId}</p>
         ) : (
@@ -116,12 +121,13 @@ const Campaign = ({ id }) => {
         )}
 
         <h4>Group Type</h4>
+
         <p>
           {campaign.groupType ? (
             <EntityLabel
               id={campaign.groupType.id}
               name={campaign.groupType.name}
-              path="group-types"
+              path="admin/group-types"
             />
           ) : (
             '–'
@@ -129,6 +135,7 @@ const Campaign = ({ id }) => {
         </p>
 
         <h4>URL</h4>
+
         <p>
           {campaignWebsiteByCampaignId ? (
             <a href={campaignWebsiteByCampaignId.url} target="_blank">
@@ -140,6 +147,7 @@ const Campaign = ({ id }) => {
         </p>
 
         <h4>Cause Area</h4>
+
         <p>
           {campaign.causes.length
             ? campaign.causes.map(cause => cause.name).join(', ')
@@ -147,6 +155,7 @@ const Campaign = ({ id }) => {
         </p>
 
         <h4>Proof of Impact</h4>
+
         {campaign.impactDoc ? (
           <p>
             <a href={campaign.impactDoc} target="_blank">
@@ -156,32 +165,41 @@ const Campaign = ({ id }) => {
         ) : (
           <p>–</p>
         )}
+
         <h4>Start Date</h4>
+
         <p>{format(parse(campaign.startDate), 'MM/D/YYYY')}</p>
+
         <h4>End Date</h4>
+
         <p>
           {campaign.endDate
             ? format(parse(campaign.endDate), 'MM/D/YYYY')
             : '–'}
         </p>
       </div>
+
       <div className="container__block -narrow">
-        <a className="button" href={`/campaigns/${campaign.id}/edit`}>
+        <a className="button" href={`/admin/campaigns/${campaign.id}/edit`}>
           Edit this campaign
         </a>
+
         <p className="footnote">
           Last updated: {campaign.updatedAt}
           <br />
           Created: {campaign.createdAt}
         </p>
       </div>
+
       <div id="actions" className="container__block -narrow">
         <h3>Campaign Actions</h3>
+
         <p>
           Each action in your campaign requires a different set of metadata, to
           determine how it will be treated by Rogue. Use this Action ID in
           Contentful to link user submissions in Rogue.
         </p>
+
         {!isEmpty(campaign.actions)
           ? map(campaign.actions, (action, key) => {
               return (
@@ -189,10 +207,11 @@ const Campaign = ({ id }) => {
               );
             })
           : null}
+
         <div className="container__block -narrow">
           <a
             className="button -secondary"
-            href={`/campaigns/${campaign.id}/actions/create`}
+            href={`/admin/campaigns/${campaign.id}/actions/create`}
           >
             Add Action
           </a>
