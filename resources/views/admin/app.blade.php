@@ -14,6 +14,8 @@
         <link rel="stylesheet" href="{{ elixir('admin.css', 'dist') }}">
 
         <script src="{{ asset('dist/modernizr.js') }}"></script>
+
+        <meta name="csrf-token" content="{{ csrf_token() }}">
     </head>
 
     <body class="modernizr-no-js">
