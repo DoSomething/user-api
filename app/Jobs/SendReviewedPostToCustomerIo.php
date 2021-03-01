@@ -42,8 +42,7 @@ class SendReviewedPostToCustomerIo extends Job
      */
     public function handle(CustomerIo $customerIo)
     {
-        $customerIo->trackEvent(
-            $this->post->user,
+        $this->post->user->trackCustomerIoEvent(
             'campaign_review',
             $this->post->toCustomerIoPayload(),
         );
