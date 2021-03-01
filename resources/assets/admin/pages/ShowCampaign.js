@@ -23,6 +23,8 @@ const SHOW_CAMPAIGN_QUERY = gql`
 `;
 
 const ShowCampaign = () => {
+  console.log('poooooooopie!');
+
   const { id, status } = useParams();
   const [tag, setTag] = useState('');
   const history = useHistory();
@@ -91,17 +93,20 @@ const ShowCampaign = () => {
 
         <div className="container__block -third">
           <h4>
-            Filter by tag... <HelpLink to="/faq#tags" title="Tag definitions" />
+            Filter by tag...{' '}
+            <HelpLink to="/admin/faq#tags" title="Tag definitions" />
           </h4>
+
           <Select values={TAGS} value={tag} onChange={setTag} />
         </div>
 
         <div className="container__block -third form-actions -inline text-right pt-heading">
-          <a className="button -tertiary" href={`/campaigns/${id}`}>
+          <a className="button -tertiary" href={`/admin/campaigns/${id}`}>
             View Campaign &amp; Actions
           </a>
         </div>
       </div>
+
       <ReviewablePostGallery
         campaignId={id}
         status={status || 'pending'}

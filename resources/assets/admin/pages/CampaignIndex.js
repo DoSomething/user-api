@@ -45,7 +45,7 @@ const CampaignIndex = ({ isOpen }) => {
         <div className="container__block">
           <h3>
             <span className="text-gray-500">
-              <Link to="/campaigns" className="text-gray-500 underline">
+              <Link to="/admin/campaigns" className="text-gray-500 underline">
                 Open Campaigns
               </Link>
               {' / '}

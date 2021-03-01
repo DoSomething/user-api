@@ -146,6 +146,7 @@ if (config('features.admin')) {
             // Campaigns
             Route::view('/campaigns', 'admin.app');
             Route::view('/campaigns/{id}', 'admin.app');
+            Route::view('campaigns/{id}/{status}', 'admin.app');
 
             // Clubs
             Route::view('/clubs', 'admin.app');
