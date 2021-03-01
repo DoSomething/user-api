@@ -20,7 +20,7 @@ class WebActionTest extends TestCase
 
         $admin = factory(User::class, 'admin')->create();
 
-        $this->actingAs($admin, 'web')->postJson('actions', [
+        $this->actingAs($admin, 'web')->postJson('/admin/actions', [
             'name' => $actionName,
             'campaign_id' => $campaign->id,
             'post_type' => 'photo',
@@ -76,7 +76,7 @@ class WebActionTest extends TestCase
         ];
 
         $responseOne = $this->actingAs($admin, 'web')->postJson(
-            'actions',
+            '/admin/actions',
             $actionBody,
         );
 
@@ -85,7 +85,7 @@ class WebActionTest extends TestCase
         // Try to create a second action with the same name, post type,
         // and campaign id to make sure it doesn't duplicate.
         $responseTwo = $this->actingAs($admin, 'web')->postJson(
-            'actions',
+            '/admin/actions',
             $actionBody,
         );
 
@@ -107,14 +107,17 @@ class WebActionTest extends TestCase
         $updatedName = 'Updated Name';
 
         // Update the name.
-        $this->actingAs($admin, 'web')->patchJson('actions/' . $action->id, [
-            'name' => $updatedName,
-            'post_type' => $action->post_type,
-            'action_type' => $action->action_type,
-            'time_commitment' => $action->time_commitment,
-            'noun' => $action->noun,
-            'verb' => $action->verb,
-        ]);
+        $this->actingAs($admin, 'web')->patchJson(
+            "/admin/actions/$action->id",
+            [
+                'name' => $updatedName,
+                'post_type' => $action->post_type,
+                'action_type' => $action->action_type,
+                'time_commitment' => $action->time_commitment,
+                'noun' => $action->noun,
+                'verb' => $action->verb,
+            ],
+        );
 
         $this->assertMysqlDatabaseHas('actions', [
             'name' => $updatedName,
@@ -134,7 +137,9 @@ class WebActionTest extends TestCase
         $action = factory(Action::class)->create();
 
         // Delete the action.
-        $this->actingAs($admin, 'web')->deleteJson('actions/' . $action->id);
+        $this->actingAs($admin, 'web')->deleteJson(
+            "/admin/actions/$action->id",
+        );
 
         $response = $this->getJson('api/v3/actions/' . $action->id);
 
