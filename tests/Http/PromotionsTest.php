@@ -37,4 +37,23 @@ class PromotionsTest extends BrowserKitTestCase
 
         $this->assertResponseStatus(401);
     }
+
+    /**
+     * Test muting promotions on a deleted user.
+     *
+     * @return void
+     */
+    public function testCanMutePromotionsForDeletedUser()
+    {
+        $user = factory(User::class)->create();
+
+        $user->delete();
+
+        $this->asAdminUser()->delete(
+            'v2/users/' . $user->id . '/promotions',
+        );
+
+        $this->assertResponseStatus(200);
+        $this->assertNotNull($user->fresh()->promotions_muted_at);
+    }
 }
