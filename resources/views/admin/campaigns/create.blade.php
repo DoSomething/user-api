@@ -65,6 +65,7 @@
 
                     <ul class="form-actions -inline -padded">
                         <li><input type="submit" class="button" value="Create Campaign"></li>
+                        <li><a href="{{ url()->previous() }}" class="button -tertiary">Cancel</a></li>
                     </ul>
                 </form>
             </div>

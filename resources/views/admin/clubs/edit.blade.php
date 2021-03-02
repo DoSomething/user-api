@@ -40,7 +40,7 @@
 
                     <ul class="form-actions -inline -padded">
                         <li><input type="submit" class="button" value="Update Club"></li>
-                        <li><a href="{{ url('/admin/clubs', [$club->id]) }}" class="button -tertiary">Cancel</a></li>
+                        <li><a href="{{ url()->previous() }}" class="button -tertiary">Cancel</a></li>
                     </ul>
                 </form>
             </div>

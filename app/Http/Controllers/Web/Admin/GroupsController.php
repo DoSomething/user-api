@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Web\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Group;
@@ -24,11 +24,13 @@ class GroupsController extends Controller
     }
 
     /**
-     * Create a new group.
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
      */
     public function create($groupTypeId)
     {
-        return view('groups.create')->with([
+        return view('admin.groups.create')->with([
             'groupTypeId' => (int) $groupTypeId,
         ]);
     }
@@ -37,6 +39,7 @@ class GroupsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -57,17 +60,18 @@ class GroupsController extends Controller
         // Log that a group was created.
         info('group', ['id' => $group->id]);
 
-        return redirect('groups/' . $group->id);
+        return redirect("/admin/groups/$group->id");
     }
 
     /**
-     * Edit an existing group.
+     * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Group  $group
+     * @return \Illuminate\Http\Response
      */
     public function edit(Group $group)
     {
-        return view('groups.edit')->with([
+        return view('admin.groups.edit')->with([
             'group' => $group,
         ]);
     }
@@ -87,6 +91,6 @@ class GroupsController extends Controller
         // Log that a group was updated.
         info('group_updated', ['id' => $group->id]);
 
-        return redirect('groups/' . $group->id);
+        return redirect("/admin/groups/$group->id");
     }
 }

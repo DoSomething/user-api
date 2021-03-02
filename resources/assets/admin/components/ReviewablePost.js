@@ -160,11 +160,13 @@ const ReviewablePost = ({ post }) => {
             <li>
               <AcceptButton post={post} />
             </li>
+
             <li>
               <RejectButton post={post} />
             </li>
           </ul>
         </div>
+
         <div className="container__row">
           <ul className="form-actions -inline">
             <li>
@@ -172,16 +174,19 @@ const ReviewablePost = ({ post }) => {
             </li>
           </ul>
         </div>
+
         {post.status !== 'PENDING' ? (
           <div className="container__row">
             <h4>
               Tags <HelpLink to="/faq#tags" title="Tag definitions" />
             </h4>
+
             {map(TAGS, (label, id) => (
               <TagButton key={id} tag={id} label={label} post={post} />
             ))}
           </div>
         ) : null}
+
         <div className="container__row">
           <MetaInformation
             title="Post Information"
@@ -228,6 +233,7 @@ const ReviewablePost = ({ post }) => {
             }}
           />
         </div>
+
         <div className="container__row">
           <MetaInformation
             title="Signup Information"

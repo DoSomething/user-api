@@ -33,11 +33,6 @@ Route::post('totp', 'TotpController@verify');
 Route::get('totp/configure', 'TotpController@configure');
 Route::post('totp/configure', 'TotpController@store');
 
-// Actions
-Route::resource('actions', 'ActionsController', [
-    'except' => ['index', 'show'],
-]);
-
 // Facebook Continue
 Route::get('facebook/continue', 'FacebookController@redirectToProvider');
 Route::get('facebook/verify', 'FacebookController@handleProviderCallback');
@@ -45,17 +40,6 @@ Route::get('facebook/verify', 'FacebookController@handleProviderCallback');
 // Google Continue
 Route::get('google/continue', 'GoogleController@redirectToProvider');
 Route::get('google/verify', 'GoogleController@handleProviderCallback');
-
-// Groups
-Route::resource('groups', 'GroupsController', [
-    'except' => ['create', 'index', 'show'],
-]);
-
-// Group Types
-Route::resource('group-types', 'GroupTypesController', [
-    'except' => ['index', 'show'],
-]);
-Route::get('group-types/{id}/groups/create', 'GroupsController@create');
 
 // Registration
 Route::get('register', 'AuthController@getRegister');
@@ -92,7 +76,17 @@ if (config('features.admin')) {
             // Homepage
             Route::view('/', 'admin.home');
 
+            // Actions
+            Route::resource('/actions', 'Admin\ActionsController', [
+                'except' => ['index', 'show'],
+            ]);
+
             // Campaigns
+            Route::get(
+                '/campaigns/{id}/actions/create',
+                'Admin\ActionsController@create',
+            );
+
             Route::resource('/campaigns', 'Admin\CampaignsController', [
                 'except' => ['index', 'show'],
             ]);
@@ -104,6 +98,21 @@ if (config('features.admin')) {
 
             // FAQ
             Route::view('/faq', 'admin.pages.faq');
+
+            // Groups
+            Route::resource('groups', 'Admin\GroupsController', [
+                'except' => ['create', 'index', 'show'],
+            ]);
+
+            // Group Types
+            Route::resource('group-types', 'Admin\GroupTypesController', [
+                'except' => ['index', 'show'],
+            ]);
+
+            Route::get(
+                'group-types/{id}/groups/create',
+                'Admin\GroupsController@create',
+            );
 
             // Users
             Route::resource('users', 'Admin\UserController', [
@@ -128,12 +137,27 @@ if (config('features.admin')) {
     Route::prefix('admin')
         ->middleware('auth:web', 'role:staff,admin')
         ->group(function () {
+            // Actions
+            Route::view('/actions/{id}', 'admin.app');
+
+            // Actions
+            Route::view('/action-stats', 'admin.app');
+
             // Campaigns
             Route::view('/campaigns', 'admin.app');
             Route::view('/campaigns/{id}', 'admin.app');
+            Route::view('campaigns/{id}/{status}', 'admin.app');
 
             // Clubs
             Route::view('/clubs', 'admin.app');
             Route::view('/clubs/{id}', 'admin.app');
+
+            // Groups
+            Route::view('groups', 'admin.app');
+            Route::view('groups/{id}', 'admin.app');
+            Route::view('groups/{id}/posts', 'admin.app');
+
+            // Schools
+            Route::view('schools/{id}', 'admin.app')->name('schools.show');
         });
 }

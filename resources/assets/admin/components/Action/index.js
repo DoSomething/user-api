@@ -37,16 +37,18 @@ export const Action = ({ action, deleteAction, isPermalink }) => {
       {!isPermalink ? (
         <div className="container__row">
           <h2>
-            <a href={`/actions/${action.id}`}>{action.name}</a>
+            <a href={`/admin/actions/${action.id}`}>{action.name}</a>
           </h2>
         </div>
       ) : null}
+
       <div className="container__row">
         <ul>
           <li>
             <h4>ACTION ID</h4>
             <p>{action.id}</p>
           </li>
+
           {action.postType === 'phone-call' ? (
             <li>
               <h4>CALLPOWER ID</h4>
@@ -55,24 +57,28 @@ export const Action = ({ action, deleteAction, isPermalink }) => {
           ) : null}
         </ul>
       </div>
+
       <div className="container__row">
         <ul>
           <li>
             <h4>NOUN</h4>
             <p>{action.noun}</p>
           </li>
+
           <li>
             <h4>VERB</h4>
             <p>{action.verb}</p>
           </li>
         </ul>
       </div>
+
       <div className="container__row">
         <ul>
           <li>
             <h4>POST TYPE</h4>
             <p>{action.postLabel}</p>
           </li>
+
           <li>
             <h4>ACTION TYPE</h4>
             <p>{action.actionLabel}</p>
@@ -83,6 +89,7 @@ export const Action = ({ action, deleteAction, isPermalink }) => {
           </li>
         </ul>
       </div>
+
       <div className="container__row">
         <ul>
           <li>
@@ -93,6 +100,7 @@ export const Action = ({ action, deleteAction, isPermalink }) => {
               <p className="no">No</p>
             )}
           </li>
+
           <li>
             <h4>CIVIC ACTION</h4>
             {action.civicAction === true ? (
@@ -101,6 +109,7 @@ export const Action = ({ action, deleteAction, isPermalink }) => {
               <p className="no">No</p>
             )}
           </li>
+
           <li>
             <h4>SCHOLARSHIP</h4>
             {action.scholarshipEntry === true ? (
@@ -111,6 +120,7 @@ export const Action = ({ action, deleteAction, isPermalink }) => {
           </li>
         </ul>
       </div>
+
       <div className="container__row">
         <ul>
           <li>
@@ -121,6 +131,7 @@ export const Action = ({ action, deleteAction, isPermalink }) => {
               <p className="no">No</p>
             )}
           </li>
+
           <li>
             <h4>ONLINE ACTION</h4>
             {action.online === true ? (
@@ -129,6 +140,7 @@ export const Action = ({ action, deleteAction, isPermalink }) => {
               <p className="no">No</p>
             )}
           </li>
+
           <li>
             <h4>QUIZ ACTION</h4>
             {action.quiz === true ? (
@@ -139,6 +151,7 @@ export const Action = ({ action, deleteAction, isPermalink }) => {
           </li>
         </ul>
       </div>
+
       <div className="container__row">
         <ul>
           <li>
@@ -149,6 +162,7 @@ export const Action = ({ action, deleteAction, isPermalink }) => {
               <p className="no">No</p>
             )}
           </li>
+
           <li>
             <h4>VOLUNTEER CREDIT</h4>
             {action.volunteerCredit === true ? (
@@ -159,11 +173,16 @@ export const Action = ({ action, deleteAction, isPermalink }) => {
           </li>
         </ul>
       </div>
+
       {action.campaign && action.campaign.isOpen && !isAdmin ? null : (
         <div className="container__row">
-          <a className="button -secondary" href={`/actions/${action.id}/edit`}>
+          <a
+            className="button -secondary"
+            href={`/admin/actions/${action.id}/edit`}
+          >
             Edit Action
           </a>
+
           {deleteAction ? (
             <button
               className="button delete -tertiary"

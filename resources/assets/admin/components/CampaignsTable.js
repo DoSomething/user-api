@@ -125,41 +125,51 @@ const CampaignsTable = ({ isOpen, filter }) => {
               orderBy={orderBy}
               onChange={setOrderBy}
             />
+
             <SortableHeading
               column="pending_count"
               label="Pending"
               orderBy={orderBy}
               onChange={setOrderBy}
             />
+
             <SortableHeading
               column="accepted_count"
               label="Accepted"
               orderBy={orderBy}
               onChange={setOrderBy}
             />
+
             <td></td>
+
             <td></td>
           </tr>
         </thead>
+
         <tbody>
           {campaigns.map(({ node, cursor }) => (
             <tr key={cursor}>
               <td>
-                <Link to={`/campaigns/${node.id}/accepted`}>
+                <Link to={`/admin/campaigns/${node.id}/accepted`}>
                   <EntityLabel name={node.internalTitle} id={node.id} />
                 </Link>
               </td>
+
               <td>{node.pendingCount}</td>
+
               <td>{node.acceptedCount}</td>
+
               <td>
-                <Link to={`/campaigns/${node.id}/pending`}>review</Link>
+                <Link to={`/admin/campaigns/${node.id}/pending`}>review</Link>
               </td>
+
               <td>
-                <a href={`/campaigns/${node.id}`}>edit</a>
+                <a href={`/admin/campaigns/${node.id}`}>edit</a>
               </td>
             </tr>
           ))}
         </tbody>
+
         <tfoot className="form-actions">
           {loading ? (
             <tr>
@@ -168,6 +178,7 @@ const CampaignsTable = ({ isOpen, filter }) => {
               </td>
             </tr>
           ) : null}
+
           {hasNextPage ? (
             <tr>
               <td colSpan="5">

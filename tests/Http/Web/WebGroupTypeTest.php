@@ -12,10 +12,13 @@ class WebGroupTypeTest extends TestCase
 
         $name = $this->faker->sentence;
 
-        $responseOne = $this->actingAs($admin, 'web')->post('/group-types', [
-            'name' => $name,
-            'filter_by_location' => true,
-        ]);
+        $responseOne = $this->actingAs($admin, 'web')->post(
+            '/admin/group-types',
+            [
+                'name' => $name,
+                'filter_by_location' => true,
+            ],
+        );
 
         $responseOne->assertRedirect();
 
@@ -32,7 +35,7 @@ class WebGroupTypeTest extends TestCase
 
         $groupType = factory(GroupType::class)->create();
 
-        $response = $this->actingAs($admin, 'web')->post('/group-types', [
+        $response = $this->actingAs($admin, 'web')->post('/admin/group-types', [
             'name' => $groupType->name,
         ]);
 
@@ -46,7 +49,7 @@ class WebGroupTypeTest extends TestCase
 
         $name = $this->faker->sentence;
 
-        $response = $this->actingAs($staff, 'web')->post('/group-types', [
+        $response = $this->actingAs($staff, 'web')->post('/admin/group-types', [
             'name' => $name,
         ]);
 
@@ -70,10 +73,10 @@ class WebGroupTypeTest extends TestCase
             'filter_by_location' => true,
         ]);
 
-        $response = $this->actingAs($admin, 'web')->put(
-            '/group-types' . '/' . $groupType->id,
-            ['name' => 'Test 123'],
-        );
+        $response = $this->actingAs(
+            $admin,
+            'web',
+        )->put("/admin/group-types/$groupType->id", ['name' => 'Test 123']);
 
         $response->assertRedirect();
 

@@ -130,7 +130,7 @@ const ActionStatsTable = ({ actionId, location, orderBy, schoolId }) => {
                     <EntityLabel
                       id={school.id}
                       name={school.name}
-                      path="schools"
+                      path="admin/schools"
                     />
 
                     <div>
@@ -144,7 +144,7 @@ const ActionStatsTable = ({ actionId, location, orderBy, schoolId }) => {
                     <EntityLabel
                       id={action.id}
                       name={action.name}
-                      path="actions"
+                      path="admin/actions"
                     />
                   </td>
                 )}

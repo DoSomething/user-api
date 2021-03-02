@@ -17,44 +17,53 @@ const CampaignIndex = ({ isOpen }) => {
           onChange={event => setFilter(event.target.value)}
         />
       </div>
+
       <div className="container__block -half form-actions -inline text-right">
-        <a className="button -tertiary" href="/campaigns/create">
+        <a className="button -tertiary" href="/admin/campaigns/create">
           New Campaign
         </a>
       </div>
+
       {isOpen ? (
         <div className="container__block">
           <h3>
             Open Campaigns{' '}
             <span className="text-gray-500">
               {' / '}
-              <Link to="/campaigns/closed" className="text-gray-500 underline">
+              <Link
+                to="/admin/campaigns/closed"
+                className="text-gray-500 underline"
+              >
                 Closed Campaigns
               </Link>
             </span>
           </h3>
+
           <p>These campaigns are currently accepting new submissions.</p>
         </div>
       ) : (
         <div className="container__block">
           <h3>
             <span className="text-gray-500">
-              <Link to="/campaigns" className="text-gray-500 underline">
+              <Link to="/admin/campaigns" className="text-gray-500 underline">
                 Open Campaigns
               </Link>
               {' / '}
             </span>
             Closed Campaigns
           </h3>
+
           <p>These campaigns are no longer accepting new submissions.</p>
         </div>
       )}
+
       <div className="container__block text-center text-sm fade-in-up">
         <mark>
           <strong>New!</strong> You can now click table headings to sort this
           list. Click again to sort in the opposite direction.
         </mark>
       </div>
+
       <div className="container__block">
         <CampaignsTable isOpen={isOpen} filter={filter} />
       </div>

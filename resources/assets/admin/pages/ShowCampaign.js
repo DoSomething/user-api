@@ -27,10 +27,11 @@ const ShowCampaign = () => {
   const [tag, setTag] = useState('');
   const history = useHistory();
   const title = `Campaign #${id}`;
+
   document.title = title;
 
   const setStatus = value => {
-    history.replace(`/campaigns/${id}/${value}`);
+    history.replace(`/admin/campaigns/${id}/${value}`);
   };
 
   const { loading, error, data } = useQuery(SHOW_CAMPAIGN_QUERY, {
@@ -90,17 +91,20 @@ const ShowCampaign = () => {
 
         <div className="container__block -third">
           <h4>
-            Filter by tag... <HelpLink to="/faq#tags" title="Tag definitions" />
+            Filter by tag...{' '}
+            <HelpLink to="/admin/faq#tags" title="Tag definitions" />
           </h4>
+
           <Select values={TAGS} value={tag} onChange={setTag} />
         </div>
 
         <div className="container__block -third form-actions -inline text-right pt-heading">
-          <a className="button -tertiary" href={`/campaigns/${id}`}>
+          <a className="button -tertiary" href={`/admin/campaigns/${id}`}>
             View Campaign &amp; Actions
           </a>
         </div>
       </div>
+
       <ReviewablePostGallery
         campaignId={id}
         status={status || 'pending'}
