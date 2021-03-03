@@ -635,6 +635,8 @@ curl -X DELETE \
 
 Mute promotions for a user resource. The `user_id` property of the user to mute promotions for must be provided in the URL path, and refers to the user's Northstar ID. This requires either the `admin` scope, or "admin" or "staff" role with the appropriate scope.
 
+The ID of a user who has been [soft deleted](https://laravel.com/docs/6.x/eloquent#soft-deleting) may be passed to this endpoint, and will not result in a 404 Not Found response.
+
 ```
 DELETE /v2/users/:user_id/promotions
 ```
