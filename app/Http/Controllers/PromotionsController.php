@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Transformers\UserTransformer;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class PromotionsController extends Controller
@@ -36,6 +37,10 @@ class PromotionsController extends Controller
     {
         // Allow muting promotions for soft deleted users.
         $user = User::withTrashed()->find($id);
+
+        if (!$user) {
+            throw new ModelNotFoundException();
+        }
 
         $user->promotions_muted_at = now();
         $user->save();

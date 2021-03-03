@@ -56,4 +56,18 @@ class PromotionsTest extends BrowserKitTestCase
         $this->assertResponseStatus(200);
         $this->assertNotNull($user->fresh()->promotions_muted_at);
     }
+
+    /**
+     * Test status when user not found.
+     *
+     * @return void
+     */
+    public function testStatusWhenMutePromotionsForNotFoundUser()
+    {
+        $this->asAdminUser()->delete(
+            'v2/users/600201a023a8223a1e4575a3/promotions',
+        );
+
+        $this->assertResponseStatus(404);
+    }
 }
