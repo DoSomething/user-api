@@ -48,18 +48,40 @@
                 <input type="text" id="mobile" class="text-field" name="mobile" value="{{ old('mobile') ?: $user->mobile }}" />
             </div>
 
+            <div class="w-full flex justify-start">
+                <div class="form-item pr-6">
+                    <label class="option -radio">
+                        <input type="radio" name="sms_status" value="active" {{ (old('sms_status') ?: $user->sms_status) === 'active' ? 'checked' : '' }}>
+
+                        <span class="option__indicator"></span>
+
+                        <span>Weekly</span>
+                    </label>
+                </div>
+
+                <div class="form-item pr-6">
+                    <label class="option -radio">
+                        <input type="radio" name="sms_status" value="less" {{ (old('sms_status') ?: $user->sms_status) === 'less' ? 'checked' : '' }}>
+
+                        <span class="option__indicator"></span>
+
+                        <span>Monthly</span>
+                    </label>
+                </div>
+
+                <div class="form-item">
+                    <label class="option -radio">
+                        <input type="radio" name="sms_status" value="stop" {{ (old('sms_status') ?: $user->sms_status) === 'stop' ? 'checked' : '' }}>
+
+                        <span class="option__indicator"></span>
+
+                        <span>No Texts</span>
+                    </label>
+                </div>
+            </div>
+
             <div class="form-item">
-                <input type="radio" name="sms_status" value="active" {{ $user->sms_status === 'active' ? 'checked' : ''}}>
-
-                <label for="active">Weekly</label>
-
-                <input type="radio" name="sms_status" value="less" {{ $user->sms_status === 'less' ? 'checked' : ''}}>
-
-                <label for="less">Monthly</label>
-
-                <input type="radio" name="sms_status" value="stop" {{ $user->sms_status === 'stop' ? 'checked' : ''}}>
-
-                <label for="stop">No Texts</label>
+                <p class="footnote"><em>@include('partials.sms-compliance')</em></p>
             </div>
 
             <div class="form-item">
