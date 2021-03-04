@@ -129,7 +129,11 @@ class PostManager
     {
         $post = $this->repository->reviews($post, $data, $comment, $admin);
 
-        SendReviewedPostToCustomerIo::dispatch($post);
+        // sending review to customerIo is delayed to ensure users can optionally add tags to rejected or accepted posts
+        // if they're added, we want them to be sent along in the payload!
+        SendReviewedPostToCustomerIo::dispatch($post)->delay(
+            now()->addMinutes(5),
+        );
 
         // Log that a post was reviewed.
         info('post_reviewed', [

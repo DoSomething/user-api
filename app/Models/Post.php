@@ -381,6 +381,7 @@ class Post extends Model
         $action = $this->actionModel;
         $signup = optional($this->signup);
         $campaign = optional($signup->campaign);
+        $tags = $this->tagSlugs()->toArray();
 
         return array_merge(
             [
@@ -423,6 +424,7 @@ class Post extends Model
                 'created_at' => $this->created_at->timestamp,
                 'updated_at' => $this->updated_at->timestamp,
                 'deleted_at' => optional($this->deleted_at)->timestamp,
+                'tags' => implode(',', $tags ?: []),
             ],
             optional($this->group)->toCustomerIoPayload() ?: [],
         );
