@@ -1057,7 +1057,7 @@ class User extends MongoModel implements
     }
 
     /**
-     * Whether user is a SMS subscriber.
+     * Whether user is an SMS subscriber.
      *
      * @return bool
      */
