@@ -651,7 +651,7 @@ class User extends MongoModel implements
         $payload = [
             'id' => $this->id,
             'email' => $this->email,
-            'phone' => $this->mobile,
+            'phone' => $this->isSmsSubscribed() ? $this->mobile : null,
             'sms_status' => $this->sms_status,
             'sms_status_source' => data_get($this->audit, 'sms_status.source'),
             'sms_paused' => (bool) $this->sms_paused,
@@ -1057,13 +1057,15 @@ class User extends MongoModel implements
     }
 
     /**
-     * Whether user has a subscribed SMS status.
+     * Whether user is a SMS subscriber.
      *
      * @return bool
      */
     public function isSmsSubscribed()
     {
-        return isset($this->sms_status) &&
+        return
+            isset($this->mobile) &&
+            isset($this->sms_status) &&
             self::isSubscribedSmsStatus($this->sms_status);
     }
 
