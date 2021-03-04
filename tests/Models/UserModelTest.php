@@ -8,7 +8,7 @@ class UserModelTest extends TestCase
     /** @test */
     public function it_should_send_new_users_to_customer_io()
     {
-        config(['features.blink' => true]);
+        config(['features.customer_io' => true]);
 
         /** @var User $user */
         $user = factory(User::class)->create([
@@ -97,7 +97,7 @@ class UserModelTest extends TestCase
     /** @test */
     public function it_should_send_updated_users_to_customer_io()
     {
-        config(['features.blink' => true]);
+        config(['features.customer_io' => true]);
 
         /** @var User $user */
         $user = factory(User::class)->create();
@@ -187,6 +187,18 @@ class UserModelTest extends TestCase
     }
 
     /** @test */
+    public function testCustomerIoPhoneIsNotSetIfNotSubscribedToSms()
+    {
+        $user = factory(User::class)
+            ->states('sms-unsubscribed')
+            ->create();
+
+        $result = $user->toCustomerIoPayload();
+
+        $this->assertNull($result['phone']);
+    }
+
+    /** @test */
     public function testIsSmsSubscribedisTrueIfSmsStatusIsActive()
     {
         $user = factory(User::class)->create([
@@ -221,6 +233,17 @@ class UserModelTest extends TestCase
     {
         $user = factory(User::class)->create([
             'sms_status' => 'stop',
+        ]);
+
+        $this->assertFalse($user->isSmsSubscribed());
+    }
+
+    /** @test */
+    public function testIsSmsSubscribedisFalseIfMobileIsNull()
+    {
+        $user = factory(User::class)->create([
+            'mobile' => null,
+            'sms_status' => 'active',
         ]);
 
         $this->assertFalse($user->isSmsSubscribed());
