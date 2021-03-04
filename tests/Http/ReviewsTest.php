@@ -14,6 +14,8 @@ class ReviewsTest extends TestCase
      */
     public function testPostingReview()
     {
+        $this->withoutExceptionHandling();
+
         $admin = factory(User::class, 'admin')->create();
 
         $schoolId = $this->faker->school_id;
