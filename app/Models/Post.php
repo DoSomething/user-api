@@ -423,6 +423,7 @@ class Post extends Model
                 'created_at' => $this->created_at->timestamp,
                 'updated_at' => $this->updated_at->timestamp,
                 'deleted_at' => optional($this->deleted_at)->timestamp,
+                'tags' => implode(',', $this->tagSlugs() ?: []),
             ],
             optional($this->group)->toCustomerIoPayload() ?: [],
         );

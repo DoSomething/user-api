@@ -129,7 +129,10 @@ class PostManager
     {
         $post = $this->repository->reviews($post, $data, $comment, $admin);
 
-        SendReviewedPostToCustomerIo::dispatch($post);
+        // sending review to customerIo is delayed to ensure tags have been added to the post before it triggers an email to users
+        SendReviewedPostToCustomerIo::dispatch($post)->delay(
+            now()->addMinutes(5),
+        );
 
         // Log that a post was reviewed.
         info('post_reviewed', [
