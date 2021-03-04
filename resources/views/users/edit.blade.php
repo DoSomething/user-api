@@ -43,8 +43,23 @@
             </div>
 
             <div class="form-item">
-                <label for="mobile" class="field-label">Cell #</label>
+                <label for="mobile" class="field-label">Cell Number to Receive Texts (Optional)</label>
+
                 <input type="text" id="mobile" class="text-field" name="mobile" value="{{ old('mobile') ?: $user->mobile }}" />
+            </div>
+
+            <div class="form-item">
+                <input type="radio" name="sms_status" value="active" {{ $user->sms_status === 'active' ? 'checked' : ''}}>
+
+                <label for="active">Weekly</label>
+
+                <input type="radio" name="sms_status" value="less" {{ $user->sms_status === 'less' ? 'checked' : ''}}>
+
+                <label for="less">Monthly</label>
+
+                <input type="radio" name="sms_status" value="stop" {{ $user->sms_status === 'stop' ? 'checked' : ''}}>
+
+                <label for="stop">No Texts</label>
             </div>
 
             <div class="form-item">
