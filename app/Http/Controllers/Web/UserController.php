@@ -109,6 +109,7 @@ class UserController extends BaseController
         }
 
         $this->registrar->validate($request, $user, [
+            'first_name' => 'required|max:50',
             'last_name' => 'nullable|max:50',
             'birthdate' => 'nullable|required|date',
             'sms_status' => 'required_with_all:mobile',

@@ -42,47 +42,7 @@
                 <input type="email" id="email" class="text-field" name="email" value="{{ old('email') ?: $user->email }}" />
             </div>
 
-            <div class="form-item">
-                <label for="mobile" class="field-label">Cell Number to Receive Texts (Optional)</label>
-
-                <input type="text" id="mobile" class="text-field" name="mobile" value="{{ old('mobile') ?: $user->mobile }}" />
-            </div>
-
-            <div class="w-full flex justify-start">
-                <div class="form-item pr-6">
-                    <label class="option -radio">
-                        <input type="radio" name="sms_status" value="active" {{ (old('sms_status') ?: $user->sms_status) === 'active' ? 'checked' : '' }}>
-
-                        <span class="option__indicator"></span>
-
-                        <span>Weekly</span>
-                    </label>
-                </div>
-
-                <div class="form-item pr-6">
-                    <label class="option -radio">
-                        <input type="radio" name="sms_status" value="less" {{ (old('sms_status') ?: $user->sms_status) === 'less' ? 'checked' : '' }}>
-
-                        <span class="option__indicator"></span>
-
-                        <span>Monthly</span>
-                    </label>
-                </div>
-
-                <div class="form-item">
-                    <label class="option -radio">
-                        <input type="radio" name="sms_status" value="stop" {{ (old('sms_status') ?: $user->sms_status) === 'stop' ? 'checked' : '' }}>
-
-                        <span class="option__indicator"></span>
-
-                        <span>No Texts</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="form-item">
-                <p class="footnote"><em>@include('partials.sms-compliance')</em></p>
-            </div>
+            @include('partials.sms-preferences', ['allow_stop' => true, 'mobile' => old('mobile') ?: $user->mobile, 'sms_status' => old('sms_status') ?: $user->sms_status])
 
             <div class="form-item">
                 <label for="birthdate" class="field-label">Birthday</label>
