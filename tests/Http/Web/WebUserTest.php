@@ -73,6 +73,8 @@ class WebUserTest extends TestCase
             'first_name' => 'Jean-Paul',
             'last_name' => 'Beaubier-Lee',
             'birthdate' => $user->birthdate,
+            'mobile' => $user->mobile,
+            'sms_status' => $user->sms_status,
         ]);
 
         $updatedUser = User::find($user->id);

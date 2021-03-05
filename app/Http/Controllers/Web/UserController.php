@@ -97,8 +97,6 @@ class UserController extends BaseController
     {
         $user = User::findOrFail($id);
 
-        logger('User update request', $request->all());
-
         if (
             !$user->can('editProfile', [
                 auth()
@@ -113,10 +111,18 @@ class UserController extends BaseController
         $this->registrar->validate($request, $user, [
             'last_name' => 'nullable|max:50',
             'birthdate' => 'nullable|required|date',
-            'sms_status' => 'required_with:mobile',
+            'sms_status' => 'required_with_all:mobile',
         ]);
 
-        $user->fill($request->all())->save();
+        $values = $request->all();
+
+        if (!$values['mobile']) {
+            // HACK: Clear any existing SMS status values if we don't have the user's mobile number.
+            // This should likely happen in UserObserver -- but that logic is pretty complex.
+            $values['sms_status'] = null;
+        }
+
+        $user->fill($values)->save();
 
         return redirect('/');
     }
