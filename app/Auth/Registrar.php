@@ -4,6 +4,7 @@ namespace App\Auth;
 
 use App\Exceptions\NorthstarValidationException;
 use App\Models\User;
+use App\Types\BadgeType;
 use App\Types\CauseInterestType;
 use App\Types\EmailSubscriptionTopicType;
 use Closure;
@@ -91,6 +92,7 @@ class Registrar
             'voter_registration_status' =>
                 'nullable|in:uncertain,ineligible,unregistered,confirmed,registration_complete,rejected,under-18,step-1,step-2,step-3,step-4',
             'causes.*' => Rule::in(CauseInterestType::all()),
+            'badges.*' => Rule::in(BadgeType::all()),
         ];
 
         // If existing user is provided, merge indexes into the request so
