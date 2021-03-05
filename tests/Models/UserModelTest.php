@@ -6,16 +6,13 @@ use Carbon\Carbon;
 class UserModelTest extends TestCase
 {
     /** @test */
-    public function it_should_send_new_users_to_customer_io()
+    public function testToCustomerIoPayloadForNewUser()
     {
         config(['features.customer_io' => true]);
 
         /** @var User $user */
-        $user = factory(User::class)->create([
+        $user = factory(User::class)->states('email-subscribed', 'sms-subscribed')->create([
             'birthdate' => '1/2/1990',
-            'email_subscription_status' => true,
-            'email_subscription_topics' => ['news', 'community'],
-            'sms_subscription_topics' => ['general'],
             'school_id' => '12500012',
             'causes' => [
                 'animal_welfare',
@@ -64,13 +61,13 @@ class UserModelTest extends TestCase
             'created_at' => $user->created_at->timestamp,
 
             // These boolean fields are computed based on whether or not array values exist:
-            'news_email_subscription_status' => true,
-            'lifestyle_email_subscription_status' => false,
-            'community_email_subscription_status' => true,
-            'scholarship_email_subscription_status' => false,
+            'news_email_subscription_status' => in_array('news', $user->email_subscription_topics),
+            'lifestyle_email_subscription_status' => in_array('lifestyle', $user->email_subscription_topics),
+            'community_email_subscription_status' => in_array('community', $user->email_subscription_topics),
+            'scholarship_email_subscription_status' => in_array('scholarships', $user->email_subscription_topics),
             'clubs_email_subscription_status' => false,
-            'general_sms_subscription_status' => true,
-            'voting_sms_subscription_status' => false,
+            'general_sms_subscription_status' => in_array('general', $user->sms_subscription_topics),
+            'voting_sms_subscription_status' => in_array('voting', $user->sms_subscription_topics),
             'animal_welfare' => true,
             'bullying' => false,
             'education' => true,
@@ -201,9 +198,7 @@ class UserModelTest extends TestCase
     /** @test */
     public function testIsSmsSubscribedisTrueIfSmsStatusIsActive()
     {
-        $user = factory(User::class)->create([
-            'sms_status' => 'active',
-        ]);
+        $user = factory(User::class)->states('sms-subscribed')->create();
 
         $this->assertTrue($user->isSmsSubscribed());
     }
@@ -211,9 +206,7 @@ class UserModelTest extends TestCase
     /** @test */
     public function testIsSmsSubscribedisTrueIfSmsStatusIsLess()
     {
-        $user = factory(User::class)->create([
-            'sms_status' => 'less',
-        ]);
+        $user = factory(User::class)->states('sms-less')->create();
 
         $this->assertTrue($user->isSmsSubscribed());
     }
@@ -221,9 +214,7 @@ class UserModelTest extends TestCase
     /** @test */
     public function testIsSmsSubscribedisFalseIfSmsStatusIsNull()
     {
-        $user = factory(User::class)->create([
-            'sms_status' => null,
-        ]);
+        $user = factory(User::class)->create();
 
         $this->assertFalse($user->isSmsSubscribed());
     }
@@ -231,9 +222,7 @@ class UserModelTest extends TestCase
     /** @test */
     public function testIsSmsSubscribedisFalseIfSmsStatusIsStop()
     {
-        $user = factory(User::class)->create([
-            'sms_status' => 'stop',
-        ]);
+        $user = factory(User::class)->states('sms-unsubscribed')->create();
 
         $this->assertFalse($user->isSmsSubscribed());
     }
@@ -242,7 +231,6 @@ class UserModelTest extends TestCase
     public function testIsSmsSubscribedisFalseIfMobileIsNull()
     {
         $user = factory(User::class)->create([
-            'mobile' => null,
             'sms_status' => 'active',
         ]);
 
@@ -272,8 +260,9 @@ class UserModelTest extends TestCase
     /** @test */
     public function addsDefaultSmsSubscriptionTopicsIfSubscribed()
     {
-        // By default our factory creates with SMS status active or less.
-        $subscribedUser = factory(User::class)->create();
+        $subscribedUser = factory(User::class)
+            ->states('sms-subscribed')
+            ->create();
 
         $this->assertEquals($subscribedUser->sms_subscription_topics, [
             'general',
@@ -328,7 +317,11 @@ class UserModelTest extends TestCase
      */
     public function testUpdatingClubId()
     {
-        $user = factory(User::class)->create();
+        /**
+         * We'll set our user as subscribed to verify the Club ID updated event
+         * is tracked in Customer.io.
+         */
+        $user = factory(User::class)->states('email-subscribed')->create();
         $clubLeader = factory(User::class)->create();
 
         $newClubId = 2;

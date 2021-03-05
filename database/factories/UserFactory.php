@@ -72,8 +72,13 @@ $factory->state(User::class, 'sms-subscribed', function (Faker $faker) {
     return [
         'mobile' => $faker->unique()->phoneNumber,
         'sms_status' => 'active',
-        // Note: Not all users will have SMS subscription topics, it was added in March 2020.
-        'sms_subscription_topics' => ['voting'],
+    ];
+});
+
+$factory->state(User::class, 'sms-less', function (Faker $faker) {
+    return [
+        'mobile' => $faker->unique()->phoneNumber,
+        'sms_status' => 'less',
     ];
 });
 
@@ -81,7 +86,6 @@ $factory->state(User::class, 'sms-unsubscribed', function (Faker $faker) {
     return [
         'mobile' => $faker->unique()->phoneNumber,
         'sms_status' => 'stop',
-        'sms_subscription_topics' => null,
     ];
 });
 
