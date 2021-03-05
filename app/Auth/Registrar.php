@@ -75,7 +75,7 @@ class Registrar
             'club_id' => 'nullable|integer',
             'mobilecommons_status' => 'in:active,undeliverable,unknown', // for backwards compatibility.
             'sms_status' =>
-                'nullable|in:active,less,stop,undeliverable,unknown,pending',
+                'nullable|in:active,less,stop,undeliverable,unknown,pending|required_with_all:mobile',
             'sms_paused' => 'boolean',
             'sms_subscription_topics.*' => 'in:general,voting',
             'last_messaged_at' => 'date',

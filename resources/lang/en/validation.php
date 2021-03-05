@@ -91,8 +91,8 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'sms_status' => [
+            'required_with_all' => 'Please select how often you wish to receive texts.',
         ],
     ],
 
