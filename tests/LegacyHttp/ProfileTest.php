@@ -43,6 +43,7 @@ class ProfileTest extends BrowserKitTestCase
 
         $this->asUser($user, ['user', 'write'])->json('POST', 'v1/profile', [
             'mobile' => '(555) 123-4567',
+            'sms_status' => 'active',
             'language' => 'en',
             'drupal_id' => 666666,
             'role' => 'admin',

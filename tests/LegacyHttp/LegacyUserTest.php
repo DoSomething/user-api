@@ -3,7 +3,6 @@
 use App\Models\User;
 use App\Services\CustomerIo;
 use App\Services\Gambit;
-use App\Services\Rogue;
 
 class LegacyUserTest extends BrowserKitTestCase
 {
@@ -339,6 +338,7 @@ class LegacyUserTest extends BrowserKitTestCase
                 [
                     'email' => '  ', // this should not save a `email` field on these users
                     'mobile' => $this->faker->unique()->phoneNumber,
+                    'sms_status' => 'active',
                     'source' => 'phpunit',
                 ],
             );
@@ -601,6 +601,7 @@ class LegacyUserTest extends BrowserKitTestCase
             [
                 'email' => 'lalalala@dosomething.org',
                 'mobile' => '2035551238',
+                'sms_status' => 'active',
                 'source' => 'phpunit',
             ],
         );
@@ -621,7 +622,6 @@ class LegacyUserTest extends BrowserKitTestCase
     {
         factory(User::class)->create([
             'email' => 'upsert-me@dosomething.org',
-            'mobile' => null, // <-- overriding factory so we can add it via upsert
             'source' => 'database',
         ]);
 
@@ -634,6 +634,7 @@ class LegacyUserTest extends BrowserKitTestCase
                 'mobile' => '5556667777',
                 'password' => 'secret',
                 'first_name' => 'Puppet',
+                'sms_status' => 'less',
                 'source' => 'phpunit',
                 'role' => 'admin',
             ],
@@ -716,6 +717,7 @@ class LegacyUserTest extends BrowserKitTestCase
     {
         $user = User::create([
             'email' => 'upsert-me@dosomething.org',
+            'sms_status' => 'active',
             'mobile' => '5556667777',
         ]);
 
@@ -753,7 +755,11 @@ class LegacyUserTest extends BrowserKitTestCase
      */
     public function testUpdateUser()
     {
-        $user = User::create(['mobile' => '+15543694724']);
+        $user = User::create([
+            'mobile' => '+15543694724',
+            'sms_status' => 'active',
+        ]);
+        info('test 1', ['sms_status', $user->sms_status]);
 
         // Update an existing user
         $this->withLegacyApiKeyScopes(['admin', 'user', 'write'])->json(
@@ -763,6 +769,7 @@ class LegacyUserTest extends BrowserKitTestCase
                 'email' => 'NewEmail@dosomething.org',
             ],
         );
+        info('test 2');
 
         $this->assertResponseStatus(200);
         $this->seeJsonField('data.email', 'newemail@dosomething.org');
@@ -1225,6 +1232,7 @@ class LegacyUserTest extends BrowserKitTestCase
             'first_name' => 'Batman',
             'email' => 'BatMan@example.com',
             'mobile' => '1 (222) 333-5555',
+            'sms_status' => 'active',
         ]);
 
         $this->assertResponseStatus(201);
@@ -1232,6 +1240,7 @@ class LegacyUserTest extends BrowserKitTestCase
             'first_name' => 'Batman',
             'email' => 'batman@example.com',
             'mobile' => '+12223335555',
+            'sms_status' => 'active',
         ]);
     }
 
@@ -1244,7 +1253,9 @@ class LegacyUserTest extends BrowserKitTestCase
     {
         $this->asAdminUser()->json('POST', 'v1/users', [
             'mobile' => '1 (222) 333-5555',
+            // @TODO: Deprecate this test and functionality, RIP
             'mobilecommons_status' => 'active',
+            'sms_status' => 'active',
         ]);
 
         $this->assertResponseStatus(201);
