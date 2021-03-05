@@ -112,6 +112,7 @@ class UserController extends BaseController
             'first_name' => 'required|max:50',
             'last_name' => 'nullable|max:50',
             'birthdate' => 'nullable|required|date',
+            'sms_status' => 'required_with:mobile',
             'password' => PasswordRules::optionallyChangePassword(
                 $request->email,
             ), // @TODO: Split into separate form.
