@@ -1181,6 +1181,40 @@ class User extends MongoModel implements
     }
 
     /**
+     * Accessor for the `badges` attribute.
+     *
+     * @param  mixed value
+     * @return array
+     */
+    public function getBadgesAttribute($value)
+    {
+        //Ensure we always return an array value for the badges attribute.
+        return empty($value) ? [] : $value;
+    }
+
+    /**
+     * Add the given cause to the user's array of causes if it is not already there.
+     *
+     * @param string $cause
+     */
+    public function addBadge($badge)
+    {
+        // Add the new badge to the existing array of badges
+        $this->badges = array_merge($this->badges ?: [], [$badge]);
+    }
+
+    /**
+     * Mutator to ensure badges attribute is the correct data type.
+     *
+     * @param array $value
+     */
+    public function setBadgesAttribute($value)
+    {
+        // Convert badges to an array and de-dupe
+        $this->attributes['badges'] = array_values(array_unique($value));
+    }
+
+    /**
      * Mark this account for deletion.
      *
      * @return void
