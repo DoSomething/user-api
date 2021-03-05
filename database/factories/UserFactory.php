@@ -12,9 +12,8 @@ $factory->define(User::class, function (Faker $faker) {
         'first_name' => $faker->firstName,
         'last_name' => $faker->optional(0.5)->lastName,
         'email' => $faker->unique()->safeEmail,
-        'mobile' => $faker->unique()->phoneNumber,
         'mobilecommons_id' => $faker->randomNumber(5),
-        'sms_status' => $faker->randomElement(['active', 'less']),
+        //'sms_status' => $faker->randomElement(['active', 'less']),
         'email_subscription_status' => $faker->boolean,
         'facebook_id' => $faker->unique()->randomNumber(),
         'google_id' => $faker->unique()->randomNumber(),
@@ -69,16 +68,18 @@ $factory->state(User::class, 'email-unsubscribed', function () {
     ];
 });
 
-$factory->state(User::class, 'sms-subscribed', function () {
+$factory->state(User::class, 'sms-subscribed', function (Faker $faker) {
     return [
+        'mobile' => $faker->unique()->phoneNumber,
         'sms_status' => 'active',
         // Note: Not all users will have SMS subscription topics, it was added in March 2020.
         'sms_subscription_topics' => ['voting'],
     ];
 });
 
-$factory->state(User::class, 'sms-unsubscribed', function () {
+$factory->state(User::class, 'sms-unsubscribed', function (Faker $faker) {
     return [
+        'mobile' => $faker->unique()->phoneNumber,
         'sms_status' => 'stop',
         'sms_subscription_topics' => null,
     ];
