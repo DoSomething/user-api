@@ -97,6 +97,8 @@ class UserController extends BaseController
     {
         $user = User::findOrFail($id);
 
+        logger('User update request', $request->all());
+
         if (
             !$user->can('editProfile', [
                 auth()
@@ -109,23 +111,12 @@ class UserController extends BaseController
         }
 
         $this->registrar->validate($request, $user, [
-            'first_name' => 'required|max:50',
             'last_name' => 'nullable|max:50',
             'birthdate' => 'nullable|required|date',
             'sms_status' => 'required_with:mobile',
-            'password' => PasswordRules::optionallyChangePassword(
-                $request->email,
-            ), // @TODO: Split into separate form.
         ]);
 
-        // Remove fields with empty values.
-        $values = array_diff($request->all(), ['']);
-
-        $user->fill($values)->save();
-
-        if (isset($values['password'])) {
-            event(new PasswordUpdated($user, 'profile'));
-        }
+        $user->fill($request->all())->save();
 
         return redirect('/');
     }
