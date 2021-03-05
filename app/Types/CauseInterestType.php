@@ -2,16 +2,20 @@
 
 namespace App\Types;
 
-class BadgeType extends Type
+class CauseInterestType extends Type
 {
-    private const SIGNUP_BADGE = 'signup_badge';
-    private const ONE_POST_BADGE = 'one_post_Badge';
-    private const TWO_POSTS_BADGE = 'two_posts_badge';
-    private const THREE_POSTS_BADGE = 'three_post_badge';
-    private const BREAKDOWN_BADGE = 'breakdown_badge';
-    private const ONE_STAFF_FAVE_BADGE = 'one_staff_fave_badge';
-    private const TWO_STAFF_FAVES_BADGE = 'two_staff_faves_badge';
-    private const THREE_STAFF_FAVES_BADGE = 'three_staff_faves_badge';
+    private const ANIMAL_WELFARE = 'animal_welfare';
+    private const BULLYING = 'bullying';
+    private const EDUCATION = 'education';
+    private const ENVIRONMENT = 'environment';
+    private const GENDER_RIGHTS_EQUALITY = 'gender_rights_equality';
+    private const HOMELESSNESS_POVERTY = 'homelessness_poverty';
+    private const IMMIGRATION_REFUGEES = 'immigration_refugees';
+    private const LGBTQ_RIGHTS_EQUALITY = 'lgbtq_rights_equality';
+    private const MENTAL_HEALTH = 'mental_health';
+    private const PHYSICAL_HEALTH = 'physical_health';
+    private const RACIAL_JUSTICE_EQUITY = 'racial_justice_equity';
+    private const SEXUAL_HARASSMENT_ASSAULT = 'sexual_harassment_assault';
 
     /**
      * Returns labeled list of values.
@@ -21,14 +25,18 @@ class BadgeType extends Type
     public static function labels()
     {
         return [
-            'signup_badge' => 'Signup Badge',
-            'one_post_Badge' => 'One Post Badge',
-            'two_posts_badge' => 'Two Post Badge',
-            'three_post_badge' => 'Three Post Badge',
-            'breakdown_badge' => 'Breakdown Badge',
-            'one_staff_fave_badge' => 'One Staff Fave Badge',
-            'two_staff_fave_badge' => 'Two Staff Faves Badge',
-            'three_staff_faves_badge' => 'Three Staff Faves Badge',
+            'animal_welfare' => 'Animal Welfare',
+            'bullying' => 'Bullying',
+            'education' => 'Education',
+            'environment' => 'Environment',
+            'gender_rights_equality' => 'Gender Rights & Equality',
+            'homelessness_poverty' => 'Homelessness & Poverty',
+            'immigration_refugees' => 'Immigration & Refugees',
+            'lgbtq_rights_equality' => 'LGBTQ+ Rights & Equality',
+            'mental_health' => 'Mental Health',
+            'physical_health' => 'Physical Health',
+            'racial_justice_equity' => 'Racial Justice & Equity',
+            'sexual_harassment_assault' => 'Sexual Harassment & Assault',
         ];
     }
 }
