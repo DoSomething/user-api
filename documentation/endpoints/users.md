@@ -163,6 +163,8 @@ Either a mobile number or email is required.
   source: String; // Immutable. Will only be set on new records.
   source_detail: String; // Only accepted alongside a valid 'source'.
   created_at: Number; // timestamp
+  causes: Array;
+  badges: Array;
 
   // Hidden fields (optional):
   race: String;
@@ -320,6 +322,8 @@ PUT /v1/users/drupal_id/<drupal_id>
   sms_subscription_topics: Array; // Valid values: 'general', 'voting'
   email_subscription_status: Boolean; // Whether a user is subscribed to receive emails.
   email_subscription_topics: Array; // Valid values: 'news', 'scholarships', 'lifestyle', 'community', 'clubs'
+  badges: Array; // Valid values: 'signup_badge', 'one_post_Badge', 'two_posts_badge','three_posts_badge', 'breakdown_badge', 'one_staff_fave_badge', 'two_staff_faves_badge','three_staff_faves_badge'
+  causes: Array; // Valid values: 'animal_welfare', 'bullying', 'education', 'environment', 'gender_rights_equality', 'homelessness_poverty', 'immigration_refugees','lgbtq_rights_equality', 'mental_health', 'physical_health', 'racial_justice_equity', 'sexual_harassment_assault'
 
   // Hidden fields (optional):
   race: String;

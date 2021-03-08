@@ -549,6 +549,8 @@ class UserTest extends TestCase
      */
     public function testV2CreateUser()
     {
+        $this->withoutExceptionHandling();
+
         $response = $this->asAdminUser()->json('POST', 'v2/users', [
             'first_name' => 'Hercules',
             'last_name' => 'Mulligan',
@@ -560,6 +562,7 @@ class UserTest extends TestCase
         $response->assertJsonPath('data.first_name', 'Hercules');
         $response->assertJsonPath('data.last_name', 'Mulligan');
         $response->assertJsonPath('data.country', 'US'); // mutator should capitalize country codes!
+        $response->assertJsonPath('data.badges', []);
     }
 
     /**
