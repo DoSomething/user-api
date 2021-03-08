@@ -48,7 +48,7 @@
                     @include('admin.users.partials.subscriptions')
                 </div>
 
-                <div class="container -padded">
+                <div class="container profile-section">
                     <h3>Interests</h3>
 
                     <dt>Causes:</dt>
