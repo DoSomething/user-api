@@ -23,6 +23,7 @@ class UserModelTest extends TestCase
                 'lgbtq_rights_equality',
                 'sexual_harassment_assault',
             ],
+            'badges' => [],
         ]);
 
         // We should have made one "update" request to Customer.io when creating this user.
