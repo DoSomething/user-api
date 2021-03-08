@@ -1076,7 +1076,7 @@ class User extends MongoModel implements
      */
     public static function isSubscribedSmsStatus($smsStatusValue)
     {
-        return in_array($smsStatusValue, ['active', 'less']);
+        return in_array($smsStatusValue, ['active', 'less', 'pending']);
     }
 
     /**
