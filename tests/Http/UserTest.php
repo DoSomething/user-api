@@ -560,6 +560,7 @@ class UserTest extends TestCase
         $response->assertJsonPath('data.first_name', 'Hercules');
         $response->assertJsonPath('data.last_name', 'Mulligan');
         $response->assertJsonPath('data.country', 'US'); // mutator should capitalize country codes!
+        $response->assertJsonPath('data.badges', []);
     }
 
     /**

@@ -69,6 +69,9 @@ use libphonenumber\PhoneNumberFormat;
  * Causes and Interests
  * @property array $causes
  *
+ * Badges
+ * @property array $badges
+ *
  * Fields for Make a Voting Plan
  * @property string $voting_plan_status
  * @property string $voting_plan_method_of_transport
@@ -118,6 +121,7 @@ class User extends MongoModel implements
         // Profile:
         'first_name',
         'last_name',
+        'badges',
         'birthdate',
         'voter_registration_status',
         'causes',
@@ -783,6 +787,36 @@ class User extends MongoModel implements
             'voting_plan_attending_with' => strip_tags(
                 $this->voting_plan_attending_with,
             ),
+
+            //Badges:
+            'signup_badge' => in_array('signup', $this->badges) ? true : false,
+            'one_post_badge' => in_array('one-post', $this->badges)
+                ? true
+                : false,
+            'two_posts_badge' => in_array('two-posts', $this->badges)
+                ? true
+                : false,
+            'three_posts_badge' => in_array('three-posts', $this->badges)
+                ? true
+                : false,
+            'breakdown_badge' => in_array('breakdown', $this->badges)
+                ? true
+                : false,
+            'one_staff_fave_badge' => in_array('one-staff-fave', $this->badges)
+                ? true
+                : false,
+            'two_staff_faves_badge' => in_array(
+                'two-staff-faves',
+                $this->badges,
+            )
+                ? true
+                : false,
+            'three_staff_faves_badge' => in_array(
+                'three-staff-faves',
+                $this->badges,
+            )
+                ? true
+                : false,
         ];
 
         // Only include email subscription status if we have that information.
@@ -1063,8 +1097,7 @@ class User extends MongoModel implements
      */
     public function isSmsSubscribed()
     {
-        return
-            isset($this->mobile) &&
+        return isset($this->mobile) &&
             isset($this->sms_status) &&
             self::isSubscribedSmsStatus($this->sms_status);
     }
@@ -1143,6 +1176,40 @@ class User extends MongoModel implements
     }
 
     /**
+     * Accessor for the `badges` attribute.
+     *
+     * @param  mixed value
+     * @return array
+     */
+    public function getBadgesAttribute($value)
+    {
+        //Ensure we always return an array value for the badges attribute.
+        return empty($value) ? [] : $value;
+    }
+
+    /**
+     * Add the given badge to the user's array of badges if it is not already there.
+     *
+     * @param string $badge
+     */
+    public function addBadge($badge)
+    {
+        // Add the new badge to the existing array of badges
+        $this->badges = array_merge($this->badges ?: [], [$badge]);
+    }
+
+    /**
+     * Mutator to ensure badges attribute is the correct data type.
+     *
+     * @param array $value
+     */
+    public function setBadgesAttribute($value)
+    {
+        // Convert badges to an array and de-dupe
+        $this->attributes['badges'] = array_values(array_unique($value));
+    }
+
+    /**
      * Mark this account for deletion.
      *
      * @return void
@@ -1172,7 +1239,11 @@ class User extends MongoModel implements
 
         // If promotions are not muted, send our event.
         if (!isset($this->promotions_muted_at)) {
-            return CreateCustomerIoEvent::dispatch($this, $eventName, $eventData);
+            return CreateCustomerIoEvent::dispatch(
+                $this,
+                $eventName,
+                $eventData,
+            );
         }
 
         // Unmute promotions to recreate the profile in Customer.io.

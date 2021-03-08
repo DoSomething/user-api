@@ -94,6 +94,9 @@ class UserTransformer extends BaseTransformer
             // Cause Areas
             $response['causes'] = $user->causes;
 
+            //Badges
+            $response['badges'] = $user->badges;
+
             // Voter registration status
             $response['voter_registration_status'] =
                 $user->voter_registration_status;

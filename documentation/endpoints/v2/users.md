@@ -162,6 +162,8 @@ Either a mobile number or email is required.
   source: String; // Immutable. Will only be set on new records.
   source_detail: String; // Only accepted alongside a valid 'source'.
   created_at: Number; // timestamp
+  causes: Array;
+  badges: Array;
 
   // Hidden fields (optional):
   race: String;
@@ -268,6 +270,7 @@ curl -X GET \
     }
 }
 ```
+
 </details>
 
 ## Retrieve a User By Mobile
@@ -317,6 +320,7 @@ curl -X GET \
     }
 }
 ```
+
 </details>
 
 ## Retrieve a User By Email
@@ -405,6 +409,8 @@ PUT /v2/users/:user_id
   role: String; // Can only be modified by admins. Either 'user' (default), 'staff', or 'admin'.
   sms_status: String; // Either 'active', 'stop', less', 'undeliverable', 'pending', or 'unknown'
   sms_paused: Boolean; // Whether a user is in a support conversation.
+  badges: Array; // Valid values: 'signup', 'one-post', 'two-posts','three-posts', 'breakdown', 'one-staff-fave', 'two-staff-faves','three-staff-faves'
+  causes: Array; // Valid values: 'animal_welfare', 'bullying', 'education', 'environment', 'gender_rights_equality', 'homelessness_poverty', 'immigration_refugees','lgbtq_rights_equality', 'mental_health', 'physical_health', 'racial_justice_equity', 'sexual_harassment_assault'
 
   // Hidden fields (optional):
   race: String;
