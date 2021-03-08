@@ -219,6 +219,16 @@ class UserModelTest extends TestCase
     }
 
     /** @test */
+    public function testIsSmsSubscribedisTrueIfSmsStatusIsPending()
+    {
+        $user = factory(User::class)->create([
+            'sms_status' => 'pending',
+        ]);
+
+        $this->assertTrue($user->isSmsSubscribed());
+    }
+
+    /** @test */
     public function testIsSmsSubscribedisFalseIfSmsStatusIsNull()
     {
         $user = factory(User::class)->create([
