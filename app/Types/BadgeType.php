@@ -4,14 +4,14 @@ namespace App\Types;
 
 class BadgeType extends Type
 {
-    private const SIGNUP_BADGE = 'signup_badge';
-    private const ONE_POST_BADGE = 'one_post_Badge';
-    private const TWO_POSTS_BADGE = 'two_posts_badge';
-    private const THREE_POSTS_BADGE = 'three_posts_badge';
-    private const BREAKDOWN_BADGE = 'breakdown_badge';
-    private const ONE_STAFF_FAVE_BADGE = 'one_staff_fave_badge';
-    private const TWO_STAFF_FAVES_BADGE = 'two_staff_faves_badge';
-    private const THREE_STAFF_FAVES_BADGE = 'three_staff_faves_badge';
+    private const SIGNUP = 'signup';
+    private const ONE_POST = 'one-post';
+    private const TWO_POSTS = 'two-posts';
+    private const THREE_POSTS = 'three-posts';
+    private const BREAKDOWN = 'breakdown';
+    private const ONE_STAFF_FAVE = 'one-staff-fave';
+    private const TWO_STAFF_FAVES = 'two-staff-faves';
+    private const THREE_STAFF_FAVES = 'three-staff-faves';
 
     /**
      * Returns labeled list of values.
@@ -21,14 +21,14 @@ class BadgeType extends Type
     public static function labels()
     {
         return [
-            'signup_badge' => 'Signup Badge',
-            'one_post_Badge' => 'One Post Badge',
-            'two_posts_badge' => 'Two Posts Badge',
-            'three_posts_badge' => 'Three Posts Badge',
-            'breakdown_badge' => 'Breakdown Badge',
-            'one_staff_fave_badge' => 'One Staff Fave Badge',
-            'two_staff_faves_badge' => 'Two Staff Faves Badge',
-            'three_staff_faves_badge' => 'Three Staff Faves Badge',
+            'signup' => 'Signup Badge',
+            'one_post' => 'One Post Badge',
+            'two_posts' => 'Two Posts Badge',
+            'three_posts' => 'Three Posts Badge',
+            'breakdown' => 'Breakdown Badge',
+            'one_staff_fave' => 'One Staff Fave Badge',
+            'two_staff_faves' => 'Two Staff Faves Badge',
+            'three_staff_faves' => 'Three Staff Faves Badge',
         ];
     }
 }

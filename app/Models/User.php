@@ -789,35 +789,30 @@ class User extends MongoModel implements
             ),
 
             //Badges:
-            'signup_badge' => in_array('signup_badge', $this->badges)
+            'signup_badge' => in_array('signup', $this->badges) ? true : false,
+            'one_post_badge' => in_array('one-post', $this->badges)
                 ? true
                 : false,
-            'one_post_badge' => in_array('one_post_badge', $this->badges)
+            'two_posts_badge' => in_array('two-posts', $this->badges)
                 ? true
                 : false,
-            'two_posts_badge' => in_array('two_posts_badge', $this->badges)
+            'three_posts_badge' => in_array('three-posts', $this->badges)
                 ? true
                 : false,
-            'three_posts_badge' => in_array('three_posts_badge', $this->badges)
+            'breakdown_badge' => in_array('breakdown', $this->badges)
                 ? true
                 : false,
-            'breakdown_badge' => in_array('breakdown_badge', $this->badges)
-                ? true
-                : false,
-            'one_staff_fave_badge' => in_array(
-                'one_staff_fave_badge',
-                $this->badges,
-            )
+            'one_staff_fave_badge' => in_array('one-staff-fave', $this->badges)
                 ? true
                 : false,
             'two_staff_faves_badge' => in_array(
-                'two_staff_faves_badge',
+                'two-staff-faves',
                 $this->badges,
             )
                 ? true
                 : false,
             'three_staff_faves_badge' => in_array(
-                'three_staff_faves_badge',
+                'three-staff-faves',
                 $this->badges,
             )
                 ? true
