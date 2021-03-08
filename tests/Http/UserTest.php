@@ -549,6 +549,8 @@ class UserTest extends TestCase
      */
     public function testV2CreateUser()
     {
+        $this->withoutExceptionHandling();
+
         $response = $this->asAdminUser()->json('POST', 'v2/users', [
             'first_name' => 'Hercules',
             'last_name' => 'Mulligan',
