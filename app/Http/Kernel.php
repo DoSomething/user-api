@@ -39,7 +39,7 @@ class Kernel extends HttpKernel
         'api' => [
             \App\Http\Middleware\ParseOAuthHeader::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \Barryvdh\Cors\HandleCors::class,
+            \App\Http\Middleware\HandleCors::class,
             'guard:api',
         ],
     ];
