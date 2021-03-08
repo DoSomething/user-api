@@ -21,14 +21,14 @@ class BadgeType extends Type
     public static function labels()
     {
         return [
-            'signup' => 'Signup Badge',
-            'one_post' => 'One Post Badge',
-            'two_posts' => 'Two Posts Badge',
-            'three_posts' => 'Three Posts Badge',
-            'breakdown' => 'Breakdown Badge',
-            'one_staff_fave' => 'One Staff Fave Badge',
-            'two_staff_faves' => 'Two Staff Faves Badge',
-            'three_staff_faves' => 'Three Staff Faves Badge',
+            self::SIGNUP => 'Signup Badge',
+            self::ONE_POST => 'One Post Badge',
+            self::TWO_POSTS => 'Two Posts Badge',
+            self::THREE_POSTS => 'Three Posts Badge',
+            self::BREAKDOWN => 'Breakdown Badge',
+            self::ONE_STAFF_FAVE => 'One Staff Fave Badge',
+            self::TWO_STAFF_FAVES => 'Two Staff Faves Badge',
+            self::THREE_STAFF_FAVES => 'Three Staff Faves Badge',
         ];
     }
 }
