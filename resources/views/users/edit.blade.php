@@ -42,10 +42,7 @@
                 <input type="email" id="email" class="text-field" name="email" value="{{ old('email') ?: $user->email }}" />
             </div>
 
-            <div class="form-item">
-                <label for="mobile" class="field-label">Cell #</label>
-                <input type="text" id="mobile" class="text-field" name="mobile" value="{{ old('mobile') ?: $user->mobile }}" />
-            </div>
+            @include('partials.sms-preferences', ['allow_stop' => true, 'mobile' => old('mobile') ?: $user->mobile, 'sms_status' => old('sms_status') ?: $user->sms_status])
 
             <div class="form-item">
                 <label for="birthdate" class="field-label">Birthday</label>

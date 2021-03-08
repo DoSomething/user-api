@@ -112,19 +112,18 @@ class UserController extends BaseController
             'first_name' => 'required|max:50',
             'last_name' => 'nullable|max:50',
             'birthdate' => 'nullable|required|date',
-            'password' => PasswordRules::optionallyChangePassword(
-                $request->email,
-            ), // @TODO: Split into separate form.
+            'sms_status' => 'required_with_all:mobile',
         ]);
 
-        // Remove fields with empty values.
-        $values = array_diff($request->all(), ['']);
+        $values = $request->all();
+
+        if (!$values['mobile']) {
+            // HACK: Clear any existing SMS status values if we don't have the user's mobile number.
+            // This should likely happen in UserObserver -- but that logic is pretty complex.
+            $values['sms_status'] = null;
+        }
 
         $user->fill($values)->save();
-
-        if (isset($values['password'])) {
-            event(new PasswordUpdated($user, 'profile'));
-        }
 
         return redirect('/');
     }
