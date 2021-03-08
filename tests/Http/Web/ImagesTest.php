@@ -37,13 +37,8 @@ class ImagesTest extends TestCase
             ->states('photo', 'accepted')
             ->create();
 
-        $response = $this->getJson('images/' . $post->hash, [
-            'Origin' => 'www.dosomething.org',
-        ]);
+        $response = $this->getJson('images/' . $post->hash);
 
-        $response->assertHeader(
-            'Access-Control-Allow-Origin',
-            'www.dosomething.org',
-        );
+        $response->assertHeader('Access-Control-Allow-Origin', '*');
     }
 }
