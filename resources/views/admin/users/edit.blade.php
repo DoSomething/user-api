@@ -156,6 +156,13 @@
                     </div>
 
                     <div class="form-item -padded">
+                        <label for="badges" class="field-label">Badges</label>
+                        @foreach ( $badges as $value => $label )
+                            @include('forms.checkbox', ['name' => 'badges', 'index' => $value, 'value' => $value , 'label' =>  $label])
+                        @endforeach
+                    </div>
+
+                    <div class="form-item -padded">
                         <label for="feature_flags" class="field-label">Feature Flags</label>
                         {{-- NOTE: We use custom checkbox markup here to deal with this object of true/false values: --}}
                         @foreach(['badges', 'refer-friends', 'refer-friends-scholarship'] as $flag)

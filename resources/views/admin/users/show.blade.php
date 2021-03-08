@@ -54,6 +54,13 @@
                     <dt>Causes:</dt>
                     <dd>{{ $user->causes ? implode(",  ",$user->causes) : '—'}}</dd>
                 </div>
+
+                 <div class="container -padded">
+                    <h3>Levels</h3>
+
+                    <dt>Badges:</dt>
+                    <dd>{{ $user->badges ? implode(",  ",$user->badges) : '—'}}</dd>
+                </div>
             </div>
 
             <div class="container__block -half">
