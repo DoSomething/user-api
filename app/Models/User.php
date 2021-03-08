@@ -1188,9 +1188,9 @@ class User extends MongoModel implements
     }
 
     /**
-     * Add the given cause to the user's array of causes if it is not already there.
+     * Add the given badge to the user's array of badges if it is not already there.
      *
-     * @param string $cause
+     * @param string $badge
      */
     public function addBadge($badge)
     {
