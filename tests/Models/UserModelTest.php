@@ -23,6 +23,7 @@ class UserModelTest extends TestCase
                 'lgbtq_rights_equality',
                 'sexual_harassment_assault',
             ],
+            'badges' => [],
         ]);
 
         // We should have made one "update" request to Customer.io when creating this user.
@@ -89,6 +90,15 @@ class UserModelTest extends TestCase
             'voting_plan_method_of_transport' => null,
             'voting_plan_time_of_day' => null,
             'voting_plan_attending_with' => null,
+
+            'signup_badge' => false,
+            'one_post_Badge' => false,
+            'two_posts_badge' => false,
+            'three_posts_badge' => false,
+            'breakdown_badge' => false,
+            'one_staff_fave_badge' => false,
+            'two_staff_faves_badge' => false,
+            'three_staff_faves_badge' => false,
         ];
 
         $this->assertEquals($expected, $user->toCustomerIoPayload());
@@ -423,9 +433,11 @@ class UserModelTest extends TestCase
     public function testMutingAndUnmutingPromotionsViaEmailStatusChange()
     {
         // Creating subscribed user should trigger a Customer.io update.
-        $user = factory(User::class)->states('email-subscribed')->create([
-            'sms_status' => null,
-        ]);
+        $user = factory(User::class)
+            ->states('email-subscribed')
+            ->create([
+                'sms_status' => null,
+            ]);
 
         // Unsubscribing from all platforms should delete Customer.io profile.
         $user->email_subscription_status = false;
@@ -448,9 +460,11 @@ class UserModelTest extends TestCase
     public function testMutingAndUnmutingPromotionsViaSmsStatusChange()
     {
         // Creating subscribed user should trigger a Customer.io update.
-        $user = factory(User::class)->states('sms-subscribed')->create([
-            'email_subscription_status' => null,
-        ]);
+        $user = factory(User::class)
+            ->states('sms-subscribed')
+            ->create([
+                'email_subscription_status' => null,
+            ]);
 
         // Unsubscribing from all platforms should delete Customer.io profile.
         $user->sms_status = 'stop';
@@ -473,9 +487,11 @@ class UserModelTest extends TestCase
     public function testUnmutingPromotionsViaEmailTopicsChange()
     {
         // Creating subscribed user should trigger a Customer.io update.
-        $user = factory(User::class)->states('email-subscribed')->create([
-            'sms_status' => null,
-        ]);
+        $user = factory(User::class)
+            ->states('email-subscribed')
+            ->create([
+                'sms_status' => null,
+            ]);
 
         // Manually mute promotions for the user.
         $user->promotions_muted_at = Carbon::now();
@@ -498,9 +514,11 @@ class UserModelTest extends TestCase
     public function testTrackCustomerIoEventForUnsubscribedUser()
     {
         // Creating subscribed user should trigger a Customer.io update.
-        $user = factory(User::class)->states('email-unsubscribed')->create([
-            'sms_status' => null,
-        ]);
+        $user = factory(User::class)
+            ->states('email-unsubscribed')
+            ->create([
+                'sms_status' => null,
+            ]);
 
         $user->trackCustomerIoEvent('test_event', ['foo' => 'bar']);
 
@@ -512,9 +530,11 @@ class UserModelTest extends TestCase
     public function testTrackCustomerIoEventForSubscribedUser()
     {
         // Creating subscribed user should trigger a Customer.io update.
-        $user = factory(User::class)->states('email-subscribed')->create([
-            'sms_status' => null,
-        ]);
+        $user = factory(User::class)
+            ->states('email-subscribed')
+            ->create([
+                'sms_status' => null,
+            ]);
 
         $user->trackCustomerIoEvent('test_event', ['foo' => 'bar']);
 
@@ -525,9 +545,11 @@ class UserModelTest extends TestCase
     /** @test */
     public function testTrackCustomerIoEventForMutedPromotionsSubscribedUser()
     {
-        $user = factory(User::class)->states('email-subscribed')->create([
-            'sms_status' => null,
-        ]);
+        $user = factory(User::class)
+            ->states('email-subscribed')
+            ->create([
+                'sms_status' => null,
+            ]);
         //  Manually mute promotions.
         $user->email_subscription_status = Carbon::now();
         $user->save();
