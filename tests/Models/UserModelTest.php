@@ -23,7 +23,6 @@ class UserModelTest extends TestCase
                 'lgbtq_rights_equality',
                 'sexual_harassment_assault',
             ],
-            'badges' => [],
         ]);
 
         // We should have made one "update" request to Customer.io when creating this user.
@@ -92,7 +91,7 @@ class UserModelTest extends TestCase
             'voting_plan_attending_with' => null,
 
             'signup_badge' => false,
-            'one_post_Badge' => false,
+            'one_post_badge' => false,
             'two_posts_badge' => false,
             'three_posts_badge' => false,
             'breakdown_badge' => false,
