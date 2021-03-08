@@ -42,6 +42,7 @@
     "league/oauth2-server": "~8.1.1",
     "mmucklo/email-parse": "^2.0",
     "mongodb/mongodb": "~1.4.0",
+    "phpseclib/phpseclib": "^2.0.30",
     "seatgeek/sixpack-php": "^2.1",
     "softonic/graphql-client": "^1.2",
     "sokil/php-isocodes": "^3.0",
