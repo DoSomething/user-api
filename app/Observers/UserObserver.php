@@ -49,13 +49,17 @@ class UserObserver
      */
     public function created(User $user)
     {
-        // Send payload to Blink for Customer.io profile.
+        // Send metrics to StatHat.
+        Log::info('user_created', ['source' => $user->source]);
+
+        // If user is not subscribed to any platform -- do not create a Customer.io profile.
+        if (!($user->email_subscription_status || $user->isSmsSubscribed())) {
+            return;
+        }
+
         $queueLevel = config('queue.jobs.users');
         $queue = config('queue.names.' . $queueLevel);
         UpsertCustomerIoProfile::dispatch($user)->onQueue($queue);
-
-        // Send metrics to StatHat.
-        Log::info('user_created', ['source' => $user->source]);
     }
 
     /**

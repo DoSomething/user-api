@@ -15,7 +15,7 @@ class RemoveCustomerIoMobile extends Command
      *
      * @var string
      */
-    protected $signature = 'northstar:remove-cio-mobile';
+    protected $signature = 'northstar:cio-remove-mobile';
 
     /**
      * The console command description.
