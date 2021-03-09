@@ -48,11 +48,18 @@
                     @include('admin.users.partials.subscriptions')
                 </div>
 
-                <div class="container -padded">
+                <div class="container profile-section">
                     <h3>Interests</h3>
 
                     <dt>Causes:</dt>
                     <dd>{{ $user->causes ? implode(",  ",$user->causes) : '—'}}</dd>
+                </div>
+
+                 <div class="container -padded">
+                    <h3>Levels</h3>
+
+                    <dt>Badges:</dt>
+                    <dd>{{ $user->badges ? implode(",  ",$user->badges) : '—'}}</dd>
                 </div>
             </div>
 

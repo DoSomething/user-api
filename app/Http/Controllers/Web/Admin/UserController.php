@@ -6,6 +6,7 @@ use App\Auth\Registrar;
 use App\Auth\Role;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Types\BadgeType;
 use App\Types\CauseInterestType;
 use App\Types\PasswordResetType;
 use Carbon\Carbon;
@@ -74,6 +75,7 @@ class UserController extends Controller
             'user' => $user,
             'title' => $user->display_name,
             'causes' => CauseInterestType::labels(),
+            'badges' => BadgeType::labels(),
         ]);
     }
 
@@ -101,6 +103,10 @@ class UserController extends Controller
 
         $input['causes'] = !empty($input['causes'])
             ? array_keys($input['causes'])
+            : [];
+
+        $input['badges'] = !empty($input['badges'])
+            ? array_keys($input['badges'])
             : [];
 
         $input['feature_flags'] = !empty($input['feature_flags'])
