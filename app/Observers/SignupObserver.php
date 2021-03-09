@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Models\User;
 use App\Models\Signup;
 use App\Services\GraphQL;
 
@@ -32,6 +33,7 @@ class SignupObserver
      * Handle the Signup "creating" event.
      *
      * @param  \App\Models\Signup  $signup
+     *
      * @return void
      */
     public function creating(Signup $signup)
@@ -41,6 +43,25 @@ class SignupObserver
 
             if ($club_id = data_get($data, 'user.clubId')) {
                 $signup->club_id = $club_id;
+            }
+        }
+    }
+
+    /**
+     * Handle the Signup "created" event.
+     *
+     * @param  \App\Models\Signup $signup
+     *
+     * @return void
+     */
+    public function created(Signup $signup)
+    {
+        $userId = $signup->northstar_id;
+        $user = User::findOrFail($userId);
+        if ($user) {
+            $userSignups = $user->signups();
+            if (count($userSignups) === 1) {
+                $user->addBadge('signup');
             }
         }
     }
