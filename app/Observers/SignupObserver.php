@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Models\User;
 use App\Models\Signup;
 use App\Models\User;
 use App\Services\GraphQL;
