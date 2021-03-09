@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\DeleteCustomerIoProfile;
 use App\Jobs\UpsertCustomerIoProfile;
 use App\Models\User;
 use Illuminate\Console\Command;
@@ -40,14 +39,17 @@ class RemoveCustomerIoMobile extends Command
 
         $query->chunkById(200, function (Collection $users) use ($progress) {
             $users->each(function (User $user) use ($progress) {
-                // If the user is subscribed to email:
-                $job = $user->email_subscription_status ?
-                    // Execute an update to remove mobile from their profile.
-                    new UpsertCustomerIoProfile($user) :
-                    // Otherwise delete the profile entirely.
-                    new DeleteCustomerIoProfile($user);
+                // If the user is not subscribed to email:
+                if (!$user->email_subscription_status) {
+                    // Delete their profile entirely by muting promotions.
+                    $user->promotions_muted_at = now();
+                    $user->save();
+                } else {
+                    // Otherwise update their profile to remove the mobile number.
+                    dispatch(new UpsertCustomerIoProfile($user))
+                        ->onQueue(config('queue.names.low'));
+                }
 
-                dispatch($job)->onQueue(config('queue.names.low'));
                 $progress->advance();
             });
         });
