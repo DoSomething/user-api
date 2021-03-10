@@ -19,12 +19,11 @@ class RemoveCustomerIoMobileTest extends BrowserKitTestCase
         $this->customerIoMock->shouldHaveReceived('deleteCustomer')->times(7);
 
         foreach ($removeMobiles as $user) {
-            $this->assertNull($user->promotions_muted_at);
+            $this->assertNull($user->fresh()->promotions_muted_at);
         }
 
         foreach ($deleteProfiles as $user) {
-            // TODO: Why is this failling?
-          //$this->assertNotNull($user->promotions_muted_at);
+            $this->assertNotNull($user->fresh()->promotions_muted_at);
         }
     }
 }
