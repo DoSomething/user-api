@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddIndexToPromotionsMutedAtAndSmsStatusFields extends Migration
+class AddIndexToMobilePromotionsMutedAtSmsStatusFields extends Migration
 {
     /**
      * Run the migrations.
@@ -17,7 +17,7 @@ class AddIndexToPromotionsMutedAtAndSmsStatusFields extends Migration
             Blueprint $collection
         ) {
             $collection->index(
-                ['promotions_muted_at', 'sms_status'],
+                ['mobile', 'promotions_muted_at', 'sms_status'],
                 null,
                 null,
                 ['sparse' => true],
@@ -35,7 +35,7 @@ class AddIndexToPromotionsMutedAtAndSmsStatusFields extends Migration
         Schema::connection('mongodb')->table('users', function (
             Blueprint $collection
         ) {
-            $collection->dropIndex('promotions_muted_at_1_sms_status_1');
+            $collection->dropIndex('mobile_1_promotions_muted_at_1_sms_status_1');
         });
     }
 }

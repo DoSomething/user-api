@@ -9,20 +9,26 @@ class RemoveCustomerIoMobileTest extends BrowserKitTestCase
     public function testExpectedApiCalls()
     {
         factory(User::class, 5)->states('email-subscribed', 'sms-subscribed')->create();
-        $removeMobiles = factory(User::class, 3)->states('email-subscribed', 'sms-unsubscribed')->create();
-        $deleteProfiles = factory(User::class, 7)->states('email-unsubscribed', 'sms-unsubscribed')->create();
+
+        $nullSmsStatusUsers = factory(User::class, 3)->states('email-unsubscribed')->create(['sms_status' => null]);
+        $unsubscribedToSmsUsers = factory(User::class, 3)->states('email-subscribed', 'sms-unsubscribed')->create();
+        $unsubscribedToAllUsers = factory(User::class, 7)->states('email-unsubscribed', 'sms-unsubscribed')->create();
 
         Artisan::call('northstar:cio-remove-mobile');
 
         // Called 8 times for creating a subscribed user, another 3 when console command executed.
         $this->customerIoMock->shouldHaveReceived('updateCustomer')->times(11);
-        $this->customerIoMock->shouldHaveReceived('deleteCustomer')->times(7);
+        $this->customerIoMock->shouldHaveReceived('deleteCustomer')->times(10);
 
-        foreach ($removeMobiles as $user) {
+        foreach ($nullSmsStatusUsers as $user) {
+            $this->assertNotNull($user->fresh()->promotions_muted_at);
+        }
+
+        foreach ($unsubscribedToSmsUsers as $user) {
             $this->assertNull($user->fresh()->promotions_muted_at);
         }
 
-        foreach ($deleteProfiles as $user) {
+        foreach ($unsubscribedToAllUsers as $user) {
             $this->assertNotNull($user->fresh()->promotions_muted_at);
         }
     }

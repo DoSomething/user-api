@@ -30,10 +30,9 @@ class RemoveCustomerIoMobile extends Command
      */
     public function handle()
     {
-        // Find all SMS unsubscribed users where promotions have not been muted.
-        $query = (new User())->newQuery()
-            ->whereNull('promotions_muted_at')
-            ->whereIn('sms_status', ['stop', 'undeliverable']);
+        $query = User::whereNull('promotions_muted_at')
+            ->whereNotNull('mobile')
+            ->whereIn('sms_status', [null, 'stop', 'undeliverable']);
 
         $progress = $this->output->createProgressBar($query->count());
 
