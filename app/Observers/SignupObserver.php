@@ -60,8 +60,9 @@ class SignupObserver
         $user = User::findOrFail($userId);
         if ($user) {
             $userSignups = $user->signups();
-            if (count($userSignups) === 1) {
+            if ($userSignups->count() === 1) {
                 $user->addBadge('signup');
+                $user->save();
             }
         }
     }
