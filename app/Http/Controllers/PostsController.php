@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Traits\FiltersActivityRequests;
 use App\Http\Controllers\Traits\FiltersRequests;
 use App\Http\Requests\PostRequest;
 use App\Http\Transformers\PostTransformer;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Gate;
 
 class PostsController extends ActivityApiController
 {
-    use FiltersRequests;
+    use FiltersActivityRequests;
 
     /**
      * The post manager instance.
