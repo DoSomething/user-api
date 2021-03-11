@@ -41,8 +41,7 @@ class RemoveCustomerIoMobile extends Command
                 // If the user is not subscribed to email:
                 if (!$user->email_subscription_status) {
                     // Delete their profile entirely by muting promotions.
-                    $user->promotions_muted_at = now();
-                    $user->save();
+                    $user->mutePromotions();
                 } else {
                     // Otherwise update their profile to remove the mobile number.
                     dispatch(new UpsertCustomerIoProfile($user))

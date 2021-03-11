@@ -30,8 +30,7 @@ class PromotionsController extends Controller
 
         logger('Muting promotions', ['user' => $user->id]);
 
-        $user->promotions_muted_at = Carbon::now();
-        $user->save();
+        $user->mutePromotions();
 
         return redirect()
             ->route('admin.users.show', $user->id)
