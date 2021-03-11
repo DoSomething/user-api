@@ -849,6 +849,33 @@ class PostTest extends TestCase
      *
      * @test
      */
+    public function testFilteringPostsIndexByUserId()
+    {
+        $user = factory(User::class)->create();
+
+        factory(Post::class, 2)
+            ->states('accepted')
+            ->create([
+                'northstar_id' => $user->id,
+            ]);
+
+        factory(Post::class, 3)
+            ->states('accepted')
+            ->create();
+
+        $response = $this->getJson(
+            "api/v3/posts?filter%5Bnorthstar_id%5D={$user->id}",
+        );
+
+        $response->assertOk();
+        $response->assertJsonCount(2, 'data');
+    }
+
+    /**
+     * Guests shouldn't see user IDs on anonymous actions.
+     *
+     * @test
+     */
     public function testPostsIndexWithAnonymousPostsAsGuest()
     {
         factory(Post::class)
