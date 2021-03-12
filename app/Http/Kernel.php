@@ -18,6 +18,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\LogMemoryUsage::class,
         \App\Http\Middleware\TrimStrings::class,
         \App\Http\Middleware\TrustProxies::class,
+        \Fruitcake\Cors\HandleCors::class,
     ];
 
     /**
@@ -39,7 +40,6 @@ class Kernel extends HttpKernel
         'api' => [
             \App\Http\Middleware\ParseOAuthHeader::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\HandleCors::class,
             'guard:api',
         ],
     ];
