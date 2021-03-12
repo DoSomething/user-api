@@ -1215,4 +1215,24 @@ class UserTest extends TestCase
             'sms_subscription_topics' => null,
         ]);
     }
+
+    /**
+     * Test that newsletter badge is added is true after adding news as a topic on a new user.
+     *
+     * @return void
+     */
+    public function testNewsletterBadgeWhenNewUserAddsNewsSubscription()
+    {
+        $newsUser = factory(User::class)
+            ->states('email-subscribed-news')
+            ->create();
+
+        $this->assertMongoDatabaseHas('users', [
+            '_id' => $newsUser->id,
+            'email_subscription_status' => true,
+        ]);
+
+        $user = $newsUser->fresh();
+        $this->assertEquals(['breakdown'], $user->badges);
+    }
 }

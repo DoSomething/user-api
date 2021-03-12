@@ -77,14 +77,16 @@ class UserObserver
         ];
         $isSubscribing = [
             // Users subscribe to email by selecting topics from their Subscriptions profile page.
-            'email' => isset($changed['email_subscription_topics']) &&
-            count($changed['email_subscription_topics']),
+            'email' =>
+                isset($changed['email_subscription_topics']) &&
+                count($changed['email_subscription_topics']),
             // Initialize as false for now (will get set later if subscribing to SMS).
             'sms' => false,
         ];
         $isUnsubscribing = [
-            'email' => isset($changed['email_subscription_status']) &&
-            !$changed['email_subscription_status'],
+            'email' =>
+                isset($changed['email_subscription_status']) &&
+                !$changed['email_subscription_status'],
             // Initialize as false for now (will get set later if unsubscribing to SMS).
             'sms' => false,
         ];
@@ -99,7 +101,8 @@ class UserObserver
              * Note: We intentionally do not auto-unsubscribe if we're updating topics with an empty array.
              * @see https://www.pivotaltracker.com/n/projects/2401401/stories/170599403/comments/211127349.
              */
-            $isSubscribing['email'] && !$user->email_subscription_status
+            $isSubscribing['email'] &&
+            !$user->email_subscription_status
         ) {
             $user->email_subscription_status = true;
         }
@@ -119,7 +122,10 @@ class UserObserver
                 $isSubscribing['sms'] = true;
 
                 // Set default SMS topics if user has none.
-                if (!isset($changed['sms_subscription_topics']) && !$user->hasSmsSubscriptionTopics()) {
+                if (
+                    !isset($changed['sms_subscription_topics']) &&
+                    !$user->hasSmsSubscriptionTopics()
+                ) {
                     $user->addDefaultSmsSubscriptionTopics();
                 }
             }
@@ -155,7 +161,10 @@ class UserObserver
 
             // We'll only dispatch the event if the club is valid and we have the expected event payload.
             if ($customerIoPayload) {
-                $user->trackCustomerIoEvent('club_id_updated', $customerIoPayload);
+                $user->trackCustomerIoEvent(
+                    'club_id_updated',
+                    $customerIoPayload,
+                );
             }
         }
 
@@ -208,7 +217,9 @@ class UserObserver
             UpsertCustomerIoProfile::withChain([
                 // TODO: Refactor this to be a new TrackPromotionsResubscribeCustomerIoEvent job.
                 new CreateCustomerIoEvent($user, 'promotions_resubscribe', []),
-            ])->dispatch($user)->onQueue($queue);
+            ])
+                ->dispatch($user)
+                ->onQueue($queue);
 
             return;
         }

@@ -63,6 +63,13 @@ $factory->state(User::class, 'email-subscribed', function (Faker $faker) {
     ];
 });
 
+$factory->state(User::class, 'email-subscribed-news', function (Faker $faker) {
+    return [
+        'email_subscription_status' => true,
+        'email_subscription_topics' => ['news'],
+    ];
+});
+
 $factory->state(User::class, 'email-unsubscribed', function () {
     return [
         'email_subscription_status' => false,
