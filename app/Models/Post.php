@@ -477,6 +477,31 @@ class Post extends Model
             }
         }
 
+        $userId = $this->northstar_id;
+        $user = User::findOrFail($userId);
+        if ($user) {
+            $userPosts = $user->posts;
+            foreach ($userPosts as $post) {
+                if ($post->tagSlugs()->contains('good-submission')) {
+                    if (!in_array('one_staff_fave', $user->badges)) {
+                        $user->addBadge('one_staff_fave');
+                    } elseif (
+                        !in_array('two_staff_faves', $user->badges) &&
+                        in_array('one_staff_fave', $user->badges)
+                    ) {
+                        $user->addBadge('two_staff_faves');
+                    } elseif (
+                        !in_array('three_staff_faves', $user->badges) &&
+                        in_array('three_posts', $user->badges) &&
+                        in_array('two_staff_faves', $user->badges)
+                    ) {
+                        $user->addBadge('three_staff_faves');
+                    }
+                }
+            }
+            $user->save();
+        }
+
         return $this;
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Post;
+use App\Models\User;
 
 class TagsTest extends TestCase
 {
@@ -159,5 +160,311 @@ class TagsTest extends TestCase
         $postsQuery = Post::withoutTag('get-outta-here')->get();
 
         $this->assertEquals(19, $postsQuery->count());
+    }
+
+    /**
+     * Test that a POST request to /tags with a good submission adds the staff fave badges.
+     *
+     * POST /v3/posts/:post_id/tag
+     * @return void
+     */
+    public function testGoodSubmissionEarnsABadge()
+    {
+        $post = factory(Post::class)->create();
+        $userId = $post->northstar_id;
+        $user = User::findOrFail($userId);
+
+        $response = $this->asAdminUser()->postJson(
+            'api/v3/posts/' . $post->id . '/tags',
+            [
+                'tag_name' => 'Good Submission',
+            ],
+        );
+
+        $response->assertOk();
+
+        // Make sure that the post's tags are updated.
+        $this->assertContains('Good Submission', $post->tagNames());
+
+        $user = $user->fresh();
+        $this->assertEquals(
+            ['signup', 'one_post', 'one_staff_fave'],
+            $user->badges,
+        );
+    }
+
+    /**
+     * Test that two POST request to /tags with a good submission adds two staff fave badges.
+     *
+     * POST /v3/posts/:post_id/tag
+     * @return void
+     */
+    public function testTwoGoodSubmissionsEarnsTwoBadges()
+    {
+        $postOne = factory(Post::class)->create();
+        $userId = $postOne->northstar_id;
+        $user = User::findOrFail($userId);
+
+        $response = $this->asAdminUser()->postJson(
+            'api/v3/posts/' . $postOne->id . '/tags',
+            [
+                'tag_name' => 'Good Submission',
+            ],
+        );
+
+        $response->assertOk();
+
+        // Make sure that the post's tags are updated.
+        $this->assertContains('Good Submission', $postOne->tagNames());
+
+        $user = $user->fresh();
+        $this->assertEquals(
+            ['signup', 'one_post', 'one_staff_fave'],
+            $user->badges,
+        );
+
+        $postTwo = factory(Post::class)->create([
+            'northstar_id' => $postOne->northstar_id,
+        ]);
+        // $postTwo->northstar_id = $postOne->northstar_id;
+
+        $response = $this->asAdminUser()->postJson(
+            'api/v3/posts/' . $postTwo->id . '/tags',
+            [
+                'tag_name' => 'Good Submission',
+            ],
+        );
+
+        $response->assertOk();
+
+        // Make sure that the post's tags are updated.
+        $this->assertContains('Good Submission', $postTwo->tagNames());
+
+        $user = $user->fresh();
+        $this->assertEquals(
+            [
+                'signup',
+                'one_post',
+                'one_staff_fave',
+                'two_posts',
+                'two_staff_faves',
+            ],
+            $user->badges,
+        );
+    }
+
+    /**
+     * Test that three POST request to /tags with a good submission adds three staff fave badges.
+     *
+     * POST /v3/posts/:post_id/tag
+     * @return void
+     */
+    public function testThreeGoodSubmissionsEarnsThreeBadges()
+    {
+        // Make first Post!
+        $postOne = factory(Post::class)->create();
+        $userId = $postOne->northstar_id;
+        $user = User::findOrFail($userId);
+
+        $response = $this->asAdminUser()->postJson(
+            'api/v3/posts/' . $postOne->id . '/tags',
+            [
+                'tag_name' => 'Good Submission',
+            ],
+        );
+
+        $response->assertOk();
+
+        // Make sure that the post's tags are updated.
+        $this->assertContains('Good Submission', $postOne->tagNames());
+
+        $user = $user->fresh();
+        $this->assertEquals(
+            ['signup', 'one_post', 'one_staff_fave'],
+            $user->badges,
+        );
+
+        // Make second Post!
+        $postTwo = factory(Post::class)->create([
+            'northstar_id' => $postOne->northstar_id,
+        ]);
+
+        $response = $this->asAdminUser()->postJson(
+            'api/v3/posts/' . $postTwo->id . '/tags',
+            [
+                'tag_name' => 'Good Submission',
+            ],
+        );
+
+        $response->assertOk();
+
+        // Make sure that the post's tags are updated.
+        $this->assertContains('Good Submission', $postTwo->tagNames());
+
+        $user = $user->fresh();
+        $this->assertEquals(
+            [
+                'signup',
+                'one_post',
+                'one_staff_fave',
+                'two_posts',
+                'two_staff_faves',
+            ],
+            $user->badges,
+        );
+
+        // Make third Post!
+        $postThree = factory(Post::class)->create([
+            'northstar_id' => $postOne->northstar_id,
+        ]);
+
+        $response = $this->asAdminUser()->postJson(
+            'api/v3/posts/' . $postThree->id . '/tags',
+            [
+                'tag_name' => 'Good Submission',
+            ],
+        );
+
+        $response->assertOk();
+
+        // Make sure that the post's tags are updated.
+        $this->assertContains('Good Submission', $postThree->tagNames());
+
+        $user = $user->fresh();
+        $this->assertEquals(
+            [
+                'signup',
+                'one_post',
+                'one_staff_fave',
+                'two_posts',
+                'two_staff_faves',
+                'three_posts',
+                'three_staff_faves',
+            ],
+            $user->badges,
+        );
+    }
+
+    /**
+     * Test that four POST request to /tags with a good submission adds three staff fave badges.
+     *
+     * POST /v3/posts/:post_id/tag
+     * @return void
+     */
+    public function testFourGoodSubmissionsEarnsThreeBadges()
+    {
+        // Make first Post!
+        $postOne = factory(Post::class)->create();
+        $userId = $postOne->northstar_id;
+        $user = User::findOrFail($userId);
+
+        $response = $this->asAdminUser()->postJson(
+            'api/v3/posts/' . $postOne->id . '/tags',
+            [
+                'tag_name' => 'Good Submission',
+            ],
+        );
+
+        $response->assertOk();
+
+        // Make sure that the post's tags are updated.
+        $this->assertContains('Good Submission', $postOne->tagNames());
+
+        $user = $user->fresh();
+        $this->assertEquals(
+            ['signup', 'one_post', 'one_staff_fave'],
+            $user->badges,
+        );
+
+        // Make second Post!
+        $postTwo = factory(Post::class)->create([
+            'northstar_id' => $postOne->northstar_id,
+        ]);
+
+        $response = $this->asAdminUser()->postJson(
+            'api/v3/posts/' . $postTwo->id . '/tags',
+            [
+                'tag_name' => 'Good Submission',
+            ],
+        );
+
+        $response->assertOk();
+
+        // Make sure that the post's tags are updated.
+        $this->assertContains('Good Submission', $postTwo->tagNames());
+
+        $user = $user->fresh();
+        $this->assertEquals(
+            [
+                'signup',
+                'one_post',
+                'one_staff_fave',
+                'two_posts',
+                'two_staff_faves',
+            ],
+            $user->badges,
+        );
+
+        // Make third Post!
+        $postThree = factory(Post::class)->create([
+            'northstar_id' => $postOne->northstar_id,
+        ]);
+
+        $response = $this->asAdminUser()->postJson(
+            'api/v3/posts/' . $postThree->id . '/tags',
+            [
+                'tag_name' => 'Good Submission',
+            ],
+        );
+
+        $response->assertOk();
+
+        // Make sure that the post's tags are updated.
+        $this->assertContains('Good Submission', $postThree->tagNames());
+
+        $user = $user->fresh();
+        $this->assertEquals(
+            [
+                'signup',
+                'one_post',
+                'one_staff_fave',
+                'two_posts',
+                'two_staff_faves',
+                'three_posts',
+                'three_staff_faves',
+            ],
+            $user->badges,
+        );
+
+        // Make fourth Post!
+        $postFour = factory(Post::class)->create([
+            'northstar_id' => $postOne->northstar_id,
+        ]);
+
+        $response = $this->asAdminUser()->postJson(
+            'api/v3/posts/' . $postFour->id . '/tags',
+            [
+                'tag_name' => 'Good Submission',
+            ],
+        );
+
+        $response->assertOk();
+
+        // Make sure that the post's tags are updated.
+        $this->assertContains('Good Submission', $postFour->tagNames());
+
+        $user = $user->fresh();
+        $this->assertEquals(
+            [
+                'signup',
+                'one_post',
+                'one_staff_fave',
+                'two_posts',
+                'two_staff_faves',
+                'three_posts',
+                'three_staff_faves',
+            ],
+            $user->badges,
+        );
     }
 }
