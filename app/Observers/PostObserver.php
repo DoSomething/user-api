@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Group;
+use App\Models\User;
 use App\Models\Post;
 use App\Services\Fastly;
 use App\Services\ImageStorage;
@@ -55,6 +56,20 @@ class PostObserver
     public function created(Post $post)
     {
         $post->updateOrCreateActionStats();
+
+        $userId = $post->northstar_id;
+        $user = User::findOrFail($userId);
+        if ($user) {
+            $userPosts = $user->posts();
+            if ($userPosts->count() === 1) {
+                $user->addBadge('one_post');
+            } elseif ($userPosts->count() === 2) {
+                $user->addBadge('two_posts');
+            } elseif ($userPosts->count() === 3) {
+                $user->addBadge('three_posts');
+            }
+            $user->save();
+        }
     }
 
     /**
