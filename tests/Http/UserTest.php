@@ -1217,7 +1217,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test that breakdown badge is added is true after adding news as a topic on a new user.
+     * Test that newsletter badge is added is true after adding news as a topic on a new user.
      *
      * @return void
      */
