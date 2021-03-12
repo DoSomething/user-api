@@ -845,7 +845,7 @@ class PostTest extends TestCase
     }
 
     /**
-     * Guests shouldn't see user IDs on anonymous actions.
+     * Posts can be filtered by user ID.
      *
      * @test
      */
