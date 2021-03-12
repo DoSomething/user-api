@@ -18,7 +18,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\LogMemoryUsage::class,
         \App\Http\Middleware\TrimStrings::class,
         \App\Http\Middleware\TrustProxies::class,
-        \App\Http\Middleware\HandleCors::class,
+        \Fruitcake\Cors\HandleCors::class,
     ];
 
     /**
