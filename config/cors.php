@@ -30,7 +30,7 @@ return [
     /*
      * Matches the request origin. `['*']` allows all origins. Wildcards can be used, eg `*.mydomain.com`
      */
-    'allowed_origins' => ['*.dosomething.org', 'phoenix.test'],
+    'allowed_origins' => ['https://*.dosomething.org', 'http://phoenix.test'],
 
     /*
      * Patterns that can be used with `preg_match` to match the origin.
