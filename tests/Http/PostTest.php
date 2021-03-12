@@ -1923,4 +1923,165 @@ class PostTest extends TestCase
             'quantity' => $quantity,
         ]);
     }
+
+    /**
+     * Test that after a text post has been successfully created, a "one_post" badge is added to the user.
+     *
+     * @return void
+     */
+    public function testATextPostAddingABadge()
+    {
+        $signup = factory(Signup::class)->create();
+        $quantity = $this->faker->numberBetween(10, 1000);
+        $text = $this->faker->sentence;
+        $why_participated = $this->faker->paragraph;
+        $details = ['source-detail' => 'broadcast-123', 'other' => 'other'];
+        $action = factory(Action::class)->create([
+            'campaign_id' => $signup->campaign_id,
+            'post_type' => 'text',
+        ]);
+
+        // Create the post!
+        $response = $this->asUser($signup->user)->postJson('api/v3/posts', [
+            'northstar_id' => $signup->northstar_id,
+            'campaign_id' => $signup->campaign_id,
+            'type' => $action->post_type,
+            'action' => $action->name,
+            'action_id' => $action->id,
+            'quantity' => $quantity,
+            'why_participated' => $why_participated,
+            'text' => $text,
+            'details' => json_encode($details),
+        ]);
+
+        $response->assertCreated();
+        $this->assertPostStructure($response);
+
+        $this->assertMysqlDatabaseHas('posts', [
+            'signup_id' => $signup->id,
+            'northstar_id' => $signup->northstar_id,
+            'campaign_id' => $signup->campaign_id,
+            'type' => $action->post_type,
+            'action' => $action->name,
+            'action_id' => $action->id,
+            'status' => 'pending',
+            'quantity' => $quantity,
+            'details' => json_encode($details),
+        ]);
+
+        // Make sure the updated why_participated is updated on the signup.
+        $this->assertMysqlDatabaseHas('signups', [
+            'campaign_id' => $signup->campaign_id,
+            'northstar_id' => $signup->northstar_id,
+            'why_participated' => $why_participated,
+        ]);
+
+        $user = $signup->user->fresh();
+        $this->assertEquals(['signup', 'one_post'], $user->badges);
+    }
+
+    /**
+     * Test that after multiple posts have been successfully created, "one_post", "two_posts", and "three_posts" badges are added to the user.
+     *
+     * @return void
+     */
+    public function testMultiplePostsAddingABadges()
+    {
+        $photo_signup = factory(Signup::class)->create();
+        $quantity = $this->faker->numberBetween(10, 1000);
+        $hours_spent = $this->faker->randomFloat(2, 0.1, 999999.99);
+        $why_participated = $this->faker->paragraph;
+        $text = $this->faker->sentence;
+        $details = ['source-detail' => 'broadcast-123', 'other' => 'other'];
+        $action = factory(Action::class)->create([
+            'campaign_id' => $photo_signup->campaign_id,
+        ]);
+
+        // Create the post!
+        $response = $this->asUser($photo_signup->user)->postJson(
+            'api/v3/posts',
+            [
+                'northstar_id' => $photo_signup->northstar_id,
+                'campaign_id' => $photo_signup->campaign_id,
+                'type' => $action->post_type,
+                'action' => $action->name,
+                'action_id' => $action->id,
+                'quantity' => $quantity,
+                'hours_spent' => $hours_spent,
+                'why_participated' => $why_participated,
+                'text' => $text,
+                'file' => UploadedFile::fake()->image('photo.jpg', 450, 450),
+                'details' => json_encode($details),
+            ],
+        );
+
+        $response->assertCreated();
+        $this->assertPostStructure($response);
+
+        $text_signup = factory(Signup::class)->create();
+        $text_signup->user = $photo_signup->user;
+        $text_signup->northstar_id = $photo_signup->northstar_id;
+        $quantity = $this->faker->numberBetween(10, 1000);
+        $text = $this->faker->sentence;
+        $why_participated = $this->faker->paragraph;
+        $details = ['source-detail' => 'broadcast-123', 'other' => 'other'];
+        $action = factory(Action::class)->create([
+            'campaign_id' => $text_signup->campaign_id,
+            'post_type' => 'text',
+        ]);
+
+        // Create the post!
+        $response = $this->asUser($text_signup->user)->postJson(
+            'api/v3/posts',
+            [
+                'northstar_id' => $text_signup->northstar_id,
+                'campaign_id' => $text_signup->campaign_id,
+                'type' => $action->post_type,
+                'action' => $action->name,
+                'action_id' => $action->id,
+                'quantity' => $quantity,
+                'why_participated' => $why_participated,
+                'text' => $text,
+                'details' => json_encode($details),
+            ],
+        );
+
+        $response->assertCreated();
+        $this->assertPostStructure($response);
+
+        $social_share_signup = factory(Signup::class)->create();
+        $social_share_signup->user = $photo_signup->user;
+        $social_share_signup->northstar_id = $photo_signup->northstar_id;
+        $quantity = $this->faker->numberBetween(10, 1000);
+        $text = $this->faker->sentence;
+        $details = ['source-detail' => 'broadcast-123', 'other' => 'other'];
+        $action = factory(Action::class)->create([
+            'campaign_id' => $social_share_signup->campaign_id,
+            'post_type' => 'share-social',
+        ]);
+
+        // Create the post!
+        $response = $this->asUser($social_share_signup->user)->postJson(
+            'api/v3/posts',
+            [
+                'northstar_id' => $social_share_signup->northstar_id,
+                'campaign_id' => $social_share_signup->campaign_id,
+                'type' => $action->post_type,
+                'action' => $action->name,
+                'action_id' => $action->id,
+                'quantity' => $quantity,
+                'text' => $text,
+                'details' => json_encode($details),
+            ],
+        );
+
+        $response->assertCreated();
+        $this->assertPostStructure($response);
+
+        $user = $photo_signup->user->fresh();
+        $this->assertEquals(
+            ['signup', 'one_post', 'two_posts', 'three_posts'],
+            $user->badges,
+        );
+    }
 }
