@@ -188,7 +188,7 @@ class TagsTest extends TestCase
 
         $user = $user->fresh();
         $this->assertEquals(
-            ['signup', 'one_post', 'one_staff_fave'],
+            ['signup', 'one-post', 'one-staff-fave'],
             $user->badges,
         );
     }
@@ -219,7 +219,7 @@ class TagsTest extends TestCase
 
         $user = $user->fresh();
         $this->assertEquals(
-            ['signup', 'one_post', 'one_staff_fave'],
+            ['signup', 'one-post', 'one-staff-fave'],
             $user->badges,
         );
 
@@ -244,10 +244,10 @@ class TagsTest extends TestCase
         $this->assertEquals(
             [
                 'signup',
-                'one_post',
-                'one_staff_fave',
-                'two_posts',
-                'two_staff_faves',
+                'one-post',
+                'one-staff-fave',
+                'two-posts',
+                'two-staff-faves',
             ],
             $user->badges,
         );
@@ -280,7 +280,7 @@ class TagsTest extends TestCase
 
         $user = $user->fresh();
         $this->assertEquals(
-            ['signup', 'one_post', 'one_staff_fave'],
+            ['signup', 'one-post', 'one-staff-fave'],
             $user->badges,
         );
 
@@ -305,10 +305,10 @@ class TagsTest extends TestCase
         $this->assertEquals(
             [
                 'signup',
-                'one_post',
-                'one_staff_fave',
-                'two_posts',
-                'two_staff_faves',
+                'one-post',
+                'one-staff-fave',
+                'two-posts',
+                'two-staff-faves',
             ],
             $user->badges,
         );
@@ -334,12 +334,12 @@ class TagsTest extends TestCase
         $this->assertEquals(
             [
                 'signup',
-                'one_post',
-                'one_staff_fave',
-                'two_posts',
-                'two_staff_faves',
-                'three_posts',
-                'three_staff_faves',
+                'one-post',
+                'one-staff-fave',
+                'two-posts',
+                'two-staff-faves',
+                'three-posts',
+                'three-staff-faves',
             ],
             $user->badges,
         );
@@ -372,7 +372,7 @@ class TagsTest extends TestCase
 
         $user = $user->fresh();
         $this->assertEquals(
-            ['signup', 'one_post', 'one_staff_fave'],
+            ['signup', 'one-post', 'one-staff-fave'],
             $user->badges,
         );
 
@@ -397,10 +397,10 @@ class TagsTest extends TestCase
         $this->assertEquals(
             [
                 'signup',
-                'one_post',
-                'one_staff_fave',
-                'two_posts',
-                'two_staff_faves',
+                'one-post',
+                'one-staff-fave',
+                'two-posts',
+                'two-staff-faves',
             ],
             $user->badges,
         );
@@ -426,12 +426,12 @@ class TagsTest extends TestCase
         $this->assertEquals(
             [
                 'signup',
-                'one_post',
-                'one_staff_fave',
-                'two_posts',
-                'two_staff_faves',
-                'three_posts',
-                'three_staff_faves',
+                'one-post',
+                'one-staff-fave',
+                'two-posts',
+                'two-staff-faves',
+                'three-posts',
+                'three-staff-faves',
             ],
             $user->badges,
         );
@@ -457,12 +457,12 @@ class TagsTest extends TestCase
         $this->assertEquals(
             [
                 'signup',
-                'one_post',
-                'one_staff_fave',
-                'two_posts',
-                'two_staff_faves',
-                'three_posts',
-                'three_staff_faves',
+                'one-post',
+                'one-staff-fave',
+                'two-posts',
+                'two-staff-faves',
+                'three-posts',
+                'three-staff-faves',
             ],
             $user->badges,
         );

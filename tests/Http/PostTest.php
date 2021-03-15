@@ -1980,7 +1980,7 @@ class PostTest extends TestCase
         ]);
 
         $user = $signup->user->fresh();
-        $this->assertEquals(['signup', 'one_post'], $user->badges);
+        $this->assertEquals(['signup', 'one-post'], $user->badges);
     }
 
     /**
@@ -2083,7 +2083,7 @@ class PostTest extends TestCase
 
         $user = $photo_signup->user->fresh();
         $this->assertEquals(
-            ['signup', 'one_post', 'two_posts', 'three_posts'],
+            ['signup', 'one-post', 'two-posts', 'three-posts'],
             $user->badges,
         );
     }
