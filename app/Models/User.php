@@ -1272,7 +1272,6 @@ class User extends MongoModel implements
     /**
      * Checks whether a user should be given a badge based on their subscription topics.
      *
-     * @return void
      */
     public function calculateUserSubscriptionBadges()
     {
@@ -1280,6 +1279,5 @@ class User extends MongoModel implements
             $this->addBadge(BadgeType::get('BREAKDOWN'));
             $this->save();
         }
-        return;
     }
 }

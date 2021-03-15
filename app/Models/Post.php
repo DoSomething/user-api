@@ -806,7 +806,6 @@ class Post extends Model
     /**
      * Checks whether a user should be given a badge based on their post.
      *
-     * @return void
      */
     public function calculatePostBadges()
     {
@@ -823,6 +822,5 @@ class Post extends Model
             }
             $user->save();
         }
-        return;
     }
 }
