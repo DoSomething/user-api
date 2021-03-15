@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\Signup;
 use App\Models\User;
 use App\Services\GraphQL;
+use App\Types\BadgeType;
 
 const USER_CLUB_ID_QUERY = '
     query UserClubIdQuery($userId: String!) {
@@ -56,11 +57,13 @@ class SignupObserver
      */
     public function created(Signup $signup)
     {
-        if ($this->user) {
-            $userSignups = $this->user->signups();
+        $userId = $signup->northstar_id;
+        $user = User::findOrFail($userId);
+        if ($user) {
+            $userSignups = $user->signups();
             if ($userSignups->count() === 1) {
-                $this->user->addBadge('signup');
-                $this->user->save();
+                $user->addBadge(BadgeType::get('SIGNUP'));
+                $user->save();
             }
         }
     }

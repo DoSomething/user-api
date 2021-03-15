@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Services\Fastly;
 use App\Services\ImageStorage;
+use App\Types\BadgeType;
 
 class PostObserver
 {
@@ -62,11 +63,11 @@ class PostObserver
         if ($user) {
             $userPosts = $user->posts();
             if ($userPosts->count() === 1) {
-                $user->addBadge('one_post');
+                $user->addBadge(BadgeType::get('ONE_POST'));
             } elseif ($userPosts->count() === 2) {
-                $user->addBadge('two_posts');
+                $user->addBadge(BadgeType::get('TWO_POSTS'));
             } elseif ($userPosts->count() === 3) {
-                $user->addBadge('three_posts');
+                $user->addBadge(BadgeType::get('THREE_POSTS'));
             }
             $user->save();
         }

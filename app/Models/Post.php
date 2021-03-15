@@ -6,6 +6,7 @@ use App\Models\Traits\HasCursor;
 use App\Models\User;
 use App\Notifications\PostTagged;
 use App\Services\GraphQL;
+use App\Types\BadgeType;
 use Hashids\Hashids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -481,19 +482,43 @@ class Post extends Model
             $userPosts = $this->user->posts;
             foreach ($userPosts as $post) {
                 if ($post->tagSlugs()->contains('good-submission')) {
-                    if (!in_array('one_staff_fave', $this->user->badges)) {
-                        $this->user->addBadge('one_staff_fave');
-                    } elseif (
-                        !in_array('two_staff_faves', $this->user->badges) &&
-                        in_array('one_staff_fave', $this->user->badges)
+                    if (
+                        !in_array(
+                            BadgeType::get('ONE_STAFF_FAVE'),
+                            $this->user->badges,
+                        )
                     ) {
-                        $this->user->addBadge('two_staff_faves');
+                        $this->user->addBadge(BadgeType::get('ONE_STAFF_FAVE'));
                     } elseif (
-                        !in_array('three_staff_faves', $this->user->badges) &&
-                        in_array('three_posts', $this->user->badges) &&
-                        in_array('two_staff_faves', $this->user->badges)
+                        !in_array(
+                            BadgeType::get('TWO_STAFF_FAVES'),
+                            $this->user->badges,
+                        ) &&
+                        in_array(
+                            BadgeType::get('ONE_STAFF_FAVE'),
+                            $this->user->badges,
+                        )
                     ) {
-                        $this->user->addBadge('three_staff_faves');
+                        $this->user->addBadge(
+                            BadgeType::get('TWO_STAFF_FAVES'),
+                        );
+                    } elseif (
+                        !in_array(
+                            BadgeType::get('THREE_STAFF_FAVES'),
+                            $this->user->badges,
+                        ) &&
+                        in_array(
+                            BadgeType::get('THREE_POSTS'),
+                            $this->user->badges,
+                        ) &&
+                        in_array(
+                            BadgeType::get('TWO_STAFF_FAVES'),
+                            $this->user->badges,
+                        )
+                    ) {
+                        $this->user->addBadge(
+                            BadgeType::get('THREE_STAFF_FAVES'),
+                        );
                     }
                 }
             }
