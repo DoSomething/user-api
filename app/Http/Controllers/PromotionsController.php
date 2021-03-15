@@ -42,8 +42,7 @@ class PromotionsController extends Controller
             throw new ModelNotFoundException();
         }
 
-        $user->promotions_muted_at = now();
-        $user->save();
+        $user->mutePromotions();
 
         info('mute_promotions_request', ['id' => $user->id]);
 

@@ -1,4 +1,4 @@
-# Northstar [![wercker status](https://app.wercker.com/status/109bce734be9a06703562876265f5bd9/s/dev "wercker status")](https://app.wercker.com/project/byKey/109bce734be9a06703562876265f5bd9) [![StyleCI](https://styleci.io/repos/26884886/shield?style=flat-rounded)](https://styleci.io/repos/26884886)
+# Northstar
 
 This is **Northstar**, the DoSomething.org user & identity service. It's our single "source of truth" for member information.
 Northstar is built using [Laravel 6.0](https://laravel.com/docs/6.x), [OAuth 2.0 Server](https://oauth2.thephpleague.com), and [MongoDB](https://www.mongodb.com).
@@ -7,6 +7,15 @@ Northstar is built using [Laravel 6.0](https://laravel.com/docs/6.x), [OAuth 2.0
 
 Check out the [API Documentation](https://github.com/DoSomething/northstar/blob/master/documentation/README.md) to start using
 Northstar! :sparkles:
+
+### Migrations
+
+Northstar currently uses two database connections: its original MongoDB connection, and the MySQL connection originally owned by [Rogue](https://github.com/DoSomething/rogue).
+
+To run a database migration, it's easiest to use our custom Artisan command:
+```
+php artisan migrate:all
+```
 
 ### Contributing
 

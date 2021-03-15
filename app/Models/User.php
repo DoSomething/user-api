@@ -1114,6 +1114,16 @@ class User extends MongoModel implements
     }
 
     /**
+     * Sets the promotions_muted_at and saves to delete Customer.io profile.
+     * @see UserObserver@updated
+     */
+    public function mutePromotions()
+    {
+        $this->promotions_muted_at = now();
+        $this->save();
+    }
+
+    /**
      * Accessor for the `causes` attribute.
      *
      * @param  mixed value
