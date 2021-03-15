@@ -14,7 +14,6 @@ use App\Types\BadgeType;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
-use App\Types\BadgeType;
 
 class UserObserver
 {
