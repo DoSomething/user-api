@@ -1277,11 +1277,14 @@ class PostTest extends TestCase
         $hiddenPost->tag('Hide In Gallery');
         $hiddenPost->save();
 
-        // Create anothter hidden post by different user.
+        // New Owner of the second hidden post
+        $hiddenOwner = factory(User::class)->create();
+
+        // Create another hidden post by different user.
         $secondHiddenPost = factory(Post::class)
             ->states('photo', 'accepted')
             ->create([
-                'northstar_id' => $this->faker->unique()->northstar_id,
+                'northstar_id' => $hiddenOwner->id,
             ]);
         $secondHiddenPost->tag('Hide In Gallery');
         $secondHiddenPost->save();
