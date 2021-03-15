@@ -1960,25 +1960,6 @@ class PostTest extends TestCase
         $response->assertCreated();
         $this->assertPostStructure($response);
 
-        $this->assertMysqlDatabaseHas('posts', [
-            'signup_id' => $signup->id,
-            'northstar_id' => $signup->northstar_id,
-            'campaign_id' => $signup->campaign_id,
-            'type' => $action->post_type,
-            'action' => $action->name,
-            'action_id' => $action->id,
-            'status' => 'pending',
-            'quantity' => $quantity,
-            'details' => json_encode($details),
-        ]);
-
-        // Make sure the updated why_participated is updated on the signup.
-        $this->assertMysqlDatabaseHas('signups', [
-            'campaign_id' => $signup->campaign_id,
-            'northstar_id' => $signup->northstar_id,
-            'why_participated' => $why_participated,
-        ]);
-
         $user = $signup->user->fresh();
         $this->assertEquals(['signup', 'one-post'], $user->badges);
     }
