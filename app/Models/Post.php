@@ -813,11 +813,12 @@ class Post extends Model
         $user = $this->user;
         if ($user) {
             $userPosts = $user->posts();
-            if ($userPosts->count() === 1) {
+            $userPostsCount = $userPosts->count();
+            if ($userPostsCount === 1) {
                 $user->addBadge(BadgeType::get('ONE_POST'));
-            } elseif ($userPosts->count() === 2) {
+            } elseif ($userPostsCount === 2) {
                 $user->addBadge(BadgeType::get('TWO_POSTS'));
-            } elseif ($userPosts->count() === 3) {
+            } elseif ($userPostsCount === 3) {
                 $user->addBadge(BadgeType::get('THREE_POSTS'));
             }
             $user->save();
