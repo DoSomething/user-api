@@ -3,7 +3,6 @@
 namespace App\Observers;
 
 use App\Models\Group;
-use App\Models\User;
 use App\Models\Post;
 use App\Models\User;
 use App\Services\Fastly;
