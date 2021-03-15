@@ -57,8 +57,7 @@ class SignupObserver
      */
     public function created(Signup $signup)
     {
-        $userId = $signup->northstar_id;
-        $user = User::findOrFail($userId);
+        $user = $signup->user;
         if ($user) {
             $userSignups = $user->signups();
             if ($userSignups->count() === 1) {

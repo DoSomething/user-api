@@ -58,8 +58,8 @@ class PostObserver
     {
         $post->updateOrCreateActionStats();
 
-        $userId = $post->northstar_id;
-        $user = User::findOrFail($userId);
+        // $userId = $post->northstar_id;
+        $user = $post->user;
         if ($user) {
             $userPosts = $user->posts();
             if ($userPosts->count() === 1) {

@@ -58,6 +58,7 @@ class SignupTest extends TestCase
      */
     public function testAddingFirstSignupBadge()
     {
+        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $campaignId = $this->faker->randomNumber(4);
 
@@ -78,7 +79,6 @@ class SignupTest extends TestCase
                 'group_id' => null,
             ],
         ]);
-
         // Make sure the signup is persisted.
         $this->assertMysqlDatabaseHas('signups', [
             'northstar_id' => $user->id,
