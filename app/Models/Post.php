@@ -802,4 +802,26 @@ class Post extends Model
     {
         return config('services.slack.url');
     }
+
+    /**
+     * Checks whether a user should be given a badge based on their post.
+     *
+     * @return void
+     */
+    public function calculatePostBadges()
+    {
+        $user = $this->user;
+        if ($user) {
+            $userPosts = $user->posts();
+            if ($userPosts->count() === 1) {
+                $user->addBadge(BadgeType::get('ONE_POST'));
+            } elseif ($userPosts->count() === 2) {
+                $user->addBadge(BadgeType::get('TWO_POSTS'));
+            } elseif ($userPosts->count() === 3) {
+                $user->addBadge(BadgeType::get('THREE_POSTS'));
+            }
+            $user->save();
+        }
+        return;
+    }
 }

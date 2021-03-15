@@ -7,6 +7,7 @@ use App\Jobs\CreateCustomerIoEvent;
 use App\Jobs\SendForgotPasswordEmail;
 use App\Services\GraphQL;
 use App\Types\PasswordResetType;
+use App\Types\BadgeType;
 use Carbon\Carbon;
 use Email\Parse as EmailParser;
 use Illuminate\Auth\Authenticatable;
@@ -1266,5 +1267,13 @@ class User extends MongoModel implements
          * given eventName.
          */
         return CreateCustomerIoEvent::dispatch($this, $eventName, $eventData);
+    }
+
+    public function calculateUserSubscriptionBadges()
+    {
+        if (in_array('news', $this->email_subscription_topics)) {
+            $this->addBadge(BadgeType::get('BREAKDOWN'));
+            $this->save();
+        }
     }
 }

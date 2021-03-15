@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\HasCursor;
 use App\Models\User;
 use App\Services\GraphQL;
+use App\Types\BadgeType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
@@ -294,5 +295,23 @@ class Signup extends Model
             'created_at' => $this->created_at->toIso8601String(),
             'updated_at' => $this->updated_at->toIso8601String(),
         ];
+    }
+
+    /**
+     * Checks whether a user should be given a badge based on their signup.
+     *
+     * @return void
+     */
+    public function calculateSignupBadges()
+    {
+        $user = $this->user;
+        if ($user) {
+            $userSignups = $user->signups();
+            if ($userSignups->count() === 1) {
+                $user->addBadge(BadgeType::get('SIGNUP'));
+                $user->save();
+            }
+        }
+        return;
     }
 }

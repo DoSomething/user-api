@@ -57,6 +57,7 @@ class UserObserver
         if (!($user->email_subscription_status || $user->isSmsSubscribed())) {
             return;
         }
+        $user->calculateUserSubscriptionBadges();
 
         $queueLevel = config('queue.jobs.users');
         $queue = config('queue.names.' . $queueLevel);
