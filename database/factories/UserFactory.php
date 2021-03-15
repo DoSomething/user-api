@@ -57,7 +57,7 @@ $factory->state(User::class, 'email-subscribed', function (Faker $faker) {
     return [
         'email_subscription_status' => true,
         'email_subscription_topics' => $faker->randomElements(
-            ['news', 'lifestyle', 'actions', 'scholarships'],
+            ['news', 'lifestyle', 'community', 'scholarships'],
             $faker->numberBetween(1, 4),
         ),
     ];

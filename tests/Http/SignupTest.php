@@ -153,6 +153,7 @@ class SignupTest extends TestCase
      */
     public function testCreatingASignupForUserWithClubId()
     {
+        $this->withoutExceptionHandling();
         // Turn on the feature flag for tracking club_ids.
         config(['features.track_club_id' => 'true']);
 
@@ -168,12 +169,13 @@ class SignupTest extends TestCase
             ]);
 
         // Mock the Customer.io API calls.
-        $this->mock(CustomerIo::class)->shouldReceive('trackEvent');
+        $this->mock(CustomerIo::class)
+            ->shouldReceive('updateCustomer')
+            ->shouldReceive('trackEvent');
 
         $response = $this->asUser($user)->postJson('api/v3/signups', [
             'campaign_id' => $campaignId,
         ]);
-
         $response->assertStatus(201);
         $response->assertJson([
             'data' => [
