@@ -1278,5 +1278,6 @@ class User extends MongoModel implements
             $this->addBadge(BadgeType::get('BREAKDOWN'));
             $this->save();
         }
+        return;
     }
 }
