@@ -479,7 +479,7 @@ class Post extends Model
         }
 
         if ($this->user) {
-            $userPosts = $this->user->posts;
+            $userPosts = $this->user->posts->limit(3);
             foreach ($userPosts as $post) {
                 if ($post->tagSlugs()->contains('good-submission')) {
                     if (
