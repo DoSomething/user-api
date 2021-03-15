@@ -1269,11 +1269,17 @@ class User extends MongoModel implements
         return CreateCustomerIoEvent::dispatch($this, $eventName, $eventData);
     }
 
+    /**
+     * Checks whether a user should be given a badge based on their subscription topics.
+     *
+     * @return void
+     */
     public function calculateUserSubscriptionBadges()
     {
         if (in_array('news', $this->email_subscription_topics)) {
             $this->addBadge(BadgeType::get('BREAKDOWN'));
             $this->save();
         }
+        return;
     }
 }
