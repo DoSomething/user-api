@@ -56,13 +56,11 @@ class SignupObserver
      */
     public function created(Signup $signup)
     {
-        $userId = $signup->northstar_id;
-        $user = User::findOrFail($userId);
-        if ($user) {
-            $userSignups = $user->signups();
+        if ($this->user) {
+            $userSignups = $this->user->signups();
             if ($userSignups->count() === 1) {
-                $user->addBadge('signup');
-                $user->save();
+                $this->user->addBadge('signup');
+                $this->user->save();
             }
         }
     }
