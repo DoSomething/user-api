@@ -12,10 +12,9 @@ Northstar! :sparkles:
 
 Northstar currently uses two database connections: its original MongoDB connection, and the MySQL connection originally owned by [Rogue](https://github.com/DoSomething/rogue).
 
-To run a migration, specify the desired DB connection and path:
+To run a database migration, it's easiest to use our custom Artisan command:
 ```
-php artisan migrate --path="database/migrations-mongodb/" --database="mongodb"
-php artisan migrate --path="database/migrations/" --database="mysql"
+php artisan migrate:all
 ```
 
 ### Contributing
