@@ -805,7 +805,6 @@ class Post extends Model
 
     /**
      * Checks whether a user should be given a badge based on their post.
-     *
      */
     public function calculatePostBadges()
     {

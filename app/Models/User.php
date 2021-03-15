@@ -6,8 +6,8 @@ use App\Auth\Role;
 use App\Jobs\CreateCustomerIoEvent;
 use App\Jobs\SendForgotPasswordEmail;
 use App\Services\GraphQL;
-use App\Types\PasswordResetType;
 use App\Types\BadgeType;
+use App\Types\PasswordResetType;
 use Carbon\Carbon;
 use Email\Parse as EmailParser;
 use Illuminate\Auth\Authenticatable;
@@ -1271,7 +1271,6 @@ class User extends MongoModel implements
 
     /**
      * Checks whether a user should be given a badge based on their subscription topics.
-     *
      */
     public function calculateUserSubscriptionBadges()
     {
