@@ -58,6 +58,7 @@ class SignupTest extends TestCase
      */
     public function testAddingFirstSignupBadge()
     {
+        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $campaignId = $this->faker->randomNumber(4);
 
