@@ -1005,6 +1005,7 @@ class User extends MongoModel implements
      * Add the given topic to the user's array of topics if it is not already there.
      *
      * @param string $topic
+     * @deprecated
      */
     public function addEmailSubscriptionTopic($topic)
     {
@@ -1012,6 +1013,20 @@ class User extends MongoModel implements
         $this->email_subscription_topics = array_merge(
             $this->email_subscription_topics ?: [],
             [$topic],
+        );
+    }
+
+    /**
+     * Add one or more provided topics to the user's array of topics if not already there.
+     *
+     * @param array $topics
+     */
+    public function addEmailSubscriptionTopics($topics)
+    {
+        // Add the new topic to the existing array of topics
+        $this->email_subscription_topics = array_merge(
+            $this->email_subscription_topics ?: [],
+            $topics,
         );
     }
 

@@ -47,40 +47,51 @@ class SubscriptionController extends Controller
      */
     public function create(Request $request)
     {
+        // If topics value is a string, change to an array.
+        if (is_string($request->get('email_subscription_topic'))) {
+            $request->merge([
+                'email_subscription_topic' => [
+                    $request->get('email_subscription_topic'),
+                ],
+            ]);
+        }
+
         $this->validate($request, [
             'email' => 'required|email',
-            'email_subscription_topic' => [
-                'required',
+            'email_subscription_topic' => 'required|array',
+            'email_subscription_topic.*' => [
+                'string',
                 Rule::in(EmailSubscriptionTopicType::all()),
             ],
-
             'source' => 'required',
             'source_detail' => 'required',
         ]);
 
-        $topic = $request->get('email_subscription_topic');
+        $topics = $request->get('email_subscription_topic');
 
         $existingUser = $this->registrar->resolve($request->only('email'));
 
-        // If the user already exists, only update the email topics
+        // If the user already exists, only update the email topics.
         if ($existingUser) {
-            $existingUser->addEmailSubscriptionTopic($topic);
+            $existingUser->addEmailSubscriptionTopics($topics);
 
             $existingUser->save();
 
             return $this->item($existingUser, 200);
         }
 
+        // Register new user.
         $newUser = $this->registrar->register($request->all());
 
-        $newUser->addEmailSubscriptionTopic($topic);
+        $newUser->addEmailSubscriptionTopics($topics);
+
         $newUser->source = $request->get('source');
         $newUser->source_detail = $request->get('source_detail');
 
         $newUser->save();
 
         // Send activate account email to new user
-        switch ($topic) {
+        switch (collect($topics)->first()) {
             case 'scholarships':
                 $newUser->sendPasswordReset(
                     PasswordResetType::get('PAYS_TO_DO_GOOD_ACTIVATE_ACCOUNT'),
