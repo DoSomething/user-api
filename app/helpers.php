@@ -392,6 +392,43 @@ function format_mobile(PhoneNumber $number, $format): string
 }
 
 /**
+ * Create a "personal" access token that users can use
+ * to make API calls to Northstar's own OAuth APIs.
+ *
+ * @return string
+ */
+function access_token()
+{
+    /** @var \App\Models\User $user */
+    $user = auth()->user();
+
+    // Only allow admins to create these on-demand JWTs...
+    if (!$user->hasRole('staff', 'admin')) {
+        return null;
+    }
+
+    $scopes = ['user', 'activity', 'write', 'role:staff', 'role:admin'];
+    $scopeEntities = app(ScopeRepository::class)->create(...$scopes);
+
+    $client = new ClientEntity('northstar', config('app.name'), $scopes);
+
+    $accessToken = app(AccessTokenRepository::class)->getNewToken(
+        $client,
+        $scopeEntities,
+        auth()->id(),
+    );
+
+    $accessToken->setPrivateKey(app(KeyRepository::class)->getPrivateKey());
+    $accessToken->setIdentifier(bin2hex(random_bytes(40)));
+
+    $accessToken->setExpiryDateTime(
+        (new \DateTimeImmutable())->add(new DateInterval('PT1H')),
+    );
+
+    return (string) $accessToken;
+}
+
+/**
  * Create a "personal" access token that Northstar can use
  * to make API calls to resource servers (like Rogue).
  *
