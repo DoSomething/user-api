@@ -79,7 +79,7 @@ const ShowCampaign = () => {
                 <MetaInformation
                   details={{
                     'User ID': (
-                      <Link to={`/users/${signup.userId}`}>
+                      <Link to={`/admin/activity/${signup.userId}`}>
                         {signup.userId}
                       </Link>
                     ),
@@ -95,21 +95,21 @@ const ShowCampaign = () => {
                     ),
                     'Created At': formatDateTime(signup.createdAt),
                     Referrer: signup.referrerUserId ? (
-                      <Link to={`/users/${signup.referrerUserId}`}>
+                      <Link to={`/admin/activity/${signup.referrerUserId}`}>
                         {signup.referrerUserId}
                       </Link>
                     ) : (
                       '-'
                     ),
                     Group: signup.groupId ? (
-                      <Link to={`/groups/${signup.groupId}`}>
+                      <Link to={`/admin/groups/${signup.groupId}`}>
                         {signup.groupId}
                       </Link>
                     ) : (
                       '-'
                     ),
                     Club: signup.clubId ? (
-                      <Link to={`/clubs/${signup.clubId}`}>
+                      <Link to={`/admin/clubs/${signup.clubId}`}>
                         {signup.clubId}
                       </Link>
                     ) : (

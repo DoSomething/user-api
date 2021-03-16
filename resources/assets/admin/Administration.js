@@ -97,7 +97,7 @@ const Application = () => {
             <ShowUser selectedTab="referrals" />
           </Route>
 
-          <Route path="/admin/users/:id">
+          <Route path="/admin/activity/:id">
             <ShowUser />
           </Route>
 

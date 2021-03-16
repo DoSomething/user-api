@@ -110,13 +110,13 @@ const SignupsTable = ({ campaignId, groupId }) => {
           {signups.map(({ node, cursor }) => (
             <tr key={cursor}>
               <td>
-                <Link to={`/signups/${node.id}`}>
+                <Link to={`/admin/signups/${node.id}`}>
                   {formatDateTime(node.createdAt)}
                 </Link>
               </td>
 
               <td>
-                <Link to={`/users/${node.userId}`}>{node.userId}</Link>
+                <Link to={`/admin/activity/${node.userId}`}>{node.userId}</Link>
               </td>
 
               {campaignId ? null : (

@@ -118,14 +118,16 @@ const PostsTable = ({ campaignId, groupId, referrerUserId, userId }) => {
           {posts.map(({ node, cursor }) => (
             <tr key={node.id}>
               <td>
-                <Link to={`/posts/${node.id}`}>
+                <Link to={`/admin/posts/${node.id}`}>
                   {formatDateTime(node.createdAt)}
                 </Link>
               </td>
 
               {userId ? null : (
                 <td>
-                  <Link to={`/users/${node.userId}`}>{node.userId}</Link>
+                  <Link to={`/admin/activity/${node.userId}`}>
+                    {node.userId}
+                  </Link>
                 </td>
               )}
 
