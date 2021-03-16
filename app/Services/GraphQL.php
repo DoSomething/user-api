@@ -32,6 +32,12 @@ class GraphQL
      */
     public function query($query, $variables)
     {
+        // If we've disable server-side GraphQL requests, return an optional
+        // wrapper object (so reading keys from the query won't fail):
+        if (config('features.graphql_php') === false) {
+            return optional();
+        }
+
         $response = $this->client->query($query, $variables);
 
         return $response ? $response->getData() : [];
