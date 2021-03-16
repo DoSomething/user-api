@@ -14,7 +14,6 @@ class TagsTest extends TestCase
      */
     public function testTaggingAPost()
     {
-        $this->withoutExceptionHandling();
         $post = factory(Post::class)->create();
 
         $response = $this->asAdminUser()->postJson(
@@ -172,8 +171,7 @@ class TagsTest extends TestCase
     public function testGoodSubmissionEarnsABadge()
     {
         $post = factory(Post::class)->create();
-        $userId = $post->northstar_id;
-        $user = User::findOrFail($userId);
+        $user = $post->user;
 
         $response = $this->asAdminUser()->postJson(
             'api/v3/posts/' . $post->id . '/tags',

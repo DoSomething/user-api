@@ -58,7 +58,6 @@ class SignupTest extends TestCase
      */
     public function testAddingFirstSignupBadge()
     {
-        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $campaignId = $this->faker->randomNumber(4);
 
@@ -69,23 +68,6 @@ class SignupTest extends TestCase
 
         // Make sure we get the 201 Created response
         $response->assertStatus(201);
-        $response->assertJson([
-            'data' => [
-                'northstar_id' => $user->id,
-                'campaign_id' => (string) $campaignId,
-                'quantity' => null,
-                'source' => 'phpunit',
-                'why_participated' => null,
-                'group_id' => null,
-            ],
-        ]);
-        // Make sure the signup is persisted.
-        $this->assertMysqlDatabaseHas('signups', [
-            'northstar_id' => $user->id,
-            'campaign_id' => $campaignId,
-            'quantity' => null,
-            'details' => 'badge-testing',
-        ]);
 
         $user = $user->fresh();
         $this->assertEquals(['signup'], $user->badges);
@@ -153,7 +135,6 @@ class SignupTest extends TestCase
      */
     public function testCreatingASignupForUserWithClubId()
     {
-        $this->withoutExceptionHandling();
         // Turn on the feature flag for tracking club_ids.
         config(['features.track_club_id' => 'true']);
 
