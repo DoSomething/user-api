@@ -58,7 +58,6 @@ class SignupTest extends TestCase
      */
     public function testAddingFirstSignupBadge()
     {
-        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $campaignId = $this->faker->randomNumber(4);
 
@@ -136,7 +135,6 @@ class SignupTest extends TestCase
      */
     public function testCreatingASignupForUserWithClubId()
     {
-        $this->withoutExceptionHandling();
         // Turn on the feature flag for tracking club_ids.
         config(['features.track_club_id' => 'true']);
 

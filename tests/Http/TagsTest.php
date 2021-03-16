@@ -14,7 +14,6 @@ class TagsTest extends TestCase
      */
     public function testTaggingAPost()
     {
-        $this->withoutExceptionHandling();
         $post = factory(Post::class)->create();
 
         $response = $this->asAdminUser()->postJson(
