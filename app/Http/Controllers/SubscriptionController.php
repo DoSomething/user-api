@@ -81,7 +81,14 @@ class SubscriptionController extends Controller
         }
 
         // Register new user.
-        $newUser = $this->registrar->register($request->all());
+        $newUser = $this->registrar->register(
+            $request->only([
+                'email',
+                'email_subscription_topic',
+                'source',
+                'source_detail',
+            ]),
+        );
 
         $newUser->addEmailSubscriptionTopics($topics);
 
