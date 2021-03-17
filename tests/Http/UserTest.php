@@ -1259,10 +1259,8 @@ class UserTest extends TestCase
         $this->assertMongoDatabaseHas('users', [
             'email_subscription_status' => true,
             'email_subscription_topics' => ['news'],
+            'badges' => ['news-subscription'],
         ]);
-
-        $subscribedUser = $user->fresh();
-        $this->assertEquals(['breakdown'], $subscribedUser->badges);
     }
 
     /**
