@@ -6,6 +6,7 @@ use App\Models\Group;
 use App\Models\Post;
 use App\Models\Signup;
 use App\Models\User;
+use App\Services\CustomerIo;
 
 class QuestionnaireTest extends TestCase
 {
@@ -142,6 +143,9 @@ class QuestionnaireTest extends TestCase
             'referrer_user_id' => $referrerUser->id,
             'group_id' => $groupId,
         ]);
+
+        // We only want to trigger one customer.io event per questionnaire submission (even though we store two posts).
+        $this->assertCustomerIoEvent($user, 'campaign_signup_post')->once();
     }
 
     /**
