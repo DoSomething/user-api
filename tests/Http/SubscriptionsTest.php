@@ -30,6 +30,25 @@ class SubscriptionsTest extends TestCase
     }
 
     /**
+     * Test an empty array missing topics throws a validation error.
+     */
+    public function testEmptySubscriptionArrayIsInvalid()
+    {
+        $user = factory(User::class)->create([
+            'email_subscription_topics' => [],
+        ]);
+
+        $response = $this->json('POST', 'v2/subscriptions', [
+            'email' => $user->email,
+            'email_subscription_topic' => [],
+            'source' => 'phoenix-next',
+            'source_detail' => 'test_source_detail',
+        ]);
+
+        $response->assertStatus(422);
+    }
+
+    /**
      * Test adding a subscription topic to an existing user.
      *
      * @return void
