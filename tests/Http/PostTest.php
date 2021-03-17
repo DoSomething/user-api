@@ -1971,7 +1971,6 @@ class PostTest extends TestCase
      */
     public function testMultiplePostsAddingABadges()
     {
-        $this->withoutExceptionHandling();
         $photoSignup = factory(Signup::class)->create();
         $quantity = $this->faker->numberBetween(10, 1000);
         $hoursSpent = $this->faker->randomFloat(2, 0.1, 999999.99);
