@@ -46,15 +46,11 @@ class PostRepository
      *
      * @param  array $data
      * @param  int $signupId
-     * @param  string $authenticatedUserRole
      *
      * @return \App\Models\Post|null
      */
-    public function create(
-        array $data,
-        $signupId,
-        $authenticatedUserRole = null
-    ) {
+    public function create(array $data, $signupId)
+    {
         $signup = Signup::find($signupId);
 
         // Get the action_id either from the payload or the DB.

@@ -43,22 +43,20 @@ class PostManager
      *
      * @param array $data
      * @param int $signupId
-     * @param string $authenticatedUserRole
+     * @param int $shouldSendToCustomerIo
      *
      * @return \App\Models\Post
      */
-    public function create($data, $signupId, $authenticatedUserRole = null)
+    public function create($data, $signupId, $shouldSendToCustomerIo = true)
     {
-        $post = $this->repository->create(
-            $data,
-            $signupId,
-            $authenticatedUserRole,
-        );
+        $post = $this->repository->create($data, $signupId);
 
-        // Send post event(s) to Customer.io for messaging:
-        SendPostToCustomerIo::dispatch($post);
+        if ($shouldSendToCustomerIo) {
+            // Send post event(s) to Customer.io for messaging:
+            SendPostToCustomerIo::dispatch($post);
+        }
 
-        if ($post->referrer_user_id) {
+        if ($shouldSendToCustomerIo && $post->referrer_user_id) {
             optional(User::find($post->referrer_user_id), function (
                 $referrerUser
             ) use ($post) {

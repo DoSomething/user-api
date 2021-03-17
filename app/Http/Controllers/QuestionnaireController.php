@@ -85,7 +85,7 @@ class QuestionnaireController extends ActivityApiController
 
         $requestDetails = json_decode($request->input('details'), true) ?: [];
 
-        foreach ($questions as $question) {
+        foreach ($questions as $index => $question) {
             $actionId = $question['action_id'];
 
             // Get the campaign id from the request by action_id.
@@ -106,12 +106,14 @@ class QuestionnaireController extends ActivityApiController
                 'contentful_id' => $request->input('contentful_id'),
             ]);
 
+            $shouldTrackToCustomerIo = $index === 0;
+
             $post = $this->posts->create(array_merge($request->all(), [
                 'action_id' => $actionId,
                 'text' => $question['answer'],
                 'details' => json_encode($postDetails),
 
-            ]), $signup->id);
+            ]), $signup->id, $shouldTrackToCustomerIo);
 
             array_push($posts, $post);
         }
