@@ -34,21 +34,21 @@ class RemoveCustomerIoMobile extends Command
             ->whereNotNull('mobile')
             ->whereIn('sms_status', [null, 'stop', 'undeliverable']);
 
-        $progress = $this->output->createProgressBar($query->count());
+        $query->chunkById(200, function (Collection $users) {
+            $users->each(function (User $user) {
+                $this->info('Checking user ' . $user->id);
 
-        $query->chunkById(200, function (Collection $users) use ($progress) {
-            $users->each(function (User $user) use ($progress) {
                 // If the user is not subscribed to email:
                 if (!$user->email_subscription_status) {
                     // Delete their profile entirely by muting promotions.
                     $user->mutePromotions();
-                } else {
-                    // Otherwise update their profile to remove the mobile number.
-                    dispatch(new UpsertCustomerIoProfile($user))
-                        ->onQueue(config('queue.names.low'));
+
+                    return;
                 }
 
-                $progress->advance();
+                // Otherwise update their profile to remove the mobile number.
+                dispatch(new UpsertCustomerIoProfile($user))
+                    ->onQueue(config('queue.names.low'));
             });
         });
 
