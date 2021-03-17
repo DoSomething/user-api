@@ -1023,7 +1023,6 @@ class User extends MongoModel implements
      */
     public function addEmailSubscriptionTopics($topics)
     {
-        // Add the new topic to the existing array of topics
         $this->email_subscription_topics = array_merge(
             $this->email_subscription_topics ?: [],
             $topics,
