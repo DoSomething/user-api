@@ -11,36 +11,6 @@ use App\Services\CustomerIo;
 class QuestionnaireTest extends TestCase
 {
     /**
-     * Helper function to assert post structure.
-     */
-    public function assertPostStructure($response)
-    {
-        return $response->assertJsonStructure([
-            'data' => [
-                'id',
-                'signup_id',
-                'northstar_id',
-                'type',
-                'action',
-                'media' => ['url', 'original_image_url', 'text'],
-                'quantity',
-                'hours_spent',
-                'tags' => [],
-                'reactions' => ['reacted', 'total'],
-                'status',
-                'details',
-                'location',
-                'school_id',
-                'club_id',
-                'source',
-                'remote_addr',
-                'created_at',
-                'updated_at',
-            ],
-        ]);
-    }
-
-    /**
      * Test that a POST request to /posts creates a new
      * post and signup, if it doesn't already exist.
      *
