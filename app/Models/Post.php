@@ -6,6 +6,7 @@ use App\Models\Traits\HasCursor;
 use App\Models\User;
 use App\Notifications\PostTagged;
 use App\Services\GraphQL;
+use App\Types\BadgeType;
 use Hashids\Hashids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -477,6 +478,29 @@ class Post extends Model
             }
         }
 
+        if ($this->user) {
+            $userPostsWithFaveTagCount = $this->user
+                ->posts()
+                ->withTag('good-submission')
+                ->take(3)
+                ->count();
+
+            if ($userPostsWithFaveTagCount >= 3) {
+                $this->user->addBadge(BadgeType::get('ONE_STAFF_FAVE'));
+                $this->user->addBadge(BadgeType::get('TWO_STAFF_FAVES'));
+                $this->user->addBadge(BadgeType::get('THREE_STAFF_FAVES'));
+            }
+            if ($userPostsWithFaveTagCount === 2) {
+                $this->user->addBadge(BadgeType::get('ONE_STAFF_FAVE'));
+                $this->user->addBadge(BadgeType::get('TWO_STAFF_FAVES'));
+            }
+            if ($userPostsWithFaveTagCount === 1) {
+                $this->user->addBadge(BadgeType::get('ONE_STAFF_FAVE'));
+            }
+
+            $this->user->save();
+        }
+
         return $this;
     }
 
@@ -753,5 +777,29 @@ class Post extends Model
     public function routeNotificationForSlack($notification)
     {
         return config('services.slack.url');
+    }
+
+    /**
+     * Checks whether a user should be given a badge based on their post.
+     */
+    public function calculatePostBadges()
+    {
+        $user = $this->user;
+        if ($user) {
+            $userPostsCount = $user->posts()->count();
+            if ($userPostsCount >= 3) {
+                $user->addBadge(BadgeType::get('ONE_POST'));
+                $user->addBadge(BadgeType::get('TWO_POSTS'));
+                $user->addBadge(BadgeType::get('THREE_POSTS'));
+            }
+            if ($userPostsCount === 2) {
+                $user->addBadge(BadgeType::get('ONE_POST'));
+                $user->addBadge(BadgeType::get('TWO_POSTS'));
+            }
+            if ($userPostsCount === 1) {
+                $user->addBadge(BadgeType::get('ONE_POST'));
+            }
+            $user->save();
+        }
     }
 }

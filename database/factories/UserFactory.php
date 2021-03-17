@@ -57,9 +57,18 @@ $factory->state(User::class, 'email-subscribed', function (Faker $faker) {
     return [
         'email_subscription_status' => true,
         'email_subscription_topics' => $faker->randomElements(
-            ['news', 'lifestyle', 'actions', 'scholarships'],
-            $faker->numberBetween(1, 4),
+            //removing news from this state because it causes errors related to badge creation
+            //and more updates being sent to customer.io than shown in tests related to subscription
+            ['lifestyle', 'community', 'scholarships'],
+            $faker->numberBetween(1, 3),
         ),
+    ];
+});
+
+$factory->state(User::class, 'email-subscribed-news', function (Faker $faker) {
+    return [
+        'email_subscription_status' => true,
+        'email_subscription_topics' => ['news'],
     ];
 });
 

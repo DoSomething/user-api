@@ -51,6 +51,29 @@ class SignupTest extends TestCase
     }
 
     /**
+     * Test that a POST request to /signups creates a new signup and adds a signup badge.
+     *
+     * POST /api/v3/signups
+     * @return void
+     */
+    public function testAddingFirstSignupBadge()
+    {
+        $user = factory(User::class)->create();
+        $campaignId = $this->faker->randomNumber(4);
+
+        $response = $this->asUser($user)->postJson('api/v3/signups', [
+            'campaign_id' => $campaignId,
+            'details' => 'badge-testing',
+        ]);
+
+        // Make sure we get the 201 Created response
+        $response->assertStatus(201);
+
+        $user = $user->fresh();
+        $this->assertEquals(['signup'], $user->badges);
+    }
+
+    /**
      * Test that a POST request to /signups creates a new signup with group_id if passed.
      *
      * POST /api/v3/signups
@@ -127,12 +150,13 @@ class SignupTest extends TestCase
             ]);
 
         // Mock the Customer.io API calls.
-        $this->mock(CustomerIo::class)->shouldReceive('trackEvent');
+        $this->mock(CustomerIo::class)
+            ->shouldReceive('updateCustomer')
+            ->shouldReceive('trackEvent');
 
         $response = $this->asUser($user)->postJson('api/v3/signups', [
             'campaign_id' => $campaignId,
         ]);
-
         $response->assertStatus(201);
         $response->assertJson([
             'data' => [

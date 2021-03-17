@@ -14,7 +14,7 @@ class UserModelTest extends TestCase
         $user = factory(User::class)->create([
             'birthdate' => '1/2/1990',
             'email_subscription_status' => true,
-            'email_subscription_topics' => ['news', 'community'],
+            'email_subscription_topics' => ['community'],
             'sms_subscription_topics' => ['general'],
             'school_id' => '12500012',
             'causes' => [
@@ -64,7 +64,7 @@ class UserModelTest extends TestCase
             'created_at' => $user->created_at->timestamp,
 
             // These boolean fields are computed based on whether or not array values exist:
-            'news_email_subscription_status' => true,
+            'news_email_subscription_status' => false,
             'lifestyle_email_subscription_status' => false,
             'community_email_subscription_status' => true,
             'scholarship_email_subscription_status' => false,
@@ -442,11 +442,11 @@ class UserModelTest extends TestCase
     public function testMutingAndUnmutingPromotionsViaEmailStatusChange()
     {
         // Creating subscribed user should trigger a Customer.io update.
-        $user = factory(User::class)
-            ->states('email-subscribed')
-            ->create([
-                'sms_status' => null,
-            ]);
+        $user = factory(User::class)->create([
+            'email_subscription_status' => true,
+            'email_subscription_topics' => ['lifestyle', 'scholarships'],
+            'sms_status' => null,
+        ]);
 
         // Unsubscribing from all platforms should delete Customer.io profile.
         $user->email_subscription_status = false;
@@ -455,7 +455,7 @@ class UserModelTest extends TestCase
         $this->assertNotNull($user->promotions_muted_at);
 
         // Resubscribing should re-create Customer.io profile.
-        $user->email_subscription_topics = ['news'];
+        $user->email_subscription_topics = ['lifestyle'];
         $user->save();
 
         $this->assertNull($user->promotions_muted_at);
@@ -496,11 +496,11 @@ class UserModelTest extends TestCase
     public function testUnmutingPromotionsViaEmailTopicsChange()
     {
         // Creating subscribed user should trigger a Customer.io update.
-        $user = factory(User::class)
-            ->states('email-subscribed')
-            ->create([
-                'sms_status' => null,
-            ]);
+        $user = factory(User::class)->create([
+            'email_subscription_status' => true,
+            'email_subscription_topics' => ['lifestyle'],
+            'sms_status' => null,
+        ]);
 
         // Manually mute promotions for the user.
         $user->promotions_muted_at = Carbon::now();
@@ -509,7 +509,7 @@ class UserModelTest extends TestCase
         $this->assertNotNull($user->promotions_muted_at);
 
         // Updating topics should re-create Customer.io profile.
-        $user->email_subscription_topics = ['news', 'community'];
+        $user->email_subscription_topics = ['scholarships', 'community'];
         $user->save();
 
         $this->assertNull($user->promotions_muted_at);

@@ -4,8 +4,10 @@ namespace App\Observers;
 
 use App\Models\Group;
 use App\Models\Post;
+use App\Models\User;
 use App\Services\Fastly;
 use App\Services\ImageStorage;
+use App\Types\BadgeType;
 
 class PostObserver
 {
@@ -55,6 +57,8 @@ class PostObserver
     public function created(Post $post)
     {
         $post->updateOrCreateActionStats();
+
+        $post->calculatePostBadges();
     }
 
     /**

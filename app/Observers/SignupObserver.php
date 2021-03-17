@@ -3,7 +3,9 @@
 namespace App\Observers;
 
 use App\Models\Signup;
+use App\Models\User;
 use App\Services\GraphQL;
+use App\Types\BadgeType;
 
 const USER_CLUB_ID_QUERY = '
     query UserClubIdQuery($userId: String!) {
@@ -32,6 +34,7 @@ class SignupObserver
      * Handle the Signup "creating" event.
      *
      * @param  \App\Models\Signup  $signup
+     *
      * @return void
      */
     public function creating(Signup $signup)
@@ -43,6 +46,18 @@ class SignupObserver
                 $signup->club_id = $club_id;
             }
         }
+    }
+
+    /**
+     * Handle the Signup "created" event.
+     *
+     * @param  \App\Models\Signup $signup
+     *
+     * @return void
+     */
+    public function created(Signup $signup)
+    {
+        $signup->calculateSignupBadges();
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Auth\Role;
 use App\Jobs\CreateCustomerIoEvent;
 use App\Jobs\SendForgotPasswordEmail;
 use App\Services\GraphQL;
+use App\Types\BadgeType;
 use App\Types\PasswordResetType;
 use Carbon\Carbon;
 use Email\Parse as EmailParser;
@@ -1266,5 +1267,16 @@ class User extends MongoModel implements
          * given eventName.
          */
         return CreateCustomerIoEvent::dispatch($this, $eventName, $eventData);
+    }
+
+    /**
+     * Checks whether a user should be given a badge based on their subscription topics.
+     */
+    public function calculateUserSubscriptionBadges()
+    {
+        if (in_array('news', $this->email_subscription_topics)) {
+            $this->addBadge(BadgeType::get('BREAKDOWN'));
+            $this->save();
+        }
     }
 }

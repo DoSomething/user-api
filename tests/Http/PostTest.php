@@ -58,7 +58,7 @@ class PostTest extends TestCase
 
         $campaignId = factory(Campaign::class)->create()->id;
         $quantity = $this->faker->numberBetween(10, 1000);
-        $why_participated = $this->faker->paragraph;
+        $whyParticipated = $this->faker->paragraph;
         $text = $this->faker->sentence;
         $location = 'US-' . $this->faker->stateAbbr();
         $school_id = $this->faker->word;
@@ -77,7 +77,7 @@ class PostTest extends TestCase
             'action' => $action->name,
             'action_id' => $action->id,
             'quantity' => $quantity,
-            'why_participated' => $why_participated,
+            'why_participated' => $whyParticipated,
             'text' => $text,
             'location' => $location,
             'school_id' => $school_id,
@@ -94,7 +94,7 @@ class PostTest extends TestCase
         $this->assertMysqlDatabaseHas('signups', [
             'campaign_id' => $campaignId,
             'northstar_id' => $user->id,
-            'why_participated' => $why_participated,
+            'why_participated' => $whyParticipated,
             'referrer_user_id' => $referrerUser->id,
             'group_id' => $groupId,
         ]);
@@ -127,7 +127,7 @@ class PostTest extends TestCase
         $campaign = factory(Campaign::class)->create();
 
         $quantity = $this->faker->numberBetween(10, 1000);
-        $why_participated = $this->faker->paragraph;
+        $whyParticipated = $this->faker->paragraph;
         $text = $this->faker->sentence;
         $location = 'US-' . $this->faker->stateAbbr();
         $details = ['source-detail' => 'broadcast-123', 'other' => 'other'];
@@ -143,7 +143,7 @@ class PostTest extends TestCase
             'action' => $action->name,
             'action_id' => $action->id,
             'quantity' => $quantity,
-            'why_participated' => $why_participated,
+            'why_participated' => $whyParticipated,
             'text' => $text,
             'location' => $location,
             'file' => UploadedFile::fake()->image('photo.jpg', 450, 450),
@@ -157,7 +157,7 @@ class PostTest extends TestCase
         $this->assertMysqlDatabaseHas('signups', [
             'campaign_id' => $campaign->id,
             'northstar_id' => $user->id,
-            'why_participated' => $why_participated,
+            'why_participated' => $whyParticipated,
         ]);
 
         $this->assertMysqlDatabaseHas('posts', [
@@ -182,8 +182,8 @@ class PostTest extends TestCase
     {
         $signup = factory(Signup::class)->create();
         $quantity = $this->faker->numberBetween(10, 1000);
-        $hours_spent = $this->faker->randomFloat(2, 0.1, 999999.99);
-        $why_participated = $this->faker->paragraph;
+        $hoursSpent = $this->faker->randomFloat(2, 0.1, 999999.99);
+        $whyParticipated = $this->faker->paragraph;
         $text = $this->faker->sentence;
         $details = ['source-detail' => 'broadcast-123', 'other' => 'other'];
         $action = factory(Action::class)->create([
@@ -198,8 +198,8 @@ class PostTest extends TestCase
             'action' => $action->name,
             'action_id' => $action->id,
             'quantity' => $quantity,
-            'hours_spent' => $hours_spent,
-            'why_participated' => $why_participated,
+            'hours_spent' => $hoursSpent,
+            'why_participated' => $whyParticipated,
             'text' => $text,
             'file' => UploadedFile::fake()->image('photo.jpg', 450, 450),
             'details' => json_encode($details),
@@ -217,7 +217,7 @@ class PostTest extends TestCase
             'action_id' => $action->id,
             'status' => 'pending',
             'quantity' => $quantity,
-            'hours_spent' => $hours_spent,
+            'hours_spent' => $hoursSpent,
             'details' => json_encode($details),
         ]);
 
@@ -225,7 +225,7 @@ class PostTest extends TestCase
         $this->assertMysqlDatabaseHas('signups', [
             'campaign_id' => $signup->campaign_id,
             'northstar_id' => $signup->northstar_id,
-            'why_participated' => $why_participated,
+            'why_participated' => $whyParticipated,
         ]);
     }
 
@@ -239,7 +239,7 @@ class PostTest extends TestCase
         $signup = factory(Signup::class)->create();
         $quantity = $this->faker->numberBetween(10, 1000);
         $text = $this->faker->sentence;
-        $why_participated = $this->faker->paragraph;
+        $whyParticipated = $this->faker->paragraph;
         $details = ['source-detail' => 'broadcast-123', 'other' => 'other'];
         $action = factory(Action::class)->create([
             'campaign_id' => $signup->campaign_id,
@@ -254,7 +254,7 @@ class PostTest extends TestCase
             'action' => $action->name,
             'action_id' => $action->id,
             'quantity' => $quantity,
-            'why_participated' => $why_participated,
+            'why_participated' => $whyParticipated,
             'text' => $text,
             'details' => json_encode($details),
         ]);
@@ -278,7 +278,7 @@ class PostTest extends TestCase
         $this->assertMysqlDatabaseHas('signups', [
             'campaign_id' => $signup->campaign_id,
             'northstar_id' => $signup->northstar_id,
-            'why_participated' => $why_participated,
+            'why_participated' => $whyParticipated,
         ]);
     }
 
@@ -1277,11 +1277,14 @@ class PostTest extends TestCase
         $hiddenPost->tag('Hide In Gallery');
         $hiddenPost->save();
 
-        // Create anothter hidden post by different user.
+        // New Owner of the second hidden post
+        $hiddenOwner = factory(User::class)->create();
+
+        // Create another hidden post by different user.
         $secondHiddenPost = factory(Post::class)
             ->states('photo', 'accepted')
             ->create([
-                'northstar_id' => $this->faker->unique()->northstar_id,
+                'northstar_id' => $hiddenOwner->id,
             ]);
         $secondHiddenPost->tag('Hide In Gallery');
         $secondHiddenPost->save();
@@ -1922,5 +1925,144 @@ class PostTest extends TestCase
             'status' => 'pending',
             'quantity' => $quantity,
         ]);
+    }
+
+    /**
+     * Test that after a text post has been successfully created, a "one_post" badge is added to the user.
+     *
+     * @return void
+     */
+    public function testATextPostAddingABadge()
+    {
+        $signup = factory(Signup::class)->create();
+        $quantity = $this->faker->numberBetween(10, 1000);
+        $text = $this->faker->sentence;
+        $whyParticipated = $this->faker->paragraph;
+        $details = ['source-detail' => 'broadcast-123', 'other' => 'other'];
+        $action = factory(Action::class)->create([
+            'campaign_id' => $signup->campaign_id,
+            'post_type' => 'text',
+        ]);
+
+        // Create the post!
+        $response = $this->asUser($signup->user)->postJson('api/v3/posts', [
+            'northstar_id' => $signup->northstar_id,
+            'campaign_id' => $signup->campaign_id,
+            'type' => $action->post_type,
+            'action' => $action->name,
+            'action_id' => $action->id,
+            'quantity' => $quantity,
+            'why_participated' => $whyParticipated,
+            'text' => $text,
+            'details' => json_encode($details),
+        ]);
+
+        $response->assertCreated();
+        $this->assertPostStructure($response);
+
+        $user = $signup->user->fresh();
+        $this->assertEquals(['signup', 'one-post'], $user->badges);
+    }
+
+    /**
+     * Test that after multiple posts have been successfully created, "one_post", "two_posts", and "three_posts" badges are added to the user.
+     *
+     * @return void
+     */
+    public function testMultiplePostsAddingABadges()
+    {
+        $photoSignup = factory(Signup::class)->create();
+        $quantity = $this->faker->numberBetween(10, 1000);
+        $hoursSpent = $this->faker->randomFloat(2, 0.1, 999999.99);
+        $whyParticipated = $this->faker->paragraph;
+        $text = $this->faker->sentence;
+        $details = ['source-detail' => 'broadcast-123', 'other' => 'other'];
+        $action = factory(Action::class)->create([
+            'campaign_id' => $photoSignup->campaign_id,
+        ]);
+
+        // Create the post!
+        $response = $this->asUser($photoSignup->user)->postJson(
+            'api/v3/posts',
+            [
+                'northstar_id' => $photoSignup->northstar_id,
+                'campaign_id' => $photoSignup->campaign_id,
+                'type' => $action->post_type,
+                'action' => $action->name,
+                'action_id' => $action->id,
+                'quantity' => $quantity,
+                'hours_spent' => $hoursSpent,
+                'why_participated' => $whyParticipated,
+                'text' => $text,
+                'file' => UploadedFile::fake()->image('photo.jpg', 450, 450),
+                'details' => json_encode($details),
+            ],
+        );
+
+        $response->assertCreated();
+        $this->assertPostStructure($response);
+
+        $textSignup = factory(Signup::class)->create();
+        $textSignup->user = $photoSignup->user;
+        $textSignup->northstar_id = $photoSignup->northstar_id;
+        $quantity = $this->faker->numberBetween(10, 1000);
+        $text = $this->faker->sentence;
+        $whyParticipated = $this->faker->paragraph;
+        $details = ['source-detail' => 'broadcast-123', 'other' => 'other'];
+        $action = factory(Action::class)->create([
+            'campaign_id' => $textSignup->campaign_id,
+            'post_type' => 'text',
+        ]);
+
+        // Create the post!
+        $response = $this->asUser($textSignup->user)->postJson('api/v3/posts', [
+            'northstar_id' => $textSignup->northstar_id,
+            'campaign_id' => $textSignup->campaign_id,
+            'type' => $action->post_type,
+            'action' => $action->name,
+            'action_id' => $action->id,
+            'quantity' => $quantity,
+            'why_participated' => $whyParticipated,
+            'text' => $text,
+            'details' => json_encode($details),
+        ]);
+
+        $response->assertCreated();
+        $this->assertPostStructure($response);
+
+        $socialShareSignup = factory(Signup::class)->create();
+        $socialShareSignup->user = $photoSignup->user;
+        $socialShareSignup->northstar_id = $photoSignup->northstar_id;
+        $quantity = $this->faker->numberBetween(10, 1000);
+        $text = $this->faker->sentence;
+        $details = ['source-detail' => 'broadcast-123', 'other' => 'other'];
+        $action = factory(Action::class)->create([
+            'campaign_id' => $socialShareSignup->campaign_id,
+            'post_type' => 'share-social',
+        ]);
+
+        // Create the post!
+        $response = $this->asUser($socialShareSignup->user)->postJson(
+            'api/v3/posts',
+            [
+                'northstar_id' => $socialShareSignup->northstar_id,
+                'campaign_id' => $socialShareSignup->campaign_id,
+                'type' => $action->post_type,
+                'action' => $action->name,
+                'action_id' => $action->id,
+                'quantity' => $quantity,
+                'text' => $text,
+                'details' => json_encode($details),
+            ],
+        );
+
+        $response->assertCreated();
+        $this->assertPostStructure($response);
+
+        $user = $photoSignup->user->fresh();
+        $this->assertEquals(
+            ['signup', 'one-post', 'two-posts', 'three-posts'],
+            $user->badges,
+        );
     }
 }
