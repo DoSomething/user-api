@@ -1279,7 +1279,7 @@ class User extends MongoModel implements
     {
         if (
             in_array('news', $this->email_subscription_topics) &&
-            !in_array('news-subscription', $this->badges)
+            !in_array(BadgeType::get('NEWS_SUBSCRIPTION'), $this->badges)
         ) {
             $this->addBadge(BadgeType::get('NEWS_SUBSCRIPTION'));
             $this->save();
