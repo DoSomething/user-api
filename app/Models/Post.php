@@ -784,6 +784,8 @@ class Post extends Model
      */
     public function calculatePostBadges()
     {
+        // reverse the count conditionals to add all 3 badges if they have 3 or more posts, 2 for up to 2, 1 for only one.
+        //chain the count method off of posts
         $user = $this->user;
         if ($user) {
             $userPostsCount = $user->posts()->count();
