@@ -107,7 +107,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         });
 
         // We should have tracked this event for the provided user:
-        $this->customerIoMock
+        return $this->customerIoMock
             ->shouldHaveReceived('trackEvent')
             ->with($userMatcher, $eventName, Mockery::any());
     }
