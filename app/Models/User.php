@@ -800,7 +800,10 @@ class User extends MongoModel implements
             'three_posts_badge' => in_array('three-posts', $this->badges)
                 ? true
                 : false,
-            'breakdown_badge' => in_array('breakdown', $this->badges)
+            'news_subscription_badge' => in_array(
+                'news-subscription',
+                $this->badges,
+            )
                 ? true
                 : false,
             'one_staff_fave_badge' => in_array('one-staff-fave', $this->badges)
@@ -1274,8 +1277,11 @@ class User extends MongoModel implements
      */
     public function calculateUserSubscriptionBadges()
     {
-        if (in_array('news', $this->email_subscription_topics)) {
-            $this->addBadge(BadgeType::get('BREAKDOWN'));
+        if (
+            in_array('news', $this->email_subscription_topics) &&
+            !in_array('news-subscription', $this->badges)
+        ) {
+            $this->addBadge(BadgeType::get('NEWS_SUBSCRIPTION'));
             $this->save();
         }
     }
