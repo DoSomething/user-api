@@ -135,6 +135,7 @@ class SignupTest extends TestCase
      */
     public function testCreatingASignupForUserWithClubId()
     {
+        $this->withoutExceptionHandling();
         // Turn on the feature flag for tracking club_ids.
         config(['features.track_club_id' => 'true']);
 
