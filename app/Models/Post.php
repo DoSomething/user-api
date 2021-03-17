@@ -479,49 +479,25 @@ class Post extends Model
         }
 
         if ($this->user) {
-            $userPosts = $this->user->posts->take(3);
-            foreach ($userPosts as $post) {
-                if ($post->tagSlugs()->contains('good-submission')) {
-                    if (
-                        !in_array(
-                            BadgeType::get('ONE_STAFF_FAVE'),
-                            $this->user->badges,
-                        )
-                    ) {
-                        $this->user->addBadge(BadgeType::get('ONE_STAFF_FAVE'));
-                    } elseif (
-                        !in_array(
-                            BadgeType::get('TWO_STAFF_FAVES'),
-                            $this->user->badges,
-                        ) &&
-                        in_array(
-                            BadgeType::get('ONE_STAFF_FAVE'),
-                            $this->user->badges,
-                        )
-                    ) {
-                        $this->user->addBadge(
-                            BadgeType::get('TWO_STAFF_FAVES'),
-                        );
-                    } elseif (
-                        !in_array(
-                            BadgeType::get('THREE_STAFF_FAVES'),
-                            $this->user->badges,
-                        ) &&
-                        in_array(
-                            BadgeType::get('THREE_POSTS'),
-                            $this->user->badges,
-                        ) &&
-                        in_array(
-                            BadgeType::get('TWO_STAFF_FAVES'),
-                            $this->user->badges,
-                        )
-                    ) {
-                        $this->user->addBadge(
-                            BadgeType::get('THREE_STAFF_FAVES'),
-                        );
-                    }
-                }
+            $userPostsWithFaveTagCount = $this->user
+                ->posts()
+                ->withTag('good-submission')
+                ->take(3)
+                ->count();
+
+            if ($userPostsWithFaveTagCount >= 3) {
+                $this->user->addBadge(BadgeType::get('ONE_STAFF_FAVE'));
+                $this->user->addBadge(BadgeType::get('TWO_STAFF_FAVES'));
+                $this->user->addBadge(BadgeType::get('THREE_STAFF_FAVES'));
             }
+            if ($userPostsWithFaveTagCount === 2) {
+                $this->user->addBadge(BadgeType::get('ONE_STAFF_FAVE'));
+                $this->user->addBadge(BadgeType::get('TWO_STAFF_FAVES'));
+            }
+            if ($userPostsWithFaveTagCount === 1) {
+                $this->user->addBadge(BadgeType::get('ONE_STAFF_FAVE'));
+            }
+
             $this->user->save();
         }
 
@@ -808,16 +784,22 @@ class Post extends Model
      */
     public function calculatePostBadges()
     {
+        // reverse the count conditionals to add all 3 badges if they have 3 or more posts, 2 for up to 2, 1 for only one.
+        //chain the count method off of posts
         $user = $this->user;
         if ($user) {
-            $userPosts = $user->posts();
-            $userPostsCount = $userPosts->count();
+            $userPostsCount = $user->posts()->count();
+            if ($userPostsCount >= 3) {
+                $user->addBadge(BadgeType::get('ONE_POST'));
+                $user->addBadge(BadgeType::get('TWO_POSTS'));
+                $user->addBadge(BadgeType::get('THREE_POSTS'));
+            }
+            if ($userPostsCount === 2) {
+                $user->addBadge(BadgeType::get('ONE_POST'));
+                $user->addBadge(BadgeType::get('TWO_POSTS'));
+            }
             if ($userPostsCount === 1) {
                 $user->addBadge(BadgeType::get('ONE_POST'));
-            } elseif ($userPostsCount === 2) {
-                $user->addBadge(BadgeType::get('TWO_POSTS'));
-            } elseif ($userPostsCount === 3) {
-                $user->addBadge(BadgeType::get('THREE_POSTS'));
             }
             $user->save();
         }

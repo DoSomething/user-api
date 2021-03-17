@@ -170,6 +170,7 @@ class TagsTest extends TestCase
      */
     public function testGoodSubmissionEarnsABadge()
     {
+        $this->withoutExceptionHandling();
         $post = factory(Post::class)->create();
         $user = $post->user;
 
@@ -352,6 +353,7 @@ class TagsTest extends TestCase
      */
     public function testFourGoodSubmissionsEarnsThreeBadges()
     {
+        $this->withoutExceptionHandling();
         // Make first Post!
         $postOne = factory(Post::class)->create();
         $userId = $postOne->northstar_id;

@@ -57,14 +57,7 @@ class SignupObserver
      */
     public function created(Signup $signup)
     {
-        $user = $signup->user;
-        if ($user) {
-            $userSignups = $user->signups();
-            if ($userSignups->count() === 1) {
-                $user->addBadge(BadgeType::get('SIGNUP'));
-                $user->save();
-            }
-        }
+        $signup->calculateSignupBadges();
     }
 
     /**
