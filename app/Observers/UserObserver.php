@@ -187,13 +187,7 @@ class UserObserver
      */
     public function updated(User $user)
     {
-        if (
-            in_array('news', $user->email_subscription_topics) &&
-            !in_array('breakdown', $user->badges)
-        ) {
-            $user->addBadge('breakdown');
-            $user->save();
-        }
+        $user->calculateUserSubscriptionBadges();
 
         $mutedPromotions = isset($user->promotions_muted_at);
         $shouldTrackPromotionsResubscribe = false;

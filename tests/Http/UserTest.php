@@ -1217,7 +1217,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test that breakdown badge is added is true after adding news as a topic on a new user.
+     * Test that news subscription badge is added is true after adding news as a topic on a new user.
      *
      * @return void
      */
@@ -1230,16 +1230,16 @@ class UserTest extends TestCase
         $this->assertMongoDatabaseHas('users', [
             '_id' => $newsUser->id,
             'email_subscription_status' => true,
-            'badges' => ['breakdown'],
+            'badges' => ['news-subscription'],
         ]);
     }
 
     /**
-     * Test that a user earns the breakdown badge if they update subscription topics with news.
+     * Test that a user earns the news subscription badge if they update subscription topics with news.
      *
      * @return void
      */
-    public function testV2UpdateProfileEarnBreakdownBadge()
+    public function testV2UpdateProfileEarnNewsSubscriptionBadge()
     {
         $user = factory(User::class)
             ->states('email-unsubscribed')
@@ -1259,9 +1259,7 @@ class UserTest extends TestCase
         $this->assertMongoDatabaseHas('users', [
             'email_subscription_status' => true,
             'email_subscription_topics' => ['news'],
+            'badges' => ['news-subscription'],
         ]);
-
-        $subscribedUser = $user->fresh();
-        $this->assertEquals(['breakdown'], $subscribedUser->badges);
     }
 }
