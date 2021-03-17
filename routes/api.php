@@ -65,6 +65,9 @@ Route::group(
         Route::get('signups/{signup}', 'SignupsController@show');
         Route::patch('signups/{signup}', 'SignupsController@update');
         Route::delete('signups/{signup}', 'SignupsController@destroy');
+
+        // Questionnaires
+        Route::post('questionnaires', 'QuestionnaireController@store');
     },
 );
 
