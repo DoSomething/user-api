@@ -75,7 +75,7 @@ class QuestionnaireController extends ActivityApiController
      */
     public function store(Request $request)
     {
-        $this->validate($request, $this->rules);
+        $validated = $this->validate($request, $this->rules);
 
         $northstarId = getNorthstarId($request);
 
@@ -94,7 +94,7 @@ class QuestionnaireController extends ActivityApiController
 
             if (!$signup) {
                 $signup = $this->signups->create(
-                    $request->all(),
+                    $validated,
                     $northstarId,
                     $campaignId,
                 );
@@ -108,7 +108,7 @@ class QuestionnaireController extends ActivityApiController
 
             $shouldTrackToCustomerIo = $index === 0;
 
-            $post = $this->posts->create(array_merge($request->all(), [
+            $post = $this->posts->create(array_merge($validated, [
                 'action_id' => $actionId,
                 'text' => $question['answer'],
                 'details' => json_encode($postDetails),
