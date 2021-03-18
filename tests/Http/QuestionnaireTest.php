@@ -23,7 +23,7 @@ class QuestionnaireTest extends TestCase
 
         $campaignId = factory(Campaign::class)->create()->id;
         $location = 'US-' . $this->faker->stateAbbr();
-        $school_id = $this->faker->word;
+        $schoolId = $this->faker->school_id;
         $details = ['source-detail' => 'broadcast-123', 'other' => 'other'];
         $groupId = factory(Group::class)->create()->id;
 
@@ -47,7 +47,7 @@ class QuestionnaireTest extends TestCase
             'questions' => [$questionOne, $questionTwo],
             'contentful_id' => $contentfulId,
             'location' => $location,
-            'school_id' => $school_id,
+            'school_id' => $schoolId,
             'details' => json_encode($details),
             'referrer_user_id' => $referrerUser->id,
             'group_id' => $groupId,
@@ -85,7 +85,7 @@ class QuestionnaireTest extends TestCase
             'text' => $questionOne['answer'],
             'status' => 'pending',
             'location' => $location,
-            'school_id' => $school_id,
+            'school_id' => $schoolId,
             'details' => json_encode(array_merge($details, [
                 'questionnaire' => true,
                 'question' => $questionOne['title'],
@@ -104,7 +104,7 @@ class QuestionnaireTest extends TestCase
             'text' => $questionTwo['answer'],
             'status' => 'pending',
             'location' => $location,
-            'school_id' => $school_id,
+            'school_id' => $schoolId,
             'details' => json_encode(array_merge($details, [
                 'questionnaire' => true,
                 'question' => $questionTwo['title'],
