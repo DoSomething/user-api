@@ -462,6 +462,7 @@ class TagsTest extends TestCase
                 'two-staff-faves',
                 'three-posts',
                 'three-staff-faves',
+                'four-posts',
             ],
             $user->badges,
         );

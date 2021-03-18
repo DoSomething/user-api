@@ -8,6 +8,7 @@ class BadgeType extends Type
     private const ONE_POST = 'one-post';
     private const TWO_POSTS = 'two-posts';
     private const THREE_POSTS = 'three-posts';
+    private const FOUR_POSTS = 'four-posts';
     private const NEWS_SUBSCRIPTION = 'news-subscription';
     private const ONE_STAFF_FAVE = 'one-staff-fave';
     private const TWO_STAFF_FAVES = 'two-staff-faves';
@@ -25,6 +26,7 @@ class BadgeType extends Type
             self::ONE_POST => 'One Post Badge',
             self::TWO_POSTS => 'Two Posts Badge',
             self::THREE_POSTS => 'Three Posts Badge',
+            self::FOUR_POSTS => 'Four Posts Badge',
             self::NEWS_SUBSCRIPTION => 'News Subscription Badge',
             self::ONE_STAFF_FAVE => 'One Staff Fave Badge',
             self::TWO_STAFF_FAVES => 'Two Staff Faves Badge',

@@ -94,6 +94,7 @@ class UserModelTest extends TestCase
             'one_post_badge' => false,
             'two_posts_badge' => false,
             'three_posts_badge' => false,
+            'four_posts_badge' => false,
             'news_subscription_badge' => false,
             'one_staff_fave_badge' => false,
             'two_staff_faves_badge' => false,
