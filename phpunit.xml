@@ -15,6 +15,7 @@
     </testsuites>
     <php>
         <env name="APP_ENV" value="testing"/>
+        <env name="CLOCKWORK_ENABLE" value="false" />
         <env name="MONGODB_DATABASE" value="northstar-test"/>
         <env name="MYSQL_DATABASE" value="rogue_test"/>
         <env name="CACHE_DRIVER" value="array"/>
