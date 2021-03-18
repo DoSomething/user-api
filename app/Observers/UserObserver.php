@@ -196,7 +196,8 @@ class UserObserver
         if ($user->wasChanged('promotions_muted_at')) {
             // And we set it, delete the Customer.io profile.
             if ($mutedPromotions) {
-                return DeleteCustomerIoProfile::dispatch($user);
+                return DeleteCustomerIoProfile::dispatch($user)
+                    ->onQueue(config('queue.names.low'));
             }
 
             // Otherwise, it's null and we need to track resubscribe.
