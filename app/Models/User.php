@@ -800,6 +800,9 @@ class User extends MongoModel implements
             'three_posts_badge' => in_array('three-posts', $this->badges)
                 ? true
                 : false,
+            'four_posts_badge' => in_array('four-posts', $this->badges)
+                ? true
+                : false,
             'news_subscription_badge' => in_array(
                 'news-subscription',
                 $this->badges,
