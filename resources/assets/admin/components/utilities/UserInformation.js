@@ -60,7 +60,7 @@ const UserInformation = ({ user, userId, linkSignup, children }) => (
         <h2 className="heading">
           <UserName
             user={user}
-            link={linkSignup ? `/signups/${linkSignup}` : null}
+            link={linkSignup ? `/admin/signups/${linkSignup}` : null}
           />
         </h2>
         <p>
@@ -85,7 +85,7 @@ const UserInformation = ({ user, userId, linkSignup, children }) => (
       <div className="mb-4">
         <h2 className="heading">
           {linkSignup ? (
-            <a href={`/signups/${linkSignup}`}>{userId}</a>
+            <a href={`/admin/signups/${linkSignup}`}>{userId}</a>
           ) : (
             <span>{userId}</span>
           )}

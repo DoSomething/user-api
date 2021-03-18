@@ -28,10 +28,10 @@ class AppServiceProvider extends ServiceProvider
         Signup::observe(SignupObserver::class);
 
         // Register global view composer.
-        View::composer('*', function ($view) {
+        View::composer('admin.*', function ($view) {
             $view->with('auth', [
                 'id' => auth()->id(),
-                'token' => auth()->user() ? auth()->user()->access_token : null,
+                'token' => auth()->user() ? access_token() : null,
                 'role' => auth()->user() ? auth()->user()->role : 'user',
             ]);
         });

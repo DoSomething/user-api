@@ -191,14 +191,14 @@ const ReviewablePost = ({ post }) => {
           <MetaInformation
             title="Post Information"
             details={{
-              ID: <Link to={`/posts/${post.id}`}>{post.id}</Link>,
+              ID: <Link to={`/admin/posts/${post.id}`}>{post.id}</Link>,
               Campaign: (
-                <a href={`/campaigns/${post.campaign.id}`}>
+                <a href={`/admin/campaigns/${post.campaign.id}`}>
                   {post.campaign.internalTitle}
                 </a>
               ),
               Action: (
-                <a href={`/actions/${post.actionDetails.id}`}>
+                <a href={`/admin/actions/${post.actionDetails.id}`}>
                   {post.actionDetails.name}
                 </a>
               ),
@@ -208,24 +208,26 @@ const ReviewablePost = ({ post }) => {
               Submitted: formatDateTime(post.createdAt),
               'Hours Spent': post.hoursSpent || '-',
               Referrer: post.referrerUserId ? (
-                <Link to={`/users/${post.referrerUserId}`}>
+                <Link to={`/admin/activity/${post.referrerUserId}`}>
                   {post.referrerUserId}
                 </Link>
               ) : (
                 '-'
               ),
               Club: post.clubId ? (
-                <Link to={`/clubs/${post.clubId}`}>{post.clubId}</Link>
+                <Link to={`/admin/clubs/${post.clubId}`}>{post.clubId}</Link>
               ) : (
                 '-'
               ),
               Group: post.groupId ? (
-                <Link to={`/groups/${post.groupId}`}>{post.groupId}</Link>
+                <Link to={`/admin/groups/${post.groupId}`}>{post.groupId}</Link>
               ) : (
                 '-'
               ),
               School: post.schoolId ? (
-                <Link to={`/schools/${post.schoolId}`}>{post.schoolId}</Link>
+                <Link to={`/admin/schools/${post.schoolId}`}>
+                  {post.schoolId}
+                </Link>
               ) : (
                 '-'
               ),
@@ -238,8 +240,12 @@ const ReviewablePost = ({ post }) => {
           <MetaInformation
             title="Signup Information"
             details={{
-              ID: <a href={`/signups/${post.signupId}`}>{post.signupId}</a>,
-              User: <Link to={`/users/${post.userId}`}>{post.userId}</Link>,
+              ID: (
+                <a href={`/admin/signups/${post.signupId}`}>{post.signupId}</a>
+              ),
+              User: (
+                <Link to={`/admin/users/${post.userId}`}>{post.userId}</Link>
+              ),
               Source: post.signup ? post.signup.source : '–',
             }}
           />

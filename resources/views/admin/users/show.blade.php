@@ -75,7 +75,10 @@
 
     <div class="container">
         <div class="wrapper">
-            <div class="container__block -half">
+            <div class="container__block -narrow">
+                <a href="/admin/activity/{{ $user->id }}">View user's signups & posts</a>
+            </div>
+            <div class="container__block -narrow">
                 @if(Auth::user()->hasRole('admin'))
                     <a class="primary" href="{{ route('admin.users.edit', ['user' => $user->id]) }}">Edit user's profile</a>
                 @endif
@@ -104,7 +107,6 @@
                     </li>
 
                     <li>
-                        <a href="{{ config('services.rogue.url') }}/users/{{ $user->id }}">Rogue</a>
                     </li>
             </div>
         </div>

@@ -143,6 +143,9 @@ if (config('features.admin')) {
             // Actions
             Route::view('/action-stats', 'admin.app');
 
+            // Activity (Users)
+            Route::view('/activity/{id}', 'admin.app');
+
             // Campaigns
             Route::view('/campaigns', 'admin.app');
             Route::view('/campaigns/{id}', 'admin.app');
@@ -156,6 +159,10 @@ if (config('features.admin')) {
             Route::view('groups', 'admin.app');
             Route::view('groups/{id}', 'admin.app');
             Route::view('groups/{id}/posts', 'admin.app');
+
+            // Signups
+            Route::view('signups', 'admin.app');
+            Route::view('signups/{id}', 'admin.app');
 
             // Schools
             Route::view('schools/{id}', 'admin.app')->name('schools.show');

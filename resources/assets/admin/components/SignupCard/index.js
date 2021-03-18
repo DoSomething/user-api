@@ -40,7 +40,7 @@ const SignupCard = ({ signup }) => {
 
   return (
     <article className="container__row signup-card">
-      <Link to={`/signups/${signup.id}`}>
+      <Link to={`/admin/signups/${signup.id}`}>
         <div className="container__block -half">
           <div className="container__row">
             <h2 className="heading">
