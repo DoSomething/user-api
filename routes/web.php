@@ -160,6 +160,9 @@ if (config('features.admin')) {
             Route::view('groups/{id}', 'admin.app');
             Route::view('groups/{id}/posts', 'admin.app');
 
+            // Posts
+            Route::view('posts/{id}', 'admin.app');
+
             // Signups
             Route::view('signups', 'admin.app');
             Route::view('signups/{id}', 'admin.app');
