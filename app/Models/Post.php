@@ -486,15 +486,12 @@ class Post extends Model
                 ->count();
 
             if ($userPostsWithFaveTagCount >= 3) {
-                $this->user->addBadge(BadgeType::get('ONE_STAFF_FAVE'));
-                $this->user->addBadge(BadgeType::get('TWO_STAFF_FAVES'));
                 $this->user->addBadge(BadgeType::get('THREE_STAFF_FAVES'));
             }
-            if ($userPostsWithFaveTagCount === 2) {
-                $this->user->addBadge(BadgeType::get('ONE_STAFF_FAVE'));
+            if ($userPostsWithFaveTagCount >= 2) {
                 $this->user->addBadge(BadgeType::get('TWO_STAFF_FAVES'));
             }
-            if ($userPostsWithFaveTagCount === 1) {
+            if ($userPostsWithFaveTagCount >= 1) {
                 $this->user->addBadge(BadgeType::get('ONE_STAFF_FAVE'));
             }
 
@@ -788,21 +785,15 @@ class Post extends Model
         if ($user) {
             $userPostsCount = $user->posts()->count();
             if ($userPostsCount >= 4) {
-                $user->addBadge(BadgeType::get('ONE_POST'));
-                $user->addBadge(BadgeType::get('TWO_POSTS'));
-                $user->addBadge(BadgeType::get('THREE_POSTS'));
                 $user->addBadge(BadgeType::get('FOUR_POSTS'));
             }
-            if ($userPostsCount === 3) {
-                $user->addBadge(BadgeType::get('ONE_POST'));
-                $user->addBadge(BadgeType::get('TWO_POSTS'));
+            if ($userPostsCount >= 3) {
                 $user->addBadge(BadgeType::get('THREE_POSTS'));
             }
-            if ($userPostsCount === 2) {
-                $user->addBadge(BadgeType::get('ONE_POST'));
+            if ($userPostsCount >= 2) {
                 $user->addBadge(BadgeType::get('TWO_POSTS'));
             }
-            if ($userPostsCount === 1) {
+            if ($userPostsCount >= 1) {
                 $user->addBadge(BadgeType::get('ONE_POST'));
             }
             $user->save();
