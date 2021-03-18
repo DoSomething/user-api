@@ -44,6 +44,7 @@ class PostRequest extends Request
             'text' => 'nullable|string|max:500',
             'location' => 'nullable|string',
             'postal_code' => 'nullable|max:10',
+            'group_id' => 'nullable|integer|exists:mysql.groups,id',
             'school_id' => 'nullable|string|max:255',
             'quantity' => 'nullable|integer',
             // Maximum ensures we don't exceed the default precision limit for this Decimal db column.
