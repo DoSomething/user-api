@@ -907,6 +907,26 @@ class User extends MongoModel implements
     }
 
     /**
+     * Scope a query to "search" for the given term.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSearch($query, $term)
+    {
+        // We can infer whether the term is an email or mobile based on the
+        // string's format & directly query that particular field:
+        if (is_email($term)) {
+            return $query->where('email', normalize('email', $term));
+        }
+
+        if (is_phone_number($term)) {
+            return $query->where('mobile', normalize('mobile', $term));
+        }
+
+        return $query->where('_id', $term);
+    }
+
+    /**
      * Update user with the given array of fields if field is not already set.
      * Filter out any fields that have a null value.
      *
