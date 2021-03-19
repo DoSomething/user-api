@@ -24,6 +24,7 @@
     "gree/jose": "^2.2",
     "guzzlehttp/guzzle": "^6.3.0",
     "hashids/hashids": "^4.0",
+    "inertiajs/inertia-laravel": "^0.4.0",
     "intervention/image": "^2.3",
     "jenssegers/mongodb": "3.6.*",
     "laminas/laminas-diactoros": "^2.2",
