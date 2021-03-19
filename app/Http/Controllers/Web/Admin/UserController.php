@@ -39,6 +39,18 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        if ($query = $request->query('search')) {
+            $user = User::search($query)->first();
+
+            if (!$user) {
+                return redirect()
+                    ->route('admin.users.index')
+                    ->with('flash', 'Could not find a matching user.');
+            }
+
+            return redirect()->route('admin.users.show', $user->id);
+        }
+
         $users = User::simplePaginate();
 
         return view('admin.users.index', compact('users'));

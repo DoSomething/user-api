@@ -11,6 +11,14 @@
         <div class="wrapper">
             <div class="container__block">
                 <h1>All Users</h1>
+
+                <form action="/admin/users" method="GET">
+                    {{ csrf_field() }}
+                    <div class="form-actions -inline">
+                        <li><input class="text-field -search" placeholder="Find user by email, mobile, ID…" style="min-width: 400px" name="search" type="text"></li>
+                        <li><input class="button -secondary" type="submit" value="Search"></li>
+                    </div>
+                </form>
             </div>
 
             <div class="container__block">
