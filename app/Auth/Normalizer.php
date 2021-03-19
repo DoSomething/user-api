@@ -101,17 +101,6 @@ class Normalizer
     }
 
     /**
-     * Confirm that the given value is an e-mail address.
-     *
-     * @param string $value
-     * @return bool
-     */
-    protected function isEmail($value)
-    {
-        return filter_var(trim($value), FILTER_VALIDATE_EMAIL) !== false;
-    }
-
-    /**
      * Normalizes email or mobile value.
      *
      * @param string $value
@@ -119,7 +108,7 @@ class Normalizer
      */
     public function username($value)
     {
-        $type = $this->isEmail($value) ? 'email' : 'mobile';
+        $type = is_email($value) ? 'email' : 'mobile';
 
         return $this->{$type}($value);
     }

@@ -251,6 +251,21 @@ function is_phone_number(?string $value): bool
 }
 
 /**
+ * Is the given value a phone number?
+ *
+ * @param string $value
+ * @return bool
+ */
+function is_email(?string $value): bool
+{
+    if (!$value) {
+        return false;
+    }
+
+    return filter_var(trim($value), FILTER_VALIDATE_EMAIL) !== false;
+}
+
+/**
  * Format a legacy phone number to a proper number format.
  *
  * @param  string $mobile
