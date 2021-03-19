@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
  * @see \App\Providers\RouteServiceProvider
  */
 
+Route::inertia('/inertia', 'Users/Index');
+
 // Homepage
 Route::get('/', 'UserController@home');
 
