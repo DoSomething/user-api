@@ -386,7 +386,8 @@ class UserModelTest extends TestCase
             $clubLeader->email,
         );
 
-        $user->update(['club_id' => $newClubId]);
+        $user->club_id = $newClubId;
+        $user->save();
 
         $this->assertCustomerIoEvent($user, 'club_id_updated');
     }
@@ -408,7 +409,8 @@ class UserModelTest extends TestCase
         // The Customer.io event shoud not be dispatched.
         $this->customerIoMock->shouldNotReceive('trackEvent');
 
-        $user->update(['club_id' => 123]);
+        $user->club_id = 123;
+        $user->save();
     }
 
     /** @test */
