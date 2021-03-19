@@ -9,11 +9,17 @@
         <div class="wrapper">
             <div class="container__block -narrow">
                 <p>Welcome to the <strong>DoSomething.org admin interface</strong>. If you're looking to
-                manage user accounts or domain redirects, you're in the right place.</p>
+                manage user accounts, campaigns, clubs, or domain redirects, you're in the right place.</p>
 
                 @auth
-                    <p><mark><strong>Currently under construction!</strong></mark> If you
-                    run into any issues, head back over to Aurora or Rogue.</p>
+                    <ul>
+                        <li><a href="/admin/campaigns">Campaigns</a> <span class="footnote">- create/edit campaigns, actions, signups, and reportbacks</span></li>
+                        <li><a href="/admin/users">Users</a> <span class="footnote">- view/edit user profiles, signups, or posts.</span></li>
+                        <li><a href="/admin/clubs">Clubs</a> <span class="footnote">- view/edit DoSomething.org clubs</span></li>
+                        <li><a href="/admin/redirects">Redirects</a> <span class="footnote">- view/edit vanity URL redirects <em>(admins only)</em></span></li>
+                    </ul>
+
+                    <p>Questions? Check out the <a href="/admin/faq">FAQs</a> or ask in <code>#help-product</code>.</p>
                 @endauth
 
                 @guest

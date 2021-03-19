@@ -27,13 +27,6 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="{{ url('/admin/faq') }}">
-                        <strong class="navigation__title">FAQ</strong>
-                        <span class="navigation__subtitle">How do I...</span>
-                    </a>
-                </li>
-
                 @if (Auth::user()->hasRole('admin'))
                     {{-- <li>
                         <a href="{{ route('superusers.index') }}">
@@ -56,6 +49,13 @@
                         </a>
                     </li>
                 @endif
+
+                <li>
+                    <a href="{{ url('/admin/faq') }}">
+                        <strong class="navigation__title">FAQ</strong>
+                        <span class="navigation__subtitle">How do I...</span>
+                    </a>
+                </li>
             </ul>
 
             <ul class="navigation__secondary">

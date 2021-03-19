@@ -69,105 +69,103 @@ Route::post('password/reset/{type}', 'ResetPasswordController@reset');
 Route::get('originals/{post}', 'OriginalsController@show');
 
 // Administration
-if (config('features.admin')) {
-    Route::prefix('admin')
-        ->name('admin.')
-        ->group(function () {
-            // Homepage
-            Route::view('/', 'admin.home');
+Route::prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        // Homepage
+        Route::view('/', 'admin.home');
 
-            // Actions
-            Route::resource('/actions', 'Admin\ActionsController', [
-                'except' => ['index', 'show'],
-            ]);
+        // Actions
+        Route::resource('/actions', 'Admin\ActionsController', [
+            'except' => ['index', 'show'],
+        ]);
 
-            // Campaigns
-            Route::get(
-                '/campaigns/{id}/actions/create',
-                'Admin\ActionsController@create',
-            );
+        // Campaigns
+        Route::get(
+            '/campaigns/{id}/actions/create',
+            'Admin\ActionsController@create',
+        );
 
-            Route::resource('/campaigns', 'Admin\CampaignsController', [
-                'except' => ['index', 'show'],
-            ]);
+        Route::resource('/campaigns', 'Admin\CampaignsController', [
+            'except' => ['index', 'show'],
+        ]);
 
-            // Clubs
-            Route::resource('/clubs', 'Admin\ClubsController', [
-                'except' => ['index', 'show', 'destroy'],
-            ]);
+        // Clubs
+        Route::resource('/clubs', 'Admin\ClubsController', [
+            'except' => ['index', 'show', 'destroy'],
+        ]);
 
-            // FAQ
-            Route::view('/faq', 'admin.pages.faq');
+        // FAQ
+        Route::view('/faq', 'admin.pages.faq');
 
-            // Groups
-            Route::resource('groups', 'Admin\GroupsController', [
-                'except' => ['create', 'index', 'show'],
-            ]);
+        // Groups
+        Route::resource('groups', 'Admin\GroupsController', [
+            'except' => ['create', 'index', 'show'],
+        ]);
 
-            // Group Types
-            Route::resource('group-types', 'Admin\GroupTypesController', [
-                'except' => ['index', 'show'],
-            ]);
+        // Group Types
+        Route::resource('group-types', 'Admin\GroupTypesController', [
+            'except' => ['index', 'show'],
+        ]);
 
-            Route::get(
-                'group-types/{id}/groups/create',
-                'Admin\GroupsController@create',
-            );
+        Route::get(
+            'group-types/{id}/groups/create',
+            'Admin\GroupsController@create',
+        );
 
-            // Users
-            Route::resource('users', 'Admin\UserController', [
-                'except' => ['create', 'store'],
-            ]);
+        // Users
+        Route::resource('users', 'Admin\UserController', [
+            'except' => ['create', 'store'],
+        ]);
 
-            Route::post('users/{user}/resets', [
-                'as' => 'users.resets.create',
-                'uses' => 'Admin\UserController@sendPasswordReset',
-            ]);
+        Route::post('users/{user}/resets', [
+            'as' => 'users.resets.create',
+            'uses' => 'Admin\UserController@sendPasswordReset',
+        ]);
 
-            Route::delete('users/{user}/promotions', [
-                'as' => 'users.promotions.destroy',
-                'uses' => 'Admin\PromotionsController@destroy',
-            ]);
+        Route::delete('users/{user}/promotions', [
+            'as' => 'users.promotions.destroy',
+            'uses' => 'Admin\PromotionsController@destroy',
+        ]);
 
-            // Fastly Redirects
-            Route::resource('redirects', 'Admin\RedirectsController');
-        });
+        // Fastly Redirects
+        Route::resource('redirects', 'Admin\RedirectsController');
+    });
 
-    // Client-side Admin routes:
-    Route::prefix('admin')
-        ->middleware('auth:web', 'role:staff,admin')
-        ->group(function () {
-            // Actions
-            Route::view('/actions/{id}', 'admin.app');
+// Client-side Admin routes:
+Route::prefix('admin')
+    ->middleware('auth:web', 'role:staff,admin')
+    ->group(function () {
+        // Actions
+        Route::view('/actions/{id}', 'admin.app');
 
-            // Actions
-            Route::view('/action-stats', 'admin.app');
+        // Actions
+        Route::view('/action-stats', 'admin.app');
 
-            // Activity (Users)
-            Route::view('/activity/{id}', 'admin.app');
+        // Activity (Users)
+        Route::view('/activity/{id}', 'admin.app');
 
-            // Campaigns
-            Route::view('/campaigns', 'admin.app');
-            Route::view('/campaigns/{id}', 'admin.app');
-            Route::view('campaigns/{id}/{status}', 'admin.app');
+        // Campaigns
+        Route::view('/campaigns', 'admin.app');
+        Route::view('/campaigns/{id}', 'admin.app');
+        Route::view('campaigns/{id}/{status}', 'admin.app');
 
-            // Clubs
-            Route::view('/clubs', 'admin.app');
-            Route::view('/clubs/{id}', 'admin.app');
+        // Clubs
+        Route::view('/clubs', 'admin.app');
+        Route::view('/clubs/{id}', 'admin.app');
 
-            // Groups
-            Route::view('groups', 'admin.app');
-            Route::view('groups/{id}', 'admin.app');
-            Route::view('groups/{id}/posts', 'admin.app');
+        // Groups
+        Route::view('groups', 'admin.app');
+        Route::view('groups/{id}', 'admin.app');
+        Route::view('groups/{id}/posts', 'admin.app');
 
-            // Posts
-            Route::view('posts/{id}', 'admin.app');
+        // Posts
+        Route::view('posts/{id}', 'admin.app');
 
-            // Signups
-            Route::view('signups', 'admin.app');
-            Route::view('signups/{id}', 'admin.app');
+        // Signups
+        Route::view('signups', 'admin.app');
+        Route::view('signups/{id}', 'admin.app');
 
-            // Schools
-            Route::view('schools/{id}', 'admin.app')->name('schools.show');
-        });
-}
+        // Schools
+        Route::view('schools/{id}', 'admin.app')->name('schools.show');
+    });
