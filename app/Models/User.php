@@ -10,6 +10,7 @@ use App\Types\BadgeType;
 use App\Types\PasswordResetType;
 use Carbon\Carbon;
 use Email\Parse as EmailParser;
+use Facade\Ignition\DumpRecorder\Dump;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -1320,6 +1321,30 @@ class User extends MongoModel implements
         ) {
             $this->addBadge(BadgeType::get('NEWS_SUBSCRIPTION'));
             $this->save();
+        }
+    }
+
+    /**
+     * Runs our badges calculators to be sure active users have the correct badges earned
+     */
+    public function backfillBadges()
+    {
+        //check for a news email subscription
+        $this->calculateUserSubscriptionBadges();
+
+        //check for a successful campaign signup
+        if ($this->signups()->count()) {
+            $this->signups()
+                ->first()
+                ->calculateSignupBadges();
+        }
+
+        //check for completed posts and good-submission tags
+        if ($this->posts()->count()) {
+            $firstUserPost = $this->posts()->first();
+
+            $firstUserPost->calculatePostBadges();
+            $firstUserPost->calculateStaffFaveTagBadges();
         }
     }
 }

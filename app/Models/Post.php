@@ -478,25 +478,7 @@ class Post extends Model
             }
         }
 
-        if ($this->user) {
-            $userPostsWithFaveTagCount = $this->user
-                ->posts()
-                ->withTag('good-submission')
-                ->take(3)
-                ->count();
-
-            if ($userPostsWithFaveTagCount >= 3) {
-                $this->user->addBadge(BadgeType::get('THREE_STAFF_FAVES'));
-            }
-            if ($userPostsWithFaveTagCount >= 2) {
-                $this->user->addBadge(BadgeType::get('TWO_STAFF_FAVES'));
-            }
-            if ($userPostsWithFaveTagCount >= 1) {
-                $this->user->addBadge(BadgeType::get('ONE_STAFF_FAVE'));
-            }
-
-            $this->user->save();
-        }
+        $this->calculateStaffFaveTagBadges();
 
         return $this;
     }
@@ -796,6 +778,33 @@ class Post extends Model
             if ($userPostsCount >= 1) {
                 $user->addBadge(BadgeType::get('ONE_POST'));
             }
+            $user->save();
+        }
+    }
+
+    /**
+     * Checks whether a user should be given a badge based on their post.
+     */
+    public function calculateStaffFaveTagBadges()
+    {
+        $user = $this->user;
+        if ($user) {
+            $userPostsWithFaveTagCount = $user
+                ->posts()
+                ->withTag('good-submission')
+                ->take(3)
+                ->count();
+
+            if ($userPostsWithFaveTagCount >= 3) {
+                $user->addBadge(BadgeType::get('THREE_STAFF_FAVES'));
+            }
+            if ($userPostsWithFaveTagCount >= 2) {
+                $user->addBadge(BadgeType::get('TWO_STAFF_FAVES'));
+            }
+            if ($userPostsWithFaveTagCount >= 1) {
+                $user->addBadge(BadgeType::get('ONE_STAFF_FAVE'));
+            }
+
             $user->save();
         }
     }

@@ -186,11 +186,8 @@ class UserObserver
             ]);
         }
 
-        /*
-         * Handle any changes to the user's subscriptions/promotions.
-         */
-
-        $user->calculateUserSubscriptionBadges();
+        // Handle any changes to the user's subscriptions/promotions.
+        $user->backfillBadges();
 
         $mutedPromotions = isset($user->promotions_muted_at);
         $shouldTrackPromotionsResubscribe = false;
@@ -199,8 +196,9 @@ class UserObserver
         if ($user->wasChanged('promotions_muted_at')) {
             // And we set it, delete the Customer.io profile.
             if ($mutedPromotions) {
-                return DeleteCustomerIoProfile::dispatch($user)
-                    ->onQueue(config('queue.names.low'));
+                return DeleteCustomerIoProfile::dispatch($user)->onQueue(
+                    config('queue.names.low'),
+                );
             }
 
             // Otherwise, it's null and we need to track resubscribe.
