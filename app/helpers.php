@@ -214,6 +214,43 @@ function format_birthdate($birthdate)
 }
 
 /**
+ * Is the given value an email address?
+ *
+ * @param string $value
+ * @return bool
+ */
+function is_phone_number(?string $value): bool
+{
+    if (!$value) {
+        return false;
+    }
+
+    $parser = PhoneNumberUtil::getInstance();
+
+    try {
+        // Make sure that libphonenumber can parse this phone.
+        // @TODO: Consider testing stricter validity here.
+        $parser->parse($value, 'US');
+
+        // And sanity-check the format is okay:
+        preg_match(
+            '#^(?:\+?([0-9]{1,3})([\-\s\.]{1})?)?\(?([0-9]{3})\)?(?:[\-\s\.]{1})?([0-9]{3})(?:[\-\s\.]{1})?([0-9]{4})#',
+            preg_replace('#[\-\s\.]#', '', $value),
+            $valid,
+        );
+        preg_match(
+            '#([0-9]{1})\1{9,}#',
+            preg_replace('#[^0-9]+#', '', $value),
+            $repeat,
+        );
+
+        return !empty($valid) && empty($repeat);
+    } catch (\libphonenumber\NumberParseException $e) {
+        return false;
+    }
+}
+
+/**
  * Format a legacy phone number to a proper number format.
  *
  * @param  string $mobile
