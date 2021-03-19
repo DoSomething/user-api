@@ -214,7 +214,7 @@ function format_birthdate($birthdate)
 }
 
 /**
- * Is the given value an email address?
+ * Is the given value a phone number?
  *
  * @param string $value
  * @return bool
