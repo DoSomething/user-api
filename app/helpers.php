@@ -251,7 +251,7 @@ function is_phone_number(?string $value): bool
 }
 
 /**
- * Is the given value a phone number?
+ * Is the given value an email address?
  *
  * @param string $value
  * @return bool
