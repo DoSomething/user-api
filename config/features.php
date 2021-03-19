@@ -35,9 +35,6 @@ return [
     // Customer.io's deletion APIs whenever a user model is deleted.
     'delete-api' => env('DS_ENABLE_DELETE_APIS', false),
 
-    // If this is enabled, we'll expose the new "admin" routes from Aurora:
-    'admin' => env('DS_ENABLE_ADMIN_ROUTES', false),
-
     // Should we make server-side GraphQL requests?
     'graphql_php' => env('DS_ENABLE_GRAPHQL_PHP', true),
 
