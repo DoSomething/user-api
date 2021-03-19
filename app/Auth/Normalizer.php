@@ -18,9 +18,7 @@ class Normalizer
     {
         // If a username is given, figure out whether it's an email or mobile number.
         if (!empty($credentials['username'])) {
-            $type = $this->isEmail($credentials['username'])
-                ? 'email'
-                : 'mobile';
+            $type = is_email($credentials['username']) ? 'email' : 'mobile';
             $credentials[$type] = $credentials['username'];
             unset($credentials['username']);
         }
