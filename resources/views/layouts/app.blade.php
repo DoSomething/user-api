@@ -34,6 +34,17 @@
             <nav class="navigation">
                 <a class="navigation__logo" href="http://www.dosomething.org"><span>DoSomething.org</span></a>
                 <a class="navigation__toggle js-navigation-toggle" href="#"><span>Show Menu</span></a>
+
+                @if (Auth::user()->hasRole('staff', 'admin'))
+                    <ul class="navigation__secondary">
+                        <li>
+                            <a href="/admin">Admin</a>
+                        </li>
+                        <li>
+                            <a href="/logout">Log Out</a>
+                        </li>
+                    </ul>
+                @endif
             </nav>
 
             <section class="container -framed {{ isset($extended) && $extended ? '-extended' : '' }}">
