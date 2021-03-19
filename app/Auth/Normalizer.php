@@ -18,9 +18,7 @@ class Normalizer
     {
         // If a username is given, figure out whether it's an email or mobile number.
         if (!empty($credentials['username'])) {
-            $type = $this->isEmail($credentials['username'])
-                ? 'email'
-                : 'mobile';
+            $type = is_email($credentials['username']) ? 'email' : 'mobile';
             $credentials[$type] = $credentials['username'];
             unset($credentials['username']);
         }
@@ -101,17 +99,6 @@ class Normalizer
     }
 
     /**
-     * Confirm that the given value is an e-mail address.
-     *
-     * @param string $value
-     * @return bool
-     */
-    protected function isEmail($value)
-    {
-        return filter_var(trim($value), FILTER_VALIDATE_EMAIL) !== false;
-    }
-
-    /**
      * Normalizes email or mobile value.
      *
      * @param string $value
@@ -119,7 +106,7 @@ class Normalizer
      */
     public function username($value)
     {
-        $type = $this->isEmail($value) ? 'email' : 'mobile';
+        $type = is_email($value) ? 'email' : 'mobile';
 
         return $this->{$type}($value);
     }
