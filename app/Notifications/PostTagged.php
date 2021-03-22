@@ -106,11 +106,7 @@ class PostTagged extends Notification implements ShouldQueue
                     '":',
             )
             ->attachment(function ($attachment) use ($userName) {
-                $permalink = route(
-                    'signups.show',
-                    [$this->post->signup_id],
-                    true,
-                );
+                $permalink = url("/admin/posts/{$this->post->id}");
                 $image = $this->post->getMediaUrl();
 
                 $attachment
