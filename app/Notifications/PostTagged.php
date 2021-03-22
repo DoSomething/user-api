@@ -12,17 +12,6 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
-const USER_AND_REVIEWER_QUERY = '
-    query UserAndReviewerQuery($userId: String!, $adminId: String!) {
-        user(id: $userId) {
-            displayName
-        }
-        admin: user(id: $adminId) {
-            displayName
-        }
-    }
-';
-
 class PostTagged extends Notification implements ShouldQueue
 {
     use Queueable;
@@ -33,13 +22,6 @@ class PostTagged extends Notification implements ShouldQueue
      * @var App\Models\User;
      */
     public $admin;
-
-    /*
-     * OLD: The ID of the admin who tagged this post.
-     *
-     * @var string
-     */
-    public $adminId;
 
     /*
      * Post Instance
@@ -88,12 +70,6 @@ class PostTagged extends Notification implements ShouldQueue
      */
     public function toSlack($notifiable)
     {
-        // TEMPORARY: If we'd previously serialized this job with a
-        // string 'adminId', turn this into a full admin user model:
-        if (isset($this->adminId)) {
-            $this->admin = User::find($this->adminId);
-        }
-
         return (new SlackMessage())
             ->from('DoSomething.org')
             ->image(url('apple-touch-icon-precomposed.png'))
