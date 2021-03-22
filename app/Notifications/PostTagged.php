@@ -30,7 +30,14 @@ class PostTagged extends Notification implements ShouldQueue
     /*
      * The admin who tagged this post.
      *
-     * @var string;
+     * @var App\Models\User;
+     */
+    public $admin;
+
+    /*
+     * OLD: The ID of the amdin who tagged this post.
+     *
+     * @var string
      */
     public $adminId;
 
@@ -83,46 +90,30 @@ class PostTagged extends Notification implements ShouldQueue
     {
         // TEMPORARY: If we'd previously serialized this job with a
         // string 'adminId', turn this into a full admin user model:
-        if ($this->adminId) {
+        if (isset($this->adminId)) {
             $this->admin = User::find($this->adminId);
         }
-
-        $userName = $this->post->user->display_name;
-        $adminName = $this->admin->display_name;
 
         return (new SlackMessage())
             ->from('DoSomething.org')
             ->image(url('apple-touch-icon-precomposed.png'))
             ->content(
-                $adminName .
-                    ' just tagged this post as "' .
-                    $this->tag->tag_name .
-                    '":',
+                "{$this->admin->display_name} just tagged this post as '{$this->tag->tag_name}':",
             )
-            ->attachment(function ($attachment) use ($userName) {
-                $permalink = url("/admin/posts/{$this->post->id}");
-                $image = $this->post->getMediaUrl();
-
+            ->attachment(function ($attachment) {
                 $attachment
+                    ->color(Arr::random(['#fcd116', '#23b7fb', '#4e2b63']))
+                    ->image($this->post->getMediaUrl())
                     ->title(
-                        $userName .
-                            '\'s submission for "' .
-                            $this->post->campaign->internal_title .
-                            '"',
-                        $permalink,
+                        "{$this->post->user->display_name}'s submission for {$this->post->campaign->internal_title}",
+                        url("/admin/posts/{$this->post->id}"),
                     )
                     ->fields([
                         'Caption' => Str::limit($this->post->text, 140),
                         'Why Participated' => Str::limit(
                             $this->post->signup->why_participated,
                         ),
-                    ])
-                    ->color(Arr::random(['#fcd116', '#23b7fb', '#4e2b63']));
-
-                // Do not send images with local URL to Slack (ie: http://rogue.test/images/filename)
-                if ($image && config('app.env') !== 'local') {
-                    $attachment->image($image);
-                }
+                    ]);
             });
     }
 }
