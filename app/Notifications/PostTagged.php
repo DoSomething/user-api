@@ -4,7 +4,7 @@ namespace App\Notifications;
 
 use App\Models\Post;
 use App\Models\Tag;
-use App\Services\GraphQL;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\SlackMessage;
@@ -55,22 +55,11 @@ class PostTagged extends Notification implements ShouldQueue
      */
     public function __construct(Post $post, Tag $tag)
     {
-        $this->adminId = auth()->id();
+        $this->admin = auth()->user();
 
         $this->post = $post;
 
         $this->tag = $tag;
-    }
-
-    /**
-     * Query to get the user and admin reviewer names.
-     */
-    public function queryForUserAndReviewer()
-    {
-        return app(GraphQL::class)->query(USER_AND_REVIEWER_QUERY, [
-            'userId' => $this->post->northstar_id,
-            'adminId' => $this->adminId,
-        ]);
     }
 
     /**
@@ -92,10 +81,14 @@ class PostTagged extends Notification implements ShouldQueue
      */
     public function toSlack($notifiable)
     {
-        $data = $this->queryForUserAndReviewer();
+        // TEMPORARY: If we'd previously serialized this job with a
+        // string 'adminId', turn this into a full admin user model:
+        if ($this->adminId) {
+            $this->admin = User::find($this->adminId);
+        }
 
-        $userName = $data['user']['displayName'];
-        $adminName = $data['admin']['displayName'];
+        $userName = $this->post->user->display_name;
+        $adminName = $this->admin->display_name;
 
         return (new SlackMessage())
             ->from('Rogue', ':tonguecat:')
