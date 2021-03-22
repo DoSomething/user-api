@@ -91,7 +91,8 @@ class PostTagged extends Notification implements ShouldQueue
         $adminName = $this->admin->display_name;
 
         return (new SlackMessage())
-            ->from('Rogue', ':tonguecat:')
+            ->from('DoSomething.org')
+            ->image(url('apple-touch-icon-precomposed.png'))
             ->content(
                 $adminName .
                     ' just tagged this post as "' .
