@@ -35,7 +35,7 @@ class PostTagged extends Notification implements ShouldQueue
     public $admin;
 
     /*
-     * OLD: The ID of the amdin who tagged this post.
+     * OLD: The ID of the admin who tagged this post.
      *
      * @var string
      */
