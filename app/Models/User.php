@@ -1325,7 +1325,7 @@ class User extends MongoModel implements
     }
 
     /**
-     * Runs our badges calculators to be sure active users have the correct badges earned
+     * Runs our badges calculators to be sure active users have the correct badges earned.
      */
     public function backfillBadges()
     {

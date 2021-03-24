@@ -1264,7 +1264,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test that the correct badges are added to a user even when based on historical action
+     * Test that the correct badges are added to a user even when based on historical action.
      *
      * @return void
      */
