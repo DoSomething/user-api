@@ -10,7 +10,6 @@ use App\Types\BadgeType;
 use App\Types\PasswordResetType;
 use Carbon\Carbon;
 use Email\Parse as EmailParser;
-use Facade\Ignition\DumpRecorder\Dump;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
