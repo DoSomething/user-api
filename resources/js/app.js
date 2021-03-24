@@ -3,6 +3,8 @@ import { render } from 'react-dom';
 import { InertiaApp } from '@inertiajs/inertia-react';
 import { InertiaProgress } from '@inertiajs/progress';
 
+import '../css/app.css';
+
 InertiaProgress.init({
   color: '#ff00ff',
   showSpinner: true,

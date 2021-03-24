@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" class="h-full">
 
     <head>
         <meta charset="UTF-8"/>
@@ -12,12 +12,12 @@
 
         <link rel="apple-touch-icon-precomposed" href="/assets/images/apple-touch-icon-precomposed.png">
 
-        {{-- <link rel="stylesheet" href="{{ elixir('inertia.css', 'dist') }}"> --}}
+        <link rel="stylesheet" href="{{ elixir('inertia.css', 'dist') }}">
 
         <script src="{{ elixir('inertia.js', 'dist') }}" defer></script>
     </head>
 
-    <body>
+    <body class="bg-white min-h-full">
         @inertia
     </body>
 </html>

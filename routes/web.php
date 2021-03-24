@@ -94,9 +94,10 @@ if (config('features.admin')) {
             ]);
 
             // Clubs
-            Route::resource('/clubs', 'Admin\ClubsController', [
-                'except' => ['index', 'show', 'destroy'],
-            ]);
+            // Route::resource('/clubs', 'Admin\ClubsController', [
+            //     'except' => ['index', 'show', 'destroy'],
+            // ]);
+            Route::resource('/clubs', 'Admin\ClubsController');
 
             // FAQ
             Route::view('/faq', 'admin.pages.faq');
@@ -154,8 +155,8 @@ if (config('features.admin')) {
             Route::view('campaigns/{id}/{status}', 'admin.app');
 
             // Clubs
-            Route::view('/clubs', 'admin.app');
-            Route::view('/clubs/{id}', 'admin.app');
+            // Route::view('/clubs', 'admin.app');
+            // Route::view('/clubs/{id}', 'admin.app');
 
             // Groups
             Route::view('groups', 'admin.app');

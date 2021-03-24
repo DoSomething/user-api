@@ -1,0 +1,24 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+#app {
+  min-height: 100vh;
+}
+
+.page {
+  display: grid;
+  grid-template-columns: 300px auto;
+  grid-template-rows: 4.5rem auto;
+}
+
+.base-12-grid {
+  display: grid;
+
+  grid-column-gap: theme('spacing.6');
+  padding-left: theme('spacing.12');
+  padding-right: theme('spacing.12');
+
+  /* 12 columns */
+  grid-template-columns: [full-start] 1fr [wide-start] 1fr [main-start] 1fr [narrow-start] 1fr 1fr 1fr [midway] 1fr 1fr 1fr [narrow-end] 1fr [main-end] 1fr [wide-end] 1fr [full-end];
+}

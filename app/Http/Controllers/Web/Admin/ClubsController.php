@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Web\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Club;
+use App\Models\Group;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Inertia\Inertia;
 
 class ClubsController extends Controller
 {
@@ -23,6 +26,22 @@ class ClubsController extends Controller
             'location' => 'nullable|iso3166',
             'school_id' => 'nullable|string|max:255',
         ];
+    }
+
+    public function show(Club $club)
+    {
+        // @Question: Not sure why Club model does not have relationship methods
+        // for user and school? Maybe because of microservices?
+
+        $user = User::findOrFail($club->leader_id);
+
+        $school = Group::find($club->school_id);
+
+        return Inertia::render('Clubs/Show', [
+            'club' => $club,
+            'school' => $school,
+            'user' => $user->only('first_name', 'id'),
+        ]);
     }
 
     /**

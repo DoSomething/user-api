@@ -2,14 +2,10 @@ import React from 'react';
 
 import Layout from '../../Shared/Layout';
 
-const Index = ({ poopie }) => {
+const Index = () => {
   return (
     <>
-      <h1>Cooking with Inertia!</h1>
-
-      <p>We are doing some sweet, sweeting Inertia sizzling!</p>
-
-      <strong>{poopie}</strong>
+      <h1>Clubs Index Page</h1>
     </>
   );
 };
