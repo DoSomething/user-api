@@ -57,10 +57,12 @@ class UserObserver
         if (!($user->email_subscription_status || $user->isSmsSubscribed())) {
             return;
         }
+
         $user->calculateUserSubscriptionBadges();
 
         $queueLevel = config('queue.jobs.users');
         $queue = config('queue.names.' . $queueLevel);
+
         UpsertCustomerIoProfile::dispatch($user)->onQueue($queue);
     }
 
@@ -149,11 +151,17 @@ class UserObserver
         ) {
             $user->promotions_muted_at = Carbon::now();
         }
+    }
 
-        /*
-         * Note: Is it cleaner to move the rest of this function code into our updated hook?
-         * We're no longer altering the values to save within this transaction here.
-         */
+    /**
+     * Handle the User "updated" event.
+     *
+     * @param  \App\Models\User  $user
+     * @return void
+     */
+    public function updated(User $user)
+    {
+        $changed = $user->getChanged();
 
         // If we're updating a user's club, dispatch a Customer.io event.
         if (isset($changed['club_id'])) {
@@ -174,19 +182,14 @@ class UserObserver
         if (!app()->runningInConsole()) {
             logger('updated user', [
                 'id' => $user->id,
-                'changed' => $user->getChanged(),
+                'changed' => $changed,
             ]);
         }
-    }
 
-    /**
-     * Handle the User "updated" event.
-     *
-     * @param  \App\Models\User  $user
-     * @return void
-     */
-    public function updated(User $user)
-    {
+        /*
+         * Handle any changes to the user's subscriptions/promotions.
+         */
+
         $user->calculateUserSubscriptionBadges();
 
         $mutedPromotions = isset($user->promotions_muted_at);
