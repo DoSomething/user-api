@@ -783,7 +783,8 @@ class Post extends Model
     }
 
     /**
-     * Checks whether a user should be given a badge based on their post.
+     * Checks whether a user should be given a badge based on if their post has been tagged
+     * a good-submission by staff.
      */
     public function calculateStaffFaveTagBadges()
     {
