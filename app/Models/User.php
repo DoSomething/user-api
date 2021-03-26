@@ -1322,4 +1322,28 @@ class User extends MongoModel implements
             $this->save();
         }
     }
+
+    /**
+     * Runs our badges calculators to be sure active users have the correct badges earned.
+     */
+    public function backfillBadges()
+    {
+        //check for a news email subscription
+        $this->calculateUserSubscriptionBadges();
+
+        //check for a successful campaign signup
+        if ($this->signups()->count()) {
+            $this->signups()
+                ->first()
+                ->calculateSignupBadges();
+        }
+
+        //check for completed posts and good-submission tags
+        if ($this->posts()->count()) {
+            $firstUserPost = $this->posts()->first();
+
+            $firstUserPost->calculatePostBadges();
+            $firstUserPost->calculateStaffFaveTagBadges();
+        }
+    }
 }

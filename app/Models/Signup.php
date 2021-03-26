@@ -304,8 +304,8 @@ class Signup extends Model
     {
         $user = $this->user;
         if ($user) {
-            $userSignups = $user->signups();
-            if ($userSignups->count() === 1) {
+            $userSignups = $user->signups()->count();
+            if ($userSignups > 0) {
                 $user->addBadge(BadgeType::get('SIGNUP'));
                 $user->save();
             }

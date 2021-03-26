@@ -1262,4 +1262,48 @@ class UserTest extends TestCase
             'badges' => ['news-subscription'],
         ]);
     }
+
+    /**
+     * Test that the correct badges are added to a user even when based on historical action.
+     *
+     * @return void
+     */
+    public function testBadgesBackfillForActiveUsers()
+    {
+        $activeUser = factory(User::class)
+            ->states('email-subscribed-news')
+            ->create();
+        $campaignId = $this->faker->randomNumber(4);
+
+        $response = $this->asUser($activeUser)->postJson('api/v3/signups', [
+            'campaign_id' => $campaignId,
+            'details' => 'badge-testing',
+        ]);
+
+        // Make sure we get the 201 Created response
+        $response->assertStatus(201);
+
+        $this->assertMongoDatabaseHas('users', [
+            '_id' => $activeUser->id,
+            'badges' => ['news-subscription', 'signup'],
+        ]);
+
+        $secondResponse = $this->asAdminUser()->json(
+            'PUT',
+            'v2/users/' . $activeUser->id,
+            [
+                'badges' => [],
+            ],
+        );
+        // simulating a "updated user"
+        $activeUser->touch();
+
+        $secondResponse->assertStatus(200);
+
+        //check that the badges have been re added
+        $this->assertMongoDatabaseHas('users', [
+            '_id' => $activeUser->id,
+            'badges' => ['signup', 'news-subscription'],
+        ]);
+    }
 }
