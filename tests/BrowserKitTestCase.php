@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
 use PHPUnit\Framework\Assert;
 use Tests\CreatesApplication;
@@ -8,7 +9,7 @@ use Tests\WithMocks;
 
 abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
 {
-    use CreatesApplication, WithMocks, WithAuthentication;
+    use CreatesApplication, WithMocks, WithAuthentication, RefreshDatabase;
 
     /**
      * The base URL to use while testing the application.
