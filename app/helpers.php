@@ -559,6 +559,36 @@ function csv_query(string $key, array $default = []): array
 }
 
 /**
+ * Turn the given array of strings into a comma-separated list.
+ *
+ * @param string[] $array
+ * @return string
+ */
+function array_to_csv(?array $array): string
+{
+    if (!$array) {
+        return '';
+    }
+
+    return implode(', ', $array);
+}
+
+/**
+ * Turn the given comma-separated string into an array.
+ *
+ * @param string $string
+ * @return array
+ */
+function csv_to_array(?string $string): array
+{
+    if (!$string) {
+        return [];
+    }
+
+    return array_map('trim', explode(',', $string));
+}
+
+/**
  * Print user-friendly name from an ISO country code.
  *
  * @param  string $code
@@ -708,4 +738,18 @@ function convert_to_date($value, $timezone = 'UTC')
     $date = (new Carbon($value))->format('Y-m-d');
 
     return new Carbon($date, $timezone);
+}
+
+/**
+ * Format a string of Markdown into HTML.
+ *
+ * @param $source
+ * @return string
+ */
+function markdown($source)
+{
+    $parsedown = Parsedown::instance();
+    $markup = $parsedown->setMarkupEscaped(true)->text($source);
+
+    return new HtmlString($markup);
 }
