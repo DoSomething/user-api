@@ -1,8 +1,5 @@
 <?php
 
-$minImageSize = config('posts.image.min');
-$maxImageSize = config('posts.image.max');
-
 return [
     /*
     |--------------------------------------------------------------------------
@@ -37,8 +34,8 @@ return [
     'different' => 'The :attribute and :other must be different.',
     'digits' => 'The :attribute must be :digits digits.',
     'digits_between' => 'The :attribute must be between :min and :max digits.',
-    'dimensions' => "Photos must be no larger than 10MB, at least {$minImageSize['width']} x {$minImageSize['height']}, and no larger
-          than {$maxImageSize['width']} x {$maxImageSize['height']}. Try cropping your photo.",
+    'dimensions' => "Photos must be no larger than 10MB, at least :min_width x :min_height, and no larger
+          than :max_width x :max_height. Try cropping your photo.",
     'email' => 'The :attribute must be a valid email address.',
     'filled' => 'The :attribute field is required.',
     'exists' => 'The selected :attribute is invalid.',
