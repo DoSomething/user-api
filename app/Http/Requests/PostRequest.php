@@ -107,4 +107,17 @@ class PostRequest extends Request
 
         return $rule;
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'file.dimensions' => 'Photos must be no larger than 10MB, at least :min_width x :min_height, and no larger
+          than :max_width x :max_height. Try cropping your photo.',
+        ];
+    }
 }
