@@ -308,6 +308,41 @@ class PostTest extends TestCase
     }
 
     /**
+     * Test validation for creating a post with invalid file dimensions.
+     *
+     * POST /api/v3/posts
+     * @return void
+     */
+    public function testCreatingAPostWithInvalidFileDimensions()
+    {
+        $signup = factory(Signup::class)->create();
+        $action = factory(Action::class)->create([
+            'campaign_id' => $signup->campaign_id,
+        ]);
+
+        $minImageSize = config('posts.image.min');
+        $maxImageSize = config('posts.image.max');
+        $validationMessage = "Photos must be no larger than 10MB, at least {$minImageSize['width']} x {$minImageSize['height']}, and no larger
+          than {$maxImageSize['width']} x {$maxImageSize['height']}. Try cropping your photo.";
+
+        $response = $this->asUser($signup->user)->postJson('api/v3/posts', [
+            'type' => 'photo',
+            'action_id' => $action->id,
+            'file' => UploadedFile::fake()->image('photo.jpg', $minImageSize['height'] - 1, $minImageSize['height'] - 1), // less than the minimum size!
+        ]);
+
+        $response->assertJsonValidationErrors(['file' => $validationMessage]);
+
+        $response = $this->asUser($signup->user)->postJson('api/v3/posts', [
+            'type' => 'photo',
+            'action_id' => $action->id,
+            'file' => UploadedFile::fake()->image('photo.jpg', $maxImageSize['height'] + 1, $maxImageSize['height'] + 1), // more than the maximum size!
+        ]);
+
+        $response->assertJsonValidationErrors(['file' => $validationMessage]);
+    }
+
+    /**
      * Test validation for creating a post with invalid hours_spent.
      *
      * POST /api/v3/posts
