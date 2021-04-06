@@ -120,9 +120,6 @@ Route::group(['prefix' => 'v2', 'as' => 'v2.'], function () {
     // Profile
     // ...
 
-    // OAuth Clients
-    Route::resource('clients', 'ClientController');
-
     // Password Reset
     Route::resource('resets', 'ResetController', ['only' => 'store']);
 

@@ -24,16 +24,16 @@ See [Authentication](authentication.md) for details on authorizing your requests
 
 #### Users
 
-| Endpoint                  | Functionality                                                      | Required Scope                |
-| ------------------------- | ------------------------------------------------------------------ | ----------------------------- |
-| `GET v2/users`            | [Retrieve All Users](endpoints/v2/users.md#retrieve-all-users)     | `role:admin` or `admin`       |
-| `POST v2/users`           | [Create a User](endpoints/v2/users.md#create-a-user)               | `role:admin` or `admin`       |
-| `GET v2/users/:id`        | [Retrieve a User](endpoints/v2/users.md#retrieve-a-user)           |
-| `PUT v2/users/:id`        | [Update a User](endpoints/v2/users.md#update-a-user)               | `role:admin` or `admin`       |
-| `DELETE v2/users/:id`     | [Delete a User](endpoints/v2/users.md#delete-a-user)               | `role:admin` or `admin`       |
-| `POST v1/users/:id/merge` | [Merge User Accounts](endpoints/users.md#merge-user-accounts)      | `role:admin,staff` or `admin` |
-| `GET v2/mobile/:id`       | [Retrieve A User](endpoints/v2/users.md#retrieve-a-user-by-mobile) | `role:admin` or `admin`       |
-| `GET v2/email/:id`        | [Retrieve A User](endpoints/v2/users.md#retrieve-a-user-by-email)  | `role:admin` or `admin`       |
+| Endpoint                         | Functionality                                                      | Required Scope                |
+| -------------------------------- | ------------------------------------------------------------------ | ----------------------------- |
+| `GET v2/users`                   | [Retrieve All Users](endpoints/v2/users.md#retrieve-all-users)     | `role:admin` or `admin`       |
+| `POST v2/users`                  | [Create a User](endpoints/v2/users.md#create-a-user)               | `role:admin` or `admin`       |
+| `GET v2/users/:id`               | [Retrieve a User](endpoints/v2/users.md#retrieve-a-user)           |
+| `PUT v2/users/:id`               | [Update a User](endpoints/v2/users.md#update-a-user)               | `role:admin` or `admin`       |
+| `DELETE v2/users/:id`            | [Delete a User](endpoints/v2/users.md#delete-a-user)               | `role:admin` or `admin`       |
+| `POST v1/users/:id/merge`        | [Merge User Accounts](endpoints/users.md#merge-user-accounts)      | `role:admin,staff` or `admin` |
+| `GET v2/mobile/:id`              | [Retrieve A User](endpoints/v2/users.md#retrieve-a-user-by-mobile) | `role:admin` or `admin`       |
+| `GET v2/email/:id`               | [Retrieve A User](endpoints/v2/users.md#retrieve-a-user-by-email)  | `role:admin` or `admin`       |
 | `DELETE v2/users/:id/promotions` | [Mute User Promotions](endpoints/v2/users.md#mute-promotions)      | `role:admin,staff` or `admin` |
 
 <details>
@@ -61,17 +61,6 @@ See [Authentication](authentication.md) for details on authorizing your requests
 | Endpoint         | Functionality                                      | Required Scope          |
 | ---------------- | -------------------------------------------------- | ----------------------- |
 | `POST v2/resets` | [Send a Password Reset Email](endpoints/resets.md) | `role:admin` or `admin` |
-
-#### Clients
-
-| Endpoint                       | Functionality                                                                 | Required Scope          |
-| ------------------------------ | ----------------------------------------------------------------------------- | ----------------------- |
-| `GET v2/clients`               | [Retrieve All Clients](endpoints/clients.md#retrieve-all-clients)             | `role:admin` or `admin` |
-| `POST v2/clients`              | [Create a Client](endpoints/clients.md#create-a-client)                       | `role:admin` or `admin` |
-| `GET v2/clients/:client_id`    | [Retrieve a Client](endpoints/clients.md#retrieve-a-client)                   | `role:admin` or `admin` |
-| `PUT v2/clients/:client_id`    | [Update a Client](endpoints/clients.md#update-a-client)                       | `role:admin` or `admin` |
-| `DELETE v2/clients/:client_id` | [Delete a Client](endpoints/clients.md#delete-a-client)                       | `role:admin` or `admin` |
-| `GET v2/scopes`                | [Retrieve All Client Scopes](endpoints/clients.md#retrieve-all-client-scopes) |
 
 #### Discovery
 
