@@ -35,12 +35,12 @@
                         </a>
                     </li> --}}
 
-                    {{-- <li>
-                        <a href="{{ route('clients.index') }}">
+                    <li>
+                        <a href="{{ route('admin.clients.index') }}">
                             <strong class="navigation__title">OAuth Clients</strong>
                             <span class="navigation__subtitle">Northstar apps</span>
                         </a>
-                    </li> --}}
+                    </li>
 
                     <li>
                         <a href="{{ route('admin.redirects.index') }}">
@@ -49,16 +49,12 @@
                         </a>
                     </li>
                 @endif
-
-                <li>
-                    <a href="{{ url('/admin/faq') }}">
-                        <strong class="navigation__title">FAQ</strong>
-                        <span class="navigation__subtitle">How do I...</span>
-                    </a>
-                </li>
             </ul>
 
             <ul class="navigation__secondary">
+                <li>
+                    <a href="/logout">FAQ</a>
+                </li>
                 <li>
                     <a href="/logout">Log Out</a>
                 </li>

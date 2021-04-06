@@ -84,6 +84,27 @@ class Client extends MongoModel
     }
 
     /**
+     * Mutator for 'redirect_uri' attribute.
+     * @return array
+     */
+    public function getRedirectUriAttribute()
+    {
+        if (empty($this->attributes['redirect_uri'])) {
+            return [];
+        }
+
+        $value = $this->attributes['redirect_uri'];
+
+        // Once upon a time, we used to store a single redirect URL per
+        // OAuth client. Normalize any values like this to arrays:
+        if (is_string($value)) {
+            return [$value];
+        }
+
+        return $value;
+    }
+
+    /**
      * Mutator for 'scope' attribute.
      * @return array
      */

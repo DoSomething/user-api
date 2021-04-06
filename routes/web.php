@@ -118,6 +118,8 @@ Route::prefix('admin')
             'except' => ['create', 'store'],
         ]);
 
+        Route::resource('clients', 'Admin\ClientsController');
+
         Route::post('users/{user}/resets', [
             'as' => 'users.resets.create',
             'uses' => 'Admin\UserController@sendPasswordReset',
