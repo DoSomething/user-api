@@ -53,7 +53,7 @@
 
             <ul class="navigation__secondary">
                 <li>
-                    <a href="/logout">FAQ</a>
+                    <a href="/admin/faq">FAQ</a>
                 </li>
                 <li>
                     <a href="/logout">Log Out</a>
