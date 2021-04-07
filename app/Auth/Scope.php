@@ -31,11 +31,6 @@ class Scope
         'user' => [
             'description' => 'Allows access to the user resource.',
         ],
-        'client' => [
-            'description' => 'Allows access to the client resource.',
-            'hint' =>
-                'Be sure you need this scope before assigning! This allows your app to read other OAuth client secrets, so a leaked key is extra dangerous.',
-        ],
         'activity' => [
             'description' =>
                 'Allows access to user activity resources (signups, posts, etc.) in Rogue.',
