@@ -70,7 +70,7 @@ class ProfileSubscriptionsTest extends BrowserKitTestCase
         $user = factory(User::class)->create([
             'sms_status' => null,
             'mobile' => null,
-            'email_subscription_topics' => ['community']
+            'email_subscription_topics' => ['community'],
         ]);
 
         // Go to the third page of the registration flow
