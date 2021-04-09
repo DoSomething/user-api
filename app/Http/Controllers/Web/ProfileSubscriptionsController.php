@@ -52,7 +52,13 @@ class ProfileSubscriptionsController extends Controller
 
         $currentMobile = $user->mobile;
 
-        $this->registrar->register($request->all(), $user, function (
+        // Make sure that we wipe out existing email topics if the form is submitted with none checked
+        $request = $request->all();
+        if (!array_key_exists('email_subscription_topics', $request)) {
+            $request['email_subscription_topics'] = [];
+        }
+
+        $this->registrar->register($request, $user, function (
             $user
         ) use ($currentMobile) {
             // Set the sms_status if we're adding or updating the user's mobile.
