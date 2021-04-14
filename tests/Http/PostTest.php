@@ -374,7 +374,7 @@ class PostTest extends TestCase
         $response = $this->asUser($signup->user)->postJson('api/v3/posts', [
             'type' => 'photo',
             'action_id' => $action->id,
-            'hours_spent' => 0, // This should be a minimum of 0.1.
+            'hours_spent' => 0.00, // This should be a minimum of 0.01.
         ]);
 
         $response->assertJsonValidationErrors(['hours_spent']);

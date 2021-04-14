@@ -48,7 +48,7 @@ class PostRequest extends Request
             'school_id' => 'nullable|string|max:255',
             'quantity' => 'nullable|integer',
             // Maximum ensures we don't exceed the default precision limit for this Decimal db column.
-            'hours_spent' => 'nullable|numeric|min:0.1|max:999999.99',
+            'hours_spent' => 'nullable|numeric|min:0.01|max:999999.99',
             'file' =>
                 'image|dimensions:min_width=' .
                 $minImageSize['width'] .
