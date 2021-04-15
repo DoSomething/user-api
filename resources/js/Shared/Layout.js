@@ -15,8 +15,10 @@ const Layout = ({ children, title }) => {
         {/* <span className="font-bold ml-4 text-2xl uppercase">Admin</span> */}
       </h1>
 
-      <header className="col-span-1 bg-gray-200 flex justify-end">
-        <p className="p-4 text-gray-600">Logout</p>
+      <header className="bg-gray-200 col-span-1 items-center flex justify-end">
+        <a className="px-4 py-2 text-gray-600 hover:text-gray-900" href="">
+          Logout
+        </a>
       </header>
 
       <nav className="bg-blurple-700 col-span-1 p-4 text-white">
