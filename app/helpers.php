@@ -214,6 +214,25 @@ function format_birthdate($birthdate)
 }
 
 /**
+ * Determines if a mobile number is anonymous.
+ *
+ * @param string $mobile
+ * @return bool
+ */
+function is_anonymous_mobile($mobile)
+{
+    // @see https://support.twilio.com/hc/en-us/articles/223179988-Why-am-I-getting-calls-from-these-strange-numbers
+    return in_array($mobile, [
+        '+2562533',
+        '+266696687',
+        '+464',
+        '+7378742883',
+        '+86282452253',
+        '+8656696',
+    ]);
+}
+
+/**
  * Is the given value a phone number?
  *
  * @param string $value
@@ -315,6 +334,23 @@ function is_dosomething_domain(string $url): bool
 }
 
 /**
+ * Parse a string as boolean.
+ *
+ * @param string $text
+ * @return bool
+ */
+function str_to_boolean($text)
+{
+    $sanitized = strtolower($text);
+
+    if ($sanitized === 'y') {
+        return true;
+    }
+
+    return filter_var($sanitized, FILTER_VALIDATE_BOOLEAN);
+}
+
+/**
  * Throttle a script by setting a limit on the number of
  * times something can happen per minute.
  *
@@ -413,6 +449,29 @@ function stringify_object($object)
 {
     // e.g. utm_source:test,utm_medium:internet,utm_campaign:uconn_lady_huskies
     return str_replace('=', ':', http_build_query($object, '', ','));
+}
+
+/**
+ * Parses the data of given record in the failed_jobs DB table.
+ *
+ * @param object $failedJob
+ * @return array
+ */
+function parse_failed_job($failedJob)
+{
+    $json = json_decode($failedJob->payload);
+    $command = unserialize($json->data->command);
+
+    return [
+        'id' => $failedJob->id,
+        'failed_at' => $failedJob->failed_at,
+        'command_name' => $json->data->commandName,
+        'error_message' => Str::limit($failedJob->exception, 255),
+        'exception' => $failedJob->exception,
+        'parameters' => method_exists($command, 'getParameters')
+            ? $command->getParameters()
+            : [],
+    ];
 }
 
 /**
