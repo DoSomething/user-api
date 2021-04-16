@@ -4,8 +4,8 @@ namespace App\Imports;
 
 use App\Types\ImportType;
 use App\Types\SmsStatus;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class RockTheVoteRecord
@@ -78,7 +78,7 @@ class RockTheVoteRecord
                 : $rtvStatus,
         ];
 
-        /**
+        /*
          * At step 1, a user has only provided their email and zip, but Rock The Vote will sometimes
          * mysteriously send through data for fields populated in later steps. We don't want to save
          * any other data until the status is at least step 2.
@@ -174,17 +174,17 @@ class RockTheVoteRecord
                 $userId = $value[1];
             } elseif ($key === 'group_id') {
                 $result['group_id'] = (int) $value[1];
-                /**
-                 * If referral parameter is set to true, the user parameter belongs to the referring
-                 * user, not the user that should be associated with this voter registration record.
-                 *
-                 * Expected key: "referral"
-                 */
+            /*
+             * If referral parameter is set to true, the user parameter belongs to the referring
+             * user, not the user that should be associated with this voter registration record.
+             *
+             * Expected key: "referral"
+             */
             } elseif (
                 ($key === 'referral' || $key === 'refferal') &&
                 str_to_boolean($value[1])
             ) {
-                /**
+                /*
                  * Return result to force querying for existing user via this record email or mobile
                  * upon import.
                  */
