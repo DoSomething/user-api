@@ -2,8 +2,8 @@
 
 namespace App\Imports;
 
-use App\ImportType;
-use App\SmsStatus;
+use App\Types\ImportType;
+use App\Types\SmsStatus;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
