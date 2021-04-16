@@ -22,10 +22,19 @@ return [
         'app_api' => [
             'api_key' => env('CUSTOMER_IO_APP_API_KEY'),
             'url' => 'https://api.customer.io/v1/',
-            'identifier_id' => env('CUSTOMER_IO_APP_IDENTIFIER_ID', 'app-api-user'),
+            'identifier_id' => env(
+                'CUSTOMER_IO_APP_IDENTIFIER_ID',
+                'app-api-user',
+            ),
             'transactional_message_ids' => [
-                'FORGOT_PASSWORD' => env('CUSTOMER_IO_FORGOT_PASSWORD_TRANSACTIONAL_MESSAGE_ID', 2),
-                'PASSWORD_UPDATED' => env('CUSTOMER_IO_PASSWORD_UPDATED_TRANSACTIONAL_MESSAGE_ID', 3),
+                'FORGOT_PASSWORD' => env(
+                    'CUSTOMER_IO_FORGOT_PASSWORD_TRANSACTIONAL_MESSAGE_ID',
+                    2,
+                ),
+                'PASSWORD_UPDATED' => env(
+                    'CUSTOMER_IO_PASSWORD_UPDATED_TRANSACTIONAL_MESSAGE_ID',
+                    3,
+                ),
             ],
         ],
         'track_api' => [
@@ -80,6 +89,14 @@ return [
 
     'phoenix' => [
         'url' => env('PHOENIX_URL'),
+    ],
+
+    'rock_the_vote' => [
+        'api_key' => env('ROCK_THE_VOTE_API_KEY'),
+        'partner_id' => env('ROCK_THE_VOTE_PARTNER_ID'),
+        'url' => env('ROCK_THE_VOTE_API_URL'),
+        // Used for local development to avoid making API requests.
+        'faker' => env('ROCK_THE_VOTE_API_FAKER', false),
     ],
 
     'sixpack' => [
