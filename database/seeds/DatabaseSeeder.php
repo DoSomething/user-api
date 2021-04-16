@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ClientTableSeeder::class);
         $this->call(TokenTableSeeder::class);
         $this->call(ActivityTablesSeeder::class);
+        $this->call(RockTheVoteReportSeeder::class);
     }
 }
