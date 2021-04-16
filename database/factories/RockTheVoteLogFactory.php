@@ -15,6 +15,8 @@ $factory->define(RockTheVoteLog::class, function (Faker $faker) {
         'started_registration' => Carbon::now()->format('Y-m-d H:i:s O'),
         'status' => 'Step 1',
         'tracking_source' => 'ads',
-        'user_id' => factory(User::class)->create(),
+        'user_id' => function () {
+            return factory(User::class)->create()->id;
+        },
     ];
 });

@@ -30,7 +30,9 @@ $factory->define(Post::class, function (Faker $faker) {
                 'campaign_id' => $attributes['campaign_id'],
             ])->id;
         },
-        'northstar_id' => factory(User::class)->create(),
+        'northstar_id' => function () {
+            factory(User::class)->create()->id;
+        },
         'text' => $faker->sentence(),
         'location' => 'US-' . $faker->stateAbbr(),
         'source' => 'phpunit',
