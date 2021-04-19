@@ -186,6 +186,7 @@ class TagsTest extends TestCase
         $this->assertContains('Good Submission', $post->tagNames());
 
         $user = $user->fresh();
+
         $this->assertEquals(
             ['signup', 'one-post', 'one-staff-fave'],
             $user->badges,
