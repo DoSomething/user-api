@@ -15,6 +15,9 @@ $factory->define(Post::class, function (Faker $faker) {
     $faker->addProvider(new FakerSchoolId($faker));
 
     return [
+        'northstar_id' => function () {
+            return factory(User::class)->create()->id;
+        },
         'campaign_id' => function () {
             return factory(Campaign::class)->create()->id;
         },
@@ -29,9 +32,6 @@ $factory->define(Post::class, function (Faker $faker) {
             return factory(Action::class)->create([
                 'campaign_id' => $attributes['campaign_id'],
             ])->id;
-        },
-        'northstar_id' => function () {
-            factory(User::class)->create()->id;
         },
         'text' => $faker->sentence(),
         'location' => 'US-' . $faker->stateAbbr(),
