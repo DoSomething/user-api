@@ -2,8 +2,8 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\ImportType;
 use App\Models\ImportFile;
+use App\Types\ImportType;
 use Faker\Generator as Faker;
 
 $factory->define(ImportFile::class, function (Faker $faker) {
