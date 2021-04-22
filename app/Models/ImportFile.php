@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class ImportFile extends Model
 {
     /**
+     * The database connection that should be used by the model.
+     *
+     * @var string
+     */
+    protected $connection = 'mysql';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
