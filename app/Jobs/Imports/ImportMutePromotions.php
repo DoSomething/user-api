@@ -7,9 +7,9 @@ use App\Models\MutePromotionsLog;
 use App\Models\User;
 use Exception;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
 
 class ImportMutePromotions implements ShouldQueue
 {
@@ -41,9 +41,7 @@ class ImportMutePromotions implements ShouldQueue
      */
     public function handle()
     {
-        $user = User::withTrashed()->find($this->userId);
-
-        // @TODO: How to best handle if user not found?
+        $user = User::withTrashed()->findOrFail($this->userId);
 
         logger('Import job handling muting promotion', ['user' => $user->id]);
 
