@@ -20,6 +20,8 @@ class PromotionsController extends Controller
 
     /**
      * Mutes promotions for user.
+     * @TODO: this existing as a destroy method seems odd, since it is not actually
+     * deleting a resource but setting a property on the User model.
      *
      * @param User $user
      * @return \Illuminate\Http\Response
