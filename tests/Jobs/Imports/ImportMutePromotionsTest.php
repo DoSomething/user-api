@@ -19,12 +19,10 @@ class ImportMutePromotionsTest extends TestCase
 
         $importFile = factory(ImportFile::class)->create();
 
-        $job = new ImportMutePromotions(
+        ImportMutePromotions::dispatch(
             ['northstar_id' => $user->id],
             $importFile,
         );
-
-        $job->handle();
 
         $this->assertMysqlDatabaseHas('mute_promotions_logs', [
             'import_file_id' => $importFile->id,
@@ -46,12 +44,10 @@ class ImportMutePromotionsTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $job = new ImportMutePromotions(
+        ImportMutePromotions::dispatch(
             ['northstar_id' => 'non_existent_id'],
             $importFile,
         );
-
-        $job->handle();
 
         $this->assertDatabaseMissing(
             'mute_promotions_logs',
