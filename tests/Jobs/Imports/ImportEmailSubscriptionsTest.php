@@ -1,13 +1,10 @@
 <?php
 
 use App\Auth\Registrar;
-use App\Jobs\CreateCustomerIoEvent;
 use App\Jobs\Imports\ImportEmailSubscriptions;
-use App\Jobs\SendForgotPasswordEmail;
 use App\Models\ImportFile;
 use App\Models\User;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Bus;
 
 class ImportEmailSubscriptionsTest extends TestCase
 {

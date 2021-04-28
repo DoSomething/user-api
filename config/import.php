@@ -113,7 +113,7 @@ return [
             ),
         ],
 
-        /**
+        /*
          * This list includes status values we import from Rock The Vote, values we once
          * translated from Rock the Vote (e.g. uncertain, ineligible), or values that a user
          * may set via the web (e.g. unregistered).
