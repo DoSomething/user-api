@@ -103,6 +103,15 @@ return [
                 'REDIS_PREFIX',
                 Str::slug(env('APP_NAME', 'laravel'), '_') . '_database_',
             ),
+            // We use Heroku Redis, which uses a self-signed certificate & thus cannot be verified
+            // by OpenSSL. Thus, we disable certificate validation per these instructions:
+            // <https://help.heroku.com/HC0F8CUS/redis-connection-issues>
+            'context' => [
+                'stream' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                ],
+            ],
         ],
 
         'default' => [
