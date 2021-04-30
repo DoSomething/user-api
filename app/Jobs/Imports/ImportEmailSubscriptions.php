@@ -72,12 +72,10 @@ class ImportEmailSubscriptions implements ShouldQueue
      *
      * @return array
      */
-    public function handle()
+    public function handle(Registrar $registrar)
     {
         // @TODO: standardize logging for info messages; they seem all over the place!
         info('progress_log: Processing: ' . $this->email);
-
-        $registrar = App::make(Registrar::class);
 
         $user = $registrar->resolve(['email' => $this->email]);
 
