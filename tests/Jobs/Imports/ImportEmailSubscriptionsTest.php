@@ -1,10 +1,8 @@
 <?php
 
-use App\Auth\Registrar;
 use App\Jobs\Imports\ImportEmailSubscriptions;
 use App\Models\ImportFile;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
 
 class ImportEmailSubscriptionsTest extends TestCase
 {
@@ -129,9 +127,7 @@ class ImportEmailSubscriptionsTest extends TestCase
             ],
         );
 
-        $user = App::make(Registrar::class)->resolve([
-            'email' => 'puppetsloth@dosomething.org',
-        ]);
+        $user = User::where('email', 'puppetsloth@dosomething.org')->first();
 
         $this->assertCustomerIoEvent($user, 'call_to_action_email');
     }
