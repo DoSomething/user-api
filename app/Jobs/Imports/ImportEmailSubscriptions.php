@@ -83,13 +83,15 @@ class ImportEmailSubscriptions implements ShouldQueue
 
         $input = [
             'first_name' => $this->first_name,
-            'email_subscription_status' => true, // @TODO: feels weird this is a boolean.
+            'email_subscription_status' => true,
             'email_subscription_topics' => $collatedSubscriptionTopics,
         ];
 
         if ($user) {
             // Update the user, filtering out null input values.
-            $registrar->register(array_filter($input), $user);
+            $user->fill(array_filter($input));
+
+            $user->save();
 
             info('Subscribed existing user', ['user' => $user->id]);
         } else {
