@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Artisan;
 class FixSmsStatusCommandTest extends TestCase
 {
     /** @test */
-    public function it_should_fix_birthdates()
+    public function it_should_fix_sms_statuses()
     {
         // We should have
         $brokenUsers = factory(User::class, 5)->create([
