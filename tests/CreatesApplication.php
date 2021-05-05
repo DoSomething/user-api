@@ -43,6 +43,7 @@ trait CreatesApplication
 
         // Configure a mock for any Customer.io API calls.
         $this->customerIoMock = $this->mock(\App\Services\CustomerIo::class);
+        $this->customerIoMock->shouldReceive('getAttributes')->andReturn(null);
         $this->customerIoMock->shouldReceive('updateCustomer')->andReturn(null);
         $this->customerIoMock->shouldReceive('trackEvent');
         $this->customerIoMock->shouldReceive('sendEmail');
