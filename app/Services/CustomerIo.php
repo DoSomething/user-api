@@ -10,14 +10,14 @@ class CustomerIo
     /**
      * The Customer.io App API client.
      *
-     * @var Client
+     * @var \GuzzleHttp\Client
      */
     protected $appApiClient;
 
     /**
      * The Customer.io Track API client.
      *
-     * @var Client
+     * @var \GuzzleHttp\Client
      */
     protected $trackApiClient;
 
