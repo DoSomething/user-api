@@ -13,9 +13,7 @@ class PromotionsTest extends BrowserKitTestCase
     {
         $user = factory(User::class)->create();
 
-        $this->asAdminUser()->delete(
-            'v2/users/' . $user->id . '/promotions',
-        );
+        $this->asAdminUser()->delete('v2/users/' . $user->id . '/promotions');
 
         $this->assertResponseStatus(200);
         $this->assertNotNull($user->fresh()->promotions_muted_at);
@@ -49,9 +47,7 @@ class PromotionsTest extends BrowserKitTestCase
 
         $user->delete();
 
-        $this->asAdminUser()->delete(
-            'v2/users/' . $user->id . '/promotions',
-        );
+        $this->asAdminUser()->delete('v2/users/' . $user->id . '/promotions');
 
         $this->assertResponseStatus(200);
         $this->assertNotNull($user->fresh()->promotions_muted_at);

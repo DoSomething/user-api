@@ -84,7 +84,7 @@ class CustomerIo
 
         $response = $this->trackApiClient->post(
             'customers/' . $user->id . '/events',
-            ['json' => $payload]
+            ['json' => $payload],
         );
 
         // For this endpoint, any status besides 200 means something is wrong:
@@ -192,7 +192,9 @@ class CustomerIo
 
         logger('Suppressing Customer.io profile', ['user_id' => $id]);
 
-        return $this->trackApiClient->post('customers/' . $id . '/suppress', ['json' => []]);
+        return $this->trackApiClient->post('customers/' . $id . '/suppress', [
+            'json' => [],
+        ]);
     }
 
     /**
@@ -203,15 +205,21 @@ class CustomerIo
      * @param int $transactionalMessageId
      * @param array $messageData
      */
-    public function sendEmail(User $user, $transactionalMessageId, $messageData = [])
-    {
+    public function sendEmail(
+        User $user,
+        $transactionalMessageId,
+        $messageData = []
+    ) {
         $logInfo = [
             'transactional_message_id' => $transactionalMessageId,
             'data' => $messageData,
         ];
 
         if (!$this->enabled()) {
-            info('Transactional email would have been sent from Customer.io', $logInfo);
+            info(
+                'Transactional email would have been sent from Customer.io',
+                $logInfo,
+            );
 
             return;
         }
@@ -230,7 +238,9 @@ class CustomerIo
 
         logger('Sending Customer.io email', $logInfo);
 
-        $response = $this->appApiClient->post('send/email', ['json' => $payload]);
+        $response = $this->appApiClient->post('send/email', [
+            'json' => $payload,
+        ]);
     }
 
     /**

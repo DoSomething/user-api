@@ -35,7 +35,9 @@ class AddIndexToMobilePromotionsMutedAtSmsStatusFields extends Migration
         Schema::connection('mongodb')->table('users', function (
             Blueprint $collection
         ) {
-            $collection->dropIndex('mobile_1_promotions_muted_at_1_sms_status_1');
+            $collection->dropIndex(
+                'mobile_1_promotions_muted_at_1_sms_status_1',
+            );
         });
     }
 }

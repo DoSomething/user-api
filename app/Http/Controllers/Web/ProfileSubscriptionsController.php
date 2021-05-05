@@ -58,9 +58,9 @@ class ProfileSubscriptionsController extends Controller
             $input['email_subscription_topics'] = [];
         }
 
-        $this->registrar->register($input, $user, function (
-            $user
-        ) use ($currentMobile) {
+        $this->registrar->register($input, $user, function ($user) use (
+            $currentMobile
+        ) {
             // Set the sms_status if we're adding or updating the user's mobile.
             if ($user->mobile && $user->mobile !== $currentMobile) {
                 if ($user->sms_status !== 'less') {

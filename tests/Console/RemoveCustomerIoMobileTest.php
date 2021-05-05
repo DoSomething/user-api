@@ -8,11 +8,19 @@ class RemoveCustomerIoMobileTest extends BrowserKitTestCase
     /** @test */
     public function testExpectedApiCalls()
     {
-        factory(User::class, 5)->states('email-subscribed', 'sms-subscribed')->create();
+        factory(User::class, 5)
+            ->states('email-subscribed', 'sms-subscribed')
+            ->create();
 
-        $nullSmsStatusUsers = factory(User::class, 3)->states('email-unsubscribed')->create(['sms_status' => null]);
-        $unsubscribedToSmsUsers = factory(User::class, 3)->states('email-subscribed', 'sms-unsubscribed')->create();
-        $unsubscribedToAllUsers = factory(User::class, 7)->states('email-unsubscribed', 'sms-unsubscribed')->create();
+        $nullSmsStatusUsers = factory(User::class, 3)
+            ->states('email-unsubscribed')
+            ->create(['sms_status' => null]);
+        $unsubscribedToSmsUsers = factory(User::class, 3)
+            ->states('email-subscribed', 'sms-unsubscribed')
+            ->create();
+        $unsubscribedToAllUsers = factory(User::class, 7)
+            ->states('email-unsubscribed', 'sms-unsubscribed')
+            ->create();
 
         Artisan::call('northstar:cio-remove-mobile');
 

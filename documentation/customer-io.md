@@ -10,30 +10,30 @@ When a user's `email_subscription_status` boolean field is set to `true`, they a
 
 The current `email_subscription_topics` a user can subscribe to are:
 
-* `community`
-* `lifestyle`
-* `news`
-* `scholarships`
+- `community`
+- `lifestyle`
+- `news`
+- `scholarships`
 
 ### SMS subscribers
 
 The user's `sms_status` field determines their SMS subscription status (a heavy TODO is to rename it as `sms_subscription_status` for consistency with email):
 
-* `active` - receives weekly promotional SMS broadcasts
-* `less` - receives monthly promotional SMS broadcasts
-* `stop` - has unsubscribed from all SMS messaging
-* `pending` - has received a re-permissioning SMS broadcast (a.k.a. an [`askSubscriptionStatusBroadcast`](https://github.com/DoSomething/gambit-admin/wiki/Broadcasts#asksubscriptionstatus)), prompting them to answer with `active`, `less`, or `stop`
-* `undeliverable` - we set this internally if Twilio cannot successfully deliver a SMS broadcast to the user's mobile number 
+- `active` - receives weekly promotional SMS broadcasts
+- `less` - receives monthly promotional SMS broadcasts
+- `stop` - has unsubscribed from all SMS messaging
+- `pending` - has received a re-permissioning SMS broadcast (a.k.a. an [`askSubscriptionStatusBroadcast`](https://github.com/DoSomething/gambit-admin/wiki/Broadcasts#asksubscriptionstatus)), prompting them to answer with `active`, `less`, or `stop`
+- `undeliverable` - we set this internally if Twilio cannot successfully deliver a SMS broadcast to the user's mobile number
 
-The current `sms_subscription_topics` are `general` and `voting`. By default, users are opted into both topics when they subscribe, unless the user is being imported from Rock The Vote (see [details](https://github.com/DoSomething/chompy/tree/master/docs/imports#sms-subscription)). 
+The current `sms_subscription_topics` are `general` and `voting`. By default, users are opted into both topics when they subscribe, unless the user is being imported from Rock The Vote (see [details](https://github.com/DoSomething/chompy/tree/master/docs/imports#sms-subscription)).
 
 ### Subscription updates
 
-* When a new account is created (via web or SMS), the member is subscribed for promotions by default, and a Customer.io profile is created for them.
+- When a new account is created (via web or SMS), the member is subscribed for promotions by default, and a Customer.io profile is created for them.
 
-* If a member unsubscribes from both SMS and email promotions, their `promotions_muted_at` field will be set to the datetime they've unsubscribed. This will trigger their Customer.io profile deletion.
+- If a member unsubscribes from both SMS and email promotions, their `promotions_muted_at` field will be set to the datetime they've unsubscribed. This will trigger their Customer.io profile deletion.
 
-* If a member whose promotions have been muted resubscribes to either email and/or SMS, their `promotions_muted_at` field will be set to null. This will trigger their Customer.io profile to be re-created, and additionally track a `promotions_resubscribe` Customer.io event.
+- If a member whose promotions have been muted resubscribes to either email and/or SMS, their `promotions_muted_at` field will be set to null. This will trigger their Customer.io profile to be re-created, and additionally track a `promotions_resubscribe` Customer.io event.
 
 ### Mute Promotions import
 
