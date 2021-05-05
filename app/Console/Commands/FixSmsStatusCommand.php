@@ -43,6 +43,8 @@ class FixSmsStatusCommand extends Command
             foreach ($users as $user) {
                 $profile = $customerIo->getAttributes($user);
 
+                throttle(600); // Customer.io Beta API is rate-limited, so keep under 10/s (600/min).
+
                 // We want to log a little context on each user that we're fixing
                 // to help identify patterns of potentially affected accounts:
                 info('Fixing user', [
