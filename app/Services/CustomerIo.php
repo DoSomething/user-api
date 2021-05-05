@@ -101,6 +101,36 @@ class CustomerIo
     }
 
     /**
+     * Read the given customer's profile in Customer.io.
+     * @see https://customer.io/docs/api/#operation/getPersonAttributes
+     *
+     * @param User $user
+     */
+    public function getAttributes(User $user)
+    {
+        if (!$this->enabled()) {
+            info('Would have read attributes from Customer.io', [
+                'id' => $user->id,
+            ]);
+
+            return null;
+        }
+
+        $response = $this->appApiClient->get(
+            "https://beta-api.customer.io/v1/api/customers/$user->id/attributes",
+        );
+
+        // For this endpoint, any status besides 200 means something is wrong:
+        if ($response->getStatusCode() !== 200) {
+            return null;
+        }
+
+        $json = json_decode((string) $response->getBody(), true);
+
+        return $json['customer']['attributes'];
+    }
+
+    /**
      * Create or update the given customer's profile in Customer.io.
      * @see https://customer.io/docs/api/#apitrackcustomerscustomers_update
      *
