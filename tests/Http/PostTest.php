@@ -328,7 +328,11 @@ class PostTest extends TestCase
         $response = $this->asUser($signup->user)->postJson('api/v3/posts', [
             'type' => 'photo',
             'action_id' => $action->id,
-            'file' => UploadedFile::fake()->image('photo.jpg', $minImageSize['height'] - 1, $minImageSize['height'] - 1), // less than the minimum size!
+            'file' => UploadedFile::fake()->image(
+                'photo.jpg',
+                $minImageSize['height'] - 1,
+                $minImageSize['height'] - 1,
+            ), // less than the minimum size!
         ]);
 
         $response->assertJsonValidationErrors(['file' => $validationMessage]);
@@ -336,7 +340,11 @@ class PostTest extends TestCase
         $response = $this->asUser($signup->user)->postJson('api/v3/posts', [
             'type' => 'photo',
             'action_id' => $action->id,
-            'file' => UploadedFile::fake()->image('photo.jpg', $maxImageSize['height'] + 1, $maxImageSize['height'] + 1), // more than the maximum size!
+            'file' => UploadedFile::fake()->image(
+                'photo.jpg',
+                $maxImageSize['height'] + 1,
+                $maxImageSize['height'] + 1,
+            ), // more than the maximum size!
         ]);
 
         $response->assertJsonValidationErrors(['file' => $validationMessage]);
@@ -374,7 +382,7 @@ class PostTest extends TestCase
         $response = $this->asUser($signup->user)->postJson('api/v3/posts', [
             'type' => 'photo',
             'action_id' => $action->id,
-            'hours_spent' => 0.00, // This should be a minimum of 0.01.
+            'hours_spent' => 0.0, // This should be a minimum of 0.01.
         ]);
 
         $response->assertJsonValidationErrors(['hours_spent']);

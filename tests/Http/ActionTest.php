@@ -38,4 +38,19 @@ class ActionTest extends TestCase
         $response->assertOk();
         $response->assertJsonPath('data.id', $action->id);
     }
+
+    /**
+     * Test that when an action is created with an impact goal it saves properly.
+     *
+     * @return void
+     */
+    public function testDisplayingActionWithAnImpactGoal()
+    {
+        $action = factory(Action::class)->create(['impact_goal' => 3000]);
+
+        $response = $this->getJson('api/v3/actions/' . $action->id);
+
+        $response->assertOk();
+        $response->assertJsonPath('data.impact_goal', $action->impact_goal);
+    }
 }

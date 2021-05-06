@@ -16,6 +16,6 @@ cat ../northstar-updates.csv | php artisan northstar:update --field=email_subscr
 
 In this example, we run the console command with a `northstar-updates.csv` file, which we'd expect to contain the following fields:
 
-* `northstar_id` (required)
-* `email_subscription_status`
-* `sms_status`
+- `northstar_id` (required)
+- `email_subscription_status`
+- `sms_status`

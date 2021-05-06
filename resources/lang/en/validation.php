@@ -93,7 +93,8 @@ return [
 
     'custom' => [
         'sms_status' => [
-            'required_with_all' => 'Please select how often you wish to receive texts.',
+            'required_with_all' =>
+                'Please select how often you wish to receive texts.',
         ],
     ],
 

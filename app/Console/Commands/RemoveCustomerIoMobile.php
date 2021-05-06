@@ -47,8 +47,9 @@ class RemoveCustomerIoMobile extends Command
                 }
 
                 // Otherwise update their profile to remove the mobile number.
-                dispatch(new UpsertCustomerIoProfile($user))
-                    ->onQueue(config('queue.names.low'));
+                dispatch(new UpsertCustomerIoProfile($user))->onQueue(
+                    config('queue.names.low'),
+                );
             });
         });
 

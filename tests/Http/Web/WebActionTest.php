@@ -31,6 +31,7 @@ class WebActionTest extends TestCase
             'scholarship_entry' => true,
             'volunteer_credit' => false,
             'anonymous' => false,
+            'impact_goal' => 2000,
             'noun' => 'things',
             'verb' => 'done',
         ]);
@@ -144,5 +145,40 @@ class WebActionTest extends TestCase
         $response = $this->getJson('api/v3/actions/' . $action->id);
 
         $response->assertNotFound();
+    }
+
+    /**
+     * Test that a POST request to /actions with invalid data types is not successful.
+     *
+     * POST /admin/actions
+     * @return void
+     */
+    public function testCannotCreateActionWithInvalidInput()
+    {
+        $campaign = factory(Campaign::class)->create();
+
+        $actionName = $this->faker->sentence;
+
+        $admin = factory(User::class, 'admin')->create();
+
+        $response = $this->actingAs($admin, 'web')->post('/admin/actions', [
+            'name' => $actionName,
+            'campaign_id' => $campaign->id,
+            'post_type' => 'photo',
+            'action_type' => 'make-something',
+            'time_commitment' => '0.5-1.0',
+            'reportback' => true,
+            'civic_action' => false,
+            'scholarship_entry' => true,
+            'volunteer_credit' => false,
+            'anonymous' => false,
+            'impact_goal' => 'dog', //should be an integer
+            'noun' => 'things',
+            'verb' => 'done',
+        ]);
+
+        $response->assertSessionHasErrors([
+            'impact_goal' => 'The impact goal must be an integer.',
+        ]);
     }
 }

@@ -39,6 +39,7 @@ class ActionTransformer extends TransformerAbstract
             'anonymous' => $action->anonymous,
             'online' => $action->online,
             'quiz' => $action->quiz,
+            'impact_goal' => $action->impact_goal,
             'noun' => $action->noun,
             'verb' => $action->verb,
             'created_at' => $action->created_at->toIso8601String(),

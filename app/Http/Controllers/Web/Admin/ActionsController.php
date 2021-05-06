@@ -40,6 +40,7 @@ class ActionsController extends Controller
             ],
             'noun' => ['required', 'string'],
             'verb' => ['required', 'string'],
+            'impact_goal' => ['nullable', 'integer'],
         ];
     }
 

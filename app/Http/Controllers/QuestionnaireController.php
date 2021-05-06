@@ -55,15 +55,19 @@ class QuestionnaireController extends ActivityApiController
 
         $this->rules = array_merge(
             Arr::except((new PostRequest())->rules(), [
-                'action', 'action_id', 'campaign_id', 'type',
+                'action',
+                'action_id',
+                'campaign_id',
+                'type',
             ]),
             [
                 'questions' => 'required|array',
-                'questions.*.action_id' => 'required|integer|exists:mysql.actions,id',
+                'questions.*.action_id' =>
+                    'required|integer|exists:mysql.actions,id',
                 'questions.*.title' => 'required|string',
                 'questions.*.answer' => 'required|string|max:500',
                 'contentful_id' => 'required|string',
-            ]
+            ],
         );
     }
 
@@ -108,12 +112,15 @@ class QuestionnaireController extends ActivityApiController
 
             $shouldTrackToCustomerIo = $index === 0;
 
-            $post = $this->posts->create(array_merge($validated, [
-                'action_id' => $actionId,
-                'text' => $question['answer'],
-                'details' => json_encode($postDetails),
-
-            ]), $signup->id, $shouldTrackToCustomerIo);
+            $post = $this->posts->create(
+                array_merge($validated, [
+                    'action_id' => $actionId,
+                    'text' => $question['answer'],
+                    'details' => json_encode($postDetails),
+                ]),
+                $signup->id,
+                $shouldTrackToCustomerIo,
+            );
 
             array_push($posts, $post);
         }

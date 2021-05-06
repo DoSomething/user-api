@@ -34,24 +34,36 @@ class QuestionnaireTest extends TestCase
             'post_type' => 'text',
         ]);
 
-        $questionOne = ['title' => 'Question one.', 'answer' => 'Answer one.', 'action_id' =>  $actionOne->id];
+        $questionOne = [
+            'title' => 'Question one.',
+            'answer' => 'Answer one.',
+            'action_id' => $actionOne->id,
+        ];
 
         $actionTwo = factory(Action::class)->create([
             'campaign_id' => $campaignId,
             'post_type' => 'text',
         ]);
 
-        $questionTwo = ['title' => 'Question two.', 'answer' => 'Answer two.', 'action_id' =>  $actionTwo->id];
+        $questionTwo = [
+            'title' => 'Question two.',
+            'answer' => 'Answer two.',
+            'action_id' => $actionTwo->id,
+        ];
 
-        $response = $this->asUser($user)->json('POST', 'api/v3/questionnaires', [
-            'questions' => [$questionOne, $questionTwo],
-            'contentful_id' => $contentfulId,
-            'location' => $location,
-            'school_id' => $schoolId,
-            'details' => json_encode($details),
-            'referrer_user_id' => $referrerUser->id,
-            'group_id' => $groupId,
-        ]);
+        $response = $this->asUser($user)->json(
+            'POST',
+            'api/v3/questionnaires',
+            [
+                'questions' => [$questionOne, $questionTwo],
+                'contentful_id' => $contentfulId,
+                'location' => $location,
+                'school_id' => $schoolId,
+                'details' => json_encode($details),
+                'referrer_user_id' => $referrerUser->id,
+                'group_id' => $groupId,
+            ],
+        );
 
         $response->assertStatus(201)->assertJson([
             'data' => [
@@ -75,8 +87,7 @@ class QuestionnaireTest extends TestCase
         ]);
 
         // Make sure two posts are persisted to the database.
-        $this->assertMysqlDatabaseHas('posts',
-        [
+        $this->assertMysqlDatabaseHas('posts', [
             'northstar_id' => $user->id,
             'campaign_id' => $campaignId,
             'type' => 'text',
@@ -86,11 +97,13 @@ class QuestionnaireTest extends TestCase
             'status' => 'pending',
             'location' => $location,
             'school_id' => $schoolId,
-            'details' => json_encode(array_merge($details, [
-                'questionnaire' => true,
-                'question' => $questionOne['title'],
-                'contentful_id' => $contentfulId,
-            ])),
+            'details' => json_encode(
+                array_merge($details, [
+                    'questionnaire' => true,
+                    'question' => $questionOne['title'],
+                    'contentful_id' => $contentfulId,
+                ]),
+            ),
             'referrer_user_id' => $referrerUser->id,
             'group_id' => $groupId,
         ]);
@@ -105,11 +118,13 @@ class QuestionnaireTest extends TestCase
             'status' => 'pending',
             'location' => $location,
             'school_id' => $schoolId,
-            'details' => json_encode(array_merge($details, [
-                'questionnaire' => true,
-                'question' => $questionTwo['title'],
-                'contentful_id' => $contentfulId,
-            ])),
+            'details' => json_encode(
+                array_merge($details, [
+                    'questionnaire' => true,
+                    'question' => $questionTwo['title'],
+                    'contentful_id' => $contentfulId,
+                ]),
+            ),
             'referrer_user_id' => $referrerUser->id,
             'group_id' => $groupId,
         ]);

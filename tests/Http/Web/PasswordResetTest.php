@@ -210,7 +210,10 @@ class PasswordResetTest extends TestCase
             $params = $job->getParams();
 
             $this->assertEquals($params['user']->id, $user->id);
-            $this->assertEquals($params['eventData']['updated_via'], 'rock-the-vote-activate-account');
+            $this->assertEquals(
+                $params['eventData']['updated_via'],
+                'rock-the-vote-activate-account',
+            );
 
             return true;
         });

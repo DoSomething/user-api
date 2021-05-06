@@ -33,7 +33,7 @@ class ReportPasswordUpdated
                 'password_updated',
                 [
                     'updated_via' => $passwordResetType,
-                ]
+                ],
             );
         }
 

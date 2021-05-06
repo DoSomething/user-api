@@ -47,6 +47,7 @@ class Action extends Model
         'anonymous',
         'online',
         'quiz',
+        'impact_goal',
         'noun',
         'verb',
         'collect_school_id',
