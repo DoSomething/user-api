@@ -118,7 +118,14 @@ class CustomerIo
 
         $response = $this->appApiClient->get(
             "https://beta-api.customer.io/v1/api/customers/$user->id/attributes",
+            [
+                'http_errors' => false,
+            ],
         );
+
+        if ($response->getStatusCode() === 404) {
+            return null;
+        }
 
         // For this endpoint, any status besides 200 means something is wrong:
         if ($response->getStatusCode() !== 200) {
@@ -149,21 +156,9 @@ class CustomerIo
             return;
         }
 
-        $response = $this->trackApiClient->put('customers/' . $user->id, [
+        $this->trackApiClient->put('customers/' . $user->id, [
             'json' => $payload,
-            'http_errors' => false,
         ]);
-
-        if ($response->getStatusCode() === 404) {
-            return null;
-        }
-
-        // For this endpoint, any status besides 200 means something is wrong:
-        if ($response->getStatusCode() !== 200) {
-            throw new Exception(
-                'Customer.io error: ' . (string) $response->getBody(),
-            );
-        }
 
         info('User sent to Customer.io', ['id' => $user->id]);
     }
