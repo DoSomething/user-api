@@ -15,7 +15,7 @@ class AddImpactGoalToActions extends Migration
     {
         Schema::table('actions', function (Blueprint $table) {
             $table
-                ->string('impact_goal')
+                ->unsignedInteger('impact_goal')
                 ->after('quiz')
                 ->nullable()
                 ->comment('The impact goal associated with this action.');

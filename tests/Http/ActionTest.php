@@ -46,7 +46,7 @@ class ActionTest extends TestCase
      */
     public function testCreatingAnActionWithAnImpactGoal()
     {
-        $action = factory(Action::class)->create(['impact_goal' => '3000']);
+        $action = factory(Action::class)->create(['impact_goal' => 3000]);
 
         $response = $this->getJson('api/v3/actions/' . $action->id);
 
