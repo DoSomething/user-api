@@ -151,7 +151,12 @@ class CustomerIo
 
         $response = $this->trackApiClient->put('customers/' . $user->id, [
             'json' => $payload,
+            'http_errors' => false,
         ]);
+
+        if ($response->getStatusCode() === 404) {
+            return null;
+        }
 
         // For this endpoint, any status besides 200 means something is wrong:
         if ($response->getStatusCode() !== 200) {
