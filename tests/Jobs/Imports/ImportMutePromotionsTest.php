@@ -44,20 +44,18 @@ class ImportMutePromotionsTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        try {
-            ImportMutePromotions::dispatch(
-                ['northstar_id' => 'non_existent_id'],
-                $importFile,
-            );
-        } finally {
-            $this->assertDatabaseMissing(
-                'mute_promotions_logs',
-                [
-                    'import_file_id' => $importFile->id,
-                    'user_id' => $user->id,
-                ],
-                'mysql',
-            );
-        }
+        ImportMutePromotions::dispatch(
+            ['northstar_id' => 'non_existent_id'],
+            $importFile,
+        );
+
+        $this->assertDatabaseMissing(
+            'mute_promotions_logs',
+            [
+                'import_file_id' => $importFile->id,
+                'user_id' => $user->id,
+            ],
+            'mysql',
+        );
     }
 }
