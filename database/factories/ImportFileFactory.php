@@ -8,7 +8,6 @@ use Faker\Generator as Faker;
 
 $factory->define(ImportFile::class, function (Faker $faker) {
     return [
-        'id' => $faker->randomDigitNotNull,
         'filepath' => $faker->imageUrl,
         'import_type' => $faker->randomElement([
             ImportType::$emailSubscription,
