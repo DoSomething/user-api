@@ -7,9 +7,11 @@ use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
 $factory->define(GroupType::class, function (Faker $faker) {
+    $job = Str::title($faker->unique()->jobTitle);
+    $number = $faker->unique()->numberBetween(100, 9999);
+
     return [
-        'name' =>
-            'National ' . Str::title($faker->unique()->jobTitle) . ' Society',
+        'name' => "National $job Society Chapter #$number",
         'filter_by_location' => true,
     ];
 });
