@@ -98,7 +98,7 @@ class ImportEmailSubscriptions implements ShouldQueue
             // We need to pass a "source" in order to save through the source_detail.
             $revisedInput = array_merge($input, [
                 'email' => $this->email,
-                'source' => 'northstar',
+                'source' => 'importer-client', // @TODO: We should type this.
                 'source_detail' => $this->source_detail,
             ]);
 
