@@ -11,8 +11,13 @@ GET /api/v3/actions
 ### Optional Query Parameters
 
 - **filter[column]** _(string)_
+
   - Filter results by the given column: `id`, `campaign_id`, `callpower_campaign_id`
   - You can filter by more than one value for a column, e.g. `/actions?filter[id]=121,122`
+
+- **include** _(string)_
+  - Include additional related records in the response: `accepted_quantity`
+  - e.g. `api/v3/actions?include=accepted_quantity`
 
 Example Response:
 
@@ -38,6 +43,7 @@ Example Response:
             "anonymous": false,
             "online": false,
             "quiz": false,
+            "impact_goal": 4000,
             "noun": "votes",
             "verb": "registered",
             "created_at": "2019-01-23T21:23:42+00:00",
@@ -61,6 +67,7 @@ Example Response:
             "anonymous": false,
             "online": false,
             "quiz": false,
+            "impact_goal": 10000,
             "noun": "votes",
             "verb": "registered",
             "created_at": "2019-01-23T21:23:42+00:00",
@@ -109,6 +116,7 @@ Example Response:
   "anonymous": false,
   "online": true,
   "quiz": false,
+  "impact_goal": 250000,
   "noun": "resources",
   "verb": "shared",
   "created_at": "2019-01-23T21:23:42+00:00",
