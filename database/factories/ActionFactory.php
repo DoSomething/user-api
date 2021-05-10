@@ -40,3 +40,14 @@ $factory->state(Action::class, 'voter-registration', function (Faker $faker) {
         'verb' => 'completed',
     ];
 });
+
+$factory->state(Action::class, 'callpower', function (Faker $faker) {
+    return [
+        'post_type' => PostType::PHONE_CALL(),
+        'action_type' => ActionType::HAVE_CONVERSATION(),
+        'callpower_campaign_id' => $faker->unique()->numberBetween(1, 9000),
+        'name' => 'Call Your Representative ' . $faker->unique()->year,
+        'noun' => 'calls',
+        'verb' => 'completed',
+    ];
+});
