@@ -89,6 +89,12 @@ Example Response:
 
 ## Retrieve A Specific Action
 
+### Optional Query Parameters
+
+- **include** _(string)_
+  - Include additional related records in the response: `accepted_quantity`
+  - e.g. `api/v3/actions/:action_id/?include=accepted_quantity`
+
 ```
 GET /api/v3/actions/:action_id
 ```
