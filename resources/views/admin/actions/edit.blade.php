@@ -39,7 +39,7 @@
 
                     <div class="form-item -third">
                         <label class="field-label">Impact Goal (optional)</label>
-                        @include('admin.forms.text', ['name' => 'impact_goal', 'placeholder' => 'e.g. 4000 (optional)', 'value' => $action->impact_goal])
+                        @include('admin.forms.text', ['name' => 'impact_goal', 'placeholder' => 'This number is the campaign\'s total quantity goal. It will appear on the campaign progress bar.', 'value' => $action->impact_goal])
                     </div>
 
                     <div class="form-item -third">
