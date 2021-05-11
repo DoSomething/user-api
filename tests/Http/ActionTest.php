@@ -77,7 +77,7 @@ class ActionTest extends TestCase
             'quantity' => $this->faker->numberBetween(10, 1000),
         ]);
 
-        // Test with admin that only the 3 accepted are counted.
+        // Test with admin that only the 3 accepted post's quantities are counted.
         $response = $this->asAdminUser()->getJson(
             'api/v3/actions/' . $action->id . '?include=accepted_quantity',
         );
