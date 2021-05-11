@@ -11,6 +11,13 @@ use League\Fractal\TransformerAbstract;
 class ActionTransformer extends TransformerAbstract
 {
     /**
+     * List of resources possible to include.
+     *
+     * @var array
+     */
+    protected $availableIncludes = ['accepted_quantity'];
+
+    /**
      * Transform resource data.
      *
      * @param \App\Models\Action $action
@@ -45,5 +52,19 @@ class ActionTransformer extends TransformerAbstract
             'created_at' => $action->created_at->toIso8601String(),
             'updated_at' => $action->updated_at->toIso8601String(),
         ];
+    }
+
+    /**
+     * Include accepted quantity.
+     *
+     * @param \App\Models\Action $action
+     * @return \League\Fractal\Resource\Collection
+     */
+    public function includeAcceptedQuantity(Action $action)
+    {
+        return $this->item(
+            $action->getAcceptedQuantity(),
+            new AcceptedQuantityTransformer(),
+        );
     }
 }

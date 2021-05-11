@@ -96,4 +96,16 @@ class Action extends Model
     {
         return $this->hasMany(Post::class);
     }
+
+    /**
+     * Get the quantity total associated with approved posts under this action.
+     *
+     * @return int
+     */
+    public function getAcceptedQuantity()
+    {
+        $acceptedPosts = $this->posts->where('status', 'accepted');
+
+        return $acceptedPosts->sum('quantity');
+    }
 }
