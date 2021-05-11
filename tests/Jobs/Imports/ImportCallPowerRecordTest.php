@@ -95,7 +95,9 @@ class ImportCallPowerRecordTest extends TestCase
             ]);
 
         // Since we don't have an action for this CallPower ID, we should get an error:
-        $this->expectExceptionMessage('Could not find CallPower action.');
+        $this->expectExceptionMessage(
+            'Could not find action with callpower_campaign_id',
+        );
 
         ImportCallPowerRecord::dispatch([
             'mobile' => $user->mobile,

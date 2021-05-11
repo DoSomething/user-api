@@ -74,9 +74,9 @@ class ImportCallPowerRecord implements ShouldQueue
         $action = Action::fromCallPowerID($callPowerId);
 
         if (!$action) {
-            throw new Exception('Could not find CallPower action.', [
-                'callpower_campaign_id' => $callPowerId,
-            ]);
+            throw new Exception(
+                "Could not find action with callpower_campaign_id=$callPowerId",
+            );
         }
 
         $campaign = $action->campaign;
