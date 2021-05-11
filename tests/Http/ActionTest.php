@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Action;
+use App\Models\Post;
 
 class ActionTest extends TestCase
 {
@@ -52,5 +53,36 @@ class ActionTest extends TestCase
 
         $response->assertOk();
         $response->assertJsonPath('data.impact_goal', $action->impact_goal);
+    }
+
+    /**
+     * Test for action to show with included accepted quantity.
+     *
+     * GET /api/v3/actions/:action_id?include=accepted_quantity
+     * @return void
+     */
+    public function testActionShowWithAcceptedQuantityAsAdmin()
+    {
+        $action = factory(Action::class)->create();
+
+        // Create three accepted posts associated to the action and 3 pending.
+        factory(Post::class, 3)->create([
+            'action_id' => $action->id,
+            'status' => 'accepted',
+            'quantity' => 25,
+        ]);
+        factory(Post::class, 3)->create([
+            'action_id' => $action->id,
+            'status' => 'pending',
+            'quantity' => $this->faker->numberBetween(10, 1000),
+        ]);
+
+        // Test with admin that only the 3 accepted are counted.
+        $response = $this->asAdminUser()->getJson(
+            'api/v3/actions/' . $action->id . '?include=accepted_quantity',
+        );
+
+        $response->assertOk();
+        $response->assertJsonPath('data.accepted_quantity.data.quantity', 75);
     }
 }
