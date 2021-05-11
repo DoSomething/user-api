@@ -82,6 +82,14 @@ class Action extends Model
     }
 
     /**
+     * Find the action for a given CallPower campaign ID.
+     */
+    public static function fromCallPowerId($id)
+    {
+        return self::where('callpower_campaign_id', $id)->first();
+    }
+
+    /**
      * Each action belongs to a campaign.
      */
     public function campaign()
