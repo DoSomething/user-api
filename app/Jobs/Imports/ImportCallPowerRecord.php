@@ -7,12 +7,12 @@ use App\Managers\PostManager;
 use App\Managers\SignupManager;
 use App\Models\Action;
 use App\Models\User;
-use Exception;
 use Chompy\Services\Rogue;
+use Exception;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
 
 class ImportCallPowerRecord implements ShouldQueue
 {

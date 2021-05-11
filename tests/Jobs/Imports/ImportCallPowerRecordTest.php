@@ -5,7 +5,7 @@ use App\Models\Action;
 use App\Models\Post;
 use App\Models\User;
 
-class CallPowerTest extends TestCase
+class ImportCallPowerRecordTest extends TestCase
 {
     /**
      * Test that a post with a completed status successfully saves.
