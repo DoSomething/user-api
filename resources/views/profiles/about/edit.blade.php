@@ -108,7 +108,7 @@
 
         <div class="flex pt-4">
             <div class="w-1/3 flex justify-start">
-                <img src="/images/about-form-icon.svg" />
+                <img class="w-1/3" src="/images/about-form-icon.svg" />
             </div>
             <div class="w-2/3 flex justify-around md:justify-end p-2">
                 <div class="m-1">
