@@ -16,7 +16,7 @@ GET /api/v3/actions
   - You can filter by more than one value for a column, e.g. `/actions?filter[id]=121,122`
 
 - **include** _(string)_
-  - Include additional related records in the response: `accepted_quantity`
+  - Include additional related records and/or computed attributes in the response: `accepted_quantity`
   - e.g. `api/v3/actions?include=accepted_quantity`
 
 Example Response:
@@ -92,7 +92,7 @@ Example Response:
 ### Optional Query Parameters
 
 - **include** _(string)_
-  - Include additional related records in the response: `accepted_quantity`
+  - Include additional related records and/or computed attributes in the response: `accepted_quantity`
   - e.g. `api/v3/actions/:action_id/?include=accepted_quantity`
 
 ```

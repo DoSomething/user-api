@@ -104,8 +104,8 @@ class Action extends Model
      */
     public function getAcceptedQuantity()
     {
-        $accepted_posts = $this->posts->where('status', 'accepted');
+        $acceptedPosts = $this->posts->where('status', 'accepted');
 
-        return $accepted_posts->sum('quantity');
+        return $acceptedPosts->sum('quantity');
     }
 }
