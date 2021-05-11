@@ -36,7 +36,7 @@ class ImportCallPowerRecord implements ShouldQueue
     }
 
     /**
-     * Execute the job to create a CallPower post in Rogue.
+     * Execute the job to create a CallPower post.
      *
      * @return array
      */
@@ -116,7 +116,7 @@ class ImportCallPowerRecord implements ShouldQueue
     }
 
     /**
-     * Parse the call and return details we want to store in Rogue as a JSON object.
+     * Parse the call and return details we want to store as a JSON object.
      *
      * @param array $call
      */
