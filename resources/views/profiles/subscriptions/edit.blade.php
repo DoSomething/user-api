@@ -61,7 +61,7 @@
 
         <div class="flex pt-4">
             <div class="w-1/3 flex justify-start">
-                <img src="/images/subscription-form-icon.svg" />
+                <img class="w-1/3" src="/images/subscription-form-icon.svg" />
             </div>
             <div class="w-2/3 flex justify-around sm:justify-end p-2">
                 <div class="m-1">
