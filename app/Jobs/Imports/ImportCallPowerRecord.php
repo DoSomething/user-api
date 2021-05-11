@@ -71,7 +71,7 @@ class ImportCallPowerRecord implements ShouldQueue
 
         // Using the callpower_campaign_id, get the action & campaign:
         $callPowerId = $this->parameters['callpower_campaign_id'];
-        $action = Action::fromCallPowerID($callPowerId);
+        $action = Action::fromCallPowerId($callPowerId);
 
         if (!$action) {
             throw new Exception(

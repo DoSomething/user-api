@@ -82,6 +82,14 @@ class Action extends Model
     }
 
     /**
+     * Find the action for a given CallPower campaign ID.
+     */
+    public static function fromCallPowerId($id)
+    {
+        return self::where('callpower_campaign_id', $id)->first();
+    }
+
+    /**
      * Each action belongs to a campaign.
      */
     public function campaign()
@@ -97,14 +105,6 @@ class Action extends Model
         return $this->hasMany(Post::class);
     }
 
-    /**
-     * Find the action for a given CallPower campaign ID.
-     */
-    public static function fromCallPowerID($id)
-    {
-        return self::where('callpower_campaign_id', $id)->first();
-    }
-  
     /**
      * Get the quantity total associated with approved posts under this action.
      *
