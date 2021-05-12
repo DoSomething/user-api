@@ -61,12 +61,10 @@ export const Action = ({ action, deleteAction, isPermalink }) => {
 
       <div className="container__row">
         <ul>
-          {action.impactGoal ? (
-            <li>
-              <h4>IMPACT GOAL</h4>
-              <p>{action.impactGoal}</p>
-            </li>
-          ) : null}
+          <li>
+            <h4>IMPACT GOAL</h4>
+            {action.impactGoal ? <p>{action.impactGoal}</p> : <p>–</p>}
+          </li>
 
           <li>
             <h4>NOUN</h4>
