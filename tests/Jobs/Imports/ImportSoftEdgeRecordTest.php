@@ -65,4 +65,35 @@ class ImportSoftEdgeRecordTest extends TestCase
             'northstar_id' => 'lold8adsad98a7d8998asd7a',
         ]);
     }
+
+    /**
+     * Test that a post for a non-email action won't save.
+     *
+     * @return void
+     */
+    public function testFailsWithIncompatibleActionType()
+    {
+        $user = factory(User::class)->create();
+
+        $action = factory(Action::class)
+            ->state('callpower') // <-- !!!
+            ->create();
+
+        $this->expectExceptionMessage(
+            'Received SoftEdge import for non-email action.',
+        );
+
+        ImportSoftEdgeRecord::dispatch([
+            'action_id' => $action->id,
+            'northstar_id' => $user->id,
+            'email_timestamp' => '2017-11-07 18:54:10.829655',
+            'campaign_target_name' => $this->faker->name,
+            'campaign_target_title' => 'Representative',
+            'campaign_target_district' => 'FL-7',
+        ]);
+
+        $this->assertMysqlDatabaseMissing('posts', [
+            'northstar_id' => $user->id,
+        ]);
+    }
 }

@@ -6,10 +6,12 @@ use App\Managers\PostManager;
 use App\Managers\SignupManager;
 use App\Models\Action;
 use App\Models\User;
+use App\Types\PostType;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use InvalidArgumentException;
 
 class ImportSoftEdgeRecord implements ShouldQueue
 {
@@ -43,6 +45,13 @@ class ImportSoftEdgeRecord implements ShouldQueue
         $action = Action::findOrFail($this->parameters['action_id']);
         $campaign = $action->campaign;
         $details = $this->extractDetails($this->parameters);
+
+        // TODO: We should assert this in the repository!
+        if ($action->post_type !== PostType::PHONE_CALL()) {
+            throw new InvalidArgumentException(
+                'Received SoftEdge import for non-email action.',
+            );
+        }
 
         info('ImportSoftEdgeRecord - creating post', [
             'user_id' => $user->id,
