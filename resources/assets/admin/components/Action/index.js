@@ -16,6 +16,7 @@ export const ActionFragment = gql`
     }
     civicAction
     collectSchoolId
+    impactGoal
     name
     noun
     online
@@ -60,6 +61,11 @@ export const Action = ({ action, deleteAction, isPermalink }) => {
 
       <div className="container__row">
         <ul>
+          <li>
+            <h4>IMPACT GOAL</h4>
+            <p>{action.impactGoal}</p>
+          </li>
+
           <li>
             <h4>NOUN</h4>
             <p>{action.noun}</p>
