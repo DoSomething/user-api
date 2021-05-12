@@ -51,3 +51,13 @@ $factory->state(Action::class, 'callpower', function (Faker $faker) {
         'verb' => 'completed',
     ];
 });
+
+$factory->state(Action::class, 'softedge', function (Faker $faker) {
+    return [
+        'post_type' => PostType::EMAIL(),
+        'action_type' => ActionType::CONTACT_DECISIONMAKER(),
+        'name' => 'Email Your Representative ' . $faker->unique()->year,
+        'noun' => 'email',
+        'verb' => 'sent',
+    ];
+});
