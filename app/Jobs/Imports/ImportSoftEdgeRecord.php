@@ -35,7 +35,7 @@ class ImportSoftEdgeRecord implements ShouldQueue
     }
 
     /**
-     * Execute the job to create a SoftEdge post in Rogue.
+     * Execute the job to create a SoftEdge post.
      *
      * @return array
      */
@@ -89,7 +89,7 @@ class ImportSoftEdgeRecord implements ShouldQueue
     }
 
     /**
-     * Parse the call and return details we want to store in Rogue as a JSON object.
+     * Parse the call and return details we want to store as a JSON object.
      *
      * @param array $call
      */
