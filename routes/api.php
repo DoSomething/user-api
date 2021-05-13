@@ -149,6 +149,9 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.'], function () {
 Route::group(['prefix' => 'api/partners'], function () {
     // CallPower
     Route::post('callpower/call', 'Partners\CallPowerController@store');
+
+    // SoftEdge
+    Route::post('softedge/email', 'Partners\SoftEdgeController@store');
 });
 
 // Assets
