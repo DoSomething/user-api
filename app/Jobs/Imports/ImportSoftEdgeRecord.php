@@ -47,7 +47,7 @@ class ImportSoftEdgeRecord implements ShouldQueue
         $details = $this->extractDetails($this->parameters);
 
         // TODO: We should assert this in the repository!
-        if ($action->post_type !== PostType::PHONE_CALL()) {
+        if ($action->post_type !== (string) PostType::EMAIL()) {
             throw new InvalidArgumentException(
                 'Received SoftEdge import for non-email action.',
             );
