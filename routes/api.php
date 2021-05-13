@@ -147,6 +147,8 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.'], function () {
 
 // https://identity.dosomething.org/api/partners/
 Route::group(['prefix' => 'api/partners'], function () {
+    // CallPower
+    Route::post('callpower/call', 'Partners\CallPowerController@store');
 });
 
 // Assets
