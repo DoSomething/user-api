@@ -69,6 +69,15 @@ See [Authentication](authentication.md) for details on authorizing your requests
 | `GET .well-known/openid-configuration` | [Get OpenID Configuration](endpoints/discovery.md#get-openid-configuration) |
 | `GET v2/keys`                          | [Retrieve Public Key](endpoints/discovery.md#retrieve-public-key)           |
 
+#### Third-Party Partners
+
+We also have endpoints that our partner organizations use to integrate with our systems. These require a partner-specific API key.
+
+| Endpoint                      | Functionality                                                                       |
+| ----------------------------- | ----------------------------------------------------------------------------------- |
+| `POST /api/v1/callpower/call` | [CallPower: Create a post](endpoints/partners/callpower.md#create-a-callpower-post) |
+| `POST /api/v1/softedge/email` | [SoftEdge: Create a post](endpoints/partners/softedge.md#create-a-softedge-post)    |
+
 <br>
 
 ## Responses

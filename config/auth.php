@@ -14,6 +14,21 @@ return [
     'key' => env('APP_AUTH_KEY'),
 
     /*
+     |--------------------------------------------------------------------------
+     | CUSTOM: Partner API Keys
+     |--------------------------------------------------------------------------
+     |
+     | These secrets are used to authenticate API requests from third-party
+     | partners, like CallPower or SoftEdge.
+     |
+     */
+
+    'partners' => [
+        'callpower' => env('CALLPOWER_API_KEY'),
+        'softedge' => env('SOFTEDGE_API_KEY'),
+    ],
+
+    /*
     |--------------------------------------------------------------------------
     | Authentication Defaults
     |--------------------------------------------------------------------------

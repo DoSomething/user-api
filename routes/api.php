@@ -71,7 +71,7 @@ Route::group(
     },
 );
 
-// https://profile.dosomething.org/v2/
+// https://identity.dosomething.org/v2/
 Route::group(['prefix' => 'v2', 'as' => 'v2.'], function () {
     // Authentication
     Route::post('auth/token', 'OAuthController@createToken');
@@ -130,7 +130,7 @@ Route::group(['prefix' => 'v2', 'as' => 'v2.'], function () {
     Route::get('scopes', 'ScopeController@index');
 });
 
-// https://profile.dosomething.org/v1/
+// https://identity.dosomething.org/v1/
 Route::group(['prefix' => 'v1', 'as' => 'v1.'], function () {
     // Users
     Route::resource('users', 'Legacy\UserController', [
@@ -143,6 +143,15 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.'], function () {
     // Profile (the currently authenticated user)
     Route::get('profile', 'Legacy\ProfileController@show');
     Route::post('profile', 'Legacy\ProfileController@update');
+});
+
+// https://identity.dosomething.org/api/partners/
+Route::group(['prefix' => 'api/partners'], function () {
+    // CallPower
+    Route::post('callpower/call', 'Partners\CallPowerController@store');
+
+    // SoftEdge
+    Route::post('softedge/email', 'Partners\SoftEdgeController@store');
 });
 
 // Assets

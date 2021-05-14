@@ -58,6 +58,7 @@ class Kernel extends HttpKernel
         'role' => \App\Http\Middleware\RequireRole::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \App\Http\Middleware\ThrottleRequests::class,
+        'token' => \App\Http\Middleware\AuthenticateWithApiKey::class,
     ];
 
     /**
