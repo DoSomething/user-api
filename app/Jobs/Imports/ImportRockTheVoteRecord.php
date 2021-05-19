@@ -398,6 +398,8 @@ class ImportRockTheVoteRecord extends Job
             $user,
             $this->importFile,
         );
+
+        return $this->formatResponse($user, $post);
     }
 
     /**
