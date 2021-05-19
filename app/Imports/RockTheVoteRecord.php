@@ -79,8 +79,8 @@ class RockTheVoteRecord
      * Set data that will be used to create a new post for record if post
      * does not already exist.
      *
-     * @var array $record
-     * @var string $status
+     * @var array
+     * @var string
      */
     private function setPostData($record, $status)
     {
@@ -102,8 +102,8 @@ class RockTheVoteRecord
     /**
      * Set data that will be used to find or create a new user for the record.
      *
-     * @var array $record
-     * @var string $status
+     * @var array
+     * @var string
      */
     private function setUserData($record, $status)
     {
@@ -245,7 +245,7 @@ class RockTheVoteRecord
                 $userId = $value[1];
             } elseif ($key === 'group_id') {
                 $result['group_id'] = (int) $value[1];
-                //  If referral parameter is set to true, the user parameter belongs to the referring
+            //  If referral parameter is set to true, the user parameter belongs to the referring
                 //  user, not the user that should be associated with this voter registration record.
                 //  Expected key: "referral"
             } elseif (

@@ -7,7 +7,7 @@ use App\Models\ImportFile;
 use App\Models\User;
 use Carbon\Carbon;
 
-class ImportRockTheVoteRecordTests extends TestCase
+class ImportRockTheVoteRecordTest extends TestCase
 {
     /**
      * Make a fake record from a Rock The Vote report.
