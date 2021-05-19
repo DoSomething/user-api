@@ -28,29 +28,21 @@ class RockTheVoteRecord
     public static $startedRegistrationFieldName = 'Started registration';
 
     /**
-     *
-     *
      * @var array
      */
     public $config;
 
     /**
-     *
-     *
      * @var array
      */
     public $postData;
 
     /**
-     *
-     *
      * @var array
      */
     public $trackingSource;
 
     /**
-     *
-     *
      * @var array
      */
     public $userData;
@@ -73,7 +65,7 @@ class RockTheVoteRecord
             $record['Finish with State'],
         );
 
-        // Used in UserData and PostData
+        // Used in UserData and PostData.
         $this->trackingSource = $this->parseTrackingSource(
             $record['Tracking Source'],
         );
@@ -84,7 +76,8 @@ class RockTheVoteRecord
     }
 
     /**
-     *
+     * Set data that will be used to create a new post for record if post
+     * does not already exist.
      *
      * @var array $record
      * @var string $status
@@ -107,7 +100,7 @@ class RockTheVoteRecord
     }
 
     /**
-     *
+     * Set data that will be used to find or create a new user for the record.
      *
      * @var array $record
      * @var string $status
@@ -192,15 +185,15 @@ class RockTheVoteRecord
         if ($validator->fails()) {
             $errorMessages = $validator->errors()->all();
 
-            info(
-                'Invalid Rock The Vote record',
-                array_merge(
-                    [
-                        $startedRegField => $data[$startedRegField],
-                    ],
-                    $errorMessages,
-                ),
+            $context = array_merge(
+                [
+                    $startedRegField => $data[$startedRegField],
+                ],
+                $errorMessages,
             );
+
+            info('RockTheVoteRecord - invalid record', $context);
+
             throw ValidationException::withMessages($errorMessages);
         }
     }
