@@ -113,7 +113,7 @@ class RockTheVoteRecord
             'mobile' => null,
             'sms_status' => null,
             // Source is required in order to set the source detail.
-            'source' => 'northstar', // @TODO: should this be something more specific? env?
+            'source' => 'northstar',
             'source_detail' => $this->config['user']['source_detail'],
             'voter_registration_status' => Str::contains($status, 'register')
                 ? 'registration_complete'
