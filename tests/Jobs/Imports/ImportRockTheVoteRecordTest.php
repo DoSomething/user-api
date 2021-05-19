@@ -38,7 +38,7 @@ class ImportRockTheVoteRecordTests extends TestCase
     }
 
     /**
-     * Return a mock Started registration field value.
+     * Return a mock "Started registration" field value.
      *
      * @return string
      */
@@ -81,7 +81,6 @@ class ImportRockTheVoteRecordTests extends TestCase
     {
         $record = $this->makeFakeRockTheVoteReportRecord();
 
-        // @Question: should the action type be different from what is defined in the factory state?
         $action = factory(Action::class)
             ->states('voter-registration')
             ->create();
@@ -113,7 +112,7 @@ class ImportRockTheVoteRecordTests extends TestCase
     }
 
     /**
-     *
+     *  Test that user is not created if user is found with provided user import data.
      *
      * @return void
      */
@@ -133,7 +132,6 @@ class ImportRockTheVoteRecordTests extends TestCase
             'Status' => 'Step 1',
         ]);
 
-        // @Question: should the action type be different from what is defined in the factory state?
         $action = factory(Action::class)
             ->states('voter-registration')
             ->create();
