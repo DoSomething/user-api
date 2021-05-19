@@ -20,26 +20,38 @@ use Illuminate\Validation\ValidationException;
 
 class ImportRockTheVoteRecord extends Job
 {
+    /**
+     * @var array
+     */
     protected $config;
 
+    /**
+     * @var \Illuminate\Validation\ValidationException
+     */
     protected $exception;
 
+    /**
+     * @var \App\Models\ImportFile
+     */
     protected $importFile;
 
     /**
      * The mobile user (if different from "primary" user).
      *
-     * @var NorthstarUser
+     * @var \App\Models\User
      */
     protected $mobileUser;
 
     /**
      * The record parsed from a Rock the Vote csv.
      *
-     * @var RockTheVoteRecord
+     * @var \App\Imports\RockTheVoteRecord
      */
     protected $record;
 
+    /**
+     * @var \App\Auth\Registrar
+     */
     protected $registrar;
 
     /**
@@ -77,7 +89,6 @@ class ImportRockTheVoteRecord extends Job
         if (!$this->record && $this->exception) {
             $this->importFile->incrementSkipCount();
 
-            // @Question: what captures this to then use the message?
             return [
                 'response' => ['message' => $this->exception],
             ];
@@ -149,8 +160,6 @@ class ImportRockTheVoteRecord extends Job
     {
         $userData = $this->record->userData;
 
-        // @Question: could these be consolidated with one resolve() call
-        // for multiple matching fields.
         if ($userData['id']) {
             $user = $this->registrar->resolve(['id' => $userData['id']]);
 
@@ -189,105 +198,6 @@ class ImportRockTheVoteRecord extends Job
     }
 
     /**
-     *
-     * @param \App\Managers\SignupManager $signup
-     * @param \App\Managers\PostManager $post
-     */
-    private function importRecordAsNewUser($signups, $posts)
-    {
-        $user = $this->registrar->register($this->record->userData);
-
-        $action = Action::find($this->record->postData['action_id']);
-
-        $post = $this->createPost($user, $action, $signups, $posts);
-
-        if (!$post) {
-            return []; // @Question: fine to return empty array or maybe throw an error?
-        }
-
-        // @Question: not sure if it should be accepted depending on rtv status?
-        // $post->status = 'accepted';
-        // $post->save();
-
-        RockTheVoteLog::createFromRecord(
-            $this->record,
-            $user,
-            $this->importFile,
-        );
-
-        $this->sendPasswordReset($user);
-
-        return $this->formatResponse($user, $post);
-    }
-
-    /**
-     *
-     * @param \App\Models\User $user
-     * @param \App\Managers\SignupManager $signups
-     * @param \App\Managers\PostManager $posts
-     */
-    private function importRecordForExistingUser(
-        User $user,
-        SignupManager $signups,
-        PostManager $posts
-    ) {
-        $user = $this->updateStatusIfChanged($user);
-
-        // If import record has a mobile number provided, update SMS subscription.
-        if (isset($this->record->userData['mobile'])) {
-            $user = $this->updateSmsSubscriptionIfChanged($user);
-        }
-
-        $action = Action::find($this->record->postData['action_id']);
-
-        $post = $this->getPost($user, $action);
-
-        $post = $post
-            ? $this->updatePost($post)
-            : $this->createPost($user, $action, $signups, $posts);
-
-        if (!$post) {
-            return []; // @Question: fine to return empty array or maybe throw an error?
-        }
-
-        RockTheVoteLog::createFromRecord(
-            $this->record,
-            $user,
-            $this->importFile,
-        );
-    }
-
-    /**
-     *
-     * @param \App\Models\User $user
-     * @return
-     */
-    private function skipImportingRecord(User $user)
-    {
-        $details = $this->record->getPostDetails();
-
-        $message =
-            'ImportRockTheVoteRecord - Skipping record that has already been imported.';
-
-        $data = [
-            'user' => $user->id,
-            'status' => $details['Status'],
-            'started_registration' => $details['Started registration'],
-        ];
-
-        info($message, $data);
-
-        $this->importFile->incrementSkipCount();
-
-        return [
-            'response' => array_merge(
-                ['message' => $message],
-                ['keys' => $data],
-            ),
-        ];
-    }
-
-    /**
      * Updates specified user with provided data.
      *
      * @param \App\Models\User $user
@@ -312,7 +222,46 @@ class ImportRockTheVoteRecord extends Job
     }
 
     /**
+     * Returns a post for specified user if found, and the import record
+     * "Started registration" date matches the date for the post.
      *
+     * @param \App\Models\User $user
+     * @param \App\Models\Action $action
+     * @return \App\Models\Post|null
+     */
+    public function getPost(User $user, Action $action)
+    {
+        $posts = Post::where([
+            'action_id' => $action->id,
+            'northstar_id' => $user->id,
+            'type' => config('import.rock_the_vote.post.type'),
+        ])->get();
+
+        if (!$posts->count()) {
+            return null;
+        }
+
+        $key = 'Started registration';
+
+        $importRecordDate = $this->record->getPostDetails()[$key];
+
+        foreach ($posts as $post) {
+            if (!isset($post['details'])) {
+                continue;
+            }
+
+            $details = json_decode($post['details']);
+
+            if ($details->{$key} === $importRecordDate) {
+                return $post;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Create post with import record data.
      *
      * @param \App\Models\User $user
      * @param \App\Models\Action $action
@@ -356,42 +305,130 @@ class ImportRockTheVoteRecord extends Job
     }
 
     /**
-     * Returns a post for specified user if found, and the import record
-     * "Started registration" date matches the date for the post.
+     * Updates post with import record data if needed.
+     *
+     * @param \App\Models\Post $post
+     * @return array
+     */
+    private function updatePost(Post $post)
+    {
+        $shouldUpdateStatus = self::shouldUpdateStatus(
+            $post['status'],
+            $this->record->postData['status'],
+        );
+
+        if (!$shouldUpdateStatus) {
+            return $post;
+        }
+
+        $post->fill([
+            'status' => $this->record->postData['status'],
+        ]);
+
+        info('ImportRockTheVoteRecord - updated post', [
+            'post_id' => $post->id,
+            'status' => $post->status,
+        ]);
+
+        return $post;
+    }
+
+    /**
+     * Import the Rock The Vote record as a new user.
+     *
+     * @param \App\Managers\SignupManager $signup
+     * @param \App\Managers\PostManager $post
+     */
+    private function importRecordAsNewUser($signups, $posts)
+    {
+        $user = $this->registrar->register($this->record->userData);
+
+        $action = Action::find($this->record->postData['action_id']);
+
+        $post = $this->createPost($user, $action, $signups, $posts);
+
+        if (!$post) {
+            return [];
+        }
+
+        RockTheVoteLog::createFromRecord(
+            $this->record,
+            $user,
+            $this->importFile,
+        );
+
+        $this->sendPasswordReset($user);
+
+        return $this->formatResponse($user, $post);
+    }
+
+    /**
+     * Import the Rock The Vote record for existing user.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\Action $action
-     * @return \App\Models\Post|null
+     * @param \App\Managers\SignupManager $signups
+     * @param \App\Managers\PostManager $posts
      */
-    public function getPost(User $user, Action $action)
+    private function importRecordForExistingUser(
+        User $user,
+        SignupManager $signups,
+        PostManager $posts
+    ) {
+        $user = $this->updateStatusIfChanged($user);
+
+        // If import record has a mobile number provided, update SMS subscription.
+        if (isset($this->record->userData['mobile'])) {
+            $user = $this->updateSmsSubscriptionIfChanged($user);
+        }
+
+        $action = Action::find($this->record->postData['action_id']);
+
+        $post = $this->getPost($user, $action);
+
+        $post = $post
+            ? $this->updatePost($post)
+            : $this->createPost($user, $action, $signups, $posts);
+
+        if (!$post) {
+            return [];
+        }
+
+        RockTheVoteLog::createFromRecord(
+            $this->record,
+            $user,
+            $this->importFile,
+        );
+    }
+
+    /**
+     * Skip importing the record because it has already been added.
+     *
+     * @param \App\Models\User $user
+     * @return
+     */
+    private function skipImportingRecord(User $user)
     {
-        $posts = Post::where([
-            'action_id' => $action->id,
-            'northstar_id' => $user->id,
-            'type' => config('import.rock_the_vote.post.type'),
-        ])->get();
+        $details = $this->record->getPostDetails();
 
-        if (!$posts->count()) {
-            return null;
-        }
+        $message =
+            'ImportRockTheVoteRecord - Skipping record that has already been imported.';
 
-        $key = 'Started registration';
+        $data = [
+            'user' => $user->id,
+            'status' => $details['Status'],
+            'started_registration' => $details['Started registration'],
+        ];
 
-        $importRecordDate = $this->record->getPostDetails()[$key];
+        info($message, $data);
 
-        foreach ($posts as $post) {
-            if (!isset($post['details'])) {
-                continue;
-            }
+        $this->importFile->incrementSkipCount();
 
-            $details = json_decode($post['details']);
-
-            if ($details->{$key} === $importRecordDate) {
-                return $post;
-            }
-        }
-
-        return null;
+        return [
+            'response' => array_merge(
+                ['message' => $message],
+                ['keys' => $data],
+            ),
+        ];
     }
 
     /**
@@ -594,35 +631,6 @@ class ImportRockTheVoteRecord extends Job
     }
 
     /**
-     * Updates post with import record data if needed.
-     *
-     * @param \App\Models\Post $post
-     * @return array
-     */
-    private function updatePost(Post $post)
-    {
-        $shouldUpdateStatus = self::shouldUpdateStatus(
-            $post['status'],
-            $this->record->postData['status'],
-        );
-
-        if (!$shouldUpdateStatus) {
-            return $post;
-        }
-
-        $post->fill([
-            'status' => $this->record->postData['status'],
-        ]);
-
-        // info('Updated post', [
-        //     'post' => $post['id'],
-        //     'status' => $post['status'],
-        // ]);
-
-        return $post;
-    }
-
-    /**
      * Send User a password reset email.
      *
      * @param \App\Models\User $user
@@ -657,13 +665,13 @@ class ImportRockTheVoteRecord extends Job
         info('Sent reset email', $logParams);
     }
 
-    // /**
-    //  * Returns the record passed to this job.
-    //  *
-    //  * @return array
-    //  */
-    // public function getParameters()
-    // {
-    //     return get_object_vars($this->record);
-    // }
+    /**
+     * Returns the record passed to this job.
+     *
+     * @return array
+     */
+    public function getParameters()
+    {
+        return get_object_vars($this->record);
+    }
 }
