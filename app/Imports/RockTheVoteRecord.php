@@ -28,15 +28,165 @@ class RockTheVoteRecord
     public static $startedRegistrationFieldName = 'Started registration';
 
     /**
-     * Parses values to send to DS API from given CSV record, using given config.
+     *
+     *
+     * @var array
+     */
+    public $config;
+
+    /**
+     *
+     *
+     * @var array
+     */
+    public $postData;
+
+    /**
+     *
+     *
+     * @var array
+     */
+    public $trackingSource;
+
+    /**
+     *
+     *
+     * @var array
+     */
+    public $userData;
+
+    /**
+     * Parses values to send to create a RTV Record from given CSV data, and provided config values.
      *
      * @param array $record
      * @param array $config
      */
     public function __construct($record, $config = null)
     {
-        $validator = Validator::make($record, [
-            static::$startedRegistrationFieldName => 'required|date',
+        $this->validate($record);
+
+        $this->config =
+            $config ?? ImportType::getConfig(ImportType::$rockTheVote);
+
+        $rtvStatus = $this->parseVoterRegistrationStatus(
+            $record['Status'],
+            $record['Finish with State'],
+        );
+
+        // Used in UserData and PostData
+        $this->trackingSource = $this->parseTrackingSource(
+            $record['Tracking Source'],
+        );
+
+        $this->setUserData($record, $rtvStatus);
+
+        $this->setPostData($record, $rtvStatus);
+    }
+
+    /**
+     *
+     *
+     * @var array $record
+     * @var string $status
+     */
+    private function setPostData($record, $status)
+    {
+        $this->postData = [
+            'source' => $this->config['post']['source'],
+            'source_details' => null,
+            'details' => $this->parsePostDetails($record),
+            'status' => $status,
+            'type' => $this->config['post']['type'],
+            'action_id' => $this->config['post']['action_id'],
+        ];
+
+        $this->postData['group_id'] = $this->trackingSource['group_id'];
+
+        $this->postData['referrer_user_id'] =
+            $this->trackingSource['referrer_user_id'];
+    }
+
+    /**
+     *
+     *
+     * @var array $record
+     * @var string $status
+     */
+    private function setUserData($record, $status)
+    {
+        $this->userData = [
+            'addr_zip' => $record['Home zip code'],
+            'email' => $record['Email address'],
+            'mobile' => null,
+            'sms_status' => null,
+            // Source is required in order to set the source detail.
+            'source' => 'northstar', // @TODO: should this be something more specific? env?
+            'source_detail' => $this->config['user']['source_detail'],
+            'voter_registration_status' => Str::contains($status, 'register')
+                ? 'registration_complete'
+                : $status,
+        ];
+
+        $this->userData['id'] = $this->trackingSource['user_id'];
+
+        $this->userData['referrer_user_id'] =
+            $this->trackingSource['referrer_user_id'];
+
+        //  At step 1, a user has only provided their email and zip, but Rock The Vote will
+        //  sometimes mysteriously send through data for fields populated in later steps.
+        //  We do not want to save any other data until the status is at least step 2.
+        //  @see /docs/imports/README.md#status
+        if ($status === 'step-1') {
+            return;
+        }
+
+        $emailOptIn = str_to_boolean($record['Opt-in to Partner email?']);
+
+        $this->userData = array_merge($this->userData, [
+            'addr_street1' => $record['Home address'],
+            'addr_street2' => $record['Home unit'],
+            'addr_city' => $record['Home city'],
+            'email_subscription_status' => $emailOptIn,
+            'email_subscription_topics' => $emailOptIn
+                ? explode(
+                    ',',
+                    $this->config['user']['email_subscription_topics'],
+                )
+                : [],
+            'first_name' => $record['First name'],
+            'last_name' => $record['Last name'],
+            'mobile' =>
+                isset($record[static::$mobileFieldName]) &&
+                is_phone_number($record[static::$mobileFieldName])
+                    ? $record[static::$mobileFieldName]
+                    : null,
+        ]);
+
+        // If a mobile was provided, set SMS subscription per opt-in value.
+        if ($this->userData['mobile']) {
+            $smsOptIn = str_to_boolean($record[static::$smsOptInFieldName]);
+
+            $this->userData['sms_status'] = $smsOptIn
+                ? SmsStatus::$active
+                : SmsStatus::$stop;
+
+            $this->userData['sms_subscription_topics'] = $smsOptIn
+                ? explode(',', $this->config['user']['sms_subscription_topics'])
+                : [];
+        }
+    }
+
+    /**
+     * Validate the specified record data.
+     *
+     * @throws Illuminate\Validation\ValidationException
+     */
+    private function validate($data)
+    {
+        $startedRegField = static::$startedRegistrationFieldName;
+
+        $validator = Validator::make($data, [
+            $startedRegField => 'required|date',
         ]);
 
         if ($validator->fails()) {
@@ -46,96 +196,23 @@ class RockTheVoteRecord
                 'Invalid Rock The Vote record',
                 array_merge(
                     [
-                        static::$startedRegistrationFieldName =>
-                            $record[static::$startedRegistrationFieldName],
+                        $startedRegField => $data[$startedRegField],
                     ],
                     $errorMessages,
                 ),
             );
-
             throw ValidationException::withMessages($errorMessages);
         }
+    }
 
-        if (!$config) {
-            $config = ImportType::getConfig(ImportType::$rockTheVote);
-        }
-
-        $rtvStatus = $this->parseVoterRegistrationStatus(
-            $record['Status'],
-            $record['Finish with State'],
-        );
-
-        $this->userData = [
-            'addr_zip' => $record['Home zip code'],
-            'email' => $record['Email address'],
-            // Source is required in order to set the source detail.
-            'source' => config(
-                'services.northstar.client_credentials.client_id',
-            ),
-            'source_detail' => $config['user']['source_detail'],
-            'voter_registration_status' => Str::contains($rtvStatus, 'register')
-                ? 'registration_complete'
-                : $rtvStatus,
-        ];
-
-        /*
-         * At step 1, a user has only provided their email and zip, but Rock The Vote will sometimes
-         * mysteriously send through data for fields populated in later steps. We don't want to save
-         * any other data until the status is at least step 2.
-         * @see /docs/imports/README.md#status
-         */
-        if ($rtvStatus !== 'step-1') {
-            $emailOptIn = str_to_boolean($record['Opt-in to Partner email?']);
-
-            $this->userData = array_merge($this->userData, [
-                'addr_street1' => $record['Home address'],
-                'addr_street2' => $record['Home unit'],
-                'addr_city' => $record['Home city'],
-                'email_subscription_status' => $emailOptIn,
-                'email_subscription_topics' => $emailOptIn
-                    ? explode(',', $config['user']['email_subscription_topics'])
-                    : [],
-                'first_name' => $record['First name'],
-                'last_name' => $record['Last name'],
-                'mobile' =>
-                    isset($record[static::$mobileFieldName]) &&
-                    is_phone_number($record[static::$mobileFieldName])
-                        ? $record[static::$mobileFieldName]
-                        : null,
-            ]);
-
-            // If a mobile was provided, set SMS subscription per opt-in value.
-            if ($this->userData['mobile']) {
-                $smsOptIn = str_to_boolean($record[static::$smsOptInFieldName]);
-
-                $this->userData['sms_status'] = $smsOptIn
-                    ? SmsStatus::$active
-                    : SmsStatus::$stop;
-                $this->userData['sms_subscription_topics'] = $smsOptIn
-                    ? explode(',', $config['user']['sms_subscription_topics'])
-                    : [];
-            }
-        }
-
-        $this->postData = [
-            'source' => $config['post']['source'],
-            'source_details' => null,
-            'details' => $this->parsePostDetails($record),
-            'status' => $rtvStatus,
-            'type' => $config['post']['type'],
-            'action_id' => $config['post']['action_id'],
-        ];
-
-        $trackingSource = $this->parseTrackingSource(
-            $record['Tracking Source'],
-        );
-
-        $this->userData['id'] = $trackingSource['user_id'];
-        $this->userData['referrer_user_id'] =
-            $trackingSource['referrer_user_id'];
-        $this->postData['group_id'] = $trackingSource['group_id'];
-        $this->postData['referrer_user_id'] =
-            $trackingSource['referrer_user_id'];
+    /**
+     * Returns decoded post details as an array.
+     *
+     * @return array
+     */
+    public function getPostDetails()
+    {
+        return get_object_vars(json_decode($this->postData['details']));
     }
 
     /**
@@ -144,6 +221,7 @@ class RockTheVoteRecord
      *
      * @param string $trackingSource
      * @return array
+     * @todo refactor
      */
     public function parseTrackingSource($trackingSource)
     {
@@ -174,20 +252,15 @@ class RockTheVoteRecord
                 $userId = $value[1];
             } elseif ($key === 'group_id') {
                 $result['group_id'] = (int) $value[1];
-            /*
-             * If referral parameter is set to true, the user parameter belongs to the referring
-             * user, not the user that should be associated with this voter registration record.
-             *
-             * Expected key: "referral"
-             */
+                //  If referral parameter is set to true, the user parameter belongs to the referring
+                //  user, not the user that should be associated with this voter registration record.
+                //  Expected key: "referral"
             } elseif (
                 ($key === 'referral' || $key === 'refferal') &&
                 str_to_boolean($value[1])
             ) {
-                /*
-                 * Return result to force querying for existing user via this record email or mobile
-                 * upon import.
-                 */
+                // Return result to force querying for existing user via this record email or mobile
+                // upon import.
                 $result['referrer_user_id'] = $userId; // @TODO: error! This would never be set... wtf?!
 
                 return $result;
@@ -200,25 +273,23 @@ class RockTheVoteRecord
     }
 
     /**
-     * Translate a status from Rock The Vote into a Rogue post status.
+     * Translate a status from Rock The Vote into a DoSomething post status.
      *
-     * @param  string $rtvStatus
-     * @param  string $rtvFinishWithState
+     * @param  string $status
+     * @param  string $finishWithState
      * @return string
      */
-    private function parseVoterRegistrationStatus(
-        $rtvStatus,
-        $rtvFinishWithState
-    ) {
-        $rtvStatus = strtolower($rtvStatus);
+    private function parseVoterRegistrationStatus($status, $finishWithState)
+    {
+        $status = strtolower($status);
 
-        if ($rtvStatus === 'complete') {
-            return str_to_boolean($rtvFinishWithState)
+        if ($status === 'complete') {
+            return str_to_boolean($finishWithState)
                 ? 'register-OVR'
                 : 'register-form';
         }
 
-        return str_replace(' ', '-', $rtvStatus);
+        return str_replace(' ', '-', $status);
     }
 
     /**
@@ -236,15 +307,5 @@ class RockTheVoteRecord
         }
 
         return json_encode($result);
-    }
-
-    /**
-     * Returns decoded post details as an array.
-     *
-     * @return array
-     */
-    public function getPostDetails()
-    {
-        return get_object_vars(json_decode($this->postData['details']));
     }
 }
