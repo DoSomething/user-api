@@ -40,6 +40,8 @@ class ImportCallPowerRecordTest extends TestCase
         $this->assertMysqlDatabaseHas('posts', [
             'action_id' => $action->id,
             'status' => 'accepted',
+            'source' => 'importer-client',
+            'source_details' => 'CallPower',
         ]);
     }
 
