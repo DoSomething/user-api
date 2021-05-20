@@ -27,67 +27,56 @@ class RockTheVoteRecord
      */
     public static $startedRegistrationFieldName = 'Started registration';
 
-    /**
-     * @var array
-     */
-    public $config;
+    public array $config;
+
+    public array $postData;
+
+    public array $trackingSource;
+
+    public array $userData;
 
     /**
-     * @var array
-     */
-    public $postData;
-
-    /**
-     * @var array
-     */
-    public $trackingSource;
-
-    /**
-     * @var array
-     */
-    public $userData;
-
-    /**
-     * Parses values to send to create a RTV Record from given CSV data, and provided config values.
+     * Parses values to send to create a RTV Record from given CSV payload data,
+     * and provided config values.
      *
-     * @param array $record
+     * @param array $payload
      * @param array $config
      */
-    public function __construct($record, $config = null)
+    public function __construct($payload, $config = null)
     {
-        $this->validate($record);
+        $this->validate($payload);
 
         $this->config =
             $config ?? ImportType::getConfig(ImportType::$rockTheVote);
 
         $rtvStatus = $this->parseVoterRegistrationStatus(
-            $record['Status'],
-            $record['Finish with State'],
+            $payload['Status'],
+            $payload['Finish with State'],
         );
 
         // Used in UserData and PostData.
         $this->trackingSource = $this->parseTrackingSource(
-            $record['Tracking Source'],
+            $payload['Tracking Source'],
         );
 
-        $this->setUserData($record, $rtvStatus);
+        $this->setUserData($payload, $rtvStatus);
 
-        $this->setPostData($record, $rtvStatus);
+        $this->setPostData($payload, $rtvStatus);
     }
 
     /**
-     * Set data that will be used to create a new post for record if post
+     * Set payload data that will be used to create a new post for record if post
      * does not already exist.
      *
-     * @var array
-     * @var string
+     * @param array $payload
+     * @param string $status
      */
-    private function setPostData($record, $status)
+    private function setPostData($payload, $status)
     {
         $this->postData = [
             'source' => $this->config['post']['source'],
             'source_details' => null,
-            'details' => $this->parsePostDetails($record),
+            'details' => $this->parsePostDetails($payload),
             'status' => $status,
             'type' => $this->config['post']['type'],
             'action_id' => $this->config['post']['action_id'],
@@ -100,16 +89,17 @@ class RockTheVoteRecord
     }
 
     /**
-     * Set data that will be used to find or create a new user for the record.
+     * Set payload data that will be used to find or create a new user for the record.
      *
-     * @var array
-     * @var string
+     * @param array $payload
+     * @param string $status
+     * @return void
      */
-    private function setUserData($record, $status)
+    private function setUserData($payload, $status)
     {
         $this->userData = [
-            'addr_zip' => $record['Home zip code'],
-            'email' => $record['Email address'],
+            'addr_zip' => $payload['Home zip code'],
+            'email' => $payload['Email address'],
             'mobile' => null,
             'sms_status' => null,
             // Source is required in order to set the source detail.
@@ -133,12 +123,12 @@ class RockTheVoteRecord
             return;
         }
 
-        $emailOptIn = str_to_boolean($record['Opt-in to Partner email?']);
+        $emailOptIn = str_to_boolean($payload['Opt-in to Partner email?']);
 
         $this->userData = array_merge($this->userData, [
-            'addr_street1' => $record['Home address'],
-            'addr_street2' => $record['Home unit'],
-            'addr_city' => $record['Home city'],
+            'addr_street1' => $payload['Home address'],
+            'addr_street2' => $payload['Home unit'],
+            'addr_city' => $payload['Home city'],
             'email_subscription_status' => $emailOptIn,
             'email_subscription_topics' => $emailOptIn
                 ? explode(
@@ -146,18 +136,18 @@ class RockTheVoteRecord
                     $this->config['user']['email_subscription_topics'],
                 )
                 : [],
-            'first_name' => $record['First name'],
-            'last_name' => $record['Last name'],
+            'first_name' => $payload['First name'],
+            'last_name' => $payload['Last name'],
             'mobile' =>
-                isset($record[static::$mobileFieldName]) &&
-                is_phone_number($record[static::$mobileFieldName])
-                    ? $record[static::$mobileFieldName]
+                isset($payload[static::$mobileFieldName]) &&
+                is_phone_number($payload[static::$mobileFieldName])
+                    ? $payload[static::$mobileFieldName]
                     : null,
         ]);
 
         // If a mobile was provided, set SMS subscription per opt-in value.
         if ($this->userData['mobile']) {
-            $smsOptIn = str_to_boolean($record[static::$smsOptInFieldName]);
+            $smsOptIn = str_to_boolean($payload[static::$smsOptInFieldName]);
 
             $this->userData['sms_status'] = $smsOptIn
                 ? SmsStatus::$active
@@ -245,7 +235,7 @@ class RockTheVoteRecord
                 $userId = $value[1];
             } elseif ($key === 'group_id') {
                 $result['group_id'] = (int) $value[1];
-            //  If referral parameter is set to true, the user parameter belongs to the referring
+                //  If referral parameter is set to true, the user parameter belongs to the referring
                 //  user, not the user that should be associated with this voter registration record.
                 //  Expected key: "referral"
             } elseif (
@@ -286,17 +276,17 @@ class RockTheVoteRecord
     }
 
     /**
-     * Parse the record for extra details and return them as a JSON object.
+     * Parse the record payload for extra details and return them as a JSON object.
      *
-     * @param  array $record
+     * @param  array $payload
      * @return string
      */
-    private function parsePostDetails($record)
+    private function parsePostDetails($payload)
     {
         $result = [];
 
         foreach (config('import.rock_the_vote.post.details') as $key) {
-            $result[$key] = $record[$key];
+            $result[$key] = $payload[$key];
         }
 
         return json_encode($result);
