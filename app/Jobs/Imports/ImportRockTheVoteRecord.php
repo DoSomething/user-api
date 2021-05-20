@@ -20,15 +20,9 @@ use Illuminate\Validation\ValidationException;
 
 class ImportRockTheVoteRecord extends Job
 {
-    /**
-     * @var array
-     */
-    protected $config;
+    protected array $config;
 
-    /**
-     * @var \Illuminate\Validation\ValidationException
-     */
-    protected $exception;
+    protected string $exception;
 
     /**
      * @var \App\Models\ImportFile
@@ -43,7 +37,7 @@ class ImportRockTheVoteRecord extends Job
     protected $mobileUser;
 
     /**
-     * The record parsed from a Rock the Vote csv.
+     * A single record parsed from a row in the Rock the Vote csv.
      *
      * @var \App\Imports\RockTheVoteRecord
      */
@@ -57,18 +51,18 @@ class ImportRockTheVoteRecord extends Job
     /**
      * Create a new job instance.
      *
-     * @param array $record
+     * @param array $payload
      * @param ImportFile $importFile
      * @return void
      */
-    public function __construct($record, ImportFile $importFile)
+    public function __construct($payload, ImportFile $importFile)
     {
         $this->config = ImportType::getConfig(ImportType::$rockTheVote);
 
         $this->importFile = $importFile;
 
         try {
-            $this->record = new RockTheVoteRecord($record, $this->config);
+            $this->record = new RockTheVoteRecord($payload, $this->config);
         } catch (ValidationException $e) {
             $this->exception = $e->getMessage();
 
@@ -237,7 +231,7 @@ class ImportRockTheVoteRecord extends Job
             'type' => config('import.rock_the_vote.post.type'),
         ])->get();
 
-        if (!$posts->count()) {
+        if ($posts->isEmpty()) {
             return null;
         }
 
@@ -245,6 +239,8 @@ class ImportRockTheVoteRecord extends Job
 
         $importRecordDate = $this->record->getPostDetails()[$key];
 
+        // @TODO: refactor to simplify and utilize Eloquent's helpful firstWhere method.
+        // @see: https://github.com/DoSomething/northstar/pull/1207#discussion_r636337846
         foreach ($posts as $post) {
             if (!isset($post['details'])) {
                 continue;
@@ -381,6 +377,7 @@ class ImportRockTheVoteRecord extends Job
             $user = $this->updateSmsSubscriptionIfChanged($user);
         }
 
+        // @TODO: should this be findOrFail and throw an execption that stops execution?
         $action = Action::find($this->record->postData['action_id']);
 
         $post = $this->getPost($user, $action);
