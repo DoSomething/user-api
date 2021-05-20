@@ -74,12 +74,12 @@ class RockTheVoteRecord
     private function setPostData($payload, $status)
     {
         $this->postData = [
+            'action_id' => $this->config['post']['action_id'],
+            'details' => $this->parsePostDetails($payload),
             'source' => $this->config['post']['source'],
             'source_details' => null,
-            'details' => $this->parsePostDetails($payload),
             'status' => $status,
             'type' => $this->config['post']['type'],
-            'action_id' => $this->config['post']['action_id'],
         ];
 
         $this->postData['group_id'] = $this->trackingSource['group_id'];

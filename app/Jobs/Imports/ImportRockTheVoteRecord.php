@@ -275,7 +275,8 @@ class ImportRockTheVoteRecord extends Job
             'action_id' => $action->id,
             'details' => $this->record->postData['details'],
             'northstar_id' => $user->id,
-            'source_details' => $this->record->postData['source_details'],
+            'source_details' =>
+                $this->record->postData['source_details'] ?: 'RockTheVote',
             'type' => (string) PostType::VOTER_REG(),
         ];
 
@@ -291,11 +292,17 @@ class ImportRockTheVoteRecord extends Job
 
         $post = $posts->create($payload, $signup->id);
 
-        info('ImportRockTheVoteRecord - created post', [
-            'user_id' => $user->id,
-            'action_id' => $action->id,
-            'post_id' => $post->id,
-        ]);
+        if ($post) {
+            $post->source = 'importer-client';
+            $post->status = $this->record->postData['status'];
+            $post->save();
+
+            info('ImportRockTheVoteRecord - created post', [
+                'user_id' => $user->id,
+                'action_id' => $action->id,
+                'post_id' => $post->id,
+            ]);
+        }
 
         return $post;
     }
@@ -317,9 +324,8 @@ class ImportRockTheVoteRecord extends Job
             return $post;
         }
 
-        $post->fill([
-            'status' => $this->record->postData['status'],
-        ]);
+        $post->status = $this->record->postData['status'];
+        $post->save();
 
         info('ImportRockTheVoteRecord - updated post', [
             'post_id' => $post->id,
