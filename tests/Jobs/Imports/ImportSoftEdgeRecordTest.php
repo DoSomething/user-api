@@ -34,6 +34,8 @@ class ImportSoftEdgeRecordTest extends TestCase
             'action_id' => $action->id,
             'northstar_id' => $user->id,
             'status' => 'accepted',
+            'source' => 'importer-client',
+            'source_details' => 'SoftEdge',
         ]);
     }
 
