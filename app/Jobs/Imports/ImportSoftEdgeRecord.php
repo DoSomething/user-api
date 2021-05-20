@@ -77,6 +77,8 @@ class ImportSoftEdgeRecord implements ShouldQueue
         $post = $posts->create($payload, $signup->id);
 
         if ($post) {
+            // Set fields that repository does not allow mass-assigning:
+            $post->source = 'importer-client'; // @TODO: We should type this.
             $post->status = 'accepted';
             $post->save();
 

@@ -91,7 +91,6 @@ class ImportCallPowerRecord implements ShouldQueue
             'action_id' => $action->id,
             'type' => 'phone-call',
             'quantity' => 1,
-            'source' => 'importer-client', // @TODO: We should type this.
             'source_details' => 'CallPower',
             'details' => $details,
         ];
@@ -105,6 +104,8 @@ class ImportCallPowerRecord implements ShouldQueue
         $post = $posts->create($payload, $signup->id);
 
         if ($post) {
+            // Set fields that repository does not allow mass-assigning:
+            $post->source = 'importer-client'; // @TODO: We should type this.
             $post->status = $status === 'completed' ? 'accepted' : 'incomplete';
             $post->save();
 
