@@ -235,10 +235,10 @@ class RockTheVoteRecord
                 $userId = $value[1];
             } elseif ($key === 'group_id') {
                 $result['group_id'] = (int) $value[1];
+            } elseif (
                 //  If referral parameter is set to true, the user parameter belongs to the referring
                 //  user, not the user that should be associated with this voter registration record.
                 //  Expected key: "referral"
-            } elseif (
                 ($key === 'referral' || $key === 'refferal') &&
                 str_to_boolean($value[1])
             ) {
