@@ -502,8 +502,6 @@ class ImportRockTheVoteRecord extends Job
             'mobile' => $this->record->userData['mobile'],
         ]);
 
-        dd(['poopie', $this->mobileUser]);
-
         // If another user owns the import mobile, update their subscription.
         if ($this->mobileUser) {
             $this->mobileUser = $this->updateUser(
