@@ -57,8 +57,8 @@ class ImportRockTheVoteRecordTest extends TestCase
     public function testSkipsImportIfInvalidRecordData()
     {
         $record = $this->makeFakeRockTheVoteReportRecord([
-            'First name' => 'Poopie',
-            'Last name' => 'Doopie',
+            'First name' => 'Puppet',
+            'Last name' => 'Sloth',
             RockTheVoteRecord::$startedRegistrationFieldName => '555-555-5555',
         ]);
 
