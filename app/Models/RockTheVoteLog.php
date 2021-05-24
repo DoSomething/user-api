@@ -9,6 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 class RockTheVoteLog extends Model
 {
     /**
+     * The database connection that should be used by the model.
+     *
+     * @var string
+     */
+    protected $connection = 'mysql';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -79,11 +86,12 @@ class RockTheVoteLog extends Model
     }
 
     /**
-     * Find whether a log exists for this registration and user that contains a phone number.
+     * Find whether a log already exists for this registration and user that
+     * contains a phone number.
      *
      * @return bool
      */
-    public static function hasAlreadyUpdatedSmsSubscription(
+    public static function hasUpdatedSmsSubscription(
         RockTheVoteRecord $record,
         User $user
     ) {
