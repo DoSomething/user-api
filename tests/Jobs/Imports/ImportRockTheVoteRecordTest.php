@@ -38,6 +38,20 @@ class ImportRockTheVoteRecordTest extends TestCase
     }
 
     /**
+     *
+     */
+    public function makeFakeVoterRegistrationPostAction()
+    {
+        $action = factory(Action::class)
+            ->states('voter-registration')
+            ->create();
+
+        config(['import.rock_the_vote.post.action_id' => $action->id]);
+
+        return $action;
+    }
+
+    /**
      * Return a mock "Started registration" field value.
      *
      * @return string
@@ -81,11 +95,7 @@ class ImportRockTheVoteRecordTest extends TestCase
     {
         $record = $this->makeFakeRockTheVoteReportRecord();
 
-        $action = factory(Action::class)
-            ->states('voter-registration')
-            ->create();
-
-        config(['import.rock_the_vote.post.action_id' => $action->id]);
+        $this->makeFakeVoterRegistrationPostAction();
 
         $importFile = factory(ImportFile::class)
             ->states('rock_the_vote')
@@ -132,11 +142,7 @@ class ImportRockTheVoteRecordTest extends TestCase
             'Status' => 'Step 1',
         ]);
 
-        $action = factory(Action::class)
-            ->states('voter-registration')
-            ->create();
-
-        config(['import.rock_the_vote.post.action_id' => $action->id]);
+        $this->makeFakeVoterRegistrationPostAction();
 
         $importFile = factory(ImportFile::class)
             ->states('rock_the_vote')
@@ -154,5 +160,31 @@ class ImportRockTheVoteRecordTest extends TestCase
             'status' => $record['Status'],
             'user_id' => $user->id,
         ]);
+    }
+
+    /**
+     * Test that a password reset email is not sent when a new user is created
+     * with a Step 1 status.
+     */
+    public function testDoesNotSendPasswordResetForNewUserWithStep1Status()
+    {
+        $record = $this->makeFakeRockTheVoteReportRecord([
+            'First name' => 'Puppet',
+            'Last name' => 'Sloth',
+            'Email address' => 'puppetsloth@dosomething.org',
+            'Status' => 'Step 1',
+        ]);
+
+        $this->makeFakeVoterRegistrationPostAction();
+
+        $importFile = factory(ImportFile::class)
+            ->states('rock_the_vote')
+            ->create();
+
+        ImportRockTheVoteRecord::dispatch($record, $importFile);
+
+        $user = User::where('email', 'puppetsloth@dosomething.org')->first();
+
+        $this->assertNoCustomerIoEvent($user, 'rock-the-vote-activate-account');
     }
 }
