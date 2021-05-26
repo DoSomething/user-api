@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class RockTheVoteReport extends Model
 {
     /**
+     * The database connection that should be used by the model.
+     *
+     * @var string
+     */
+    protected $connection = 'mysql';
+
+    /**
      * We use the externally created Rock the Vote ID as our primary key.
      */
     public $incrementing = false;
