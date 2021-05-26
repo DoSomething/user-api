@@ -11,12 +11,12 @@ use Carbon\Carbon;
 class ImportRockTheVoteRecordTest extends TestCase
 {
     /**
-     * Make a fake record for a Rock The Vote report.
+     * Make a fake data payload for a Rock The Vote report.
      *
      * @param array $data
      * @return array
      */
-    public function makeFakeReportRecord($data = [])
+    public function makeFakeReportPayload($data = [])
     {
         return array_merge(
             [
@@ -42,13 +42,13 @@ class ImportRockTheVoteRecordTest extends TestCase
     }
 
     /**
-     * Make a fake record for a Rock The Vote report with provided user.
+     * Make a fake data payload for a Rock The Vote report with provided user.
      *
      * @param \App\Models\User $user
      * @param array $data
      * @return array
      */
-    public function makeFakeReportRecordForSpecificUser($user, $data = [])
+    public function makeFakeReportPayloadForSpecificUser($user, $data = [])
     {
         return array_merge(
             [
@@ -107,7 +107,7 @@ class ImportRockTheVoteRecordTest extends TestCase
      */
     public function testCreatesUserIfUserNotFound()
     {
-        $record = $this->makeFakeReportRecord();
+        $payload = $this->makeFakeReportPayload();
 
         $this->makeFakeVoterRegistrationPostAction();
 
@@ -115,13 +115,13 @@ class ImportRockTheVoteRecordTest extends TestCase
             ->states('rock_the_vote')
             ->create();
 
-        ImportRockTheVoteRecord::dispatch($record, $importFile);
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
 
         $this->assertMongoDatabaseHas('users', [
-            'first_name' => $record['First name'],
+            'first_name' => $payload['First name'],
         ]);
 
-        $user = User::where('first_name', $record['First name'])->first();
+        $user = User::where('first_name', $payload['First name'])->first();
 
         $this->assertMysqlDatabaseHas('posts', [
             'northstar_id' => $user->id,
@@ -130,7 +130,7 @@ class ImportRockTheVoteRecordTest extends TestCase
 
         $this->assertMysqlDatabaseHas('rock_the_vote_logs', [
             'import_file_id' => $importFile->id,
-            'status' => $record['Status'],
+            'status' => $payload['Status'],
             'user_id' => $user->id,
         ]);
     }
@@ -144,7 +144,7 @@ class ImportRockTheVoteRecordTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $record = $this->makeFakeReportRecordForSpecificUser($user, [
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user, [
             'Status' => 'Step 1',
         ]);
 
@@ -154,7 +154,7 @@ class ImportRockTheVoteRecordTest extends TestCase
             ->states('rock_the_vote')
             ->create();
 
-        ImportRockTheVoteRecord::dispatch($record, $importFile);
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
 
         $this->assertMysqlDatabaseHas('posts', [
             'northstar_id' => $user->id,
@@ -163,7 +163,7 @@ class ImportRockTheVoteRecordTest extends TestCase
 
         $this->assertMysqlDatabaseHas('rock_the_vote_logs', [
             'import_file_id' => $importFile->id,
-            'status' => $record['Status'],
+            'status' => $payload['Status'],
             'user_id' => $user->id,
         ]);
     }
@@ -174,7 +174,7 @@ class ImportRockTheVoteRecordTest extends TestCase
      */
     public function testDoesNotSendPasswordResetForNewUserWithStep1Status()
     {
-        $record = $this->makeFakeReportRecord([
+        $payload = $this->makeFakeReportPayload([
             'First name' => 'Puppet',
             'Last name' => 'Sloth',
             'Email address' => 'puppetsloth@dosomething.org',
@@ -187,7 +187,7 @@ class ImportRockTheVoteRecordTest extends TestCase
             ->states('rock_the_vote')
             ->create();
 
-        ImportRockTheVoteRecord::dispatch($record, $importFile);
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
 
         $user = User::where('email', 'puppetsloth@dosomething.org')->first();
 
@@ -201,13 +201,13 @@ class ImportRockTheVoteRecordTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $record = $this->makeFakeReportRecordForSpecificUser($user);
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user);
 
         $this->makeFakeVoterRegistrationPostAction();
 
         factory(RockTheVoteLog::class)->create([
-            'started_registration' => $record['Started registration'],
-            'status' => $record['Status'],
+            'started_registration' => $payload['Started registration'],
+            'status' => $payload['Status'],
             'user_id' => $user->id,
         ]);
 
@@ -215,7 +215,7 @@ class ImportRockTheVoteRecordTest extends TestCase
             ->states('rock_the_vote')
             ->create();
 
-        ImportRockTheVoteRecord::dispatch($record, $importFile);
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
 
         $this->assertMysqlDatabaseHas('import_files', [
             'id' => $importFile->id,
@@ -230,7 +230,7 @@ class ImportRockTheVoteRecordTest extends TestCase
      */
     public function testSkipsImportIfInvalidRecordData()
     {
-        $record = $this->makeFakeReportRecord([
+        $payload = $this->makeFakeReportPayload([
             'First name' => 'Puppet',
             'Last name' => 'Sloth',
             RockTheVoteRecord::$startedRegistrationFieldName => '555-555-5555',
@@ -240,7 +240,7 @@ class ImportRockTheVoteRecordTest extends TestCase
             ->states('rock_the_vote')
             ->create();
 
-        ImportRockTheVoteRecord::dispatch($record, $importFile);
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
 
         $this->assertMysqlDatabaseHas('import_files', [
             'id' => $importFile->id,
