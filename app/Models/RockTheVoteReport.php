@@ -62,7 +62,7 @@ class RockTheVoteReport extends Model
      */
     public static function createViaApi($since = null, $before = null)
     {
-        $userId = optional(auth()->user())->northstar_id;
+        $userId = auth()->id();
 
         if (config('services.rock_the_vote.faker')) {
             $reportId = self::count() + 1;
