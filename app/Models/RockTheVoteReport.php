@@ -77,7 +77,8 @@ class RockTheVoteReport extends Model
         ]);
 
         // Parse response to find the new Rock The Vote Report ID.
-        $statusUrlParts = explode('/', $response->status_url);
+        // TODO: Can we read 'report_id' from the response?
+        $statusUrlParts = explode('/', $response['status_url']);
         $reportId = $statusUrlParts[count($statusUrlParts) - 1];
 
         // Log our created report in the database, to keep track of reports requested.
@@ -85,7 +86,7 @@ class RockTheVoteReport extends Model
             'id' => $reportId,
             'since' => $since,
             'before' => $before,
-            'status' => $response->status,
+            'status' => $response['status'],
             'user_id' => $userId,
         ]);
     }
@@ -107,7 +108,7 @@ class RockTheVoteReport extends Model
     {
         $retryReport = self::createViaApi($this->since, $this->before);
 
-        $this->retry_report_id = $retryReport->id;
+        $this->retry_report_id = $retryReport['id'];
         $this->save();
 
         return $retryReport;

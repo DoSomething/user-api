@@ -41,7 +41,7 @@ class RockTheVote
             'json' => array_merge($params, $this->authQuery),
         ]);
 
-        return json_decode($response->getBody()->getContents());
+        return json_decode($response->getBody()->getContents(), true);
     }
 
     /**
@@ -57,7 +57,7 @@ class RockTheVote
             'query' => $this->authQuery,
         ]);
 
-        return json_decode($response->getBody()->getContents());
+        return json_decode($response->getBody()->getContents(), true);
     }
 
     /**
