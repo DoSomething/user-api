@@ -11,9 +11,12 @@ use Carbon\Carbon;
 class ImportRockTheVoteRecordTest extends TestCase
 {
     /**
-     * Make a fake record from a Rock The Vote report.
+     * Make a fake record for a Rock The Vote report.
+     *
+     * @param array $data
+     * @return array
      */
-    public function makeFakeRockTheVoteReportRecord($data = [])
+    public function makeFakeReportRecord($data = [])
     {
         return array_merge(
             [
@@ -39,7 +42,41 @@ class ImportRockTheVoteRecordTest extends TestCase
     }
 
     /**
+     * Make a fake record for a Rock The Vote report with provided user.
      *
+     * @param \App\Models\User $user
+     * @param array $data
+     * @return array
+     */
+    public function makeFakeReportRecordForSpecificUser($user, $data = [])
+    {
+        return array_merge(
+            [
+                'Home address' => $user->addr_street1,
+                'Home unit' => $user->addr_street2,
+                'Home city' => $user->addr_city,
+                'Home state' => $user->addr_state,
+                'Home zip code' => $user->addr_zip,
+                'Email address' => $user->email,
+                'First name' => $user->first_name,
+                'Last name' => $user->last_name,
+                'Phone' => null,
+                'Finish with State' => 'Yes',
+                'Pre-Registered' => 'No',
+                'Started registration' => $this->daysAgoInRockTheVoteFormat(),
+                'Status' => 'Step 2',
+                'Tracking Source' => 'ads',
+                'Opt-in to Partner email?' => 'Yes',
+                'Opt-in to Partner SMS/robocall' => 'No',
+            ],
+            $data,
+        );
+    }
+
+    /**
+     * Make a fake voter registration post action.
+     *
+     * @return \App\Models\Action
      */
     public function makeFakeVoterRegistrationPostAction()
     {
@@ -55,6 +92,7 @@ class ImportRockTheVoteRecordTest extends TestCase
     /**
      * Return a mock "Started registration" field value.
      *
+     * @param Int $days
      * @return string
      */
     public function daysAgoInRockTheVoteFormat($days = 0)
@@ -69,7 +107,7 @@ class ImportRockTheVoteRecordTest extends TestCase
      */
     public function testCreatesUserIfUserNotFound()
     {
-        $record = $this->makeFakeRockTheVoteReportRecord();
+        $record = $this->makeFakeReportRecord();
 
         $this->makeFakeVoterRegistrationPostAction();
 
@@ -106,15 +144,7 @@ class ImportRockTheVoteRecordTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $record = $this->makeFakeRockTheVoteReportRecord([
-            'Home address' => $user->addr_street1,
-            'Home unit' => $user->addr_street2,
-            'Home city' => $user->addr_city,
-            'Home state' => $user->addr_state,
-            'Home zip code' => $user->addr_zip,
-            'Email address' => $user->email,
-            'First name' => $user->first_name,
-            'Last name' => $user->last_name,
+        $record = $this->makeFakeReportRecordForSpecificUser($user, [
             'Status' => 'Step 1',
         ]);
 
@@ -144,7 +174,7 @@ class ImportRockTheVoteRecordTest extends TestCase
      */
     public function testDoesNotSendPasswordResetForNewUserWithStep1Status()
     {
-        $record = $this->makeFakeRockTheVoteReportRecord([
+        $record = $this->makeFakeReportRecord([
             'First name' => 'Puppet',
             'Last name' => 'Sloth',
             'Email address' => 'puppetsloth@dosomething.org',
@@ -171,16 +201,7 @@ class ImportRockTheVoteRecordTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $record = $this->makeFakeRockTheVoteReportRecord([
-            'Home address' => $user->addr_street1,
-            'Home unit' => $user->addr_street2,
-            'Home city' => $user->addr_city,
-            'Home state' => $user->addr_state,
-            'Home zip code' => $user->addr_zip,
-            'Email address' => $user->email,
-            'First name' => $user->first_name,
-            'Last name' => $user->last_name,
-        ]);
+        $record = $this->makeFakeReportRecordForSpecificUser($user);
 
         $this->makeFakeVoterRegistrationPostAction();
 
@@ -209,7 +230,7 @@ class ImportRockTheVoteRecordTest extends TestCase
      */
     public function testSkipsImportIfInvalidRecordData()
     {
-        $record = $this->makeFakeRockTheVoteReportRecord([
+        $record = $this->makeFakeReportRecord([
             'First name' => 'Puppet',
             'Last name' => 'Sloth',
             RockTheVoteRecord::$startedRegistrationFieldName => '555-555-5555',
