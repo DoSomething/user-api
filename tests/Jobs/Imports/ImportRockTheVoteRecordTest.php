@@ -268,12 +268,12 @@ class ImportRockTheVoteRecordTest extends TestCase
                 'northstar_id' => $user->id,
                 'status' => 'register-form',
                 'details' => json_encode([
-                    'Tracking Source' => $payload['Tracking Source'],
-                    'Started registration' => $payload['Started registration'],
-                    'Finish with State' => $payload['Finish with State'],
-                    'Status' => $payload['Status'],
-                    'Pre-Registered' => $payload['Pre-Registered'],
                     'Home zip code' => $payload['Home zip code'],
+                    'Finish with State' => $payload['Finish with State'],
+                    'Pre-Registered' => $payload['Pre-Registered'],
+                    'Started registration' => $payload['Started registration'],
+                    'Status' => $payload['Status'],
+                    'Tracking Source' => $payload['Tracking Source'],
                 ]),
             ]);
 
@@ -293,6 +293,58 @@ class ImportRockTheVoteRecordTest extends TestCase
         $this->assertMysqlDatabaseHas('posts', [
             'id' => $post->id,
             'status' => $post->status,
+        ]);
+    }
+
+    /**
+     * Test that a user is updated if their voter registration status changes.
+     */
+    public function testUpdatesVoterRegistrationStatusIfStatusChanged()
+    {
+        $user = factory(User::class)->create();
+
+        $action = $this->makeFakeVoterRegistrationPostAction();
+
+        $registrationDate = $this->daysAgoInRockTheVoteFormat();
+
+        $post = factory(Post::class)
+            ->state('voter-reg')
+            ->create([
+                'action_id' => $action->id,
+                'northstar_id' => $user->id,
+                'status' => 'step-1',
+                'details' => json_encode([
+                    'Home zip code' => $user->addr_zip,
+                    'Finish with State' => 'Yes',
+                    'Pre-Registered' => 'No',
+                    'Started registration' => $registrationDate,
+                    'Status' => 'Step 1',
+                    'Tracking Source' => 'ads',
+                ]),
+            ]);
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user, [
+            'Finish with State' => 'Yes',
+            'Started registration' => $registrationDate,
+            'Status' => 'Complete',
+        ]);
+
+        $importFile = factory(ImportFile::class)
+            ->states('rock_the_vote')
+            ->create();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMysqlDatabaseHas('rock_the_vote_logs', [
+            'import_file_id' => $importFile->id,
+            'started_registration' => $payload['Started registration'],
+            'status' => $payload['Status'],
+            'user_id' => $user->id,
+        ]);
+
+        $this->assertMysqlDatabaseHas('posts', [
+            'id' => $post->id,
+            'status' => 'register-OVR', // status if finishing with state form
         ]);
     }
 }
