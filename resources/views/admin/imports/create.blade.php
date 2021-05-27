@@ -5,7 +5,7 @@
 @section('main_content')
 
 <div>
-    <form {{-- action={{ route('import.upload', ['importType' => $importType]) }} --}} method="post" enctype="multipart/form-data">
+    <form action={{ route('admin.imports.upload', ['importType' => $importType]) }} method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
 
         @if ($importType === \App\Types\ImportType::$rockTheVote)

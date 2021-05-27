@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('admin.layouts.importer')
 
 @section('title', 'Import test')
 
@@ -11,14 +11,14 @@
     <p>
     @if (config('import.import_test_form_enabled') == 'true')
         <div>
-            <form action={{ route('import.store', ['importType' => $importType]) }} method="post" enctype="multipart/form-data">
+            <form action={{ route('admin.imports.store', ['importType' => $importType]) }} method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
-                @if ($importType === \Chompy\ImportType::$rockTheVote)
-                    @include('admin.partials.imports.rock-the-vote.test')
+                @if ($importType === \App\Types\ImportType::$rockTheVote)
+                    @include('admin.imports.partials.rock-the-vote.test')
                     <div>
                         <input type="submit" class="btn btn-primary btn-lg" value="Submit">
                     </div>
-                    @include('admin.partials.imports.rock-the-vote.create', ['config' => $config])
+                    @include('admin.imports.partials.rock-the-vote.create', ['config' => $config])
                 @endif
             </form>
         </div>
