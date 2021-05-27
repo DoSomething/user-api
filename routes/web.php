@@ -113,6 +113,9 @@ Route::prefix('admin')
             'Admin\GroupsController@create',
         );
 
+        // Imports
+        Route::resource('imports', 'Admin\ImportController');
+
         // Users
         Route::resource('users', 'Admin\UserController', [
             'except' => ['create', 'store'],
