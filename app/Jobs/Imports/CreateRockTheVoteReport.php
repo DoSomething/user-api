@@ -15,14 +15,14 @@ class CreateRockTheVoteReport implements ShouldQueue
     /**
      * The 'since' parameter to create a Rock The Vote report with.
      *
-     * @var DateTime
+     * @var \Carbon\CarbonInterface
      */
     protected $since;
 
     /**
      * The 'before' parameter to create a Rock The Vote report with.
      *
-     * @var DateTime
+     * @var \Carbon\CarbonInterface
      */
     protected $before;
 

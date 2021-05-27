@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\CarbonInterface;
 use App\Services\RockTheVote;
 use Illuminate\Database\Eloquent\Model;
 
@@ -56,12 +57,14 @@ class RockTheVoteReport extends Model
     /**
      * Creates a Rock The Vote Report via API request and saves to storage.
      *
-     * @param string $since
-     * @param string $before
+     * @param CarbonInterface $since
+     * @param CarbonInterface $before
      * @return RockTheVoteReport
      */
-    public static function createViaApi($since = null, $before = null)
-    {
+    public static function createViaApi(
+        CarbonInterface $since,
+        CarbonInterface $before
+    ) {
         $userId = auth()->id();
 
         if (config('services.rock_the_vote.faker')) {
@@ -79,8 +82,8 @@ class RockTheVoteReport extends Model
         }
 
         $response = app(RockTheVote::class)->createReport([
-            'since' => $since,
-            'before' => $before,
+            'since' => $since->toIso8601String(),
+            'before' => $before->toIso8601String(),
         ]);
 
         // HACK: The 'report_id' field documented for this endpoint doesn't appear in
