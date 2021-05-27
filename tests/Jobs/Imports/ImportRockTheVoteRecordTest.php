@@ -4,6 +4,7 @@ use App\Imports\RockTheVoteRecord;
 use App\Jobs\Imports\ImportRockTheVoteRecord;
 use App\Models\Action;
 use App\Models\ImportFile;
+use App\Models\Post;
 use App\Models\RockTheVoteLog;
 use App\Models\User;
 use Carbon\Carbon;
@@ -245,6 +246,53 @@ class ImportRockTheVoteRecordTest extends TestCase
         $this->assertMysqlDatabaseHas('import_files', [
             'id' => $importFile->id,
             'skip_count' => 1,
+        ]);
+    }
+
+    /**
+     * That that if an existing completed post is found for the specified user,
+     * the import does not create or update the post.
+     */
+    public function testDoesNotCreateOrUpdatePostIfExistingCompletedPostFound()
+    {
+        $user = factory(User::class)->create();
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user);
+
+        $action = $this->makeFakeVoterRegistrationPostAction();
+
+        $post = factory(Post::class)
+            ->state('voter-reg')
+            ->create([
+                'action_id' => $action->id,
+                'northstar_id' => $user->id,
+                'status' => 'register-form',
+                'details' => json_encode([
+                    'Tracking Source' => $payload['Tracking Source'],
+                    'Started registration' => $payload['Started registration'],
+                    'Finish with State' => $payload['Finish with State'],
+                    'Status' => $payload['Status'],
+                    'Pre-Registered' => $payload['Pre-Registered'],
+                    'Home zip code' => $payload['Home zip code'],
+                ]),
+            ]);
+
+        $importFile = factory(ImportFile::class)
+            ->states('rock_the_vote')
+            ->create();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMysqlDatabaseHas('rock_the_vote_logs', [
+            'import_file_id' => $importFile->id,
+            'started_registration' => $payload['Started registration'],
+            'status' => $payload['Status'],
+            'user_id' => $user->id,
+        ]);
+
+        $this->assertMysqlDatabaseHas('posts', [
+            'id' => $post->id,
+            'status' => $post->status,
         ]);
     }
 }
