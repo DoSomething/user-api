@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 use App\Models\ImportFile;
 use App\Models\MutePromotionsLog;
 use App\Models\RockTheVoteLog;
-// use ImportFileRecords;
-use Illuminate\Support\Facades\Auth;
+// use App\Jobs\Imports\ImportFileRecords;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Jobs\Imports\ImportRockTheVoteRecord;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ImportController extends Controller
 {
@@ -113,14 +113,15 @@ class ImportController extends Controller
 
         $queue = config('queue.names.high');
 
-        ImportFileRecords::dispatch(
-            Auth::user(),
-            $path,
-            $importType,
-            $importOptions,
-        )
-            ->delay(now()->addSeconds(3))
-            ->onQueue($queue);
+        // TODO: Create this job! :)
+        // ImportFileRecords::dispatch(
+        //     Auth::user(),
+        //     $path,
+        //     $importType,
+        //     $importOptions,
+        // )
+        //     ->delay(now()->addSeconds(3))
+        //     ->onQueue($queue);
 
         return redirect('import/' . $importType)->with(
             'status',
