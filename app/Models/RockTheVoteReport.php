@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Carbon\CarbonInterface;
 use App\Services\RockTheVote;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class RockTheVoteReport extends Model
