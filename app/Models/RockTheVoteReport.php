@@ -3,10 +3,18 @@
 namespace App\Models;
 
 use App\Services\RockTheVote;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class RockTheVoteReport extends Model
 {
+    /**
+     * The database connection that should be used by the model.
+     *
+     * @var string
+     */
+    protected $connection = 'mysql';
+
     /**
      * We use the externally created Rock the Vote ID as our primary key.
      */
@@ -49,13 +57,15 @@ class RockTheVoteReport extends Model
     /**
      * Creates a Rock The Vote Report via API request and saves to storage.
      *
-     * @param string $since
-     * @param string $before
+     * @param CarbonInterface $since
+     * @param CarbonInterface $before
      * @return RockTheVoteReport
      */
-    public static function createViaApi($since = null, $before = null)
-    {
-        $userId = optional(auth()->user())->northstar_id;
+    public static function createViaApi(
+        CarbonInterface $since,
+        CarbonInterface $before
+    ) {
+        $userId = auth()->id();
 
         if (config('services.rock_the_vote.faker')) {
             $reportId = self::count() + 1;
@@ -72,12 +82,13 @@ class RockTheVoteReport extends Model
         }
 
         $response = app(RockTheVote::class)->createReport([
-            'since' => $since,
-            'before' => $before,
+            'since' => $since->toIso8601String(),
+            'before' => $before->toIso8601String(),
         ]);
 
-        // Parse response to find the new Rock The Vote Report ID.
-        $statusUrlParts = explode('/', $response->status_url);
+        // HACK: The 'report_id' field documented for this endpoint doesn't appear in
+        // actual API respones, so we'll parse it from the given status URL:
+        $statusUrlParts = explode('/', $response['status_url']);
         $reportId = $statusUrlParts[count($statusUrlParts) - 1];
 
         // Log our created report in the database, to keep track of reports requested.
@@ -85,7 +96,7 @@ class RockTheVoteReport extends Model
             'id' => $reportId,
             'since' => $since,
             'before' => $before,
-            'status' => $response->status,
+            'status' => $response['status'],
             'user_id' => $userId,
         ]);
     }
@@ -107,7 +118,7 @@ class RockTheVoteReport extends Model
     {
         $retryReport = self::createViaApi($this->since, $this->before);
 
-        $this->retry_report_id = $retryReport->id;
+        $this->retry_report_id = $retryReport['id'];
         $this->save();
 
         return $retryReport;
