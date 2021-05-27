@@ -14,11 +14,11 @@
             <form action={{ route('import.store', ['importType' => $importType]) }} method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 @if ($importType === \Chompy\ImportType::$rockTheVote)
-                    @include('pages.partials.rock-the-vote.test')
+                    @include('admin.partials.imports.rock-the-vote.test')
                     <div>
                         <input type="submit" class="btn btn-primary btn-lg" value="Submit">
                     </div>
-                    @include('pages.partials.rock-the-vote.create', ['config' => $config])
+                    @include('admin.partials.imports.rock-the-vote.create', ['config' => $config])
                 @endif
             </form>
         </div>

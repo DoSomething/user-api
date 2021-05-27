@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('admin.layouts.importer')
 
 @section('title', 'Imports')
 
@@ -27,7 +27,7 @@
                 {{$importFile->import_type}}
 
                 @if ($importFile->options)
-                  @include('pages.partials.import-files.import-options', ['options' => $importFile->options])
+                  @include('admin.imports.partials.import-files.import-options', ['options' => $importFile->options])
                 @endif
               </td>
 
@@ -37,7 +37,7 @@
 
               <td class="col-md-3">
                 {{$importFile->user_id ? $importFile->user_id : 'Console'}}
-              </td>     
+              </td>
             </tr>
         @endforeach
     </table>

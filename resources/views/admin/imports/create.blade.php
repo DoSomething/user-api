@@ -8,17 +8,15 @@
     <form {{-- action={{ route('import.upload', ['importType' => $importType]) }} --}} method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
 
-        {{--
         @if ($importType === \App\Types\ImportType::$rockTheVote)
             <a href="/import/rock-the-vote?source=test" class="pull-right">Test Import</a>
 
-            @include('pages.partials.rock-the-vote.create', ['config' => $config])
+            @include('admin.imports.partials.rock-the-vote.create', ['config' => $config])
         @elseif ($importType === \App\Types\ImportType::$emailSubscription)
-            @include('pages.partials.email-subscription.create')
+            @include('admin.imports.partials.email-subscription.create')
         @elseif ($importType === \App\Types\ImportType::$mutePromotions)
-            @include('pages.partials.mute-promotions.create')
+            @include('admin.imports.partials.mute-promotions.create')
         @endif
-        --}}
 
         <div class="form-group">
             <h3>Upload</h3>
