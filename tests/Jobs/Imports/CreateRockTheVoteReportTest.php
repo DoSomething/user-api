@@ -15,7 +15,6 @@ class CreateRockTheVoteReportTest extends TestCase
     {
         $this->rockTheVoteMock = $this->mock(\App\Services\RockTheVote::class);
         $this->rockTheVoteMock->shouldReceive('createReport')->andReturn([
-            'report_id' => 17,
             'status' => 'queued',
             'record_count' => null,
             'current_index' => null,

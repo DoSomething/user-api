@@ -83,8 +83,8 @@ class RockTheVoteReport extends Model
             'before' => $before,
         ]);
 
-        // Parse response to find the new Rock The Vote Report ID.
-        // TODO: Can we read 'report_id' from the response?
+        // HACK: The 'report_id' field documented for this endpoint doesn't appear in
+        // actual API respones, so we'll parse it from the given status URL:
         $statusUrlParts = explode('/', $response['status_url']);
         $reportId = $statusUrlParts[count($statusUrlParts) - 1];
 
