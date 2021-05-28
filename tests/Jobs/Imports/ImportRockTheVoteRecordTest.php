@@ -93,7 +93,7 @@ class ImportRockTheVoteRecordTest extends TestCase
     /**
      * Return a mock "Started registration" field value.
      *
-     * @param Int $days
+     * @param int $days
      * @return string
      */
     public function daysAgoInRockTheVoteFormat($days = 0)
