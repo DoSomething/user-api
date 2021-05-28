@@ -222,6 +222,12 @@ class ImportRockTheVoteRecordTest extends TestCase
             'id' => $importFile->id,
             'skip_count' => 1,
         ]);
+
+        $this->assertDatabaseMissing(
+            'users',
+            ['user_id' => $user->id],
+            'mongodb',
+        );
     }
 
     /**
@@ -345,6 +351,32 @@ class ImportRockTheVoteRecordTest extends TestCase
         $this->assertMysqlDatabaseHas('posts', [
             'id' => $post->id,
             'status' => 'register-OVR', // status if finishing with state form
+        ]);
+    }
+
+    /**
+     * Test that import mobile number provided is added to user record if previously missing,
+     * and no other user exists with the same mobile number.
+     */
+    public function testUserMobileAddedIfImportMobileProvided()
+    {
+        $user = factory(User::class)->create(['mobile' => null]);
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user, [
+            'Phone' => $this->faker->unique()->phoneNumber,
+        ]);
+
+        $this->makeFakeVoterRegistrationPostAction();
+
+        $importFile = factory(ImportFile::class)
+            ->states('rock_the_vote')
+            ->create();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMongoDatabaseHas('users', [
+            '_id' => $user->id,
+            'mobile' => normalize('mobile', $payload['Phone']),
         ]);
     }
 }
