@@ -97,7 +97,7 @@ class ImportRockTheVoteRecord extends Job
         }
 
         if (RockTheVoteLog::getByRecord($this->record, $user)) {
-            $this->skipImportingRecord($user);
+            return $this->skipImportingRecord($user);
         }
 
         $this->importRecordForExistingUser($user, $signups, $posts);

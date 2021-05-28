@@ -125,6 +125,26 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     }
 
     /**
+     * Assert that the given Customer.io event was not fired.
+     *
+     * @param User $user
+     * @param string $name
+     */
+    public function assertNoCustomerIoEvent(User $user, string $eventName)
+    {
+        $userMatcher = Mockery::on(function ($argument) use ($user) {
+            return $user->is($argument);
+        });
+
+        // We should not have tracked this event for the provided user:
+        return $this->customerIoMock->shouldNotHaveReceived('trackEvent', [
+            $userMatcher,
+            $eventName,
+            Mockery::any(),
+        ]);
+    }
+
+    /**
      * Submit a form on the page without crawling the returned page. Useful for
      * when a form results in an external redirect that'd break test crawler.
      *
