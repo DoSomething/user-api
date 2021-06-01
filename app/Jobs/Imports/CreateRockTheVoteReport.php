@@ -58,8 +58,7 @@ class CreateRockTheVoteReport extends Job
             $this->before,
         );
 
-        // TODO: We still need to make this job!! :)
-        // ImportRockTheVoteReport::dispatch(null, $this->report);
+        FetchRockTheVoteReport::dispatch($this->report);
     }
 
     /**
