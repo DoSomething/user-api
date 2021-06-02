@@ -7,6 +7,19 @@ use App\Models\User;
 class ImportEmailSubscriptionsTest extends TestCase
 {
     /**
+     * Make a fake unprocessed import file with no completed or skipped imports.
+     */
+    public function makeFakeUnprocessedImportFile()
+    {
+        return factory(ImportFile::class)
+            ->states('email_subscription')
+            ->create([
+                'import_count' => 0,
+                'skip_count' => 0,
+            ]);
+    }
+
+    /**
      * Test that an existing user record can have email subcriptions updated
      * when importing records.
      */
@@ -14,9 +27,7 @@ class ImportEmailSubscriptionsTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $importFile = factory(ImportFile::class)
-            ->states('email_subscription')
-            ->create();
+        $importFile = $this->makeFakeUnprocessedImportFile();
 
         ImportEmailSubscriptions::dispatch(
             ['email' => $user->email, 'first_name' => $user->first_name],
@@ -44,9 +55,7 @@ class ImportEmailSubscriptionsTest extends TestCase
      */
     public function testAddsSubcriptionForNewUser()
     {
-        $importFile = factory(ImportFile::class)
-            ->states('email_subscription')
-            ->create();
+        $importFile = $this->makeFakeUnprocessedImportFile();
 
         ImportEmailSubscriptions::dispatch(
             [
@@ -82,9 +91,7 @@ class ImportEmailSubscriptionsTest extends TestCase
             ->states('email-subscribed-community')
             ->create();
 
-        $importFile = factory(ImportFile::class)
-            ->states('email_subscription')
-            ->create();
+        $importFile = $this->makeFakeUnprocessedImportFile();
 
         ImportEmailSubscriptions::dispatch(
             ['email' => $user->email, 'first_name' => $user->first_name],
@@ -111,9 +118,7 @@ class ImportEmailSubscriptionsTest extends TestCase
      */
     public function testImportTriggersPasswordResetForNewUser()
     {
-        $importFile = factory(ImportFile::class)
-            ->states('email_subscription')
-            ->create();
+        $importFile = $this->makeFakeUnprocessedImportFile();
 
         ImportEmailSubscriptions::dispatch(
             [
