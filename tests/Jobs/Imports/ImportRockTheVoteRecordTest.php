@@ -75,6 +75,19 @@ class ImportRockTheVoteRecordTest extends TestCase
     }
 
     /**
+     * Make a fake unprocessed import file with no completed or skipped imports.
+     */
+    public function makeFakeUnprocessedImportFile()
+    {
+        return factory(ImportFile::class)
+            ->states('rock_the_vote')
+            ->create([
+                'import_count' => 0,
+                'skip_count' => 0,
+            ]);
+    }
+
+    /**
      * Make a fake voter registration post action.
      *
      * @return \App\Models\Action
@@ -112,9 +125,7 @@ class ImportRockTheVoteRecordTest extends TestCase
 
         $this->makeFakeVoterRegistrationPostAction();
 
-        $importFile = factory(ImportFile::class)
-            ->states('rock_the_vote')
-            ->create();
+        $importFile = $this->makeFakeUnprocessedImportFile();
 
         ImportRockTheVoteRecord::dispatch($payload, $importFile);
 
@@ -151,9 +162,7 @@ class ImportRockTheVoteRecordTest extends TestCase
 
         $this->makeFakeVoterRegistrationPostAction();
 
-        $importFile = factory(ImportFile::class)
-            ->states('rock_the_vote')
-            ->create();
+        $importFile = $this->makeFakeUnprocessedImportFile();
 
         ImportRockTheVoteRecord::dispatch($payload, $importFile);
 
@@ -184,9 +193,7 @@ class ImportRockTheVoteRecordTest extends TestCase
 
         $this->makeFakeVoterRegistrationPostAction();
 
-        $importFile = factory(ImportFile::class)
-            ->states('rock_the_vote')
-            ->create();
+        $importFile = $this->makeFakeUnprocessedImportFile();
 
         ImportRockTheVoteRecord::dispatch($payload, $importFile);
 
@@ -212,9 +219,7 @@ class ImportRockTheVoteRecordTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $importFile = factory(ImportFile::class)
-            ->states('rock_the_vote')
-            ->create();
+        $importFile = $this->makeFakeUnprocessedImportFile();
 
         ImportRockTheVoteRecord::dispatch($payload, $importFile);
 
@@ -243,9 +248,7 @@ class ImportRockTheVoteRecordTest extends TestCase
             RockTheVoteRecord::$startedRegistrationFieldName => '555-555-5555',
         ]);
 
-        $importFile = factory(ImportFile::class)
-            ->states('rock_the_vote')
-            ->create();
+        $importFile = $this->makeFakeUnprocessedImportFile();
 
         ImportRockTheVoteRecord::dispatch($payload, $importFile);
 
@@ -283,9 +286,7 @@ class ImportRockTheVoteRecordTest extends TestCase
                 ]),
             ]);
 
-        $importFile = factory(ImportFile::class)
-            ->states('rock_the_vote')
-            ->create();
+        $importFile = $this->makeFakeUnprocessedImportFile();
 
         ImportRockTheVoteRecord::dispatch($payload, $importFile);
 
@@ -335,9 +336,7 @@ class ImportRockTheVoteRecordTest extends TestCase
             'Status' => 'Complete',
         ]);
 
-        $importFile = factory(ImportFile::class)
-            ->states('rock_the_vote')
-            ->create();
+        $importFile = $this->makeFakeUnprocessedImportFile();
 
         ImportRockTheVoteRecord::dispatch($payload, $importFile);
 
@@ -368,9 +367,7 @@ class ImportRockTheVoteRecordTest extends TestCase
 
         $this->makeFakeVoterRegistrationPostAction();
 
-        $importFile = factory(ImportFile::class)
-            ->states('rock_the_vote')
-            ->create();
+        $importFile = $this->makeFakeUnprocessedImportFile();
 
         ImportRockTheVoteRecord::dispatch($payload, $importFile);
 
