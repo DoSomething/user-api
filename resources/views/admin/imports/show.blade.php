@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('admin.layouts.importer')
 
 @section('title', 'Import details')
 
@@ -18,9 +18,9 @@
         This file had a total of {{$importFile->row_count}} rows: <strong>{{$importFile->import_count}} imported, {{$importFile->skip_count}} skipped</strong>.
     </p>
 
-    @if ($importFile->import_type === \Chompy\ImportType::$mutePromotions)
+    @if ($importFile->import_type === \App\Types\ImportType::$mutePromotions)
         @include('admin.imports.partials.mute-promotions.logs', ['rows' => $rows, 'user_id' => null])
-    @elseif ($importFile->import_type === \Chompy\ImportType::$rockTheVote)
+    @elseif ($importFile->import_type === \App\Types\ImportType::$rockTheVote)
         @include('admin.imports.partials.rock-the-vote.logs', ['rows' => $rows, 'user_id' => null])
     @endif
 </div>

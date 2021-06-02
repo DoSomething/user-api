@@ -9,7 +9,7 @@
         {{ csrf_field() }}
 
         @if ($importType === \App\Types\ImportType::$rockTheVote)
-            <a href="/import/rock-the-vote?source=test" class="pull-right">Test Import</a>
+            <a href="/admin/imports/create?type=rock-the-vote&source=test" class="pull-right">Test Import</a>
 
             @include('admin.imports.partials.rock-the-vote.create', ['config' => $config])
         @elseif ($importType === \App\Types\ImportType::$emailSubscription)

@@ -12,7 +12,7 @@
             <ul class="nav navbar-nav">
                 @if (Auth::user())
                     <li @if (Request::is('admin/import-files*')) class="active" @endif>
-                        <a class="nav-item nav-link" href="/admin/import-files">
+                        <a class="nav-item nav-link" href="/admin/imports">
                             Imports
                         </a>
                     </li>

@@ -18,7 +18,7 @@
         @foreach($data as $key => $importFile)
             <tr class="row">
               <td class="col-md-3">
-                <a href="/import-files/{{$importFile->id}}">
+                <a href="/admin/imports/{{$importFile->id}}">
                   <strong>{{$importFile->created_at}}</strong>
                 </a>
               </td>
