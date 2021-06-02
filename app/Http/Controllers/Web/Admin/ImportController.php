@@ -132,12 +132,11 @@ class ImportController extends Controller
     /**
      * Display a listing of import files.
      *
-     * @param Request $request
      * @return Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $importType = $request->query('type');
+        $importType = request('type');
 
         $query = ImportFile::orderBy('id', 'desc');
 
