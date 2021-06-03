@@ -236,6 +236,66 @@ class ImportRockTheVoteRecordTest extends TestCase
     }
 
     /**
+     * Test that existing user is not updated with import data if their voter registration status
+     * is already completed (at a higher status hierarchy).
+     */
+    public function testDoesNotUpdateExistingUserIfAlreadyAtHigherStatus()
+    {
+        $user = factory(User::class)->create([
+            'voter_registration_status' => 'registration_complete',
+        ]);
+
+        $action = $this->makeFakeVoterRegistrationPostAction();
+
+        $dateTwoDaysAgo = $this->daysAgoInRockTheVoteFormat(2);
+
+        $dateToday = $this->daysAgoInRockTheVoteFormat(0);
+
+        $postFromTwoDaysAgo = factory(Post::class)
+            ->state('voter-reg')
+            ->create([
+                'action_id' => $action->id,
+                'northstar_id' => $user->id,
+                'status' => 'register-OVR',
+                'details' => json_encode([
+                    'Home zip code' => $user->addr_zip,
+                    'Finish with State' => 'Yes',
+                    'Pre-Registered' => 'No',
+                    'Started registration' => $dateTwoDaysAgo,
+                    'Status' => 'Complete', // @Question: is this correct?
+                    'Tracking Source' => 'ads',
+                ]),
+            ]);
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user, [
+            'Finish with State' => 'No',
+            'Started registration' => $dateToday,
+            'Status' => 'Step 1',
+        ]);
+
+        $importFile = $this->makeFakeUnprocessedImportFile();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMongoDatabaseHas('users', [
+            'voter_registration_status' => $user->voter_registration_status,
+        ]);
+
+        $this->assertMysqlDatabaseHas('posts', [
+            'id' => $postFromTwoDaysAgo->id,
+            'status' => $postFromTwoDaysAgo->status,
+            'type' => 'voter-reg',
+        ]);
+
+        $this->assertMysqlDatabaseHas('rock_the_vote_logs', [
+            'import_file_id' => $importFile->id,
+            'started_registration' => $payload['Started registration'],
+            'status' => $payload['Status'],
+            'user_id' => $user->id,
+        ]);
+    }
+
+    /**
      * Test that record is skipped if the RTV data is invalid.
      *
      * @return void
