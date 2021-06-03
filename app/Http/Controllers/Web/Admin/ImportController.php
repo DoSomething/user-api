@@ -145,7 +145,7 @@ class ImportController extends Controller
         }
 
         return view('admin.imports.index', [
-            'data' => $query->paginate(15)->appends(request()->query()),
+            'importFiles' => $query->paginate(15)->appends(request()->query()),
         ]);
     }
 

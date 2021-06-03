@@ -15,16 +15,16 @@
           </tr>
         </thead>
 
-        @foreach($data as $key => $importFile)
+        @foreach($importFiles as $importFile)
             <tr class="row">
               <td class="col-md-3">
-                <a href="/admin/imports/{{$importFile->id}}">
-                  <strong>{{$importFile->created_at}}</strong>
+                <a href="/admin/imports/{{ $importFile->id }}">
+                  <strong>{{ $importFile->created_at }}</strong>
                 </a>
               </td>
 
               <td class="col-md-3">
-                {{$importFile->import_type}}
+                {{ $importFile->import_type }}
 
                 @if ($importFile->options)
                   @include('admin.imports.partials.import-files.import-options', ['options' => $importFile->options])
@@ -32,17 +32,17 @@
               </td>
 
               <td class="col-md-3">
-                {{$importFile->import_count}}
+                {{ $importFile->import_count }}
               </td>
 
               <td class="col-md-3">
-                {{$importFile->user_id ? $importFile->user_id : 'Console'}}
+                {{ $importFile->user_id ? $importFile->user_id : 'Console' }}
               </td>
             </tr>
         @endforeach
     </table>
 
-    {{$data->appends(request()->query())->links()}}
+    {{ $importFiles->links('admin.imports.partials.bootstrap-pagination') }}
 </div>
 
 @stop
