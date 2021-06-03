@@ -364,6 +364,57 @@ class ImportRockTheVoteRecordTest extends TestCase
     }
 
     /**
+     * Test that existing user who started registration process is updated with import data if
+     * import record has higher voter registration status.
+     */
+    public function testUpdatesExistingUserIfImportDataHasHigherStatus()
+    {
+        $user = factory(User::class)->create([
+            'voter_registration_status' => 'step-1',
+        ]);
+
+        $action = $this->makeFakeVoterRegistrationPostAction();
+
+        $dateRegistrationStarted = $this->daysAgoInRockTheVoteFormat();
+
+        $post = factory(Post::class)
+            ->state('voter-reg')
+            ->create([
+                'action_id' => $action->id,
+                'northstar_id' => $user->id,
+                'status' => 'step-1',
+                'details' => json_encode([
+                    'Home zip code' => $user->addr_zip,
+                    'Finish with State' => 'No',
+                    'Pre-Registered' => 'No',
+                    'Started registration' => $dateRegistrationStarted,
+                    'Status' => 'Step 1',
+                    'Tracking Source' => 'ads',
+                ]),
+            ]);
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user, [
+            'Finish with State' => 'No',
+            'Started registration' => $dateRegistrationStarted,
+            'Status' => 'Step 2',
+        ]);
+
+        $importFile = $this->makeFakeUnprocessedImportFile();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMongoDatabaseHas('users', [
+            'voter_registration_status' => 'step-2',
+        ]);
+
+        $this->assertMysqlDatabaseHas('posts', [
+            'id' => $post->id,
+            'status' => 'step-2',
+            'type' => 'voter-reg',
+        ]);
+    }
+
+    /**
      * Test that a user is updated if their voter registration status changes.
      */
     public function testUpdatesVoterRegistrationStatusIfStatusChanged()
