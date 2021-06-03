@@ -2,16 +2,11 @@
 
 namespace App\Jobs\Imports;
 
+use App\Jobs\Job;
 use App\Models\RockTheVoteReport;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
 
-class CreateRockTheVoteReport implements ShouldQueue
+class CreateRockTheVoteReport extends Job
 {
-    use Dispatchable, InteractsWithQueue, Queueable;
-
     /**
      * The 'since' parameter to create a Rock The Vote report with.
      *
