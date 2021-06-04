@@ -40,9 +40,6 @@ class ImportRockTheVoteCommand extends Command
             'before' => $now,
         ]);
 
-        CreateRockTheVoteReport::dispatch(
-            $since->toDateTimeString(),
-            $now->toDateTimeString(),
-        );
+        CreateRockTheVoteReport::dispatch($since, $now);
     }
 }
