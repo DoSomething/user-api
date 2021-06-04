@@ -90,7 +90,7 @@ class FetchRockTheVoteReportTest extends TestCase
     }
 
     /**
-     * Test that the job is retriggered if report is still queued.
+     * Test that a new report is requested upon first failure.
      *
      * @return void
      */
@@ -123,7 +123,7 @@ class FetchRockTheVoteReportTest extends TestCase
     }
 
     /**
-     * Test that a new job is not dispatched if status is failed and report has a retry report ID.
+     * Test that a new report is *not* requested upon second failure.
      *
      * @return void
      */
