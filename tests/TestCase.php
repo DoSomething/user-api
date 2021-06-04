@@ -153,7 +153,8 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
      */
     protected function forceDispatch(App\Jobs\Job $job)
     {
-        // Then call this job, injecting any dependencies:
+        // Directly call the 'handle' method on the given job, bypassing potentially
+        // mocked Dispatcher, and inject any needed dependencies from the container:
         $this->app->call([$job, 'handle']);
 
         return $this;
