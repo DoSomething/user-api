@@ -102,10 +102,10 @@ class FetchRockTheVoteReportTest extends TestCase
 
         $this->rockTheVoteMock
             ->shouldReceive('getReportStatusById')
-            ->andReturn($this->mockRockTheVoteRepsonse('failed'));
+            ->andReturn($this->mockRockTheVoteResponse('failed'));
 
         $this->rockTheVoteMock->shouldReceive('createReport')->andReturn(
-            $this->mockRockTheVoteRepsonse('queued', [
+            $this->mockRockTheVoteResponse('queued', [
                 'status_url' =>
                     'https://register.rockthevote.com/api/v4/registrant_reports/18',
             ]),
