@@ -44,7 +44,7 @@ class FetchRockTheVoteReportTest extends TestCase
 
         $this->rockTheVoteMock
             ->shouldReceive('getReportStatusById')
-            ->andReturn($this->mockRockTheVoteRepsonse('queued'));
+            ->andReturn($this->mockRockTheVoteResponse('queued'));
 
         $this->forceDispatch(new FetchRockTheVoteReport($report));
 
