@@ -75,7 +75,9 @@ class ImportRockTheVoteRecordTest extends TestCase
     }
 
     /**
-     * Make a fake unprocessed import file with no completed or skipped imports.
+     * Make a fake unprocessed import file with no complete or skipped imports.
+     *
+     * @return \App\Models\ImportFile
      */
     public function makeFakeUnprocessedImportFile()
     {
@@ -118,6 +120,8 @@ class ImportRockTheVoteRecordTest extends TestCase
 
     /**
      * Test that user and post are created if user is not found.
+     *
+     * @return void
      */
     public function testCreatesUserIfUserNotFound()
     {
@@ -145,6 +149,56 @@ class ImportRockTheVoteRecordTest extends TestCase
             'status' => $payload['Status'],
             'user_id' => $user->id,
         ]);
+    }
+
+    /**
+     * Test that if an existing complete post is found for the specified user,
+     * the import does not create or update the post.
+     *
+     * @return void
+     */
+    public function testDoesNotCreateOrUpdatePostIfExistingCompletePostFound()
+    {
+        $user = factory(User::class)->create();
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user);
+
+        $action = $this->makeFakeVoterRegistrationPostAction();
+
+        $post = factory(Post::class)
+            ->state('voter-reg')
+            ->create([
+                'action_id' => $action->id,
+                'northstar_id' => $user->id,
+                'status' => 'register-form',
+                'details' => json_encode([
+                    'Home zip code' => $payload['Home zip code'],
+                    'Finish with State' => $payload['Finish with State'],
+                    'Pre-Registered' => $payload['Pre-Registered'],
+                    'Started registration' => $payload['Started registration'],
+                    'Status' => 'Complete',
+                    'Tracking Source' => $payload['Tracking Source'],
+                ]),
+            ]);
+
+        $importFile = $this->makeFakeUnprocessedImportFile();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMysqlDatabaseHas('rock_the_vote_logs', [
+            'import_file_id' => $importFile->id,
+            'started_registration' => $payload['Started registration'],
+            'status' => $payload['Status'],
+            'user_id' => $user->id,
+        ]);
+
+        $this->assertMysqlDatabaseHas('posts', [
+            'id' => $post->id,
+            'status' => 'register-form', // unchanged!
+        ]);
+
+        // Only existing completed post should exist in the posts table.
+        $this->assertCount(1, Post::all());
     }
 
     /**
@@ -181,6 +235,8 @@ class ImportRockTheVoteRecordTest extends TestCase
     /**
      * Test that a password reset email is not sent when a new user is created
      * with a Step 1 status.
+     *
+     * @return void
      */
     public function testDoesNotSendPasswordResetForNewUserWithStep1Status()
     {
@@ -204,6 +260,8 @@ class ImportRockTheVoteRecordTest extends TestCase
 
     /**
      * Test that record is not imported if it has already been logged as an imported record.
+     *
+     * @return void
      */
     public function testDoesNotImportRecordIfLogExists()
     {
@@ -236,6 +294,69 @@ class ImportRockTheVoteRecordTest extends TestCase
     }
 
     /**
+     * Test that existing user and initial voter registration post are not updated with import data
+     * if their voter registration status is already complete (at a higher status hierarchy).
+     *
+     * @return void
+     */
+    public function testDoesNotUpdateExistingUserIfAlreadyAtHigherStatus()
+    {
+        $user = factory(User::class)->create([
+            'voter_registration_status' => 'registration_complete',
+        ]);
+
+        $action = $this->makeFakeVoterRegistrationPostAction();
+
+        $dateTwoDaysAgo = $this->daysAgoInRockTheVoteFormat(2);
+
+        $dateToday = $this->daysAgoInRockTheVoteFormat(0);
+
+        $postFromTwoDaysAgo = factory(Post::class)
+            ->state('voter-reg')
+            ->create([
+                'action_id' => $action->id,
+                'northstar_id' => $user->id,
+                'status' => 'register-OVR',
+                'details' => json_encode([
+                    'Home zip code' => $user->addr_zip,
+                    'Finish with State' => 'Yes',
+                    'Pre-Registered' => 'No',
+                    'Started registration' => $dateTwoDaysAgo,
+                    'Status' => 'Complete',
+                    'Tracking Source' => 'ads',
+                ]),
+            ]);
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user, [
+            'Finish with State' => 'No',
+            'Started registration' => $dateToday,
+            'Status' => 'Step 1',
+        ]);
+
+        $importFile = $this->makeFakeUnprocessedImportFile();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMongoDatabaseHas('users', [
+            'voter_registration_status' => 'registration_complete',
+        ]);
+
+        // Confirm original completed post not overwritten with import data values.
+        $this->assertMysqlDatabaseHas('posts', [
+            'id' => $postFromTwoDaysAgo->id,
+            'status' => 'register-OVR',
+            'type' => 'voter-reg',
+        ]);
+
+        $this->assertMysqlDatabaseHas('rock_the_vote_logs', [
+            'import_file_id' => $importFile->id,
+            'started_registration' => $payload['Started registration'],
+            'status' => $payload['Status'],
+            'user_id' => $user->id,
+        ]);
+    }
+
+    /**
      * Test that record is skipped if the RTV data is invalid.
      *
      * @return void
@@ -259,52 +380,62 @@ class ImportRockTheVoteRecordTest extends TestCase
     }
 
     /**
-     * That that if an existing completed post is found for the specified user,
-     * the import does not create or update the post.
+     * Test that existing user who started registration process is updated with import data if
+     * import record has higher voter registration status.
+     *
+     * @return void
      */
-    public function testDoesNotCreateOrUpdatePostIfExistingCompletedPostFound()
+    public function testUpdatesExistingUserIfImportDataHasHigherStatus()
     {
-        $user = factory(User::class)->create();
-
-        $payload = $this->makeFakeReportPayloadForSpecificUser($user);
+        $user = factory(User::class)->create([
+            'voter_registration_status' => 'step-1',
+        ]);
 
         $action = $this->makeFakeVoterRegistrationPostAction();
+
+        $dateRegistrationStarted = $this->daysAgoInRockTheVoteFormat();
 
         $post = factory(Post::class)
             ->state('voter-reg')
             ->create([
                 'action_id' => $action->id,
                 'northstar_id' => $user->id,
-                'status' => 'register-form',
+                'status' => 'step-1',
                 'details' => json_encode([
-                    'Home zip code' => $payload['Home zip code'],
-                    'Finish with State' => $payload['Finish with State'],
-                    'Pre-Registered' => $payload['Pre-Registered'],
-                    'Started registration' => $payload['Started registration'],
-                    'Status' => $payload['Status'],
-                    'Tracking Source' => $payload['Tracking Source'],
+                    'Home zip code' => $user->addr_zip,
+                    'Finish with State' => 'No',
+                    'Pre-Registered' => 'No',
+                    'Started registration' => $dateRegistrationStarted,
+                    'Status' => 'Step 1',
+                    'Tracking Source' => 'ads',
                 ]),
             ]);
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user, [
+            'Finish with State' => 'No',
+            'Started registration' => $dateRegistrationStarted,
+            'Status' => 'Step 2',
+        ]);
 
         $importFile = $this->makeFakeUnprocessedImportFile();
 
         ImportRockTheVoteRecord::dispatch($payload, $importFile);
 
-        $this->assertMysqlDatabaseHas('rock_the_vote_logs', [
-            'import_file_id' => $importFile->id,
-            'started_registration' => $payload['Started registration'],
-            'status' => $payload['Status'],
-            'user_id' => $user->id,
+        $this->assertMongoDatabaseHas('users', [
+            'voter_registration_status' => 'step-2',
         ]);
 
         $this->assertMysqlDatabaseHas('posts', [
             'id' => $post->id,
-            'status' => $post->status,
+            'status' => 'step-2',
+            'type' => 'voter-reg',
         ]);
     }
 
     /**
      * Test that a user is updated if their voter registration status changes.
+     *
+     * @return void
      */
     public function testUpdatesVoterRegistrationStatusIfStatusChanged()
     {
@@ -356,6 +487,8 @@ class ImportRockTheVoteRecordTest extends TestCase
     /**
      * Test that import mobile number provided is added to user record if previously missing,
      * and no other user exists with the same mobile number.
+     *
+     * @return void
      */
     public function testUserMobileAddedIfImportMobileProvided()
     {
@@ -375,5 +508,160 @@ class ImportRockTheVoteRecordTest extends TestCase
             '_id' => $user->id,
             'mobile' => normalize('mobile', $payload['Phone']),
         ]);
+    }
+
+    /**
+     * Test that user SMS subscription is not updated if import data does not include
+     * a mobile phone number.
+     */
+    public function testSmsSubscriptionIsNotUpdatedIfImportDataMobileNumberIsNull()
+    {
+        $user = factory(User::class)->create([
+            'sms_status' => 'active',
+            'sms_subscription_topics' => ['general', 'voting'],
+        ]);
+
+        $action = $this->makeFakeVoterRegistrationPostAction();
+
+        $dateRegistrationStarted = $this->daysAgoInRockTheVoteFormat();
+
+        // Make a fake voter registration post that already exists.
+        factory(Post::class)
+            ->state('voter-reg')
+            ->create([
+                'action_id' => $action->id,
+                'northstar_id' => $user->id,
+                'status' => 'step-2',
+                'details' => json_encode([
+                    'Home zip code' => $user->addr_zip,
+                    'Finish with State' => 'Yes',
+                    'Pre-Registered' => 'No',
+                    'Started registration' => $dateRegistrationStarted,
+                    'Status' => 'Step 2',
+                    'Tracking Source' => 'ads',
+                ]),
+            ]);
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user, [
+            'Phone' => null,
+            'Started registration' => $dateRegistrationStarted,
+        ]);
+
+        $importFile = $this->makeFakeUnprocessedImportFile();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMongoDatabaseHas('users', [
+            '_id' => $user->id,
+            'mobile' => $user->mobile,
+            'sms_status' => 'active',
+            'sms_subscription_topics' => ['general', 'voting'],
+        ]);
+    }
+
+    /**
+     * Test that existing user's SMS subscription is not updated if an import record has already
+     * been added with same registration phone number.
+     */
+    public function testSmsSubscriptionIsNotUpdatedIfLogExistsAndImportPhoneNumberProvided()
+    {
+        $user = factory(User::class)->create([
+            'sms_subscription_topics' => ['general'],
+        ]);
+
+        $this->makeFakeVoterRegistrationPostAction();
+
+        $dateRegistrationStarted = $this->daysAgoInRockTheVoteFormat();
+
+        factory(RockTheVoteLog::class)->create([
+            'contains_phone' => true,
+            'started_registration' => $dateRegistrationStarted,
+            'user_id' => $user->id,
+        ]);
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user, [
+            'Phone' => $user->mobile,
+            'Started registration' => $dateRegistrationStarted,
+        ]);
+
+        $importFile = $this->makeFakeUnprocessedImportFile();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMongoDatabaseHas('users', [
+            '_id' => $user->id,
+            'sms_subscription_topics' => ['general'],
+        ]);
+    }
+
+    /**
+     * Test that existing user's mobile number is added if they did not have a number set, and
+     * the import data has a number provided.
+     */
+    public function testMobileNumberIsAddedForExistingUserIfMissingAndImportPhoneNumberProvided()
+    {
+        $user = factory(User::class)->create([
+            'mobile' => null,
+        ]);
+
+        $this->makeFakeVoterRegistrationPostAction();
+
+        $phoneNumber = '+15558675309';
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user, [
+            'Phone' => $phoneNumber,
+        ]);
+
+        $importFile = $this->makeFakeUnprocessedImportFile();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMongoDatabaseHas('users', [
+            '_id' => $user->id,
+            'mobile' => $phoneNumber,
+        ]);
+    }
+
+    /**
+     * Test that the owner of the mobile number has their sms subscription topics updated
+     * if the import data user does not have a mobile set and the provided number in import
+     * data points to a different user owning that number.
+     */
+    public function testMobileOwnerIsUpdatedIfImportUserHasNoMobileAndMobileIsTaken()
+    {
+        $webUser = factory(User::class)->create([
+            'mobile' => null,
+            'sms_subscription_topics' => ['general', 'voting'],
+        ]);
+
+        $phoneNumber = '+15558675309';
+
+        $mobileUser = factory(User::class)->create([
+            'mobile' => $phoneNumber,
+            'sms_subscription_topics' => ['general', 'voting'],
+        ]);
+
+        $this->makeFakeVoterRegistrationPostAction();
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($webUser, [
+            'Phone' => $phoneNumber,
+        ]);
+
+        $importFile = $this->makeFakeUnprocessedImportFile();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMongoDatabaseHas('users', [
+            '_id' => $webUser->id,
+            'sms_subscription_topics' => ['general', 'voting'],
+        ]);
+
+        $this->assertMongoDatabaseHas('users', [
+            '_id' => $mobileUser->id,
+            'sms_subscription_topics' => ['general'],
+        ]);
+
+        // @Question: this test in Chompy had something about the mobile user's sms_status
+        // being set to "stop", but doesn't seem like it is coded that way in the job.
     }
 }
