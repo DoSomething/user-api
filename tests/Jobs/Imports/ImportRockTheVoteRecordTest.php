@@ -7,6 +7,7 @@ use App\Models\ImportFile;
 use App\Models\Post;
 use App\Models\RockTheVoteLog;
 use App\Models\User;
+use App\Types\SmsStatus;
 use Carbon\Carbon;
 
 class ImportRockTheVoteRecordTest extends TestCase
@@ -663,5 +664,35 @@ class ImportRockTheVoteRecordTest extends TestCase
 
         // @Question: this test in Chompy had something about the mobile user's sms_status
         // being set to "stop", but doesn't seem like it is coded that way in the job.
+    }
+
+    /**
+     * Test that existing user with mobile number retains mobile number and updates sms status
+     * and subscriptions even if the import data mobile number is different.
+     */
+    public function testUserMobileNumberIsNotUpdatedIfImportRecordHasDifferentMobileNumber()
+    {
+        $user = factory(User::class)->create([
+            'mobile' => '+15558675309',
+            'sms_status' => 'stop',
+        ]);
+
+        $this->makeFakeVoterRegistrationPostAction();
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user, [
+            'Phone' => '+12345678910',
+            'Opt-in to Partner SMS/robocall' => 'Yes',
+        ]);
+
+        $importFile = $this->makeFakeUnprocessedImportFile();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMongoDatabaseHas('users', [
+            '_id' => $user->id,
+            'mobile' => '+15558675309',
+            'sms_status' => 'active',
+            'sms_subscription_topics' => ['voting'],
+        ]);
     }
 }
