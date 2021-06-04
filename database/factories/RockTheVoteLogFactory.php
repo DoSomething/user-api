@@ -9,6 +9,7 @@ use Faker\Generator as Faker;
 
 $factory->define(RockTheVoteLog::class, function (Faker $faker) {
     return [
+        'contains_phone' => null,
         'finish_with_state' => 'No',
         'import_file_id' => $faker->randomDigitNotNull,
         'pre_registered' => 'No',

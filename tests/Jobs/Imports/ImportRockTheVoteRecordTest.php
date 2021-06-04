@@ -76,6 +76,8 @@ class ImportRockTheVoteRecordTest extends TestCase
 
     /**
      * Make a fake unprocessed import file with no completed or skipped imports.
+     *
+     * @return \App\Models\ImportFile
      */
     public function makeFakeUnprocessedImportFile()
     {
@@ -118,6 +120,8 @@ class ImportRockTheVoteRecordTest extends TestCase
 
     /**
      * Test that user and post are created if user is not found.
+     *
+     * @return void
      */
     public function testCreatesUserIfUserNotFound()
     {
@@ -150,6 +154,8 @@ class ImportRockTheVoteRecordTest extends TestCase
     /**
      * That that if an existing completed post is found for the specified user,
      * the import does not create or update the post.
+     *
+     * @return void
      */
     public function testDoesNotCreateOrUpdatePostIfExistingCompletedPostFound()
     {
@@ -226,6 +232,8 @@ class ImportRockTheVoteRecordTest extends TestCase
     /**
      * Test that a password reset email is not sent when a new user is created
      * with a Step 1 status.
+     *
+     * @return void
      */
     public function testDoesNotSendPasswordResetForNewUserWithStep1Status()
     {
@@ -249,6 +257,8 @@ class ImportRockTheVoteRecordTest extends TestCase
 
     /**
      * Test that record is not imported if it has already been logged as an imported record.
+     *
+     * @return void
      */
     public function testDoesNotImportRecordIfLogExists()
     {
@@ -283,6 +293,8 @@ class ImportRockTheVoteRecordTest extends TestCase
     /**
      * Test that existing user is not updated with import data if their voter registration status
      * is already completed (at a higher status hierarchy).
+     *
+     * @return void
      */
     public function testDoesNotUpdateExistingUserIfAlreadyAtHigherStatus()
     {
@@ -366,6 +378,8 @@ class ImportRockTheVoteRecordTest extends TestCase
     /**
      * Test that existing user who started registration process is updated with import data if
      * import record has higher voter registration status.
+     *
+     * @return void
      */
     public function testUpdatesExistingUserIfImportDataHasHigherStatus()
     {
@@ -416,6 +430,8 @@ class ImportRockTheVoteRecordTest extends TestCase
 
     /**
      * Test that a user is updated if their voter registration status changes.
+     *
+     * @return void
      */
     public function testUpdatesVoterRegistrationStatusIfStatusChanged()
     {
@@ -467,6 +483,8 @@ class ImportRockTheVoteRecordTest extends TestCase
     /**
      * Test that import mobile number provided is added to user record if previously missing,
      * and no other user exists with the same mobile number.
+     *
+     * @return void
      */
     public function testUserMobileAddedIfImportMobileProvided()
     {
@@ -531,6 +549,69 @@ class ImportRockTheVoteRecordTest extends TestCase
             'mobile' => $user->mobile,
             'sms_status' => $user->sms_status,
             'sms_subscription_topics' => $user->sms_subscription_topics,
+        ]);
+    }
+
+    /**
+     * Test that existing user's SMS subscription is not updated if an import record has already
+     * been added with same registration phone number.
+     */
+    public function testSmsSubscriptionIsNotUpdatedIfLogExistsAndImportPhoneNumberProvided()
+    {
+        $user = factory(User::class)->create([
+            'sms_subscription_topics' => ['general'],
+        ]);
+
+        $this->makeFakeVoterRegistrationPostAction();
+
+        $dateRegistrationStarted = $this->daysAgoInRockTheVoteFormat();
+
+        factory(RockTheVoteLog::class)->create([
+            'contains_phone' => true,
+            'started_registration' => $dateRegistrationStarted,
+            'user_id' => $user->id,
+        ]);
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user, [
+            'Phone' => $user->mobile,
+            'Started registration' => $dateRegistrationStarted,
+        ]);
+
+        $importFile = $this->makeFakeUnprocessedImportFile();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMongoDatabaseHas('users', [
+            '_id' => $user->id,
+            'sms_subscription_topics' => $user->sms_subscription_topics,
+        ]);
+    }
+
+    /**
+     * Test that existing user's mobile number is added if they did not have a number set, and
+     * the import data has a number provided.
+     */
+    public function testMobileNumberIsAddedForExistingUserIfMissingAndImportPhoneNumberProvided()
+    {
+        $user = factory(User::class)->create([
+            'mobile' => null,
+        ]);
+
+        $this->makeFakeVoterRegistrationPostAction();
+
+        $phoneNumber = '+12348675309';
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user, [
+            'Phone' => $phoneNumber,
+        ]);
+
+        $importFile = $this->makeFakeUnprocessedImportFile();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMongoDatabaseHas('users', [
+            '_id' => $user->id,
+            'mobile' => $phoneNumber,
         ]);
     }
 }
