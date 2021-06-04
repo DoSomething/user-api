@@ -294,8 +294,8 @@ class ImportRockTheVoteRecordTest extends TestCase
     }
 
     /**
-     * Test that existing user is not updated with import data if their voter registration status
-     * is already complete (at a higher status hierarchy).
+     * Test that existing user and initial voter registration post are not updated with import data
+     * if their voter registration status is already complete (at a higher status hierarchy).
      *
      * @return void
      */
@@ -338,12 +338,13 @@ class ImportRockTheVoteRecordTest extends TestCase
         ImportRockTheVoteRecord::dispatch($payload, $importFile);
 
         $this->assertMongoDatabaseHas('users', [
-            'voter_registration_status' => $user->voter_registration_status,
+            'voter_registration_status' => 'registration_complete',
         ]);
 
+        // Confirm original completed post not overwritten with import data values.
         $this->assertMysqlDatabaseHas('posts', [
             'id' => $postFromTwoDaysAgo->id,
-            'status' => $postFromTwoDaysAgo->status,
+            'status' => 'register-OVR',
             'type' => 'voter-reg',
         ]);
 
@@ -515,7 +516,10 @@ class ImportRockTheVoteRecordTest extends TestCase
      */
     public function testSmsSubscriptionIsNotUpdatedIfImportDataMobileNumberIsNull()
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create([
+            'sms_status' => 'active',
+            'sms_subscription_topics' => ['general', 'voting'],
+        ]);
 
         $action = $this->makeFakeVoterRegistrationPostAction();
 
@@ -550,8 +554,8 @@ class ImportRockTheVoteRecordTest extends TestCase
         $this->assertMongoDatabaseHas('users', [
             '_id' => $user->id,
             'mobile' => $user->mobile,
-            'sms_status' => $user->sms_status,
-            'sms_subscription_topics' => $user->sms_subscription_topics,
+            'sms_status' => 'active',
+            'sms_subscription_topics' => ['general', 'voting'],
         ]);
     }
 
@@ -586,7 +590,7 @@ class ImportRockTheVoteRecordTest extends TestCase
 
         $this->assertMongoDatabaseHas('users', [
             '_id' => $user->id,
-            'sms_subscription_topics' => $user->sms_subscription_topics,
+            'sms_subscription_topics' => ['general'],
         ]);
     }
 
