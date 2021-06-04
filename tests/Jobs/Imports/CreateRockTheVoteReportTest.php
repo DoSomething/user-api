@@ -1,8 +1,8 @@
 <?php
 
 use App\Jobs\Imports\CreateRockTheVoteReport;
-use App\Models\RockTheVoteReport;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Bus;
 
 class CreateRockTheVoteReportTest extends TestCase
 {
@@ -13,6 +13,8 @@ class CreateRockTheVoteReportTest extends TestCase
      */
     public function testCreatesReport()
     {
+        Bus::fake();
+
         $this->rockTheVoteMock = $this->mock(\App\Services\RockTheVote::class);
         $this->rockTheVoteMock->shouldReceive('createReport')->andReturn([
             'status' => 'queued',
@@ -26,7 +28,7 @@ class CreateRockTheVoteReportTest extends TestCase
         $since = new Carbon('2021-05-26 10:07:00');
         $before = new Carbon('2021-05-26 11:37:00');
 
-        CreateRockTheVoteReport::dispatch($since, $before);
+        $this->forceDispatch(new CreateRockTheVoteReport($since, $before));
 
         $this->rockTheVoteMock->shouldHaveReceived('createReport')->once();
 

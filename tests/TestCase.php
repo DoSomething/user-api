@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Bus;
 use Tests\CreatesApplication;
 use Tests\WithAuthentication;
 use Tests\WithMocks;
@@ -142,6 +143,21 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
             $eventName,
             Mockery::any(),
         ]);
+    }
+
+    /**
+     * Dispatch the given job, even when Bus is mocked.
+     *
+     * @param mixed $job
+     * @return $this
+     */
+    protected function forceDispatch(App\Jobs\Job $job)
+    {
+        // Directly call the 'handle' method on the given job, bypassing potentially
+        // mocked Dispatcher, and inject any needed dependencies from the container:
+        $this->app->call([$job, 'handle']);
+
+        return $this;
     }
 
     /**

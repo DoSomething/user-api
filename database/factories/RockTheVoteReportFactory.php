@@ -7,7 +7,10 @@ use Faker\Generator as Faker;
 
 $factory->define(RockTheVoteReport::class, function (Faker $faker) {
     return [
-        'id' => $faker->randomDigitNotNull,
+        'id' => $faker->unique()->numberBetween(0, 99999),
         'status' => 'queued',
+        'current_index' => 0,
+        'since' => '2021-05-26 10:07:00',
+        'before' => '2021-05-26 11:37:00',
     ];
 });

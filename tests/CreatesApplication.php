@@ -56,6 +56,8 @@ trait CreatesApplication
         $this->gambitMock = $this->mock(\App\Services\Gambit::class);
         $this->gambitMock->shouldReceive('deleteUser');
 
+        $this->rockTheVoteMock = $this->mock(\App\Services\RockTheVote::class);
+
         // Configure a mock for GraphQL calls.
         $this->graphqlMock = $this->mock(\App\Services\GraphQL::class);
         $this->graphqlMock->shouldReceive('getSchoolById')->andReturn([
