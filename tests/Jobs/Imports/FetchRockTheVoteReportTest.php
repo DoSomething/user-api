@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class FetchRockTheVoteReportTest extends TestCase
 {
-    protected function mockRockTheVoteRepsonse($status, ?array $overrides = [])
+    protected function mockRockTheVoteResponse($status, ?array $overrides = [])
     {
         return array_merge(
             [
