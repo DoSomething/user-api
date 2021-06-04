@@ -599,7 +599,7 @@ class ImportRockTheVoteRecordTest extends TestCase
 
         $this->makeFakeVoterRegistrationPostAction();
 
-        $phoneNumber = '+12348675309';
+        $phoneNumber = '+15558675309';
 
         $payload = $this->makeFakeReportPayloadForSpecificUser($user, [
             'Phone' => $phoneNumber,
@@ -613,5 +613,48 @@ class ImportRockTheVoteRecordTest extends TestCase
             '_id' => $user->id,
             'mobile' => $phoneNumber,
         ]);
+    }
+
+    /**
+     * Test that the owner of the mobile number has their sms subscription topics updated
+     * if the import data user does not have a mobile set and the provided number in import
+     * data points to a different user owning that nubmer.
+     */
+    public function testMobileOwnerIsUpdatedIfImportUserHasNoMobileAndMobileIsTaken()
+    {
+        $webUser = factory(User::class)->create([
+            'mobile' => null,
+            'sms_subscription_topics' => ['general', 'voting'],
+        ]);
+
+        $phoneNumber = '+15558675309';
+
+        $mobileUser = factory(User::class)->create([
+            'mobile' => $phoneNumber,
+            'sms_subscription_topics' => ['general', 'voting'],
+        ]);
+
+        $this->makeFakeVoterRegistrationPostAction();
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($webUser, [
+            'Phone' => $phoneNumber,
+        ]);
+
+        $importFile = $this->makeFakeUnprocessedImportFile();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMongoDatabaseHas('users', [
+            '_id' => $webUser->id,
+            'sms_subscription_topics' => ['general', 'voting'],
+        ]);
+
+        $this->assertMongoDatabaseHas('users', [
+            '_id' => $mobileUser->id,
+            'sms_subscription_topics' => ['general'],
+        ]);
+
+        // @Question: this test in Chompy had something about the mobile user's sms_status
+        // being set to "stop", but doesn't seem like it is coded that way in the job.
     }
 }
