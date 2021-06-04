@@ -75,7 +75,7 @@ class ImportRockTheVoteRecordTest extends TestCase
     }
 
     /**
-     * Make a fake unprocessed import file with no completed or skipped imports.
+     * Make a fake unprocessed import file with no complete or skipped imports.
      *
      * @return \App\Models\ImportFile
      */
@@ -152,12 +152,12 @@ class ImportRockTheVoteRecordTest extends TestCase
     }
 
     /**
-     * That that if an existing completed post is found for the specified user,
+     * Test that if an existing complete post is found for the specified user,
      * the import does not create or update the post.
      *
      * @return void
      */
-    public function testDoesNotCreateOrUpdatePostIfExistingCompletedPostFound()
+    public function testDoesNotCreateOrUpdatePostIfExistingCompletePostFound()
     {
         $user = factory(User::class)->create();
 
@@ -176,7 +176,7 @@ class ImportRockTheVoteRecordTest extends TestCase
                     'Finish with State' => $payload['Finish with State'],
                     'Pre-Registered' => $payload['Pre-Registered'],
                     'Started registration' => $payload['Started registration'],
-                    'Status' => $payload['Status'],
+                    'Status' => 'Complete',
                     'Tracking Source' => $payload['Tracking Source'],
                 ]),
             ]);
@@ -194,8 +194,11 @@ class ImportRockTheVoteRecordTest extends TestCase
 
         $this->assertMysqlDatabaseHas('posts', [
             'id' => $post->id,
-            'status' => $post->status,
+            'status' => 'register-form', // unchanged!
         ]);
+
+        // Only existing completed post should exist in the posts table.
+        $this->assertCount(1, Post::all());
     }
 
     /**
@@ -292,7 +295,7 @@ class ImportRockTheVoteRecordTest extends TestCase
 
     /**
      * Test that existing user is not updated with import data if their voter registration status
-     * is already completed (at a higher status hierarchy).
+     * is already complete (at a higher status hierarchy).
      *
      * @return void
      */
@@ -319,7 +322,7 @@ class ImportRockTheVoteRecordTest extends TestCase
                     'Finish with State' => 'Yes',
                     'Pre-Registered' => 'No',
                     'Started registration' => $dateTwoDaysAgo,
-                    'Status' => 'Complete', // @Question: is this correct?
+                    'Status' => 'Complete',
                     'Tracking Source' => 'ads',
                 ]),
             ]);
@@ -618,7 +621,7 @@ class ImportRockTheVoteRecordTest extends TestCase
     /**
      * Test that the owner of the mobile number has their sms subscription topics updated
      * if the import data user does not have a mobile set and the provided number in import
-     * data points to a different user owning that nubmer.
+     * data points to a different user owning that number.
      */
     public function testMobileOwnerIsUpdatedIfImportUserHasNoMobileAndMobileIsTaken()
     {
