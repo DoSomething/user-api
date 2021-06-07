@@ -700,7 +700,7 @@ class ImportRockTheVoteRecordTest extends TestCase
      * Test that existing user with completed voter registration can opt-in to
      * SMS via imported data.
      */
-    public function testUpdateUserSmsWhenAlreadyCompletedVoterRegistration()
+    public function testUserWithCompletedVoterRegistrationCanOptInToSms()
     {
         $user = factory(User::class)->create([
             'sms_status' => null,
@@ -731,7 +731,7 @@ class ImportRockTheVoteRecordTest extends TestCase
      * Test that existing user with completed voter registration can opt-out of
      * SMS via imported data.
      */
-    public function testSomething()
+    public function testUserWithCompletedVoterRegistrationCanOptOutOfSms()
     {
         $user = factory(User::class)->create([
             'sms_status' => null,
@@ -755,6 +755,37 @@ class ImportRockTheVoteRecordTest extends TestCase
             '_id' => $user->id,
             'sms_status' => 'stop',
             'sms_subscription_topics' => null,
+        ]);
+    }
+
+    /**
+     * Test that existing user with completed voter registration and active sms status
+     * will remain unchanged with SMS opt-in via imported data.
+     */
+    public function testUserWithActiveSmsStatusRemainsUnchangedWhenOptingIn()
+    {
+        $user = factory(User::class)->create([
+            'sms_status' => 'active',
+            'sms_subscription_topics' => ['general', 'voting'],
+            'voter_registration_status' => 'registration_complete',
+        ]);
+
+        $this->makeFakeVoterRegistrationPostAction();
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user, [
+            'Opt-in to Partner SMS/robocall' => 'Yes',
+            'Phone' => '+12345678910',
+            'Status' => 'Complete',
+        ]);
+
+        $importFile = $this->makeFakeUnprocessedImportFile();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMongoDatabaseHas('users', [
+            '_id' => $user->id,
+            'sms_status' => 'active', // unchanged!
+            'sms_subscription_topics' => ['general', 'voting'], // unchanged!
         ]);
     }
 }
