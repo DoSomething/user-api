@@ -17,7 +17,7 @@ class ParseRockTheVoteReportTest extends TestCase
         Bus::fake();
         Storage::fake();
 
-        // Create a faked record that we can safely read & delete:
+        // Create a fake record that we can safely read & delete:
         $csv = file_get_contents('tests/Jobs/Imports/example-rtv-report.csv');
         Storage::put('report.csv', $csv);
 
