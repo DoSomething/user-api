@@ -28,5 +28,11 @@ class ParseRockTheVoteReportTest extends TestCase
 
         // Then, we should clean up fater ourselves.
         Storage::assertMissing('report.csv');
+
+        $this->assertMysqlDatabaseHas('import_files', [
+            'import_type' => 'rock-the-vote',
+            'filepath' => 'report.csv',
+            'row_count' => 4,
+        ]);
     }
 }
