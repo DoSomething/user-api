@@ -26,7 +26,7 @@ class ParseRockTheVoteReportTest extends TestCase
         // There are 4 rows in the example CSV, so we should dispatch 4 jobs!
         Bus::assertDispatchedTimes(ImportRockTheVoteRecord::class, 4);
 
-        // Then, we should clean up fater ourselves.
+        // Then, we should clean up after ourselves.
         Storage::assertMissing('report.csv');
 
         $this->assertMysqlDatabaseHas('import_files', [
