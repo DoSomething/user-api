@@ -18,13 +18,6 @@ class ParseRockTheVoteReport extends Job
     protected $path;
 
     /**
-     * The count of the total records in the stored csv.
-     *
-     * @var array
-     */
-    protected $totalRecords;
-
-    /**
      * Optionally, the user that triggered this.
      *
      * @var User
