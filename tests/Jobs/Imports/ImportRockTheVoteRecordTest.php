@@ -883,8 +883,8 @@ class ImportRockTheVoteRecordTest extends TestCase
     }
 
     /**
-     * Test that existing user with completed voter registration and pending sms status will not
-     * have SMS subscription topics changed with SMS opt-in via imported data.
+     * Test that existing user with completed voter registration and pending sms status will have
+     * SMS status updated and not have SMS subscription topics changed with SMS opt-in via imported data.
      */
     public function testUserWithPendingSmsStatusRemainsUnchangedWhenOptingIn()
     {
@@ -945,8 +945,8 @@ class ImportRockTheVoteRecordTest extends TestCase
     }
 
     /**
-     * Test that existing user with completed voter registration and stop sms status will not
-     * have SMS subscription topics changed with SMS opt-in via imported data.
+     * Test that existing user with completed voter registration and stop sms status will
+     * have SMS status and subscription topics updated with SMS opt-in via imported data.
      */
     public function testUserWithStopSmsStatusRemainsUnchangedWhenOptingIn()
     {
@@ -976,8 +976,8 @@ class ImportRockTheVoteRecordTest extends TestCase
     }
 
     /**
-     * Test that existing user with completed voter registration and stop sms status
-     * will have SMS subscription topics updated if SMS opt-out via imported data.
+     * Test that existing user with completed voter registration and stop sms status will not
+     * have SMS status and subscription topics changed if SMS opt-out via imported data.
      */
     public function testUserWithStopSmsStatusUpdatesSmsSubscriptionsWhenOptingOut()
     {
@@ -1002,6 +1002,68 @@ class ImportRockTheVoteRecordTest extends TestCase
         $this->assertMongoDatabaseHas('users', [
             '_id' => $user->id,
             'sms_status' => 'stop', // unchanged!
+            'sms_subscription_topics' => null, // unchanged!
+        ]);
+    }
+
+    /**
+     * Test that existing user with completed voter registration and undeliverable sms status will
+     * have SMS status and subscription topics updated with SMS opt-in via imported data.
+     */
+    public function testUserWithUndeliverableSmsStatusRemainsUnchangedWhenOptingIn()
+    {
+        $user = factory(User::class)->create([
+            'sms_status' => 'undeliverable',
+            'sms_subscription_topics' => [],
+            'voter_registration_status' => 'registration_complete',
+        ]);
+
+        $this->makeFakeVoterRegistrationPostAction();
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user, [
+            'Opt-in to Partner SMS/robocall' => 'Yes',
+            'Phone' => '+12345678910',
+            'Status' => 'Complete',
+        ]);
+
+        $importFile = $this->makeFakeUnprocessedImportFile();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMongoDatabaseHas('users', [
+            '_id' => $user->id,
+            'sms_status' => 'active',
+            'sms_subscription_topics' => ['voting'],
+        ]);
+    }
+
+    /**
+     * Test that existing user with completed voter registration and undeliverable sms status
+     * will have SMS status updated if SMS opt-out via imported data.
+     */
+    public function testUserWithUndeliverableSmsStatusUpdatesSmsSubscriptionsWhenOptingOut()
+    {
+        $user = factory(User::class)->create([
+            'sms_status' => 'undeliverable',
+            'sms_subscription_topics' => [],
+            'voter_registration_status' => 'registration_complete',
+        ]);
+
+        $this->makeFakeVoterRegistrationPostAction();
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user, [
+            'Opt-in to Partner SMS/robocall' => 'No',
+            'Phone' => '+12345678910',
+            'Status' => 'Complete',
+        ]);
+
+        $importFile = $this->makeFakeUnprocessedImportFile();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMongoDatabaseHas('users', [
+            '_id' => $user->id,
+            'sms_status' => 'stop',
             'sms_subscription_topics' => null,
         ]);
     }
