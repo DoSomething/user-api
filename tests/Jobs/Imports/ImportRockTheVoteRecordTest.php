@@ -1067,4 +1067,96 @@ class ImportRockTheVoteRecordTest extends TestCase
             'sms_subscription_topics' => null,
         ]);
     }
+
+    /**
+     * Test that existing user will have SMS subscription topics updated if SMS opt-out via
+     * imported data.
+     */
+    public function testUserWithSmsSubscriptionsUpdatedWhenOptingOut()
+    {
+        $user = factory(User::class)->create([
+            'sms_status' => 'active',
+            'sms_subscription_topics' => ['general', 'voting', 'pizza'],
+        ]);
+
+        $this->makeFakeVoterRegistrationPostAction();
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user, [
+            'Opt-in to Partner SMS/robocall' => 'No',
+            'Phone' => '+12345678910',
+        ]);
+
+        $importFile = $this->makeFakeUnprocessedImportFile();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMongoDatabaseHas('users', [
+            '_id' => $user->id,
+            'sms_status' => 'active', // unchanged!
+            'sms_subscription_topics' => ['general', 'pizza'],
+        ]);
+    }
+
+    /**
+     * Test that existing user will not have SMS subscription topics changed if SMS opt-out
+     * via imported data.
+     */
+    public function testUserWithoutSmsSubscriptionsUnchangedWhenOptingOut()
+    {
+        $user = factory(User::class)->create([
+            'sms_status' => 'active',
+            'sms_subscription_topics' => ['general'],
+        ]);
+
+        $this->makeFakeVoterRegistrationPostAction();
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user, [
+            'Opt-in to Partner SMS/robocall' => 'No',
+            'Phone' => '+12345678910',
+        ]);
+
+        $importFile = $this->makeFakeUnprocessedImportFile();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMongoDatabaseHas('users', [
+            '_id' => $user->id,
+            'sms_status' => 'active', // unchanged!
+            'sms_subscription_topics' => ['general'], // unchanged!
+        ]);
+    }
+
+    /**
+     * Test that existing user will have SMS subscription topics updated if SMS opt-in via
+     * imported data.
+     */
+    public function testUserWithSmsSubscriptionsUpdatedWhenOptingIn()
+    {
+        $user = factory(User::class)->create([
+            'sms_status' => 'active',
+            'sms_subscription_topics' => ['general', 'pizza', 'batman'],
+        ]);
+
+        $this->makeFakeVoterRegistrationPostAction();
+
+        $payload = $this->makeFakeReportPayloadForSpecificUser($user, [
+            'Opt-in to Partner SMS/robocall' => 'Yes',
+            'Phone' => '+12345678910',
+        ]);
+
+        $importFile = $this->makeFakeUnprocessedImportFile();
+
+        ImportRockTheVoteRecord::dispatch($payload, $importFile);
+
+        $this->assertMongoDatabaseHas('users', [
+            '_id' => $user->id,
+            'sms_status' => 'active',
+            'sms_subscription_topics' => [
+                'general',
+                'pizza',
+                'batman',
+                'voting',
+            ],
+        ]);
+    }
 }
