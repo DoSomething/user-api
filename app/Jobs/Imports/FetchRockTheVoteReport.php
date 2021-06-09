@@ -74,7 +74,7 @@ class FetchRockTheVoteReport extends Job
         info("Downloaded report $reportId");
 
         // TODO: Why is this delayed?
-        ParseRockTheVoteReport::dispatch($this->report, $path)->delay(
+        ParseRockTheVoteReport::dispatch($path, $this->user)->delay(
             now()->addSeconds(3),
         );
 

@@ -10,8 +10,12 @@ use App\Auth\Scope;
 use App\Models\Client;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use League\Csv\Exception;
+use League\Csv\InvalidArgument;
+use League\Csv\Reader;
 use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberUtil;
@@ -645,6 +649,25 @@ function csv_to_array(?string $string): array
     }
 
     return array_map('trim', explode(',', $string));
+}
+
+/**
+ * Read CSV file from the given storage path.
+ *
+ * @param string $path
+ * @return iterable
+ */
+function read_csv(string $path): iterable
+{
+    $file = Storage::get($path);
+
+    // Standardize with UNIX newlines so we can safely parse.
+    $file = str_replace("\r", "\n", $file);
+
+    $csv = Reader::createFromString($file);
+    $csv->setHeaderOffset(0);
+
+    return $csv->getRecords();
 }
 
 /**
