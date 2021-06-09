@@ -722,6 +722,7 @@ class ImportRockTheVoteRecordTest extends TestCase
 
         $this->assertMongoDatabaseHas('users', [
             '_id' => $user->id,
+            'mobile' => $user->mobile,
             'sms_status' => 'active',
             'sms_subscription_topics' => ['voting'],
         ]);
@@ -753,6 +754,7 @@ class ImportRockTheVoteRecordTest extends TestCase
 
         $this->assertMongoDatabaseHas('users', [
             '_id' => $user->id,
+            'mobile' => $user->mobile,
             'sms_status' => 'stop',
             'sms_subscription_topics' => null,
         ]);
