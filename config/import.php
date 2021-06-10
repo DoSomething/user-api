@@ -9,7 +9,7 @@ return [
     | Defines wether to display the test import form within the admin UI.
     |
     */
-    'import_test_form_enabled' => env('IMPORT_TEST_FORM_ENABLED', 'false'),
+    'import_test_form_enabled' => env('DS_ENABLE_IMPORT_TEST_FORM', 'false'),
 
     /*
     |--------------------------------------------------------------------------
