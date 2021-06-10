@@ -96,7 +96,7 @@ class ImportController extends Controller
         $importOptions['name'] = $upload->getClientOriginalName();
 
         // Push file to S3.
-        $path = 'uploads/' . $importType . '-importer' . Carbon::now() . '.csv';
+        $path = 'temporary/' . $importType . '-importer' . Carbon::now() . '.csv';
         $csv = Reader::createFromPath($upload->getRealPath());
         $success = Storage::put($path, (string) $csv);
 
@@ -189,7 +189,7 @@ class ImportController extends Controller
 
             $importFile = new ImportFile();
 
-            $importFile->user_id = \Auth::user()->northstar_id;
+            $importFile->user_id = \Auth::id();
             $importFile->row_count = 1;
             $importFile->filepath = 'n/a';
             $importFile->import_type = $importType;

@@ -116,10 +116,10 @@ Route::prefix('admin')
         // Imports
         Route::resource('imports', 'Admin\ImportController');
 
-        // Route::post(
-        //     'imports/upload/{importType}',
-        //     'ImportFileController@upload',
-        // )->name('imports.upload');
+        Route::post(
+            'imports/upload/{importType}',
+            'Admin\ImportController@upload',
+        )->name('imports.upload');
 
         // Users
         Route::resource('users', 'Admin\UserController', [
