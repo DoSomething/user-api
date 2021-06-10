@@ -28,10 +28,28 @@ class ImportController extends Controller
         $this->middleware('role:admin,staff');
     }
 
-    /*
-     * Show the upload form.
+    /**
+     * Display a listing of import files.
      *
-     * @param string $importType
+     * @return Response
+     */
+    public function index()
+    {
+        $importType = request('type');
+
+        $query = ImportFile::orderBy('id', 'desc');
+
+        if ($importType) {
+            $query->where('import_type', $importType);
+        }
+
+        return view('admin.imports.index', [
+            'importFiles' => $query->paginate(15)->appends(request()->query()),
+        ]);
+    }
+
+    /*
+     * Show the form for creating a new resource via upload.
      */
     public function create()
     {
@@ -39,38 +57,13 @@ class ImportController extends Controller
 
         $config = ImportType::getConfig($importType);
 
-        if (request('source') !== 'test') {
-            return view('admin.imports.create', [
-                'importType' => $importType,
-                'config' => $config,
-            ]);
+        if (request('source') === 'test') {
+            return $this->renderTestView($importType, $config);
         }
 
-        $data = [];
-
-        if ($importType === ImportType::$rockTheVote) {
-            $user = auth()->user();
-
-            $data = [
-                'addr_street1' => $user->addr_street1,
-                'addr_street2' => $user->addr_street2,
-                'addr_city' => $user->addr_city,
-                'addr_zip' => $user->addr_zip,
-                'email' => $user->email,
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
-                'phone' => $user->mobile,
-                'tracking_source' => 'source:test,source_details:ChompyUI',
-                'started_registration' => Carbon::now()->format(
-                    'Y-m-d H:i:s O',
-                ),
-            ];
-        }
-
-        return view('admin.imports.test', [
+        return view('admin.imports.create', [
             'importType' => $importType,
             'config' => $config,
-            'data' => $data,
         ]);
     }
 
@@ -127,26 +120,6 @@ class ImportController extends Controller
             'status',
             'Queued ' . $path . ' for import.',
         );
-    }
-
-    /**
-     * Display a listing of import files.
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        $importType = request('type');
-
-        $query = ImportFile::orderBy('id', 'desc');
-
-        if ($importType) {
-            $query->where('import_type', $importType);
-        }
-
-        return view('admin.imports.index', [
-            'importFiles' => $query->paginate(15)->appends(request()->query()),
-        ]);
     }
 
     /**
@@ -233,5 +206,40 @@ class ImportController extends Controller
         return redirect('import/' . $importType . '?source=test')
             ->withInput($request->input())
             ->with('status', $result);
+    }
+
+    /**
+     * Show test form for sample imports.
+     */
+    public function renderTestView($importType, $config)
+    {
+        $data = [];
+
+        // @Question: when does this actually get requested? Nav link import type
+        // is rock-the-vote-reports thus conditional never matches!
+        if ($importType === ImportType::$rockTheVote) {
+            $user = auth()->user();
+
+            $data = [
+                'addr_street1' => $user->addr_street1,
+                'addr_street2' => $user->addr_street2,
+                'addr_city' => $user->addr_city,
+                'addr_zip' => $user->addr_zip,
+                'email' => $user->email,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'phone' => $user->mobile,
+                'tracking_source' => 'source:test,source_details:ChompyUI',
+                'started_registration' => Carbon::now()->format(
+                    'Y-m-d H:i:s O',
+                ),
+            ];
+        }
+
+        return view('admin.imports.test', [
+            'importType' => $importType,
+            'config' => $config,
+            'data' => $data,
+        ]);
     }
 }

@@ -1,3 +1,5 @@
+{{-- {{ dump(Request::path()) }} --}}
+
 <nav class="navbar navbar-default">
     <div class="container">
         <div class="navbar-header">
@@ -26,20 +28,20 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li @if (Request::path() === "admin/import/email-subscription") class="active" @endif>
-                    <a class="nav-item nav-link" href="/admin/import/email-subscription">
+                <li @if (Request::path() === "admin/imports/create?type=email-subscription") class="active" @endif>
+                    <a class="nav-item nav-link" href="/admin/imports/create?type=email-subscription">
                         Email subscription
                     </a>
                 </li>
 
                 <li @if (Request::path() === "admin/import/mute-promotions") class="active" @endif>
-                    <a class="nav-item nav-link" href="/admin/import/mute-promotions">
+                    <a class="nav-item nav-link" href="/admin/imports/create?type=mute-promotions">
                         Mute promotions
                     </a>
                 </li>
 
                 <li @if (strpos(Request::path(), 'admin/rock-the-vote') !== false)) class="active" @endif>
-                    <a class="nav-item nav-link" href="/admin/rock-the-vote-reports">
+                    <a class="nav-item nav-link" href="/admin/imports/create?type=rock-the-vote-reports">
                         Rock The Vote
                     </a>
                 </li>
