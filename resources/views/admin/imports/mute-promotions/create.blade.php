@@ -4,12 +4,12 @@
 
 @section('main_content')
 
+<h1>Mute Promotions</h1>
+
 <form action="/admin/imports" method="post" enctype="multipart/form-data">
     {{ csrf_field() }}
 
     <div class="form-group">
-        <h1>Mute Promotions</h1>
-
         <p class="lead">
             Updates users in CSV to set a value for the <code>promotions_muted_at</code> field, triggering their Customer.io profile deletion.
         </p>

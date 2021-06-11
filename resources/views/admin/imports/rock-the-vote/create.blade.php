@@ -4,6 +4,8 @@
 
 @section('main_content')
 
+<h1>Rock The Vote</h1>
+
 <div style="display: block; margin-bottom: 30px; margin-top: 15px; overflow: auto;">
 
     <a href="/admin/imports" class="pull-left">View Imported Reports</a>
@@ -15,8 +17,6 @@
     {{ csrf_field() }}
 
     <div>
-        <h1>Rock The Vote</h1>
-
         <p>
             Use this form to create and import a new Rock The Vote report.
         <p>

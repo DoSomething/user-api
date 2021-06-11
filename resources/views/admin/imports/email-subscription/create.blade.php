@@ -4,12 +4,12 @@
 
 @section('main_content')
 
+<h1>Email Subscriptions</h1>
+
 <form action="/admin/imports" method="post" enctype="multipart/form-data">
     {{ csrf_field() }}
 
     <div class="form-group">
-        <h1>Email Subscriptions</h1>
-
         <p class="lead">
         Creates or updates users and their email subscriptions per uploaded CSV.
         </p>
