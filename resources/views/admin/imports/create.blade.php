@@ -9,7 +9,7 @@
         {{ csrf_field() }}
 
         @if ($importType === \App\Types\ImportType::$rockTheVote)
-            <a href="/admin/imports/create?type=rock-the-vote&source=test" class="pull-right">Test Import</a>
+            {{-- <a href="/admin/imports/create?type=rock-the-vote&source=test" class="pull-right">Test Import</a> --}}
 
             @include('admin.imports.partials.rock-the-vote.create', ['config' => $config])
         @elseif ($importType === \App\Types\ImportType::$emailSubscription)
@@ -17,6 +17,8 @@
         @elseif ($importType === \App\Types\ImportType::$mutePromotions)
             @include('admin.imports.partials.mute-promotions.create')
         @endif
+
+        <hr />
 
         <div class="form-group">
             <h3>Upload</h3>
@@ -32,13 +34,15 @@
             </div>
         </div>
 
+        <hr />
+
         <div>
             <input type="submit" class="btn btn-primary btn-lg" value="Import">
         </div>
     </form>
 </div>
 
-<h2>Progress Log</h2>
+<h4>Progress Log</h4>
 
 <div id="messages">
     <!--Messages goes here-->

@@ -11,6 +11,7 @@ use App\Types\ImportType;
 use Carbon\Carbon;
 // use App\Jobs\Imports\ImportFileRecords;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use League\Csv\Reader;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -61,7 +62,7 @@ class ImportController extends Controller
             return $this->renderTestView($importType, $config);
         }
 
-        return view('admin.imports.create', [
+        return view("admin.imports.$importType.create", [
             'importType' => $importType,
             'config' => $config,
         ]);
@@ -96,7 +97,8 @@ class ImportController extends Controller
         $importOptions['name'] = $upload->getClientOriginalName();
 
         // Push file to S3.
-        $path = 'temporary/' . $importType . '-importer' . Carbon::now() . '.csv';
+        $path =
+            'temporary/' . $importType . '-importer' . Carbon::now() . '.csv';
         $csv = Reader::createFromPath($upload->getRealPath());
         $success = Storage::put($path, (string) $csv);
 
@@ -189,7 +191,7 @@ class ImportController extends Controller
 
             $importFile = new ImportFile();
 
-            $importFile->user_id = \Auth::id();
+            $importFile->user_id = Auth::id();
             $importFile->row_count = 1;
             $importFile->filepath = 'n/a';
             $importFile->import_type = $importType;
@@ -236,7 +238,7 @@ class ImportController extends Controller
             ];
         }
 
-        return view('admin.imports.test', [
+        return view("admin.imports.$importType.test", [
             'importType' => $importType,
             'config' => $config,
             'data' => $data,
