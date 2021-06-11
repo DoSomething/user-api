@@ -1071,8 +1071,8 @@ class ImportRockTheVoteRecordTest extends TestCase
     }
 
     /**
-     * Test that existing user will have SMS subscription topics updated if SMS opt-out via
-     * imported data.
+     * Test that existing user will have the "voting" topic added, updating their SMS subscription topics
+     * if SMS opt-out via imported data.
      */
     public function testUserWithSmsSubscriptionsUpdatedWhenOptingOut()
     {
@@ -1100,8 +1100,8 @@ class ImportRockTheVoteRecordTest extends TestCase
     }
 
     /**
-     * Test that existing user will not have SMS subscription topics changed if SMS opt-out
-     * via imported data.
+     * Test that existing user will not have the "voting" topic added, keeping their SMS subscription
+     * topics unchanged if SMS opt-out via imported data.
      */
     public function testUserWithoutSmsSubscriptionsUnchangedWhenOptingOut()
     {
@@ -1129,8 +1129,8 @@ class ImportRockTheVoteRecordTest extends TestCase
     }
 
     /**
-     * Test that existing user will have SMS subscription topics updated if SMS opt-in via
-     * imported data.
+     * Test that existing user will have the "voting" topic added, updating their SMS subscription topics
+     * if SMS opt-in via imported data.
      */
     public function testUserWithSmsSubscriptionsUpdatedWhenOptingIn()
     {
