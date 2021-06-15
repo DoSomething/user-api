@@ -10,7 +10,9 @@ use Illuminate\Http\Request;
 class EmailSubscriptionImportController extends Controller
 {
     /**
+     * The type of import data.
      *
+     * @var string
      */
     public $importType;
 
@@ -76,7 +78,11 @@ class EmailSubscriptionImportController extends Controller
      */
     public function show($id)
     {
-        //
+        $importFile = ImportFile::findOrFail($id);
+
+        return view('admin.imports.email-subscriptions.show', [
+            'importFile' => $importFile,
+        ]);
     }
 
     /**

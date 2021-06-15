@@ -22,8 +22,8 @@
         @foreach($imports as $import)
             <tr class="row">
               <td class="col-md-3">
-                <a href="/admin/imports/email-subscription/{{ $import->id }}">
-                  <strong>{{ $import->created_at }}</strong>
+                <a href="/admin/imports/email-subscriptions/{{ $import->id }}">
+                  <strong>{{ $import->created_at->setTimezone('America/New_York')->toDateTimeString() }}</strong>
                 </a>
               </td>
 

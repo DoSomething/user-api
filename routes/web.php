@@ -140,6 +140,10 @@ Route::prefix('admin')
             'imports/email-subscriptions/create',
             'Admin\EmailSubscriptionImportController@create',
         )->name('imports.email-subscription.create');
+        Route::get(
+            'imports/email-subscriptions/{id}',
+            'Admin\EmailSubscriptionImportController@show',
+        )->name('imports.email-subscription.show');
 
         // Mute Promotion Imports
         Route::get(
@@ -150,6 +154,10 @@ Route::prefix('admin')
             'imports/mute-promotions/create',
             'Admin\MutePromotionImportController@create',
         )->name('imports.mute-promotion.create');
+        Route::get(
+            'imports/mute-promotions/{id}',
+            'Admin\MutePromotionImportController@show',
+        )->name('imports.mute-promotions.show');
 
         // Import Uploads
         Route::post(

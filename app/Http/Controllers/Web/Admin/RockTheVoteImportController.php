@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ImportFile;
+use App\Models\RockTheVoteLog;
 use App\Types\ImportType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -11,7 +12,9 @@ use Illuminate\Http\Request;
 class RockTheVoteImportController extends Controller
 {
     /**
+     * The type of import data.
      *
+     * @var string
      */
     public $importType;
 
@@ -81,11 +84,15 @@ class RockTheVoteImportController extends Controller
      */
     public function show($id)
     {
-        $import = ImportFile::findOrFail($id);
+        $importFile = ImportFile::findOrFail($id);
+
+        $importedItems = RockTheVoteLog::where('import_file_id', $id)->paginate(
+            100,
+        );
 
         return view('admin.imports.rock-the-vote.show', [
-            'import' => $import,
-            'rows' => null,
+            'importFile' => $importFile,
+            'importedItems' => $importedItems,
         ]);
     }
 

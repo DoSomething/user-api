@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Web\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ImportFile;
+use App\Models\MutePromotionsLog;
 use App\Types\ImportType;
 use Illuminate\Http\Request;
 
 class MutePromotionImportController extends Controller
 {
     /**
+     * The type of import data.
      *
+     * @var string
      */
     public $importType;
 
@@ -76,7 +79,17 @@ class MutePromotionImportController extends Controller
      */
     public function show($id)
     {
-        //
+        $importFile = ImportFile::findOrFail($id);
+
+        $importedItems = MutePromotionsLog::where(
+            'import_file_id',
+            $id,
+        )->paginate(100);
+
+        return view('admin.imports.mute-promotions.show', [
+            'importFile' => $importFile,
+            'importedItems' => $importedItems,
+        ]);
     }
 
     /**
