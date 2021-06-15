@@ -30,7 +30,7 @@ class ImportController extends Controller
     }
 
     /**
-     *
+     * Display a listing of all import file types.
      */
     public function __invoke()
     {
