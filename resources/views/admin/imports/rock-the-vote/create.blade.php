@@ -6,12 +6,14 @@
 
 <h1>Rock The Vote</h1>
 
-<div style="display: block; margin-bottom: 30px; margin-top: 15px; overflow: auto;">
+<div style="display: block; margin-bottom: 15px; margin-top: 15px; overflow: auto;">
 
-    <a href="/admin/imports" class="pull-left">View Imported Reports</a>
+    <a href="/admin/imports/rock-the-vote/create?source=test" class="pull-left">Test Import</a>
 
-    <a href="/admin/imports/create?type=rock-the-vote&source=test" class="pull-right">Test Import</a>
+    <a href="/admin/imports/rock-the-vote" class="pull-right">View Imported Reports List</a>
 </div>
+
+<hr />
 
 <form action="/admin/imports" method="post" enctype="multipart/form-data">
     {{ csrf_field() }}

@@ -4,6 +4,10 @@
 
 @section('main_content')
 
+<h1>Imports</h1>
+
+<hr />
+
 <div class="dropdown" style="margin-bottom: 15px;">
   <button class="btn btn-default dropdown-toggle" type="button" id="dropdown-filter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
     Filter
@@ -11,9 +15,9 @@
   </button>
 
   <ul class="dropdown-menu" aria-labelledby="dropdown-filter">
-    <li><a href="/admin/imports?type=email-subscription">Email Subscription</a></li>
-    <li><a href="/admin/imports?type=mute-promotions">Mute Promotions</a></li>
-    <li><a href="/admin/imports?type=rock-the-vote">Rock The Vote</a></li>
+    <li><a href="/admin/imports/email-subscriptions">Email Subscription</a></li>
+    <li><a href="/admin/imports/mute-promotions">Mute Promotions</a></li>
+    <li><a href="/admin/imports/rock-the-vote">Rock The Vote</a></li>
     <li role="separator" class="divider"></li>
     <li><a href="/admin/imports">Clear Filters</a></li>
   </ul>

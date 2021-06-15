@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Web\Admin\ImportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -114,8 +115,43 @@ Route::prefix('admin')
         );
 
         // Imports
-        Route::resource('imports', 'Admin\ImportController');
+        Route::get('imports', 'Admin\ImportController');
 
+        // Rock The Vote Imports
+        Route::get(
+            'imports/rock-the-vote',
+            'Admin\RockTheVoteImportController@index',
+        )->name('imports.rock-the-vote');
+        Route::get(
+            'imports/rock-the-vote/create',
+            'Admin\RockTheVoteImportController@create',
+        )->name('imports.rock-the-vote.create');
+        Route::get(
+            'imports/rock-the-vote/{id}',
+            'Admin\RockTheVoteImportController@show',
+        )->name('imports.rock-the-vote.show');
+
+        // Email Subscription Imports
+        Route::get(
+            'imports/email-subscriptions',
+            'Admin\EmailSubscriptionImportController@index',
+        )->name('imports.email-subscription');
+        Route::get(
+            'imports/email-subscriptions/create',
+            'Admin\EmailSubscriptionImportController@create',
+        )->name('imports.email-subscription.create');
+
+        // Mute Promotion Imports
+        Route::get(
+            'imports/mute-promotions',
+            'Admin\MutePromotionImportController@index',
+        )->name('imports.mute-promotion');
+        Route::get(
+            'imports/mute-promotions/create',
+            'Admin\MutePromotionImportController@create',
+        )->name('imports.mute-promotion.create');
+
+        // Import Uploads
         Route::post(
             'imports/upload/{importType}',
             'Admin\ImportController@upload',
