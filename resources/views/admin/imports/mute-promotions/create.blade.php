@@ -7,16 +7,13 @@
 <h1>Mute Promotions</h1>
 
 <div style="display: block; margin-bottom: 15px; margin-top: 15px; overflow: auto;">
-
-    {{-- <a href="" class="pull-left">Test Import</a> --}}
-
     <a href="/admin/imports/mute-promotions" class="pull-right">View Imports List</a>
 </div>
 
 
 <hr />
 
-<form action="/admin/imports" method="post" enctype="multipart/form-data">
+<form action="/admin/imports/mute-promotions" method="post" enctype="multipart/form-data">
     {{ csrf_field() }}
 
     <div class="form-group">

@@ -158,6 +158,10 @@ Route::prefix('admin')
             'imports/mute-promotions/{id}',
             'Admin\MutePromotionImportController@show',
         )->name('imports.mute-promotions.show');
+        Route::post(
+            'imports/mute-promotions',
+            'Admin\MutePromotionImportController@store',
+        )->name('imports.mute-promotion.store');
 
         // Import Uploads
         Route::post(

@@ -3,10 +3,15 @@
 namespace App\Http\Controllers\Web\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\Imports\ImportMutePromotions;
 use App\Models\ImportFile;
 use App\Models\MutePromotionsLog;
 use App\Types\ImportType;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use League\Csv\Reader;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class MutePromotionImportController extends Controller
 {
@@ -68,7 +73,64 @@ class MutePromotionImportController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $importOptions = [];
+
+        $rules = [
+            'upload-file' => 'required|mimes:csv,txt',
+        ];
+
+        $request->validate($rules);
+
+        $upload = $request->file('upload-file');
+
+        // Save original file name to reference in the Admin UI.
+        $importOptions['name'] = $upload->getClientOriginalName();
+
+        // Push file to storage.
+        $path =
+            'temporary/mute-promotions-importer-' .
+            Carbon::now()->timestamp .
+            '.csv';
+
+        $csv = Reader::createFromPath($upload->getRealPath());
+
+        $success = Storage::put($path, (string) $csv);
+
+        if (!$success) {
+            throw new HttpException(
+                500,
+                'Unable read and store file to filestystem storage.',
+            );
+        }
+
+        $queue = config('queue.names.high');
+
+        $user = auth()->user();
+
+        $csv->setHeaderOffset(0);
+
+        $importFile = new ImportFile([
+            'filepath' => $path,
+            'import_type' => $this->importType,
+            'row_count' => count($csv),
+            'user_id' => $user->id,
+            'options' => $importOptions ? json_encode($importOptions) : null,
+        ]);
+
+        $importFile->save();
+
+        $records = $csv->getRecords();
+
+        foreach ($records as $record) {
+            ImportMutePromotions::dispatch(
+                ['northstar_id' => $record['northstar_id']],
+                $importFile,
+            )
+                ->delay(now()->addSeconds(3))
+                ->onQueue($queue);
+        }
+
+        return redirect('/admin/imports/mute-promotions');
     }
 
     /**

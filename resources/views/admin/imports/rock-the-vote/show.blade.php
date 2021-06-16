@@ -4,7 +4,7 @@
 
 @section('main_content')
 
-    <h1>Rock The Vote Import ID: <code>{{ $importFile->id }}</code></h1>
+    <h1>Rock The Vote Import File ID: <code>{{ $importFile->id }}</code></h1>
 
     <hr />
 

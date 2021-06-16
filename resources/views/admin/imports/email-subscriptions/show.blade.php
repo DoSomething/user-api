@@ -4,7 +4,7 @@
 
 @section('main_content')
 
-    <h1>Email Subscription Import ID: <code>{{ $importFile->id }}</code></h1>
+    <h1>Email Subscription Import File ID: <code>{{ $importFile->id }}</code></h1>
 
     <hr />
 

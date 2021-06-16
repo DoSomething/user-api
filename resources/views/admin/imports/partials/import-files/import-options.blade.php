@@ -1,4 +1,4 @@
-<ul>
+<ul style="padding: 0;">
   @foreach (json_decode($options) as $key => $value)
     @if ($key === 'report_id')
       <li>

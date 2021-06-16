@@ -41,61 +41,64 @@ class ImportController extends Controller
         ]);
     }
 
-    // /**
-    //  * Import the uploaded file.
-    //  *
-    //  * @param Request $request
-    //  * @param string $importType
-    //  */
-    // public function upload(Request $request, $importType)
-    // {
-    //     $importOptions = [];
-    //     $rules = [
-    //         'upload-file' => 'required|mimes:csv,txt',
-    //     ];
+    /**
+     * Import the uploaded file.
+     *
+     * @param Request $request
+     * @param string $importType
+     */
+    public function upload(Request $request, $importType)
+    {
+        $importOptions = [];
+        $rules = [
+            'upload-file' => 'required|mimes:csv,txt',
+        ];
 
-    //     if ($importType === ImportType::$emailSubscription) {
-    //         $rules['source-detail'] = 'required';
-    //         $rules['topic'] = 'required';
-    //         $importOptions = [
-    //             'email_subscription_topic' => $request->input('topic'),
-    //             'source_detail' => $request->input('source-detail'),
-    //         ];
-    //     }
+        // if ($importType === ImportType::$emailSubscription) {
+        //     $rules['source-detail'] = 'required';
+        //     $rules['topic'] = 'required';
+        //     $importOptions = [
+        //         'email_subscription_topic' => $request->input('topic'),
+        //         'source_detail' => $request->input('source-detail'),
+        //     ];
+        // }
 
-    //     $request->validate($rules);
+        // $request->validate($rules);
 
-    //     $upload = $request->file('upload-file');
-    //     // Save original file name to reference from admin UI.
-    //     $importOptions['name'] = $upload->getClientOriginalName();
+        // $upload = $request->file('upload-file');
 
-    //     // Push file to S3.
-    //     $path =
-    //         'temporary/' . $importType . '-importer' . Carbon::now() . '.csv';
-    //     $csv = Reader::createFromPath($upload->getRealPath());
-    //     $success = Storage::put($path, (string) $csv);
+        // Save original file name to reference from admin UI.
+        // $importOptions['name'] = $upload->getClientOriginalName();
 
-    //     if (!$success) {
-    //         throw new HttpException(500, 'Unable read and store file to S3.');
-    //     }
+        // // Push file to S3.
+        // $path =
+        //     'temporary/' . $importType . '-importer' . Carbon::now() . '.csv';
 
-    //     $queue = config('queue.names.high');
+        // $csv = Reader::createFromPath($upload->getRealPath());
 
-    //     // TODO: Create this job! :)
-    //     // ImportFileRecords::dispatch(
-    //     //     Auth::user(),
-    //     //     $path,
-    //     //     $importType,
-    //     //     $importOptions,
-    //     // )
-    //     //     ->delay(now()->addSeconds(3))
-    //     //     ->onQueue($queue);
+        // $success = Storage::put($path, (string) $csv);
 
-    //     return redirect('import/' . $importType)->with(
-    //         'status',
-    //         'Queued ' . $path . ' for import.',
-    //     );
-    // }
+        // if (!$success) {
+        //     throw new HttpException(500, 'Unable read and store file to S3.');
+        // }
+
+        // $queue = config('queue.names.high');
+
+        // TODO: Create this job! :)
+        // ImportFileRecords::dispatch(
+        //     Auth::user(),
+        //     $path,
+        //     $importType,
+        //     $importOptions,
+        // )
+        //     ->delay(now()->addSeconds(3))
+        //     ->onQueue($queue);
+
+        return redirect('import/' . $importType)->with(
+            'status',
+            'Queued ' . $path . ' for import.',
+        );
+    }
 
     // /**
     //  * Imports an create request.
