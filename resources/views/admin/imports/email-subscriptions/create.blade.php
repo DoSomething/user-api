@@ -7,28 +7,23 @@
 <h1>Email Subscriptions</h1>
 
 <div style="display: block; margin-bottom: 15px; margin-top: 15px; overflow: auto;">
-
-    {{-- <a href="" class="pull-left">Test Import</a> --}}
-
     <a href="/admin/imports/email-subscriptions" class="pull-right">View Imports List</a>
 </div>
 
 
 <hr />
 
-<form action="/admin/imports" method="post" enctype="multipart/form-data">
+<form action={{ route('admin.imports.email-subscriptions.store') }} method="post" enctype="multipart/form-data">
     {{ csrf_field() }}
 
     <div class="form-group">
-        <p class="lead">
-        Creates or updates users and their email subscriptions per uploaded CSV.
-        </p>
+        <p class="lead">Creates or updates users and their email subscriptions per uploaded CSV.</p>
 
         <p>Columns:</p>
 
         <ul>
-        <li><code>email</code> - required</li>
-        <li><code>first_name</code> - optional</li>
+            <li><code>email</code> - required</li>
+            <li><code>first_name</code> - optional</li>
         </ul>
     </div>
 
@@ -51,18 +46,18 @@
 
         <div class="col-sm-9">
             @foreach ($config['topics'] as $topic => $config)
-            <div class="form-check">
-                <input class="form-check-input" name="topic" type="radio" value="{{ $topic }}" id="community">
+                <div class="form-check">
+                    <input class="form-check-input" name="topic" type="radio" value="{{ $topic }}" id="community">
 
-                <label class="form-check-label" for="{{ $topic }}">
+                    <label class="form-check-label" for="{{ $topic }}">
 
-                {{ $topic }}
+                    {{ $topic }}
 
-                @isset($config['reset'])
-                    <small class="form-text text-muted"> - Sending <code>{{$config['reset']['type']}}</code> email is {{$config['reset']['enabled'] ? 'ON' : 'OFF'}} for new users.</small>
-                @endif
-                </label>
-            </div>
+                    @isset($config['reset'])
+                        <small class="form-text text-muted"> - Sending <code>{{$config['reset']['type']}}</code> email is {{$config['reset']['enabled'] ? 'ON' : 'OFF'}} for new users.</small>
+                    @endif
+                    </label>
+                </div>
             @endforeach
 
             <small class="form-text text-muted">

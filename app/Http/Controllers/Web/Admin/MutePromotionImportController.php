@@ -73,8 +73,6 @@ class MutePromotionImportController extends Controller
      */
     public function store(Request $request)
     {
-        $importOptions = [];
-
         $rules = [
             'upload-file' => 'required|mimes:csv,txt',
         ];
@@ -84,7 +82,9 @@ class MutePromotionImportController extends Controller
         $upload = $request->file('upload-file');
 
         // Save original file name to reference in the Admin UI.
-        $importOptions['name'] = $upload->getClientOriginalName();
+        $importOptions = ['name' => $upload->getClientOriginalName()];
+
+        // @TODO: test above change!
 
         // Push file to storage.
         $path =

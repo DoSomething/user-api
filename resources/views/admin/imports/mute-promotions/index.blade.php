@@ -12,29 +12,25 @@
     <table class="table">
         <thead>
           <tr class="row">
-            <th class="col-md-3">Created</th>
+            <th>Created</th>
 
-            <th class="col-md-3">Import count</th>
+            <th>Import attributes</th>
 
-            <th class="col-md-3">Import attributes</th>
+            <th>Import count</th>
 
-            <th class="col-md-3">Created by</th>
+            <th>Created by</th>
           </tr>
         </thead>
 
         @foreach($imports as $import)
             <tr class="row">
-                <td class="col-md-3">
+                <td>
                     <a href="/admin/imports/mute-promotions/{{ $import->id }}">
                         <strong>{{ $import->created_at }}</strong>
                     </a>
                 </td>
 
-                <td class="col-md-3">
-                    {{ $import->import_count }}
-                </td>
-
-                <td class="col-md-3">
+                <td>
                     @if ($import->options)
                         @include('admin.imports.partials.import-files.import-options', ['options' => $import->options])
                     @else
@@ -42,7 +38,11 @@
                     @endif
                 </td>
 
-                <td class="col-md-3">
+                <td>
+                    {{ $import->import_count }}
+                </td>
+
+                <td>
                     {{ $import->user_id ? $import->user_id : 'Console' }}
                 </td>
             </tr>

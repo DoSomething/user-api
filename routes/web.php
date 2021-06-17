@@ -135,25 +135,29 @@ Route::prefix('admin')
         Route::get(
             'imports/email-subscriptions',
             'Admin\EmailSubscriptionImportController@index',
-        )->name('imports.email-subscription');
+        )->name('imports.email-subscriptions');
         Route::get(
             'imports/email-subscriptions/create',
             'Admin\EmailSubscriptionImportController@create',
-        )->name('imports.email-subscription.create');
+        )->name('imports.email-subscriptions.create');
         Route::get(
             'imports/email-subscriptions/{id}',
             'Admin\EmailSubscriptionImportController@show',
-        )->name('imports.email-subscription.show');
+        )->name('imports.email-subscriptions.show');
+        Route::post(
+            'imports/email-subscriptions',
+            'Admin\EmailSubscriptionImportController@store',
+        )->name('imports.email-subscriptions.store');
 
         // Mute Promotion Imports
         Route::get(
             'imports/mute-promotions',
             'Admin\MutePromotionImportController@index',
-        )->name('imports.mute-promotion');
+        )->name('imports.mute-promotions');
         Route::get(
             'imports/mute-promotions/create',
             'Admin\MutePromotionImportController@create',
-        )->name('imports.mute-promotion.create');
+        )->name('imports.mute-promotions.create');
         Route::get(
             'imports/mute-promotions/{id}',
             'Admin\MutePromotionImportController@show',
@@ -161,7 +165,7 @@ Route::prefix('admin')
         Route::post(
             'imports/mute-promotions',
             'Admin\MutePromotionImportController@store',
-        )->name('imports.mute-promotion.store');
+        )->name('imports.mute-promotions.store');
 
         // Import Uploads
         Route::post(

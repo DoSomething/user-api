@@ -13,7 +13,7 @@
 
 <hr />
 
-<form action="/admin/imports/mute-promotions" method="post" enctype="multipart/form-data">
+<form action={{ route('admin.imports.mute-promotions.store') }} method="post" enctype="multipart/form-data">
     {{ csrf_field() }}
 
     <div class="form-group">
