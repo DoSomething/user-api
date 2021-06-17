@@ -232,13 +232,17 @@ Fetching a user requires either the `admin` scope, or an "admin" or "staff" role
 GET /v2/users/:user_id
 ```
 
+**Additional Query Parameters:**
+
+- `includes`: A list of [optional fields](../../features/user-optional-fields.md) to include in the response. e.g. `/v2/users/123?include=email,mobile`.
+
 <details>
 <summary><strong>Example Request</strong></summary>
 ```sh
 curl -X GET \
   -H "Authorization: Bearer ${ACCESS_TOKEN}" \
   -H "Accept: application/json"
-  https://northstar.dosomething.org/v2/users/5430e850dt8hbc541c37tt3d
+  https://northstar.dosomething.org/v2/users/5430e850dt8hbc541c37tt3d?include=email,mobile,last_name,addr_street1,addr_street2,birthdate
 ```
 </details>
 
