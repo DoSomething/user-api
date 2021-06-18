@@ -5,7 +5,9 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
-    "build": "docusaurus build",
+    "clean": "rm -rf ../public/build",
+    "build": "docusaurus build && mv build ../public",
+    "build:dev": "npm run clean && docusaurus build && mv build ../public",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",

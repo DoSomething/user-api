@@ -3,12 +3,12 @@ module.exports = {
   title: 'DoSomething Docs',
   tagline: 'Technical documentation for DoSomething.org',
   url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
+  baseUrl: '/build/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'DoSomething',
-  projectName: 'docusaurus', // Usually your repo name.
+  projectName: 'northstar',
   themeConfig: {
     navbar: {
       title: 'DoSomething',
