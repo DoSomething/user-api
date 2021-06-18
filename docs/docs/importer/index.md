@@ -1,6 +1,6 @@
 ---
 sidebar_label: Introduction
-slug: importer
+slug: /importer
 ---
 
 # Data Importer

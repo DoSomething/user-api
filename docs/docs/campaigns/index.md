@@ -1,6 +1,6 @@
 ---
 sidebar_label: Introduction
-slug: campaigns
+slug: /campaigns
 ---
 
 # Campaigns

@@ -1,6 +1,6 @@
 ---
 sidebar_label: Introduction
-slug: oauth
+slug: /oauth
 ---
 
 # OAuth

@@ -1,6 +1,6 @@
 ---
 sidebar_label: Introduction
-slug: getting-started
+slug: /getting-started
 ---
 
 # Welcome! 👋
@@ -11,4 +11,4 @@ The admin application is built using [Laravel 6.0](https://laravel.com/docs/6.x)
 
 This documentation resource can help get you started understanding and working with the different components that make up the admin app frontend and backend.
 
-But before you can start working on the app, lets first get you all [set up](installation)!
+But before you can start working on the app, lets first get you all [set up](getting-started/installation)!
