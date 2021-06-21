@@ -52,6 +52,7 @@ jobs:
           name: check php code style
           command: vendor/bin/php-cs-fixer fix --dry-run --no-interaction --verbose
       - run: npm run build
+      - run: npm run docs
       - run:
           name: setup environment
           command: |
