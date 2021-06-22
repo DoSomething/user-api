@@ -13,15 +13,8 @@ use Illuminate\Support\Facades\Storage;
 use League\Csv\Reader;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class MutePromotionImportController extends Controller
+class MutePromotionImportController extends FileImportController
 {
-    /**
-     * The type of import data.
-     *
-     * @var string
-     */
-    public $importType;
-
     /**
      * Create a new controller instance.
      *

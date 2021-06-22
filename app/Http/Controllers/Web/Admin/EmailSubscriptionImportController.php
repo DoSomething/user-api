@@ -8,9 +8,6 @@ use App\Models\ImportFile;
 use App\Types\ImportType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use League\Csv\Reader;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class EmailSubscriptionImportController extends FileImportController
 {
