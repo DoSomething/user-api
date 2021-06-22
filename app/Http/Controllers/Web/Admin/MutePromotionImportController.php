@@ -136,13 +136,11 @@ class MutePromotionImportController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  ImportFile  $importFile
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(ImportFile $importFile)
     {
-        $importFile = ImportFile::findOrFail($id);
-
         $importedItems = MutePromotionsLog::where(
             'import_file_id',
             $id,
