@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers\Web\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Web\Admin\FileImportController;
 use App\Jobs\Imports\ImportMutePromotions;
 use App\Models\ImportFile;
 use App\Models\MutePromotionsLog;
 use App\Types\ImportType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use League\Csv\Reader;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class MutePromotionImportController extends FileImportController
 {
