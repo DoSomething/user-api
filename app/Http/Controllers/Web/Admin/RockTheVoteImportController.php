@@ -56,6 +56,7 @@ class RockTheVoteImportController extends Controller
     {
         $config = ImportType::getConfig($this->importType);
 
+        // TODO: Extract this into a separate controller!
         if (request('source') === 'test') {
             return $this->renderTestView($config);
         }
