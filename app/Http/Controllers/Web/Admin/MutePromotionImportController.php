@@ -84,50 +84,22 @@ class MutePromotionImportController extends Controller
         // Save original file name to reference in the Admin UI.
         $importOptions = ['name' => $upload->getClientOriginalName()];
 
-        // @TODO: test above change!
-
-        // Push file to storage.
         $path =
             'temporary/mute-promotions-importer-' .
             Carbon::now()->timestamp .
             '.csv';
 
-        $csv = Reader::createFromPath($upload->getRealPath());
+        $csv = $this->readAndStoreCsv($upload, $path);
 
-        $success = Storage::put($path, (string) $csv);
+        $importFile = $this->createImportFile($csv, $path, $importOptions);
 
-        if (!$success) {
-            throw new HttpException(
-                500,
-                'Unable read and store file to filestystem storage.',
-            );
-        }
-
-        $queue = config('queue.names.high');
-
-        $user = auth()->user();
-
-        $csv->setHeaderOffset(0);
-
-        $importFile = new ImportFile([
-            'filepath' => $path,
-            'import_type' => $this->importType,
-            'row_count' => count($csv),
-            'user_id' => $user->id,
-            'options' => $importOptions ? json_encode($importOptions) : null,
-        ]);
-
-        $importFile->save();
-
-        $records = $csv->getRecords();
-
-        foreach ($records as $record) {
+        foreach ($csv->getRecords() as $record) {
             ImportMutePromotions::dispatch(
                 ['northstar_id' => $record['northstar_id']],
                 $importFile,
             )
                 ->delay(now()->addSeconds(3))
-                ->onQueue($queue);
+                ->onQueue(config('queue.names.high'));
         }
 
         return redirect('/admin/imports/mute-promotions');
@@ -136,53 +108,19 @@ class MutePromotionImportController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  ImportFile  $importFile
+     * @param  \App\Models\ImportFile  $importFile
      * @return \Illuminate\Http\Response
      */
     public function show(ImportFile $importFile)
     {
         $importedItems = MutePromotionsLog::where(
             'import_file_id',
-            $id,
+            $importFile->id,
         )->paginate(100);
 
         return view('admin.imports.mute-promotions.show', [
             'importFile' => $importFile,
             'importedItems' => $importedItems,
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

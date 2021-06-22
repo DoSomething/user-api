@@ -75,6 +75,7 @@ class EmailSubscriptionImportController extends FileImportController
 
         $upload = $request->file('upload-file');
 
+        // Save original file name to reference in the Admin UI.
         $importOptions = [
             'email_subscription_topic' => $request->input('topic'),
             'name' => $upload->getClientOriginalName(),
@@ -88,34 +89,16 @@ class EmailSubscriptionImportController extends FileImportController
 
         $csv = $this->readAndStoreCsv($upload, $path);
 
-        $queue = config('queue.names.high');
+        $importFile = $this->createImportFile($csv, $path, $importOptions);
 
-        $user = auth()->user();
-
-        $csv->setHeaderOffset(0);
-
-        $importFile = new ImportFile([
-            'filepath' => $path,
-            'import_type' => $this->importType,
-            'row_count' => count($csv),
-            'user_id' => $user->id,
-            'options' => $importOptions ? json_encode($importOptions) : null,
-        ]);
-
-        $importFile->save();
-
-        $importFile = $this->createImportFile();
-
-        $records = $csv->getRecords();
-
-        foreach ($records as $record) {
+        foreach ($csv->getRecords() as $record) {
             ImportEmailSubscriptions::dispatch(
                 $record,
                 $importFile,
                 $importOptions,
             )
                 ->delay(now()->addSeconds(3))
-                ->onQueue($queue);
+                ->onQueue(config('queue.names.high'));
         }
 
         return redirect('/admin/imports/email-subscriptions');
@@ -124,49 +107,13 @@ class EmailSubscriptionImportController extends FileImportController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\ImportFile $importFile
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(ImportFile $importFile)
     {
-        $importFile = ImportFile::findOrFail($id);
-
         return view('admin.imports.email-subscriptions.show', [
             'importFile' => $importFile,
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
