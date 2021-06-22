@@ -171,7 +171,7 @@ class CustomerIo
      */
     public function deleteCustomer(string $id)
     {
-        if (!config('features.customer_io') && !config('features.delete-api')) {
+        if (!config('features.customer_io') || !config('features.delete-api')) {
             info('User ' . $id . ' would have been deleted in Customer.io.');
 
             return;
@@ -190,7 +190,7 @@ class CustomerIo
      */
     public function suppressCustomer(string $id)
     {
-        if (!config('features.customer_io') && !config('features.delete-api')) {
+        if (!config('features.customer_io') || !config('features.delete-api')) {
             info('User ' . $id . ' would have been suppressed in Customer.io.');
 
             return;
