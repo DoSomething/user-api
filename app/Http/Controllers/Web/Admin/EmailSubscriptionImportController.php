@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers\Web\Admin;
 
-use App\Http\Controllers\Web\Admin\FileImportController;
-use App\Jobs\Imports\ImportEmailSubscriptions;
+use App\Http\Controllers\Controller;
+use App\Jobs\Imports\ParseEmailSubscriptions;
 use App\Models\ImportFile;
 use App\Types\ImportType;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class EmailSubscriptionImportController extends FileImportController
+class EmailSubscriptionImportController extends Controller
 {
+    /**
+     * The type of import data.
+     *
+     * @var string
+     */
+    public $importType;
+
     /**
      * Create a new controller instance.
      *
@@ -72,31 +78,16 @@ class EmailSubscriptionImportController extends FileImportController
 
         $upload = $request->file('upload-file');
 
-        // Save original file name to reference in the Admin UI.
-        $importOptions = [
+        $options = [
             'email_subscription_topic' => $request->input('topic'),
+            // Save original file name to reference in the Admin UI.
             'name' => $upload->getClientOriginalName(),
             'source_detail' => $request->input('source-detail'),
         ];
 
-        $path =
-            'temporary/email-subscriptions-importer-' .
-            Carbon::now()->timestamp .
-            '.csv';
+        $path = store_csv($upload, $this->importType);
 
-        $csv = $this->readAndStoreCsv($upload, $path);
-
-        $importFile = $this->createImportFile($csv, $path, $importOptions);
-
-        foreach ($csv->getRecords() as $record) {
-            ImportEmailSubscriptions::dispatch(
-                $record,
-                $importFile,
-                $importOptions,
-            )
-                ->delay(now()->addSeconds(3))
-                ->onQueue(config('queue.names.high'));
-        }
+        ParseEmailSubscriptions::dispatch($path, $options, auth()->user());
 
         return redirect('/admin/imports/email-subscriptions');
     }

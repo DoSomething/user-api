@@ -18,6 +18,13 @@ class ParseMutePromotions extends Job
     protected $path;
 
     /**
+     * The options for this subscription import, for example 'name'.
+     *
+     * @var array
+     */
+    protected $options;
+
+    /**
      * Optionally, the user that triggered this.
      *
      * @var User
@@ -28,12 +35,17 @@ class ParseMutePromotions extends Job
      * Create a new job instance.
      *
      * @param string $path
+     * @param array $options
      * @param User $user
      * @return void
      */
-    public function __construct(string $path, ?User $user = null)
-    {
+    public function __construct(
+        string $path,
+        ?array $options = [],
+        ?User $user = null
+    ) {
         $this->path = $path;
+        $this->options = $options;
         $this->user = $user;
     }
 
@@ -42,7 +54,10 @@ class ParseMutePromotions extends Job
      */
     public function handle()
     {
-        info('Parsing mute promotions CSV', ['path' => $this->path]);
+        info('Parsing mute promotions CSV', [
+            'path' => $this->path,
+            'options' => $this->options,
+        ]);
 
         $records = read_csv($this->path);
 
@@ -51,6 +66,7 @@ class ParseMutePromotions extends Job
             'import_type' => ImportType::$mutePromotions,
             'row_count' => iterator_count($records),
             'user_id' => optional($this->user)->id,
+            'options' => $this->options ? json_encode($this->options) : null,
         ]);
 
         foreach ($records as $record) {

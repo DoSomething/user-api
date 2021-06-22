@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers\Web\Admin;
 
-use App\Http\Controllers\Web\Admin\FileImportController;
-use App\Jobs\Imports\ImportMutePromotions;
+use App\Http\Controllers\Controller;
+use App\Jobs\Imports\ParseMutePromotions;
 use App\Models\ImportFile;
 use App\Models\MutePromotionsLog;
 use App\Types\ImportType;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class MutePromotionImportController extends FileImportController
+class MutePromotionImportController extends Controller
 {
+    /**
+     * The type of import data.
+     *
+     * @var string
+     */
+    public $importType;
+
     /**
      * Create a new controller instance.
      *
@@ -72,25 +78,11 @@ class MutePromotionImportController extends FileImportController
         $upload = $request->file('upload-file');
 
         // Save original file name to reference in the Admin UI.
-        $importOptions = ['name' => $upload->getClientOriginalName()];
+        $options = ['name' => $upload->getClientOriginalName()];
 
-        $path =
-            'temporary/mute-promotions-importer-' .
-            Carbon::now()->timestamp .
-            '.csv';
+        $path = store_csv($upload, $this->importType);
 
-        $csv = $this->readAndStoreCsv($upload, $path);
-
-        $importFile = $this->createImportFile($csv, $path, $importOptions);
-
-        foreach ($csv->getRecords() as $record) {
-            ImportMutePromotions::dispatch(
-                ['northstar_id' => $record['northstar_id']],
-                $importFile,
-            )
-                ->delay(now()->addSeconds(3))
-                ->onQueue(config('queue.names.high'));
-        }
+        ParseMutePromotions::dispatch($path, $options, auth()->user());
 
         return redirect('/admin/imports/mute-promotions');
     }
