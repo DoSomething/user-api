@@ -100,7 +100,7 @@ class ImportRockTheVoteRecord extends Job
             return $this->skipImportingRecord($user);
         }
 
-        $this->importRecordForExistingUser($user, $signups, $posts);
+        return $this->importRecordForExistingUser($user, $signups, $posts);
     }
 
     /**
