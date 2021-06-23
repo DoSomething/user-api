@@ -65,6 +65,8 @@
 
                     <p><h4>Group Photo:</h4> Use this if it's a group photo.</p>
 
+                    <p><h4>Social:</h4> Use this if submission is a screenshot of a guide/checklist shared on social media.</p>
+
 
                 {{-- @TODO: Commenting the following sections out since it contains info and links for our old Rogue setup. Needs updating! --}}
                 {{-- <h3>In Rogue, can I...</h3>
