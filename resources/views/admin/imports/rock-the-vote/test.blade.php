@@ -11,7 +11,7 @@
 <p>Use this form to test importing a <code>rock-the-vote</code> record.<p>
 
 @if (config('import.import_test_form_enabled') == 'true')
-    <form {{--action={{ route('admin.imports.store', ['importType' => $importType]) }}--}} method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.imports.rock-the-vote-test.store') }}" method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
 
         <h3>User</h3>
