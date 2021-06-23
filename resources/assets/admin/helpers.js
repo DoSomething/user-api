@@ -27,8 +27,9 @@ export const TAGS = {
   inappropriate: 'Inappropriate',
   'unrealistic-quantity': 'Unrealistic Quantity',
   'unrealistic-hours': 'Unrealistic Hours',
-  test: 'Test',
   'incomplete-action': 'Incomplete Action',
+  social: 'Social',
+  test: 'Test',
   bulk: 'Bulk',
 };
 
