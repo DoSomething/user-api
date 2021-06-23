@@ -36,6 +36,7 @@ class ParseEmailSubscriptions extends Job
      * Create a new job instance.
      *
      * @param string $path
+     * @param array $options
      * @param User $user
      * @return void
      */
@@ -66,6 +67,7 @@ class ParseEmailSubscriptions extends Job
             'import_type' => ImportType::$emailSubscription,
             'row_count' => iterator_count($records),
             'user_id' => optional($this->user)->id,
+            'options' => $this->options ? json_encode($this->options) : null,
         ]);
 
         foreach ($records as $record) {

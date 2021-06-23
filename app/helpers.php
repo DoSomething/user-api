@@ -20,6 +20,7 @@ use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberUtil;
 use SeatGeek\Sixpack\Session\Base as Sixpack;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Normalize the given value.
@@ -668,6 +669,31 @@ function read_csv(string $path): iterable
     $csv->setHeaderOffset(0);
 
     return $csv->getRecords();
+}
+
+/**
+ * Store CSV file to a specified storage path.
+ *
+ * @param \Illuminate\Http\UploadedFile $csv
+ * @param string $type
+ * @return string
+ */
+function store_csv($csv, $type): string
+{
+    $timestamp = Carbon::now()->timestamp;
+
+    $filename = "$type-import-$timestamp.csv";
+
+    $path = Storage::putFileAs('temporary', $csv, $filename);
+
+    if (!$path) {
+        throw new HttpException(
+            500,
+            'Unable to read and store file in filestystem storage.',
+        );
+    }
+
+    return $path;
 }
 
 /**
