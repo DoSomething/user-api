@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ImportFile;
 use App\Models\RockTheVoteLog;
+use App\Models\RockTheVoteReport;
 use App\Types\ImportType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -74,61 +75,36 @@ class RockTheVoteImportController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'since' => 'required|date_format:Y-m-d H:i:s',
+            'before' => 'required|date_format:Y-m-d H:i:s',
+        ]);
+
+        $report = RockTheVoteReport::createViaApi(
+            new Carbon($request->input('since')),
+            new Carbon($request->input('before')),
+        );
+
+        dd('continue with storing rtv import...');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\ImportFile $importFile
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(ImportFile $importFile)
     {
-        $importFile = ImportFile::findOrFail($id);
-
-        $importedItems = RockTheVoteLog::where('import_file_id', $id)->paginate(
-            100,
-        );
+        $importedItems = RockTheVoteLog::where(
+            'import_file_id',
+            $importFile->id,
+        )->paginate(100);
 
         return view('admin.imports.rock-the-vote.show', [
             'importFile' => $importFile,
             'importedItems' => $importedItems,
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 
     /**

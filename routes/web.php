@@ -127,9 +127,13 @@ Route::prefix('admin')
             'Admin\RockTheVoteImportController@create',
         )->name('imports.rock-the-vote.create');
         Route::get(
-            'imports/rock-the-vote/{id}',
+            'imports/rock-the-vote/{importFile}',
             'Admin\RockTheVoteImportController@show',
         )->name('imports.rock-the-vote.show');
+        Route::post(
+            'imports/rock-the-vote',
+            'Admin\RockTheVoteImportController@store',
+        )->name('imports.rock-the-vote.store');
 
         // Email Subscription Imports
         Route::get(

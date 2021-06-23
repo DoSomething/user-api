@@ -69,11 +69,9 @@ class MutePromotionImportController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
+        $request->validate([
             'upload-file' => 'required|mimes:csv,txt',
-        ];
-
-        $request->validate($rules);
+        ]);
 
         $upload = $request->file('upload-file');
 

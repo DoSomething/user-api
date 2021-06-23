@@ -68,13 +68,11 @@ class EmailSubscriptionImportController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
+        $request->validate([
             'source-detail' => 'required',
             'topic' => 'required',
             'upload-file' => 'required|mimes:csv,txt',
-        ];
-
-        $request->validate($rules);
+        ]);
 
         $upload = $request->file('upload-file');
 

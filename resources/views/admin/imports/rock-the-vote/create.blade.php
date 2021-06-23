@@ -15,7 +15,7 @@
 
 <hr />
 
-<form action="/admin/imports" method="post" enctype="multipart/form-data">
+<form action={{ route('admin.imports.rock-the-vote.store') }} method="post" enctype="multipart/form-data">
     {{ csrf_field() }}
 
     <div>
