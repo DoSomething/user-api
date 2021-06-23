@@ -32,21 +32,23 @@ class ImportController extends Controller
         ]);
     }
 
-    /**
-     * Import the uploaded file.
-     *
-     * @param Request $request
-     * @param string $importType
-     */
-    public function upload(Request $request, $importType)
-    {
-        // @TODO: add status indicator to other controller redirects on store().
-        return redirect('import/' . $importType)->with(
-            'status',
-            'Queued ' . $path . ' for import.',
-        );
-    }
+    // @TODO: remove; left for reference
+    // /**
+    //  * Import the uploaded file.
+    //  *
+    //  * @param Request $request
+    //  * @param string $importType
+    //  */
+    // public function upload(Request $request, $importType)
+    // {
+    //     // @TODO: add status indicator to other controller redirects on store().
+    //     return redirect('import/' . $importType)->with(
+    //         'status',
+    //         'Queued ' . $path . ' for import.',
+    //     );
+    // }
 
+    // @TODO: remove; left for reference
     // /**
     //  * Imports an create request.
     //  *
