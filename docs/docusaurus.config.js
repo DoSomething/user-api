@@ -1,9 +1,10 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
-  title: 'DoSomething Docs',
-  tagline: 'Technical documentation for DoSomething.org',
+  title: 'Dev @ DoSomething',
+  tagline:
+    'Technical documentation and resources for development on DoSomething.org.',
   url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/build/',
+  baseUrl: '/dev/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
@@ -19,13 +20,13 @@ module.exports = {
       items: [
         {
           type: 'doc',
-          docId: 'getting-started/index',
+          docId: 'introduction-docs',
           position: 'left',
           label: 'Docs',
         },
         {
           type: 'doc',
-          docId: 'api/index',
+          docId: 'introduction-api',
           position: 'left',
           label: 'API',
         },
@@ -44,7 +45,7 @@ module.exports = {
           items: [
             {
               label: 'Docs',
-              to: '/docs/getting-started',
+              to: '/docs',
             },
             {
               label: 'API',

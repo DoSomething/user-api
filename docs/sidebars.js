@@ -10,23 +10,21 @@
  */
 
 module.exports = {
-  docs: {
-    'Getting Started': [
-      'getting-started/index',
-      'getting-started/installation',
-    ],
-    Campaigns: ['campaigns/index'],
-    Users: ['users/index'],
-    OAuth: ['oauth/index'],
-    Redirects: ['redirects/index'],
-    'Data Importer': [
-      'importer/index',
-      'importer/email-subscriptions',
-      'importer/mute-promotions',
-      'importer/rock-the-vote',
-    ],
-  },
-  api: {
-    Introduction: ['api/index'],
-  },
+  docs: [
+    'introduction-docs',
+    {
+      'Getting Started': ['getting-started/installation'],
+      Campaigns: ['campaigns/index'],
+      Users: ['users/index'],
+      OAuth: ['oauth/index'],
+      Redirects: ['redirects/index'],
+      'Data Importer': [
+        'importer/index',
+        'importer/email-subscriptions',
+        'importer/mute-promotions',
+        'importer/rock-the-vote',
+      ],
+    },
+  ],
+  api: ['introduction-api'],
 };

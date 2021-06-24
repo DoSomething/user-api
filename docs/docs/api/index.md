@@ -1,7 +1,1 @@
----
-slug: /api
----
-
-# API
-
-...
+# Endpoints
