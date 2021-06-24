@@ -8,7 +8,7 @@
 
 <div style="display: block; margin-bottom: 15px; margin-top: 15px; overflow: auto;">
 
-    <a href="/admin/imports/rock-the-vote/create?source=test" class="pull-left">Test Import</a>
+    <a href="/admin/imports/rock-the-vote/test" class="pull-left">Test Import</a>
 
     <a href="/admin/imports/rock-the-vote" class="pull-right">View Imported Reports List</a>
 </div>

@@ -6,10 +6,10 @@ return [
     | Test Import Form
     |--------------------------------------------------------------------------
     |
-    | Defines wether to display the test import form within the admin UI.
+    | Defines whether to display the test import form within the admin UI.
     |
     */
-    'import_test_form_enabled' => env('DS_ENABLE_IMPORT_TEST_FORM', 'false'),
+    'import_test_form_enabled' => env('DS_ENABLE_IMPORT_TEST_FORM', false),
 
     /*
     |--------------------------------------------------------------------------

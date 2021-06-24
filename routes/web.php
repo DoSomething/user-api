@@ -135,6 +135,18 @@ Route::prefix('admin')
             'Admin\RockTheVoteImportController@store',
         )->name('imports.rock-the-vote.store');
 
+        // Rock The Vote Imports: Test Form
+        if (config('import.import_test_form_enabled')) {
+            Route::get(
+                'imports/rock-the-vote-test',
+                'Admin\RockTheVoteTestController@create',
+            )->name('imports.rock-the-vote-test.create');
+            Route::post(
+                'imports/rock-the-vote-test',
+                'Admin\RockTheVoteTestController@store',
+            )->name('imports.rock-the-vote-test.store');
+        }
+
         // Email Subscription Imports
         Route::get(
             'imports/email-subscriptions',
