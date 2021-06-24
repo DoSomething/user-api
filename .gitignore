@@ -1,20 +1,16 @@
-# Compiled assets
+/build
+/node_modules
 /public/dist
-stats.json
-
-# Cache directories
+/public/dev
 /storage/cache
+/vendor
 
-# PHP
+.docusaurus
+.DS_Store
+.env
+.idea
 .php_cs.cache
 .phpunit.result.cache
-/vendor
-.env
 
-# NPM
-/node_modules
 npm-debug.log
-
-# macOS & editor
-.DS_Store
-.idea/
+stats.json
