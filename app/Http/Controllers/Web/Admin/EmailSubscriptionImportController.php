@@ -87,7 +87,9 @@ class EmailSubscriptionImportController extends Controller
 
         ParseEmailSubscriptions::dispatch($path, $options, auth()->user());
 
-        return redirect('/admin/imports/email-subscriptions');
+        return redirect()
+            ->route('admin.imports.email-subscriptions.create')
+            ->with('status', "Queued $path for import...");
     }
 
     /**

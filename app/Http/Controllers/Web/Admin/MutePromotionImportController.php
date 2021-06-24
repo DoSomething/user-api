@@ -82,7 +82,9 @@ class MutePromotionImportController extends Controller
 
         ParseMutePromotions::dispatch($path, $options, auth()->user());
 
-        return redirect('/admin/imports/mute-promotions');
+        return redirect()
+            ->route('admin.imports.mute-promotions.create')
+            ->with('status', "Queued $path for import...");
     }
 
     /**

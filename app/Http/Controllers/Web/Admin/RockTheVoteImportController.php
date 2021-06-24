@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\Imports\FetchRockTheVoteReport;
 use App\Models\ImportFile;
 use App\Models\RockTheVoteLog;
 use App\Models\RockTheVoteReport;
@@ -85,7 +86,11 @@ class RockTheVoteImportController extends Controller
             new Carbon($request->input('before')),
         );
 
-        dd('continue with storing rtv import...');
+        FetchRockTheVoteReport::dispatch($report, auth()->user());
+
+        return redirect()
+            ->route('admin.imports.rock-the-vote.create')
+            ->with('status', 'Requested report from Rock The Vote...');
     }
 
     /**

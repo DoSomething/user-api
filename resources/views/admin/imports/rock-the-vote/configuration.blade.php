@@ -21,7 +21,7 @@
         <div class="col-sm-9">
             <p class="form-control-static"><code>{{ $config['user']['sms_subscription_topics'] }}</code></p>
 
-            <small SMS="form-text text-muted">
+            <small class="form-text text-muted">
                 The SMS subscription topics to subscribe new users to, if they have opted-in to receive texts from DS.
             </small>
         </div>
