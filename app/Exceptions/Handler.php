@@ -16,6 +16,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -40,10 +41,10 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception $e
+     * @param  \Throwable $e
      * @return void
      */
-    public function report(Exception $e)
+    public function report(Throwable $e)
     {
         // If we throw a 422 Validation Exception, write something to the log for later review:
         if (
@@ -65,10 +66,10 @@ class Handler extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \Exception $e
+     * @param  \Throwable $e
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function render($request, Exception $e)
+    public function render($request, Throwable $e)
     {
         // If we receive a OAuth exception, get the included PSR-7 response,
         // convert it to a standard Symfony HttpFoundation response and return.
@@ -200,10 +201,10 @@ class Handler extends ExceptionHandler
     /**
      * Build a JSON error response for API clients.
      *
-     * @param Exception $e
+     * @param Throwable $e
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function buildJsonResponse(Exception $e)
+    protected function buildJsonResponse(Throwable $e)
     {
         $code = $e instanceof HttpException ? $e->getStatusCode() : 500;
         $shouldHideErrorDetails = $code == 500 && !config('app.debug');

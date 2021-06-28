@@ -15,7 +15,7 @@ class SetupCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'northstar:setup {--reset}';
+    protected $signature = 'northstar:setup {--reset : Delete existing env file and recreate it.}';
 
     /**
      * The console command description.
