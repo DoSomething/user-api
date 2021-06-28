@@ -27,6 +27,13 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{ route('admin.imports.index') }}">
+                        <strong class="navigation__title">Imports</strong>
+                        <span class="navigation__subtitle">Partners & CSVs</span>
+                    </a>
+                </li>
+
                 @if (Auth::user()->hasRole('admin'))
                     {{-- <li>
                         <a href="{{ route('superusers.index') }}">
