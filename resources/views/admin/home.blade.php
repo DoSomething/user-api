@@ -16,6 +16,7 @@
                         <li><a href="/admin/campaigns">Campaigns</a> <span class="footnote">- create/edit campaigns, actions, signups, and reportbacks</span></li>
                         <li><a href="/admin/users">Users</a> <span class="footnote">- view/edit user profiles, signups, or posts.</span></li>
                         <li><a href="/admin/clubs">Clubs</a> <span class="footnote">- view/edit DoSomething.org clubs</span></li>
+                        <li><a href="/admin/imports">Imports</a> <span class="footnote">- view/create third-party partner & CSV imports</span></li>
                         <li><a href="/admin/clients">OAuth Clients</a> <span class="footnote">- view/edit authentication settings <em>(admins only)</em></span></li>
                         <li><a href="/admin/redirects">Redirects</a> <span class="footnote">- view/edit vanity URL redirects <em>(admins only)</em></span></li>
                     </ul>
