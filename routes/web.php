@@ -115,7 +115,7 @@ Route::prefix('admin')
         );
 
         // Imports
-        Route::get('imports', 'Admin\ImportController');
+        Route::get('imports', 'Admin\ImportController')->name('imports.index');
 
         // Rock The Vote Imports
         Route::get(
