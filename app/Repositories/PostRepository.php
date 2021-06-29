@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Auth\Scope;
+use App\Jobs\RefreshCampaignPostCounts;
 use App\Models\Action;
 use App\Models\Post;
 use App\Models\Review;
@@ -216,7 +217,7 @@ class PostRepository
         $post->save();
 
         // Update the "counter cache" on the Post Campaign:
-        $post->campaign->refreshCounts();
+        RefreshCampaignPostCounts::dispatch($post->campaign);
 
         return $post;
     }
