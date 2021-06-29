@@ -101,17 +101,6 @@ class Campaign extends Model
     }
 
     /**
-     * Run a quick 'COUNT(*)' query to get the count of pending and accepted
-     * posts for this campaign (so we can use this efficiently later).
-     */
-    public function refreshCounts()
-    {
-        $this->pending_count = Post::getPostCount($this, 'pending');
-        $this->accepted_count = Post::getPostCount($this, 'accepted');
-        $this->save();
-    }
-
-    /**
      * Scope a query to only include "open" campaigns.
      */
     public function scopeWhereOpen($query)
