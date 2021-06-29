@@ -22,7 +22,11 @@ $factory->define(Campaign::class, function (Faker $faker) {
     ];
 });
 
-$factory->defineAs(Campaign::class, 'closed', function (Faker $faker) use (
+/*
+ * Campaign factory states.
+ */
+
+$factory->state(Campaign::class, 'closed', function (Faker $faker) use (
     $factory
 ) {
     return array_merge($factory->raw(Campaign::class), [
@@ -35,9 +39,6 @@ $factory->defineAs(Campaign::class, 'closed', function (Faker $faker) use (
     ]);
 });
 
-/*
- * Campaign factory states.
- */
 $factory->state(Campaign::class, 'voter-registration', function (Faker $faker) {
     return [
         'cause' => [Cause::VOTER_REGISTRATION()],
