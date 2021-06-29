@@ -45,7 +45,8 @@ class StandardizeBirthdates extends Command
 
         $query->chunkById(200, function (Collection $users) use ($progressBar) {
             foreach ($users as $user) {
-                $value = $user->getOriginal('birthdate');
+                // @Question: may not need to convert to Carbon date if using updated getOrigina().
+                $value = $user->getRawOriginal('birthdate');
 
                 // If possible, switch the birthday to a date type, otherwise, wipe it!
                 try {

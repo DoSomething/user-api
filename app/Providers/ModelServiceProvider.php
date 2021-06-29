@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Jobs\RejectPost;
-use App\Models\Event;
 use App\Models\Post;
 use App\Models\Review;
 use App\Models\Signup;
