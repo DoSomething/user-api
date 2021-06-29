@@ -4,16 +4,9 @@ namespace App\Jobs;
 
 use App\Models\Campaign;
 use App\Models\Post;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 
-class RefreshCampaignPostCounts implements ShouldQueue
+class RefreshCampaignPostCounts extends Job
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
     /**
      * The campaign we're refreshing.
      *
