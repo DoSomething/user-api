@@ -34,7 +34,7 @@ class RemoveTotpDevice extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return bool
      */
     public function handle(Registrar $registrar)
     {
@@ -42,11 +42,15 @@ class RemoveTotpDevice extends Command
         $user = $registrar->resolve(['username' => $username]);
 
         if (!$user) {
-            return $this->error('User not found.');
+            $this->error('User not found.');
+
+            return 0;
         }
 
         if (!$user->totp) {
-            return $this->info('User does not have a TOTP device.');
+            $this->info('User does not have a TOTP device.');
+
+            return 0;
         }
 
         if (
@@ -61,7 +65,9 @@ class RemoveTotpDevice extends Command
             $user->totp = null;
             $user->save();
 
-            return $this->info('Removed TOTP device.');
+            $this->info('Removed TOTP device.');
+
+            return 0;
         }
     }
 }

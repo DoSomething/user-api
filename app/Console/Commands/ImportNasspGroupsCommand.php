@@ -50,7 +50,7 @@ class ImportNasspGroupsCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return bool
      */
     public function handle()
     {
@@ -164,5 +164,7 @@ class ImportNasspGroupsCommand extends Command
                 $numFailed .
                 ' failed.',
         );
+
+        return 0;
     }
 }
