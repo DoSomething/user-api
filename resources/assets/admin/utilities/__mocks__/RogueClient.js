@@ -16,18 +16,6 @@ class RogueClient extends RestApiClient {
     });
   }
 
-  getEvents() {
-    return new Promise((resolve, reject) => {
-      const error = false;
-
-      if (error) {
-        reject(Error('It broke'));
-      }
-
-      resolve(Events);
-    });
-  }
-
   postReview(fields) {
     return new Promise((resolve, reject) => {
       const error = false;
