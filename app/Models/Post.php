@@ -495,8 +495,6 @@ class Post extends Model
         // Update timestamps on the Post when removing a tag
         $this->touch();
 
-        // @TODO: create an event here when we refactor events system.
-
         return $this;
     }
 
