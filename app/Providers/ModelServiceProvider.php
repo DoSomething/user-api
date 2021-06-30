@@ -19,16 +19,9 @@ class ModelServiceProvider extends ServiceProvider
     public function boot()
     {
         Post::created(function ($post) {
-            if (
-                in_array($post->text, [
-                    'Test runscope upload',
-                    'caption_ghost_test',
-                ]) ||
-                in_array($post->signup->why_participated, [
-                    'why_participated_ghost_test',
-                ])
-            ) {
-                // The post will delay for 2 minutes before being rejected to assure tests are running normally
+            if ($post->isAutomatedTest()) {
+                // Wait a bit to allow tests to assert against normal behavior, then
+                // automatically reject this post so it doesn't bother reviewers:
                 RejectPost::dispatch($post)->delay(now()->addMinutes(2));
             }
         });

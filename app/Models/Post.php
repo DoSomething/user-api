@@ -347,6 +347,20 @@ class Post extends Model
     }
 
     /**
+     * Was this post created by an automated test?
+     *
+     * @return bool
+     */
+    public function isAutomatedTest()
+    {
+        $testCaptions = ['Test runscope upload', 'caption_ghost_test'];
+        $testWhyParticipated = ['why_participated_ghost_test'];
+
+        return in_array($this->text, $testCaptions) ||
+            in_array($this->signup->why_participated, $testWhyParticipated);
+    }
+
+    /**
      * Get the siblings associated with this post.
      */
     public function siblings()
