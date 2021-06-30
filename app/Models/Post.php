@@ -151,14 +151,6 @@ class Post extends Model
     }
 
     /**
-     * Each post has events.
-     */
-    public function events()
-    {
-        return $this->morphMany(Event::class, 'eventable');
-    }
-
-    /**
      * Get the group associated with this signup.
      */
     public function group()
@@ -355,6 +347,20 @@ class Post extends Model
     }
 
     /**
+     * Was this post created by an automated test?
+     *
+     * @return bool
+     */
+    public function isAutomatedTest()
+    {
+        $testCaptions = ['Test runscope upload', 'caption_ghost_test'];
+        $testWhyParticipated = ['why_participated_ghost_test'];
+
+        return in_array($this->text, $testCaptions) ||
+            in_array($this->signup->why_participated, $testWhyParticipated);
+    }
+
+    /**
      * Get the siblings associated with this post.
      */
     public function siblings()
@@ -494,8 +500,6 @@ class Post extends Model
 
         // Update timestamps on the Post when removing a tag
         $this->touch();
-
-        // @TODO: create an event here when we refactor events system.
 
         return $this;
     }

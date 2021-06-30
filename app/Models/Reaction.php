@@ -31,14 +31,6 @@ class Reaction extends Model
     protected $fillable = ['northstar_id', 'post_id'];
 
     /**
-     * Each reaction has events.
-     */
-    public function events()
-    {
-        return $this->morphMany(Event::class, 'eventable');
-    }
-
-    /**
      * Each reaction belongs to a post.
      */
     public function post()

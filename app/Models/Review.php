@@ -29,14 +29,6 @@ class Review extends Model
     ];
 
     /**
-     * Each review has events.
-     */
-    public function events()
-    {
-        return $this->morphMany(Event::class, 'eventable');
-    }
-
-    /**
      * Each review belongs to a post.
      */
     public function post()

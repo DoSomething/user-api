@@ -99,16 +99,6 @@ class Signup extends Model
     }
 
     /**
-     * Each signup has events.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function events()
-    {
-        return $this->morphMany(Event::class, 'eventable');
-    }
-
-    /**
      * Get the group associated with this signup.
      */
     public function group()
