@@ -151,14 +151,6 @@ class Post extends Model
     }
 
     /**
-     * Each post has events.
-     */
-    public function events()
-    {
-        return $this->morphMany(Event::class, 'eventable');
-    }
-
-    /**
      * Get the group associated with this signup.
      */
     public function group()
