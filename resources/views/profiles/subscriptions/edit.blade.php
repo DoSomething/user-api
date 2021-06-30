@@ -54,7 +54,7 @@
                 <input type="checkbox" name="email_subscription_topics[3]" id="lifestyle" value="lifestyle" {{in_array("lifestyle", (count($errors) ? old('email_subscription_topics') : $user->email_subscription_topics) ?: []) ? "checked" : null}} />
                 <span class="option__indicator"></span>
                 <span class="font-bold field-label">The Boost</span>
-                <span class="footnote italic">Sent weekly on Thursdays.</span><br > 
+                <span class="footnote italic">Sent biweekly on Thursdays.</span><br > 
                 <p class="footnote">Our weekly cause and lifestyle newsletter. You’ll receive one article (like an inspiring story of a young changemaker or a how-to volunteering guide), plus one related action.</p>
             </label>
         </div>
