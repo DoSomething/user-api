@@ -1,7 +1,10 @@
 <?php
 
+namespace Tests\Http\Partners;
+
 use App\Jobs\Imports\ImportCallPowerRecord;
 use Illuminate\Support\Facades\Bus;
+use Tests\TestCase;
 
 class CallPowerTest extends TestCase
 {

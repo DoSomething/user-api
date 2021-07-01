@@ -1,7 +1,10 @@
 <?php
 
+namespace Tests\Http;
+
 use App\Models\User;
 use Carbon\Carbon;
+use Tests\BrowserKitTestCase;
 
 class DeletionRequestTest extends BrowserKitTestCase
 {

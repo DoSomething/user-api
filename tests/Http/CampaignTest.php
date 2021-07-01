@@ -1,10 +1,13 @@
 <?php
 
+namespace Tests\Http;
+
 use App\Models\Campaign;
 use App\Models\GroupType;
 use App\Models\Post;
 use App\Types\Cause;
 use Illuminate\Support\Facades\Artisan;
+use Tests\TestCase;
 
 class CampaignTest extends TestCase
 {
@@ -50,7 +53,7 @@ class CampaignTest extends TestCase
     {
         factory(Campaign::class, 5)->create();
 
-        factory(Campaign::class, 'closed', 3)->create();
+        factory(Campaign::class, 3)->states('closed')->create();
 
         $responseOne = $this->getJson('api/v3/campaigns?filter[is_open]=true');
 

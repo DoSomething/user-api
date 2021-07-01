@@ -1,13 +1,16 @@
 <?php
 
+namespace Tests;
+
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
+use Laravel\BrowserKitTesting\TestCase as BrowserKitBaseTestCase;
 use PHPUnit\Framework\Assert;
 use Tests\CreatesApplication;
 use Tests\WithAuthentication;
 use Tests\WithMocks;
 
-abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
+abstract class BrowserKitTestCase extends BrowserKitBaseTestCase
 {
     use CreatesApplication, WithMocks, WithAuthentication, RefreshDatabase;
 
@@ -142,7 +145,7 @@ abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
      */
     public function dontSeeJsonField($key)
     {
-        $responseData = $this->decodeResponseJson();
+        $responseData = $this->response->decodeResponseJson();
 
         if (Arr::has($responseData, $key)) {
             Assert::fail('Did not expect to find JSON response at ' . $key);
@@ -160,7 +163,7 @@ abstract class BrowserKitTestCase extends Laravel\BrowserKitTesting\TestCase
      */
     public function seeJsonField($key, $expected = null)
     {
-        $responseData = $this->decodeResponseJson();
+        $responseData = $this->response->decodeResponseJson();
 
         if (!Arr::has($responseData, $key)) {
             Assert::fail('Expected to find JSON response at ' . $key);

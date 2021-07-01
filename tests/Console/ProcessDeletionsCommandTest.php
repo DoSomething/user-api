@@ -1,10 +1,11 @@
 <?php
 
+namespace Tests\Console;
+
 use App\Models\User;
-use App\Services\Gambit;
-use App\Services\Rogue;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
+use Tests\TestCase;
 
 class ProcessDeletionsCommandTest extends TestCase
 {

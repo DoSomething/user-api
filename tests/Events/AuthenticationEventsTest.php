@@ -1,7 +1,10 @@
 <?php
 
+namespace Tests\Events;
+
 use App\Models\User;
 use Carbon\Carbon;
+use Tests\BrowserKitTestCase;
 
 class AuthenticationEventsTest extends BrowserKitTestCase
 {

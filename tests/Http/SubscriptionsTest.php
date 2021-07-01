@@ -1,6 +1,9 @@
 <?php
 
+namespace Tests\Http;
+
 use App\Models\User;
+use Tests\TestCase;
 
 class SubscriptionsTest extends TestCase
 {

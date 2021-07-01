@@ -1,9 +1,12 @@
 <?php
 
+namespace Tests\Jobs\Imports;
+
 use App\Jobs\Imports\ImportCallPowerRecord;
 use App\Models\Action;
 use App\Models\Post;
 use App\Models\User;
+use Tests\TestCase;
 
 class ImportCallPowerRecordTest extends TestCase
 {

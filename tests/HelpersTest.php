@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests;
+
 use App\Models\Client;
 use Carbon\Carbon;
 

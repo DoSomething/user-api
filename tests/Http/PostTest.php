@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Http;
+
 use App\Models\Action;
 use App\Models\Campaign;
 use App\Models\Club;
@@ -12,6 +14,7 @@ use App\Services\CustomerIo;
 use App\Services\Fastly;
 use App\Services\GraphQL;
 use Illuminate\Http\UploadedFile;
+use Tests\TestCase;
 
 class PostTest extends TestCase
 {

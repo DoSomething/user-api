@@ -1,6 +1,9 @@
 <?php
 
+namespace Tests\Http;
+
 use App\Models\User;
+use Tests\BrowserKitTestCase;
 
 class MergeTest extends BrowserKitTestCase
 {
@@ -319,7 +322,7 @@ class MergeTest extends BrowserKitTestCase
      */
     public function testMergingWithoutWriteScope()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $user = User::forceCreate([
             'email' => 'target-account@example.com',
@@ -333,7 +336,7 @@ class MergeTest extends BrowserKitTestCase
             'language' => 'yo',
         ]);
 
-        $response = $this->asUser($admin, ['role:admin', 'user'])->json(
+        $this->asUser($admin, ['role:admin', 'user'])->json(
             'POST',
             'v1/users/' . $user->id . '/merge',
             [
@@ -344,7 +347,7 @@ class MergeTest extends BrowserKitTestCase
         $this->assertResponseStatus(401);
         $this->assertEquals(
             'Requires the `write` scope.',
-            $response->decodeResponseJson()['hint'],
+            $this->response->decodeResponseJson()['hint'],
         );
     }
 }

@@ -1,10 +1,13 @@
 <?php
 
+namespace Tests\Jobs\Imports;
+
 use App\Jobs\Imports\FetchRockTheVoteReport;
 use App\Jobs\Imports\ParseRockTheVoteReport;
 use App\Models\RockTheVoteReport;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
 
 class FetchRockTheVoteReportTest extends TestCase
 {

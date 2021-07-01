@@ -1,8 +1,11 @@
 <?php
 
+namespace Tests\Http;
+
 use App\Models\ActionStat;
 use App\Models\Group;
 use App\Models\GroupType;
+use Tests\TestCase;
 
 class ActionStatTest extends TestCase
 {

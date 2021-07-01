@@ -1,5 +1,9 @@
 <?php
 
+namespace Tests\Http;
+
+use Tests\BrowserKitTestCase;
+
 class KeyTest extends BrowserKitTestCase
 {
     /** @test */

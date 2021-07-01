@@ -1,7 +1,10 @@
 <?php
 
+namespace Tests\Http;
+
 use App\Models\Client;
 use App\Models\User;
+use Tests\BrowserKitTestCase;
 
 class OAuthTest extends BrowserKitTestCase
 {
@@ -23,7 +26,7 @@ class OAuthTest extends BrowserKitTestCase
         ]);
 
         // Parse the token we received to see it's built correctly.
-        $token = $this->decodeResponseJson()['access_token'];
+        $token = $this->response->decodeResponseJson()['access_token'];
         $jwt = (new \Lcobucci\JWT\Parser())->parse($token);
 
         // Check that the token has the expected user ID and scopes.
@@ -44,9 +47,11 @@ class OAuthTest extends BrowserKitTestCase
     public function testAuthorizationCodeGrant()
     {
         $user = factory(User::class)->create(['password' => 'secret']);
-        $client = factory(Client::class, 'authorization_code')->create([
-            'redirect_uri' => 'http://example.com/',
-        ]);
+        $client = factory(Client::class)
+            ->states('authorization_code')
+            ->create([
+                'redirect_uri' => 'http://example.com/',
+            ]);
 
         // Make the authorization request:
         $this->be($user, 'web');
@@ -97,7 +102,9 @@ class OAuthTest extends BrowserKitTestCase
      */
     public function testPasswordGrant()
     {
-        $client = factory(Client::class, 'password')->create();
+        $client = factory(Client::class)
+            ->states('password')
+            ->create();
         $user = factory(User::class)->create(['password' => 'secret']);
 
         $this->expectsEvents(\Illuminate\Auth\Events\Login::class);
@@ -119,10 +126,14 @@ class OAuthTest extends BrowserKitTestCase
      */
     public function testRoleClaim()
     {
-        $client = factory(Client::class, 'password')->create();
-        $admin = factory(User::class, 'admin')->create([
-            'password' => 'secret',
-        ]);
+        $client = factory(Client::class)
+            ->states('password')
+            ->create();
+        $admin = factory(User::class)
+            ->states('admin')
+            ->create([
+                'password' => 'secret',
+            ]);
 
         $this->post('v2/auth/token', [
             'grant_type' => 'password',
@@ -134,7 +145,7 @@ class OAuthTest extends BrowserKitTestCase
         ]);
 
         // Parse the token we received to see it's built correctly.
-        $token = $this->decodeResponseJson()['access_token'];
+        $token = $this->response->decodeResponseJson()['access_token'];
         $jwt = (new \Lcobucci\JWT\Parser())->parse($token);
         $this->assertSame('admin', $jwt->getClaim('role'));
     }
@@ -144,7 +155,9 @@ class OAuthTest extends BrowserKitTestCase
      */
     public function testPasswordGrantWithInvalidCredentials()
     {
-        $client = factory(Client::class, 'password')->create();
+        $client = factory(Client::class)
+            ->states('password')
+            ->create();
         $user = factory(User::class)->create(['password' => 'secret']);
 
         $this->expectsEvents(\Illuminate\Auth\Events\Failed::class);
@@ -165,7 +178,9 @@ class OAuthTest extends BrowserKitTestCase
      */
     public function testClientCredentialsGrantWithFakeClient()
     {
-        factory(Client::class, 'client_credentials')->create();
+        factory(Client::class)
+            ->states('client_credentials')
+            ->create();
 
         $this->post('v2/auth/token', [
             'grant_type' => 'client_credentials',
@@ -182,7 +197,9 @@ class OAuthTest extends BrowserKitTestCase
      */
     public function testClientCredentialsGrantWithMissingSecret()
     {
-        $client = factory(Client::class, 'client_credentials')->create();
+        $client = factory(Client::class)
+            ->states('client_credentials')
+            ->create();
 
         $this->post('v2/auth/token', [
             'grant_type' => 'client_credentials',
@@ -197,7 +214,9 @@ class OAuthTest extends BrowserKitTestCase
      */
     public function testClientCredentialsGrantWithInvalidCredentials()
     {
-        $client = factory(Client::class, 'client_credentials')->create();
+        $client = factory(Client::class)
+            ->states('client_credentials')
+            ->create();
 
         $this->post('v2/auth/token', [
             'grant_type' => 'client_credentials',
@@ -213,7 +232,9 @@ class OAuthTest extends BrowserKitTestCase
      */
     public function testValidClientCredentialsAreNotRateLimited()
     {
-        $client = factory(Client::class, 'client_credentials')->create();
+        $client = factory(Client::class)
+            ->states('client_credentials')
+            ->create();
 
         $credentials = [
             'grant_type' => 'client_credentials',
@@ -255,9 +276,11 @@ class OAuthTest extends BrowserKitTestCase
      */
     public function testRequestSubsetOfClientScopes()
     {
-        $client = factory(Client::class, 'client_credentials')->create([
-            'scope' => ['admin', 'user'],
-        ]);
+        $client = factory(Client::class)
+            ->states('client_credentials')
+            ->create([
+                'scope' => ['admin', 'user'],
+            ]);
 
         $this->post('v2/auth/token', [
             'grant_type' => 'client_credentials',
@@ -268,7 +291,7 @@ class OAuthTest extends BrowserKitTestCase
 
         // We should receive a token with only the requested scopes.
         $jwt = (new \Lcobucci\JWT\Parser())->parse(
-            $this->decodeResponseJson()['access_token'],
+            $this->response->decodeResponseJson()['access_token'],
         );
         $this->assertSame(['user'], $jwt->getClaim('scopes'));
     }
@@ -279,9 +302,11 @@ class OAuthTest extends BrowserKitTestCase
      */
     public function testCantRequestDisallowedClientScope()
     {
-        $client = factory(Client::class, 'client_credentials')->create([
-            'scope' => ['user'],
-        ]);
+        $client = factory(Client::class)
+            ->states('client_credentials')
+            ->create([
+                'scope' => ['user'],
+            ]);
 
         $this->post('v2/auth/token', [
             'grant_type' => 'client_credentials',
@@ -292,7 +317,7 @@ class OAuthTest extends BrowserKitTestCase
 
         // We should receive a token, but *not* with the disallowed scope
         $jwt = (new \Lcobucci\JWT\Parser())->parse(
-            $this->decodeResponseJson()['access_token'],
+            $this->response->decodeResponseJson()['access_token'],
         );
         $this->assertSame(['user'], $jwt->getClaim('scopes'));
     }
@@ -302,7 +327,9 @@ class OAuthTest extends BrowserKitTestCase
      */
     public function testCantRequestFakeClientScope()
     {
-        $client = factory(Client::class, 'client_credentials')->create();
+        $client = factory(Client::class)
+            ->states('client_credentials')
+            ->create();
 
         $this->post('v2/auth/token', [
             'grant_type' => 'client_credentials',
@@ -319,7 +346,9 @@ class OAuthTest extends BrowserKitTestCase
      */
     public function testClientCredentials()
     {
-        $client = factory(Client::class, 'client_credentials')->create();
+        $client = factory(Client::class)
+            ->states('client_credentials')
+            ->create();
 
         $this->post('v2/auth/token', [
             'grant_type' => 'client_credentials',
@@ -331,7 +360,7 @@ class OAuthTest extends BrowserKitTestCase
         $this->seeJsonStructure(['token_type', 'expires_in', 'access_token']);
 
         $jwt = (new \Lcobucci\JWT\Parser())->parse(
-            $this->decodeResponseJson()['access_token'],
+            $this->response->decodeResponseJson()['access_token'],
         );
 
         // Check that the token has the expected user ID and scopes.
@@ -347,7 +376,9 @@ class OAuthTest extends BrowserKitTestCase
     public function testRefreshTokenGrant()
     {
         $user = factory(User::class)->create(['password' => 'secret']);
-        $client = factory(Client::class, 'password')->create();
+        $client = factory(Client::class)
+            ->states('password')
+            ->create();
 
         $this->post('v2/auth/token', [
             'grant_type' => 'password',
@@ -358,7 +389,7 @@ class OAuthTest extends BrowserKitTestCase
         ]);
 
         // Get the provided refresh token.
-        $refreshToken = $this->decodeResponseJson()['refresh_token'];
+        $refreshToken = $this->response->decodeResponseJson()['refresh_token'];
 
         // Freeze time so we can assert when we made this token.
         $now = $this->mockTime('+1 minute');
@@ -401,8 +432,12 @@ class OAuthTest extends BrowserKitTestCase
      */
     public function testAccessToken()
     {
-        $user = factory(User::class, 'admin')->create(['password' => 'secret']);
-        $client = factory(Client::class, 'password')->create();
+        $user = factory(User::class)
+            ->states('admin')
+            ->create(['password' => 'secret']);
+        $client = factory(Client::class)
+            ->states('password')
+            ->create();
 
         $this->post('v2/auth/token', [
             'grant_type' => 'password',
@@ -413,7 +448,7 @@ class OAuthTest extends BrowserKitTestCase
             'scope' => 'user role:staff role:admin',
         ]);
 
-        $token = $this->decodeResponseJson()['access_token'];
+        $token = $this->response->decodeResponseJson()['access_token'];
 
         $this->get('v1/users', ['Authorization' => 'Bearer ' . $token]);
         $this->assertResponseStatus(200);
@@ -476,7 +511,7 @@ class OAuthTest extends BrowserKitTestCase
             'scope' => 'admin user',
         ]);
 
-        $jwt = $this->decodeResponseJson();
+        $jwt = $this->response->decodeResponseJson();
 
         // Now, delete that refresh token.
         $this->delete(
@@ -513,7 +548,9 @@ class OAuthTest extends BrowserKitTestCase
         $user2 = factory(User::class)->create([
             'password' => 'another-secret-code',
         ]);
-        $client = factory(Client::class, 'password')->create();
+        $client = factory(Client::class)
+            ->states('password')
+            ->create();
 
         // Make token for user #1.
         $jwt1 = $this->post('v2/auth/token', [
@@ -523,7 +560,7 @@ class OAuthTest extends BrowserKitTestCase
             'username' => $user1->email,
             'password' => 'rather-secret-phrase',
             'scope' => 'user',
-        ])->decodeResponseJson();
+        ])->response->decodeResponseJson();
 
         // Hacks. OAuth server seems to get mad if more than one request is made per request.
         $this->refreshApplication();
@@ -536,7 +573,7 @@ class OAuthTest extends BrowserKitTestCase
             'username' => $user2->email,
             'password' => 'another-secret-code',
             'scope' => 'user',
-        ])->decodeResponseJson();
+        ])->response->decodeResponseJson();
 
         // Now, try to delete User #1's refresh token w/ User #2's access token.
         $this->delete(

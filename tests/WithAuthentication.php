@@ -79,7 +79,7 @@ trait WithAuthentication
      */
     public function asStaffUser()
     {
-        $staff = factory(User::class, 'staff')->create();
+        $staff = factory(User::class)->states('staff')->create();
 
         return $this->asUser($staff);
     }
@@ -91,7 +91,7 @@ trait WithAuthentication
      */
     public function asAdminUser()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         return $this->asUser($admin);
     }
@@ -106,13 +106,17 @@ trait WithAuthentication
     public function withAccessToken($scopes = [], $user = null)
     {
         $accessToken = new AccessTokenEntity();
+
         $accessToken->setClient(
             new ClientEntity('phpunit', 'PHPUnit', $scopes),
         );
+
         $accessToken->setIdentifier(bin2hex(random_bytes(40)));
+
         $accessToken->setExpiryDateTime(
             (new \DateTimeImmutable())->add(new DateInterval('PT1H')),
         );
+
         $accessToken->setPrivateKey(
             new CryptKey(storage_path('app/keys/private.key'), null, false),
         );

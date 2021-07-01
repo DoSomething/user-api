@@ -1,8 +1,11 @@
 <?php
 
+namespace Tests\Jobs\Imports;
+
 use App\Jobs\Imports\ImportEmailSubscriptions;
 use App\Models\ImportFile;
 use App\Models\User;
+use Tests\TestCase;
 
 class ImportEmailSubscriptionsTest extends TestCase
 {

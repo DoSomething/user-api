@@ -1,8 +1,11 @@
 <?php
 
+namespace Tests\Http\Web;
+
 use App\Models\Campaign;
 use App\Models\GroupType;
 use App\Models\User;
+use Tests\TestCase;
 
 class WebCampaignTest extends TestCase
 {
@@ -14,7 +17,7 @@ class WebCampaignTest extends TestCase
      */
     public function testCreatingACampaign()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $firstCampaignTitle = $this->faker->sentence;
 
@@ -59,7 +62,7 @@ class WebCampaignTest extends TestCase
      */
     public function testUpdatingACampaign()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $campaign = factory(Campaign::class)->create();
 
@@ -95,7 +98,7 @@ class WebCampaignTest extends TestCase
      */
     public function testDeleteACampaign()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $campaign = factory(Campaign::class)->create();
 

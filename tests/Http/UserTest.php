@@ -1,8 +1,11 @@
 <?php
 
+namespace Tests\Http;
+
 use App\Models\Post;
 use App\Models\Signup;
 use App\Models\User;
+use Tests\TestCase;
 
 class UserTest extends TestCase
 {
@@ -32,7 +35,8 @@ class UserTest extends TestCase
     public function testV2IndexVisibleToStaffRole()
     {
         // Make a staff user & some test users.
-        $staff = factory(User::class, 'staff')->create();
+        $staff = factory(User::class)->states('staff')->create();
+
         factory(User::class, 5)->create();
 
         $response = $this->asUser($staff, ['role:staff', 'user'])->get(
@@ -50,7 +54,8 @@ class UserTest extends TestCase
     public function testV2IndexVisibleToAdminRole()
     {
         // Make a admin & some test users.
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
+
         factory(User::class, 5)->create();
 
         $response = $this->asUser($admin, ['role:admin', 'user'])->get(
@@ -231,7 +236,8 @@ class UserTest extends TestCase
     public function testV2GetAllDataFromUserAsAdmin()
     {
         $user = factory(User::class)->create();
-        $admin = factory(User::class, 'admin')->create();
+
+        $admin = factory(User::class)->states('admin')->create();
 
         $response = $this->asUser($admin, ['user', 'user:admin'])->get(
             'v2/users/' . $user->id,
@@ -311,7 +317,8 @@ class UserTest extends TestCase
     public function testV2UpdateProfileAsStaff()
     {
         $user = factory(User::class)->create();
-        $staff = factory(User::class, 'staff')->create();
+
+        $staff = factory(User::class)->states('staff')->create();
 
         $response = $this->asUser($staff, [
             'user',
@@ -462,7 +469,8 @@ class UserTest extends TestCase
     public function testV2RequiredWriteScopeToUpdateProfile()
     {
         $user = factory(User::class)->create();
-        $staff = factory(User::class, 'staff')->create();
+
+        $staff = factory(User::class)->states('staff')->create();
 
         $response = $this->asUser($staff, ['user', 'role:staff'])->json(
             'PUT',
@@ -485,7 +493,8 @@ class UserTest extends TestCase
     public function testV2UnsetFieldWithEmptyString()
     {
         $user = factory(User::class)->create();
-        $staff = factory(User::class, 'staff')->create();
+
+        $staff = factory(User::class)->states('staff')->create();
 
         $response = $this->asUser($staff, [
             'user',
@@ -505,7 +514,8 @@ class UserTest extends TestCase
     public function testV2UnsetFieldWithNull()
     {
         $user = factory(User::class)->create();
-        $staff = factory(User::class, 'staff')->create();
+
+        $staff = factory(User::class)->states('staff')->create();
 
         $response = $this->asUser($staff, [
             'user',
@@ -529,7 +539,8 @@ class UserTest extends TestCase
     public function testV2GrantRoleAsStaff()
     {
         $user = factory(User::class)->create();
-        $staff = factory(User::class, 'staff')->create();
+
+        $staff = factory(User::class)->states('staff')->create();
 
         $response = $this->asUser($staff, ['user', 'role:staff'])->json(
             'PUT',
@@ -570,7 +581,7 @@ class UserTest extends TestCase
      */
     public function testV2RequiredWriteScopeCreateUser()
     {
-        $user = factory(User::class, 'staff')->create();
+        $user = factory(User::class)->states('staff')->create();
 
         $response = $this->asUser($user, ['user', 'role:staff'])->json(
             'POST',
@@ -855,6 +866,7 @@ class UserTest extends TestCase
         $user = factory(User::class)->create([
             'mobile' => $this->faker->phoneNumber,
         ]);
+
         $viewer = factory(User::class)->create();
 
         // Test that we can view user information if not staff or admin.
@@ -880,7 +892,8 @@ class UserTest extends TestCase
         $user = factory(User::class)->create([
             'mobile' => $this->faker->phoneNumber,
         ]);
-        $admin = factory(User::class, 'staff')->create();
+
+        $admin = factory(User::class)->states('staff')->create();
 
         $response = $this->asUser($admin, ['role:staff'])->get(
             'v2/mobile/' . $user->mobile,
@@ -904,7 +917,8 @@ class UserTest extends TestCase
         $user = factory(User::class)->create([
             'mobile' => $this->faker->phoneNumber,
         ]);
-        $admin = factory(User::class, 'admin')->create();
+
+        $admin = factory(User::class)->states('admin')->create();
 
         $response = $this->asUser($admin, ['user', 'role:admin'])->get(
             'v2/mobile/' . $user->mobile,
@@ -926,6 +940,7 @@ class UserTest extends TestCase
     public function testV2GetDataFromUserByEmailAsAnonUser()
     {
         $user = factory(User::class)->create(['email' => $this->faker->email]);
+
         $viewer = factory(User::class)->create();
 
         // Test that we cannot view public profile as another user.
@@ -949,7 +964,8 @@ class UserTest extends TestCase
     public function testV2GetAllDataFromUserByEmailAsStaff()
     {
         $user = factory(User::class)->create(['email' => $this->faker->email]);
-        $admin = factory(User::class, 'staff')->create();
+
+        $admin = factory(User::class)->states('staff')->create();
 
         $response = $this->asUser($admin, ['role:staff'])->get(
             'v2/email/' . $user->email,
@@ -971,7 +987,8 @@ class UserTest extends TestCase
     public function testV2GetAllDataFromUserEmailAsAdmin()
     {
         $user = factory(User::class)->create(['email' => $this->faker->email]);
-        $admin = factory(User::class, 'admin')->create();
+
+        $admin = factory(User::class)->states('admin')->create();
 
         $response = $this->asUser($admin, ['user', 'role:admin'])->get(
             'v2/email/' . $user->email,
@@ -992,7 +1009,8 @@ class UserTest extends TestCase
      */
     public function testV2RequiredWriteScopeDeleteUser()
     {
-        $user = factory(User::class, 'staff')->create();
+        $user = factory(User::class)->states('staff')->create();
+
         $userToDelete = factory(User::class)->create();
 
         $response = $this->asUser($user, ['user', 'role:staff'])->json(

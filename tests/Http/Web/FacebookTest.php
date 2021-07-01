@@ -1,8 +1,12 @@
 <?php
 
+namespace Tests\Http\Web;
+
 use App\Models\User;
+use Carbon\Carbon;
 use Laravel\Socialite\AbstractUser;
 use Laravel\Socialite\Facades\Socialite;
+use Tests\TestCase;
 
 class FacebookTest extends TestCase
 {
@@ -60,7 +64,7 @@ class FacebookTest extends TestCase
     ) {
         $fields = compact('id', 'email', 'token');
 
-        $user = new Laravel\Socialite\Two\User();
+        $user = new \Laravel\Socialite\Two\User();
 
         $user->map($fields);
 
@@ -198,11 +202,11 @@ class FacebookTest extends TestCase
         Socialite::shouldReceive(
             'driver->fields->userFromToken',
         )->andReturnUsing(function () {
-            $request = new GuzzleHttp\Psr7\Request(
+            $request = new \GuzzleHttp\Psr7\Request(
                 'GET',
                 'http://graph.facebook.com',
             );
-            throw new GuzzleHttp\Exception\RequestException(
+            throw new \GuzzleHttp\Exception\RequestException(
                 'Token validation failed',
                 $request,
             );
@@ -295,7 +299,7 @@ class FacebookTest extends TestCase
 
         $user = auth()->user();
 
-        $this->assertEquals($user->birthdate, new Carbon\Carbon('2000-01-01'));
+        $this->assertEquals($user->birthdate, new Carbon('2000-01-01'));
     }
 
     /**

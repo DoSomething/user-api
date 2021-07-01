@@ -1,5 +1,9 @@
 <?php
 
+namespace Tests\Http;
+
+use Tests\BrowserKitTestCase;
+
 class ProfileAboutTest extends BrowserKitTestCase
 {
     /**

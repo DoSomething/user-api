@@ -1,8 +1,11 @@
 <?php
 
+namespace Tests\Http\Web;
+
 use App\Models\Action;
 use App\Models\Campaign;
 use App\Models\User;
+use Tests\TestCase;
 
 class WebActionTest extends TestCase
 {
@@ -18,7 +21,7 @@ class WebActionTest extends TestCase
 
         $actionName = $this->faker->sentence;
 
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $this->actingAs($admin, 'web')->postJson('/admin/actions', [
             'name' => $actionName,
@@ -59,7 +62,7 @@ class WebActionTest extends TestCase
 
         $actionName = $this->faker->sentence;
 
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $actionBody = [
             'name' => $actionName,
@@ -101,7 +104,7 @@ class WebActionTest extends TestCase
      */
     public function testUpdatingAnAction()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $action = factory(Action::class)->create();
 
@@ -133,7 +136,7 @@ class WebActionTest extends TestCase
      */
     public function testDeleteAnAction()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $action = factory(Action::class)->create();
 
@@ -159,7 +162,7 @@ class WebActionTest extends TestCase
 
         $actionName = $this->faker->sentence;
 
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $response = $this->actingAs($admin, 'web')->post('/admin/actions', [
             'name' => $actionName,

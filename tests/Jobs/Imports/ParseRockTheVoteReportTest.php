@@ -1,9 +1,12 @@
 <?php
 
+namespace Tests\Jobs\Imports;
+
 use App\Jobs\Imports\ImportRockTheVoteRecord;
 use App\Jobs\Imports\ParseRockTheVoteReport;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
 
 class ParseRockTheVoteReportTest extends TestCase
 {

@@ -1,7 +1,10 @@
 <?php
 
+namespace Tests\Console;
+
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
+use Tests\TestCase;
 
 class AddAddressesCommand extends TestCase
 {
@@ -24,7 +27,7 @@ class AddAddressesCommand extends TestCase
         ]);
 
         // And see that we stored the provided addresses!
-        $this->seeInMongoDatabase('users', [
+        $this->assertMongoDatabaseHas('users', [
             '_id' => '54f9e1c8469c64df6c8b4568',
             'addr_street1' => '101 Main St',
             'addr_street2' => 'Apt 33',
@@ -34,7 +37,7 @@ class AddAddressesCommand extends TestCase
             'country' => 'US',
         ]);
 
-        $this->seeInMongoDatabase('users', [
+        $this->assertMongoDatabaseHas('users', [
             '_id' => '54fa272c469c64d7068b456c',
             'addr_street1' => null,
             'addr_street2' => null,

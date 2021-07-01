@@ -1,9 +1,13 @@
 <?php
 
+namespace Tests\Http\Web;
+
 use App\Models\User;
 use App\Services\Google;
+use Carbon\Carbon;
 use Laravel\Socialite\AbstractUser;
 use Laravel\Socialite\Facades\Socialite;
+use Tests\TestCase;
 
 class GoogleTest extends TestCase
 {
@@ -47,7 +51,7 @@ class GoogleTest extends TestCase
     ) {
         $fields = compact('id', 'email', 'token');
 
-        $user = new Laravel\Socialite\Two\User();
+        $user = new \Laravel\Socialite\Two\User();
 
         $user->map($fields);
 
@@ -175,7 +179,7 @@ class GoogleTest extends TestCase
         $this->assertEquals($user->language, app()->getLocale());
         $this->assertEquals($user->email_subscription_status, true);
         $this->assertEquals($user->email_subscription_topics, ['community']);
-        $this->assertEquals($user->birthdate, new Carbon\Carbon('2001-07-11'));
+        $this->assertEquals($user->birthdate, new Carbon('2001-07-11'));
         $this->assertArrayHasKey('badges', $user->feature_flags);
         $this->assertEquals(
             true,

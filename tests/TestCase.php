@@ -1,15 +1,18 @@
 <?php
 
+namespace Tests;
+
+use App\Jobs\Job;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Bus;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Mockery;
 use Tests\CreatesApplication;
 use Tests\WithAuthentication;
 use Tests\WithMocks;
 
-abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
+abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication, RefreshDatabase, WithMocks, WithAuthentication;
 
@@ -151,7 +154,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
      * @param mixed $job
      * @return $this
      */
-    protected function forceDispatch(App\Jobs\Job $job)
+    protected function forceDispatch(Job $job)
     {
         // Directly call the 'handle' method on the given job, bypassing potentially
         // mocked Dispatcher, and inject any needed dependencies from the container:

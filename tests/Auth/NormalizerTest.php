@@ -1,5 +1,9 @@
 <?php
 
+namespace Tests\Auth;
+
+use Tests\BrowserKitTestCase;
+
 class NormalizerTest extends BrowserKitTestCase
 {
     /**

@@ -1,7 +1,10 @@
 <?php
 
+namespace Tests\Http\Web;
+
 use App\Models\Client;
 use App\Models\User;
+use Tests\TestCase;
 
 class WebAuthenticationTest extends TestCase
 {
@@ -481,7 +484,7 @@ class WebAuthenticationTest extends TestCase
     // @TODO Remove or update post NS flow launch!
     public function testAuthorizeSessionVariablesExist()
     {
-        $client = factory(Client::class, 'authorization_code')->create();
+        $client = factory(Client::class)->states('authorization_code')->create();
 
         $response = $this->get(
             'authorize?' .

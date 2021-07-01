@@ -1,6 +1,9 @@
 <?php
 
+namespace Tests\Http;
+
 use App\Models\GroupType;
+use Tests\TestCase;
 
 class GroupTypeTest extends TestCase
 {

@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Http;
+
 use App\Models\Campaign;
 use App\Models\Club;
 use App\Models\Group;
@@ -9,6 +11,7 @@ use App\Models\User;
 use App\Observers\SignupObserver;
 use App\Services\CustomerIo;
 use Illuminate\Support\Str;
+use Tests\TestCase;
 
 class SignupTest extends TestCase
 {

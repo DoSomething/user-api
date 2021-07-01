@@ -24,14 +24,14 @@ class UserTableSeeder extends Seeder
             'password' => 'secret',
         ]);
 
-        factory(User::class, 'admin')->create([
+        factory(User::class)->states('admin')->create([
             'email' => 'admin@dosomething.org',
             'password' => 'secret',
         ]);
 
         // Then create some randomly-generated test data!
-        factory(User::class, 'admin', 4)->create();
-        factory(User::class, 'staff', 50)->create();
+        factory(User::class, 4)->states('admin')->create();
+        factory(User::class, 50)->states('staff')->create();
         factory(User::class, 250)->create();
     }
 }

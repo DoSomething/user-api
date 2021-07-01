@@ -1,9 +1,12 @@
 <?php
 
+namespace Tests\Jobs\Imports;
+
 use App\Jobs\Imports\ImportMutePromotions;
 use App\Jobs\Imports\ParseMutePromotions;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
 
 class ParseMutePromotionsTest extends TestCase
 {

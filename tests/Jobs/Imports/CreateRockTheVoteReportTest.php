@@ -1,8 +1,11 @@
 <?php
 
+namespace Tests\Jobs\Imports;
+
 use App\Jobs\Imports\CreateRockTheVoteReport;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Bus;
+use Tests\TestCase;
 
 class CreateRockTheVoteReportTest extends TestCase
 {
