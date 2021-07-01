@@ -500,7 +500,10 @@ class OAuthTest extends BrowserKitTestCase
     public function testRevokeRefreshToken()
     {
         $user = factory(User::class)->create(['password' => 'secret']);
-        $client = factory(Client::class, 'password')->create();
+
+        $client = factory(Client::class)
+            ->states('password')
+            ->create();
 
         $this->post('v2/auth/token', [
             'grant_type' => 'password',

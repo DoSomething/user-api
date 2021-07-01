@@ -31,8 +31,8 @@ class CreateRockTheVoteReport extends Job
     /**
      * Create a new job instance.
      *
-     * @param string $since
-     * @param string $before
+     * @param \Carbon\CarbonInterface $since
+     * @param \Carbon\CarbonInterface $before
      * @return void
      */
     public function __construct($since, $before)

@@ -28,5 +28,6 @@
         <env name="DS_ENABLE_RATE_LIMITING" value="true"/>
         <env name="DS_ENABLE_PASSWORD_GRANT" value="true"/>
         <env name="DS_OPTIONAL_FIELDS" value="false"/>
+        <env name="ROCK_THE_VOTE_API_FAKER" value="false"/>
     </php>
 </phpunit>
