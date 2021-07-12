@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         bootstrap="bootstrap/autoload.php"
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
          colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stopOnFailure="false">
+>
     <testsuites>
         <testsuite name="Application Test Suite">
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>
     <php>
-        <env name="APP_ENV" value="testing"/>
-        <env name="CLOCKWORK_ENABLE" value="false" />
-        <env name="MONGODB_DATABASE" value="northstar-test"/>
-        <env name="MYSQL_DATABASE" value="rogue_test"/>
-        <env name="CACHE_DRIVER" value="array"/>
-        <env name="SESSION_DRIVER" value="array"/>
-        <env name="QUEUE_CONNECTION" value="sync"/>
-        <env name="SIXPACK_ENABLED" value="false"/>
-        <env name="DS_ENABLE_ADMIN_ROUTES" value="true"/>
-        <env name="DS_ENABLE_CUSTOMER_IO" value="true"/>
-        <env name="DS_ENABLE_DELETE_APIS" value="true"/>
-        <env name="DS_ENABLE_RATE_LIMITING" value="true"/>
-        <env name="DS_ENABLE_PASSWORD_GRANT" value="true"/>
-        <env name="DS_OPTIONAL_FIELDS" value="false"/>
-        <env name="ROCK_THE_VOTE_API_FAKER" value="false"/>
+        <server name="APP_ENV" value="testing"/>
+        <server name="BCRYPT_ROUNDS" value="4"/>
+        <server name="CACHE_DRIVER" value="array"/>
+        <server name="MAIL_MAILER" value="array"/>
+
+        <server name="QUEUE_CONNECTION" value="sync"/>
+        <server name="SESSION_DRIVER" value="array"/>
+        <server name="CLOCKWORK_ENABLE" value="false" />
+        <server name="MONGODB_DATABASE" value="northstar-test"/>
+        <server name="MYSQL_DATABASE" value="rogue_test"/>
+        <server name="SESSION_DRIVER" value="array"/>
+        <server name="SIXPACK_ENABLED" value="false"/>
+        <server name="DS_ENABLE_ADMIN_ROUTES" value="true"/>
+        <server name="DS_ENABLE_CUSTOMER_IO" value="true"/>
+        <server name="DS_ENABLE_DELETE_APIS" value="true"/>
+        <server name="DS_ENABLE_RATE_LIMITING" value="true"/>
+        <server name="DS_ENABLE_PASSWORD_GRANT" value="true"/>
+        <server name="DS_OPTIONAL_FIELDS" value="false"/>
+        <server name="ROCK_THE_VOTE_API_FAKER" value="false"/>
     </php>
 </phpunit>
