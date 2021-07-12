@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\ImportFile;
 use Illuminate\Database\Seeder;
 

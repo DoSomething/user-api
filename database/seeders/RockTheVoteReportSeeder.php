@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\RockTheVoteReport;
 use Illuminate\Database\Seeder;
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 
@@ -17,7 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UserTableSeeder::class);
         $this->call(ClientTableSeeder::class);
         $this->call(TokenTableSeeder::class);
-        $this->call(ActivityTablesSeeder::class);
+        // $this->call(ActivityTablesSeeder::class);
         $this->call(RockTheVoteReportSeeder::class);
     }
 }

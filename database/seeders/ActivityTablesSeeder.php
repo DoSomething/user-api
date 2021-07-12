@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\Action;
 use App\Models\Campaign;
 use App\Models\Post;
