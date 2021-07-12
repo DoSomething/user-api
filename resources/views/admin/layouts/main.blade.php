@@ -11,7 +11,7 @@
         </title>
 
         <link rel="apple-touch-icon-precomposed" href="/assets/images/apple-touch-icon-precomposed.png">
-        <link rel="stylesheet" href="{{ elixir('app.css', 'dist') }}">
+        <link rel="stylesheet" href="{{ mix('app.css', 'dist') }}">
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
     </head>
@@ -44,7 +44,7 @@
         </div>
 
         {{-- {{ isset($state) ? scriptify($state) : scriptify() }} --}}
-        <script src="{{ elixir('app.js', 'dist') }}"></script>
+        <script src="{{ mix('app.js', 'dist') }}"></script>
     </body>
 
     {{-- {{ scriptify($auth, 'AUTH') }} --}}
