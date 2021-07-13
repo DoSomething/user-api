@@ -63,10 +63,7 @@ class WebUserTest extends TestCase
         $response = $this->get($userUrl . '/edit');
 
         $response->assertStatus(200);
-        $response->assertSee(
-            '<a href="' . url($userUrl) . '">Cancel</a>',
-            false,
-        );
+        $response->assertSee('Cancel');
     }
 
     /**
