@@ -97,8 +97,8 @@ return [
     */
 
     'failed' => [
-        'driver' => env('QUEUE_FAILED_DRIVER', 'database-uuids'),
-        'database' => env('DB_CONNECTION', 'mysql'),
+        'driver' => 'mongodb',
+        'database' => 'mongodb',
         'table' => 'failed_jobs',
     ],
 
