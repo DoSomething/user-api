@@ -6,11 +6,8 @@ use App\Jobs\CreateCustomerIoEvent;
 use App\Jobs\DeleteCustomerIoProfile;
 use App\Jobs\DeleteUserFromOtherServices;
 use App\Jobs\UpsertCustomerIoProfile;
-use App\Models\Post;
 use App\Models\RefreshToken;
-use App\Models\Signup;
 use App\Models\User;
-use App\Types\BadgeType;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
@@ -224,8 +221,8 @@ class UserObserver
                 // TODO: Refactor this to be a new TrackPromotionsResubscribeCustomerIoEvent job.
                 new CreateCustomerIoEvent($user, 'promotions_resubscribe', []),
             ])
-                ->dispatch($user)
-                ->onQueue($queue);
+                ->onQueue($queue)
+                ->dispatch($user);
 
             return;
         }
