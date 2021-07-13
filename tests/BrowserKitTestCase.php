@@ -145,7 +145,7 @@ abstract class BrowserKitTestCase extends BrowserKitBaseTestCase
      */
     public function dontSeeJsonField($key)
     {
-        $responseData = $this->response->decodeResponseJson();
+        $responseData = $this->response->json();
 
         if (Arr::has($responseData, $key)) {
             Assert::fail('Did not expect to find JSON response at ' . $key);
@@ -163,7 +163,7 @@ abstract class BrowserKitTestCase extends BrowserKitBaseTestCase
      */
     public function seeJsonField($key, $expected = null)
     {
-        $responseData = $this->response->decodeResponseJson();
+        $responseData = $this->response->json();
 
         if (!Arr::has($responseData, $key)) {
             Assert::fail('Expected to find JSON response at ' . $key);

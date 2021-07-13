@@ -26,7 +26,7 @@ class OAuthTest extends BrowserKitTestCase
         ]);
 
         // Parse the token we received to see it's built correctly.
-        $token = $this->response->decodeResponseJson()['access_token'];
+        $token = $this->response->json('access_token');
         $jwt = (new \Lcobucci\JWT\Parser())->parse($token);
 
         // Check that the token has the expected user ID and scopes.
@@ -145,7 +145,7 @@ class OAuthTest extends BrowserKitTestCase
         ]);
 
         // Parse the token we received to see it's built correctly.
-        $token = $this->response->decodeResponseJson()['access_token'];
+        $token = $this->response->json('access_token');
         $jwt = (new \Lcobucci\JWT\Parser())->parse($token);
         $this->assertSame('admin', $jwt->getClaim('role'));
     }
@@ -291,7 +291,7 @@ class OAuthTest extends BrowserKitTestCase
 
         // We should receive a token with only the requested scopes.
         $jwt = (new \Lcobucci\JWT\Parser())->parse(
-            $this->response->decodeResponseJson()['access_token'],
+            $this->response->json('access_token'),
         );
         $this->assertSame(['user'], $jwt->getClaim('scopes'));
     }
@@ -317,7 +317,7 @@ class OAuthTest extends BrowserKitTestCase
 
         // We should receive a token, but *not* with the disallowed scope
         $jwt = (new \Lcobucci\JWT\Parser())->parse(
-            $this->response->decodeResponseJson()['access_token'],
+            $this->response->json('access_token'),
         );
         $this->assertSame(['user'], $jwt->getClaim('scopes'));
     }
@@ -360,7 +360,7 @@ class OAuthTest extends BrowserKitTestCase
         $this->seeJsonStructure(['token_type', 'expires_in', 'access_token']);
 
         $jwt = (new \Lcobucci\JWT\Parser())->parse(
-            $this->response->decodeResponseJson()['access_token'],
+            $this->response->json('access_token'),
         );
 
         // Check that the token has the expected user ID and scopes.
@@ -389,7 +389,7 @@ class OAuthTest extends BrowserKitTestCase
         ]);
 
         // Get the provided refresh token.
-        $refreshToken = $this->response->decodeResponseJson()['refresh_token'];
+        $refreshToken = $this->response->json('refresh_token');
 
         // Freeze time so we can assert when we made this token.
         $now = $this->mockTime('+1 minute');
@@ -448,7 +448,7 @@ class OAuthTest extends BrowserKitTestCase
             'scope' => 'user role:staff role:admin',
         ]);
 
-        $token = $this->response->decodeResponseJson()['access_token'];
+        $token = $this->response->json('access_token');
 
         $this->get('v1/users', ['Authorization' => 'Bearer ' . $token]);
         $this->assertResponseStatus(200);
@@ -514,7 +514,7 @@ class OAuthTest extends BrowserKitTestCase
             'scope' => 'admin user',
         ]);
 
-        $jwt = $this->response->decodeResponseJson();
+        $jwt = $this->response->json();
 
         // Now, delete that refresh token.
         $this->delete(
@@ -563,7 +563,7 @@ class OAuthTest extends BrowserKitTestCase
             'username' => $user1->email,
             'password' => 'rather-secret-phrase',
             'scope' => 'user',
-        ])->response->decodeResponseJson();
+        ])->response->json();
 
         // Hacks. OAuth server seems to get mad if more than one request is made per request.
         $this->refreshApplication();
@@ -576,7 +576,7 @@ class OAuthTest extends BrowserKitTestCase
             'username' => $user2->email,
             'password' => 'another-secret-code',
             'scope' => 'user',
-        ])->response->decodeResponseJson();
+        ])->response->json();
 
         // Now, try to delete User #1's refresh token w/ User #2's access token.
         $this->delete(

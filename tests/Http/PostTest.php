@@ -581,7 +581,7 @@ class PostTest extends TestCase
         $response->assertStatus(422);
         $this->assertEquals(
             'The selected type is invalid.',
-            $response->decodeResponseJson()['errors']['type'][0],
+            $response->json('errors.type.0'),
         );
     }
 

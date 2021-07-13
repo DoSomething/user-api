@@ -322,7 +322,9 @@ class MergeTest extends BrowserKitTestCase
      */
     public function testMergingWithoutWriteScope()
     {
-        $admin = factory(User::class)->states('admin')->create();
+        $admin = factory(User::class)
+            ->states('admin')
+            ->create();
 
         $user = User::forceCreate([
             'email' => 'target-account@example.com',
@@ -347,7 +349,7 @@ class MergeTest extends BrowserKitTestCase
         $this->assertResponseStatus(401);
         $this->assertEquals(
             'Requires the `write` scope.',
-            $this->response->decodeResponseJson()['hint'],
+            $this->response->json('hint'),
         );
     }
 }

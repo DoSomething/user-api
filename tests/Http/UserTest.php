@@ -35,7 +35,9 @@ class UserTest extends TestCase
     public function testV2IndexVisibleToStaffRole()
     {
         // Make a staff user & some test users.
-        $staff = factory(User::class)->states('staff')->create();
+        $staff = factory(User::class)
+            ->states('staff')
+            ->create();
 
         factory(User::class, 5)->create();
 
@@ -54,7 +56,9 @@ class UserTest extends TestCase
     public function testV2IndexVisibleToAdminRole()
     {
         // Make a admin & some test users.
-        $admin = factory(User::class)->states('admin')->create();
+        $admin = factory(User::class)
+            ->states('admin')
+            ->create();
 
         factory(User::class, 5)->create();
 
@@ -100,7 +104,7 @@ class UserTest extends TestCase
 
         $this->assertCount(
             4,
-            $responseOne->decodeResponseJson('data'),
+            $responseOne->json('data'),
             'can filter `updated_at` before timestamp',
         );
 
@@ -111,7 +115,7 @@ class UserTest extends TestCase
 
         $this->assertCount(
             6,
-            $responseTwo->decodeResponseJson('data'),
+            $responseTwo->json('data'),
             'can filter `updated_at` after timestamp',
         );
 
@@ -122,7 +126,7 @@ class UserTest extends TestCase
 
         $this->assertCount(
             5,
-            $responseThree->decodeResponseJson('data'),
+            $responseThree->json('data'),
             'can filter `updated_at` between two timestamps',
         );
     }
@@ -142,7 +146,7 @@ class UserTest extends TestCase
         $response->assertStatus(200);
 
         // And test that private profile fields are hidden for the other user.
-        $data = $response->decodeResponseJson('data');
+        $data = $response->json('data');
 
         $this->assertArrayHasKey('first_name', $data);
         $this->assertArrayNotHasKey('last_name', $data);
@@ -237,7 +241,9 @@ class UserTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $admin = factory(User::class)->states('admin')->create();
+        $admin = factory(User::class)
+            ->states('admin')
+            ->create();
 
         $response = $this->asUser($admin, ['user', 'user:admin'])->get(
             'v2/users/' . $user->id,
@@ -318,7 +324,9 @@ class UserTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $staff = factory(User::class)->states('staff')->create();
+        $staff = factory(User::class)
+            ->states('staff')
+            ->create();
 
         $response = $this->asUser($staff, [
             'user',
@@ -470,7 +478,9 @@ class UserTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $staff = factory(User::class)->states('staff')->create();
+        $staff = factory(User::class)
+            ->states('staff')
+            ->create();
 
         $response = $this->asUser($staff, ['user', 'role:staff'])->json(
             'PUT',
@@ -485,7 +495,7 @@ class UserTest extends TestCase
 
         $this->assertEquals(
             'Requires the `write` scope.',
-            $response->decodeResponseJson('hint'),
+            $response->json('hint'),
         );
     }
 
@@ -494,7 +504,9 @@ class UserTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $staff = factory(User::class)->states('staff')->create();
+        $staff = factory(User::class)
+            ->states('staff')
+            ->create();
 
         $response = $this->asUser($staff, [
             'user',
@@ -515,7 +527,9 @@ class UserTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $staff = factory(User::class)->states('staff')->create();
+        $staff = factory(User::class)
+            ->states('staff')
+            ->create();
 
         $response = $this->asUser($staff, [
             'user',
@@ -540,7 +554,9 @@ class UserTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $staff = factory(User::class)->states('staff')->create();
+        $staff = factory(User::class)
+            ->states('staff')
+            ->create();
 
         $response = $this->asUser($staff, ['user', 'role:staff'])->json(
             'PUT',
@@ -581,7 +597,9 @@ class UserTest extends TestCase
      */
     public function testV2RequiredWriteScopeCreateUser()
     {
-        $user = factory(User::class)->states('staff')->create();
+        $user = factory(User::class)
+            ->states('staff')
+            ->create();
 
         $response = $this->asUser($user, ['user', 'role:staff'])->json(
             'POST',
@@ -598,7 +616,7 @@ class UserTest extends TestCase
 
         $this->assertEquals(
             'Requires the `write` scope.',
-            $response->decodeResponseJson()['hint'],
+            $response->json('hint'),
         );
     }
 
@@ -802,7 +820,7 @@ class UserTest extends TestCase
         $responseOne->assertStatus(422);
 
         $this->assertEquals(
-            $responseOne->decodeResponseJson('error.fields.id.0'),
+            $responseOne->json('error.fields.id.0'),
             'A record matching one of the given indexes already exists.',
         );
 
@@ -838,22 +856,16 @@ class UserTest extends TestCase
             'v2/users?search[email]=' . $user->email,
         );
 
-        $this->assertCount(1, $responseOne->decodeResponseJson('data'));
-        $this->assertEquals(
-            $responseOne->decodeResponseJson('data.0.email'),
-            $user->email,
-        );
+        $this->assertCount(1, $responseOne->json('data'));
+        $this->assertEquals($responseOne->json('data.0.email'), $user->email);
 
         $responseTwo = $this->withAccessToken(['admin', 'user'])->json(
             'GET',
             'v2/users?search=' . $user->email,
         );
 
-        $this->assertCount(1, $responseTwo->decodeResponseJson('data'));
-        $this->assertEquals(
-            $responseTwo->decodeResponseJson('data.0.email'),
-            $user->email,
-        );
+        $this->assertCount(1, $responseTwo->json('data'));
+        $this->assertEquals($responseTwo->json('data.0.email'), $user->email);
     }
 
     /**
@@ -878,7 +890,7 @@ class UserTest extends TestCase
 
         $this->assertEquals(
             'The resource owner or authorization server denied the request.',
-            $response->decodeResponseJson('message'),
+            $response->json('message'),
         );
     }
 
@@ -893,7 +905,9 @@ class UserTest extends TestCase
             'mobile' => $this->faker->phoneNumber,
         ]);
 
-        $admin = factory(User::class)->states('staff')->create();
+        $admin = factory(User::class)
+            ->states('staff')
+            ->create();
 
         $response = $this->asUser($admin, ['role:staff'])->get(
             'v2/mobile/' . $user->mobile,
@@ -918,7 +932,9 @@ class UserTest extends TestCase
             'mobile' => $this->faker->phoneNumber,
         ]);
 
-        $admin = factory(User::class)->states('admin')->create();
+        $admin = factory(User::class)
+            ->states('admin')
+            ->create();
 
         $response = $this->asUser($admin, ['user', 'role:admin'])->get(
             'v2/mobile/' . $user->mobile,
@@ -952,7 +968,7 @@ class UserTest extends TestCase
 
         $this->assertEquals(
             'The resource owner or authorization server denied the request.',
-            $response->decodeResponseJson('message'),
+            $response->json('message'),
         );
     }
 
@@ -965,7 +981,9 @@ class UserTest extends TestCase
     {
         $user = factory(User::class)->create(['email' => $this->faker->email]);
 
-        $admin = factory(User::class)->states('staff')->create();
+        $admin = factory(User::class)
+            ->states('staff')
+            ->create();
 
         $response = $this->asUser($admin, ['role:staff'])->get(
             'v2/email/' . $user->email,
@@ -988,7 +1006,9 @@ class UserTest extends TestCase
     {
         $user = factory(User::class)->create(['email' => $this->faker->email]);
 
-        $admin = factory(User::class)->states('admin')->create();
+        $admin = factory(User::class)
+            ->states('admin')
+            ->create();
 
         $response = $this->asUser($admin, ['user', 'role:admin'])->get(
             'v2/email/' . $user->email,
@@ -1009,7 +1029,9 @@ class UserTest extends TestCase
      */
     public function testV2RequiredWriteScopeDeleteUser()
     {
-        $user = factory(User::class)->states('staff')->create();
+        $user = factory(User::class)
+            ->states('staff')
+            ->create();
 
         $userToDelete = factory(User::class)->create();
 
@@ -1028,7 +1050,7 @@ class UserTest extends TestCase
 
         $this->assertEquals(
             'Requires the `write` scope.',
-            $response->decodeResponseJson()['hint'],
+            $response->json('hint'),
         );
     }
 

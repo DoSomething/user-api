@@ -83,7 +83,7 @@ class ProfileTest extends BrowserKitTestCase
         $this->assertResponseStatus(401);
         $this->assertEquals(
             'Requires the `write` scope.',
-            $this->response->decodeResponseJson()['hint'],
+            $this->response->json('hint'),
         );
     }
 }
