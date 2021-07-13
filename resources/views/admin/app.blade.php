@@ -11,7 +11,7 @@
         </title>
 
         <link rel="apple-touch-icon-precomposed" href="/assets/images/apple-touch-icon-precomposed.png">
-        <link rel="stylesheet" href="{{ mix('admin.css', 'dist') }}">
+        <link rel="stylesheet" href="{{ webpack_asset('admin.css') }}">
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
     </head>
@@ -30,7 +30,7 @@
             </div>
         </div>
 
-        <script src="{{ mix('admin.js', 'dist') }}"></script>
+        <script src="{{ webpack_asset('admin.js') }}"></script>
     </body>
 
     {{ scriptify($auth, 'AUTH') }}
