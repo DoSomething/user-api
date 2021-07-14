@@ -85,11 +85,9 @@ class Normalizer
 
     /**
      * Parse an array of string into Carbon dates.
-     * @see https://laravel.com/docs/7.x/upgrade#date-serialization dates
-     * using toArray are returned differently.
      *
-     * @param array $strings
-     * @return Carbon
+     * @param string[] $strings
+     * @return \Carbon\Carbon[]
      */
     public function dates($strings)
     {

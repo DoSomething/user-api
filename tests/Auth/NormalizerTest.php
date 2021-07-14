@@ -2,10 +2,39 @@
 
 namespace Tests\Auth;
 
+use Carbon\Carbon;
 use Tests\BrowserKitTestCase;
+
+// @TODO: establish Units & Features directory in test and place this file
+// of unit tests in Units.
 
 class NormalizerTest extends BrowserKitTestCase
 {
+    /**
+     * Test that we can normalize dates.
+     */
+    public function testNormalizeDates()
+    {
+        $normalized = normalize('dates', [
+            'December 25th 2021',
+            '2021-10-31',
+            '02/14/1990',
+        ]);
+
+        $this->assertSame(
+            '2021-12-25 00:00:00',
+            $normalized[0]->toDateTimeString(),
+        );
+        $this->assertSame(
+            '2021-10-31 00:00:00',
+            $normalized[1]->toDateTimeString(),
+        );
+        $this->assertSame(
+            '1990-02-14 00:00:00',
+            $normalized[2]->toDateTimeString(),
+        );
+    }
+
     /**
      * Test that we can normalize the ID field name.
      */
