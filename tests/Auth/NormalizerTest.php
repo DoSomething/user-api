@@ -21,6 +21,7 @@ class NormalizerTest extends BrowserKitTestCase
             '02/14/1990',
         ]);
 
+        $this->assertCount(3, $normalized);
         $this->assertSame(
             '2021-12-25 00:00:00',
             $normalized[0]->toDateTimeString(),
