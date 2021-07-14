@@ -77,7 +77,7 @@ class ImportGroupsCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return bool
      */
     public function handle()
     {
@@ -86,7 +86,7 @@ class ImportGroupsCommand extends Command
         if (!$groupTypeName) {
             $this->logInfo('Please provide a name option.');
 
-            return;
+            return 0;
         }
 
         $input = file_get_contents($this->argument('input'));
@@ -152,10 +152,12 @@ class ImportGroupsCommand extends Command
             }
         }
 
-        return $this->logInfo('Import complete', [
+        $this->logInfo('Import complete', [
             'imported' => $numImported,
             'skipped' => $numSkipped,
             'failed' => $numFailed,
         ]);
+
+        return 0;
     }
 }

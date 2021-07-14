@@ -1,5 +1,10 @@
 <?php
 
+namespace Tests\Http;
+
+use Illuminate\Support\Facades\App;
+use Tests\BrowserKitTestCase;
+
 class LocalizationTest extends BrowserKitTestCase
 {
     /**

@@ -1,14 +1,17 @@
 <?php
 
+namespace Tests\Http\Web;
+
 use App\Models\GroupType;
 use App\Models\User;
+use Tests\TestCase;
 
 class WebGroupTypeTest extends TestCase
 {
     /** @test */
     public function testAdminCanCreateGroupType()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $name = $this->faker->sentence;
 
@@ -31,7 +34,7 @@ class WebGroupTypeTest extends TestCase
     /** @test */
     public function testAdminCannotCreateDuplicateGroupType()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $groupType = factory(GroupType::class)->create();
 
@@ -45,7 +48,7 @@ class WebGroupTypeTest extends TestCase
     /** @test */
     public function testStaffCannotCreateGroupType()
     {
-        $staff = factory(User::class, 'staff')->create();
+        $staff = factory(User::class)->states('staff')->create();
 
         $name = $this->faker->sentence;
 
@@ -67,7 +70,7 @@ class WebGroupTypeTest extends TestCase
     /** @test */
     public function testUnsettingFilterByState()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $groupType = factory(GroupType::class)->create([
             'filter_by_location' => true,

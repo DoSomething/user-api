@@ -1,7 +1,10 @@
 <?php
 
+namespace Tests\Http\Partners;
+
 use App\Jobs\Imports\ImportSoftEdgeRecord;
 use Illuminate\Support\Facades\Bus;
+use Tests\TestCase;
 
 class SoftEdgeTest extends TestCase
 {

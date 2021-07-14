@@ -1,7 +1,10 @@
 <?php
 
+namespace Tests\Console;
+
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
+use Tests\BrowserKitTestCase;
 
 class RemoveCustomerIoMobileTest extends BrowserKitTestCase
 {

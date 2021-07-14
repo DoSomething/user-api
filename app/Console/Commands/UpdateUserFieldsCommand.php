@@ -51,7 +51,7 @@ class UpdateUserFieldsCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return bool
      */
     public function handle()
     {
@@ -124,6 +124,8 @@ class UpdateUserFieldsCommand extends Command
         }
 
         $this->line('northstar:update: Done updating users!');
+
+        return 0;
     }
 
     /**

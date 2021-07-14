@@ -1,7 +1,10 @@
 <?php
 
+namespace Tests\Http;
+
 use App\Models\Action;
 use App\Models\Post;
+use Tests\TestCase;
 
 class ActionTest extends TestCase
 {

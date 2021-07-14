@@ -1,7 +1,11 @@
 <?php
 
+namespace Tests\Console;
+
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Bus;
+use Tests\TestCase;
 
 class StandardizeBirthdatesTest extends TestCase
 {
@@ -13,9 +17,11 @@ class StandardizeBirthdatesTest extends TestCase
 
         // Create some regular and borked birthday users
         factory(User::class, 5)->create();
+
         $this->createMongoDocument('users', [
             'birthdate' => '2018-03-15 00:00:00',
         ]);
+
         $this->createMongoDocument('users', ['birthdate' => 'I love dogs']);
 
         // Make sure we are registering 2 borked users
@@ -27,6 +33,7 @@ class StandardizeBirthdatesTest extends TestCase
                 ],
             ],
         ])->count();
+
         $this->assertEquals($borkedUsersCount, 2);
 
         // Run the Birthdate Standardizer command.
@@ -41,6 +48,7 @@ class StandardizeBirthdatesTest extends TestCase
                 ],
             ],
         ])->count();
+
         $this->assertEquals($borkedUsersCount, 0);
     }
 }

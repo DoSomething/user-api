@@ -1,9 +1,12 @@
 <?php
 
+namespace Tests\Jobs\Imports;
+
 use App\Jobs\Imports\ImportEmailSubscriptions;
 use App\Jobs\Imports\ParseEmailSubscriptions;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
 
 class ParseEmailSubscriptionsTest extends TestCase
 {

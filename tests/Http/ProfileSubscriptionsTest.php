@@ -1,6 +1,9 @@
 <?php
 
+namespace Tests\Http;
+
 use App\Models\User;
+use Tests\BrowserKitTestCase;
 
 class ProfileSubscriptionsTest extends BrowserKitTestCase
 {

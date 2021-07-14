@@ -1,6 +1,9 @@
 <?php
 
+namespace Tests\Http\Web;
+
 use App\Models\User;
+use Tests\BrowserKitTestCase;
 
 class TotpTest extends BrowserKitTestCase
 {

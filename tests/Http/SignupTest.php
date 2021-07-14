@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Http;
+
 use App\Models\Campaign;
 use App\Models\Club;
 use App\Models\Group;
@@ -9,6 +11,7 @@ use App\Models\User;
 use App\Observers\SignupObserver;
 use App\Services\CustomerIo;
 use Illuminate\Support\Str;
+use Tests\TestCase;
 
 class SignupTest extends TestCase
 {
@@ -583,7 +586,7 @@ class SignupTest extends TestCase
             'api/v3/signups/' . $signup->id . '?include=posts',
         );
         $response->assertStatus(200);
-        $decodedResponse = $response->decodeResponseJson();
+        $decodedResponse = $response->json();
 
         $this->assertEquals(
             false,
@@ -771,7 +774,7 @@ class SignupTest extends TestCase
         $response = $this->asAdminUser()->getJson(
             'api/v3/signups?filter[northstar_id]=' . $firstUser->id,
         );
-        $decodedResponse = $response->decodeResponseJson();
+        $decodedResponse = $response->json();
 
         $response->assertStatus(200);
 
@@ -782,7 +785,7 @@ class SignupTest extends TestCase
         $response = $this->asAdminUser()->getJson(
             'api/v3/signups?filter[campaign_id]=' . $secondCampaignId,
         );
-        $decodedResponse = $response->decodeResponseJson();
+        $decodedResponse = $response->json();
 
         $response->assertStatus(200);
 
@@ -796,7 +799,7 @@ class SignupTest extends TestCase
                 '&filter[northstar_id]=' .
                 $firstUser->id,
         );
-        $decodedResponse = $response->decodeResponseJson();
+        $decodedResponse = $response->json();
 
         $response->assertStatus(200);
 
@@ -810,7 +813,7 @@ class SignupTest extends TestCase
                 ',' .
                 $secondCampaignId,
         );
-        $decodedResponse = $response->decodeResponseJson();
+        $decodedResponse = $response->json();
 
         $response->assertStatus(200);
 

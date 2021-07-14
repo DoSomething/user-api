@@ -1,9 +1,11 @@
 <?php
 
+namespace Tests\Jobs\Imports;
+
 use App\Jobs\Imports\ImportSoftEdgeRecord;
 use App\Models\Action;
-use App\Models\Post;
 use App\Models\User;
+use Tests\TestCase;
 
 class ImportSoftEdgeRecordTest extends TestCase
 {

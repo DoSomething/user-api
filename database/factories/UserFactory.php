@@ -100,7 +100,7 @@ $factory->state(User::class, 'sms-unsubscribed', function () {
     ];
 });
 
-$factory->defineAs(User::class, 'staff', function (Faker $faker) {
+$factory->state(User::class, 'staff', function (Faker $faker) {
     $faker->addProvider(new FakerPhoneNumber($faker));
 
     return [
@@ -119,7 +119,7 @@ $factory->defineAs(User::class, 'staff', function (Faker $faker) {
     ];
 });
 
-$factory->defineAs(User::class, 'admin', function (Faker $faker) {
+$factory->state(User::class, 'admin', function (Faker $faker) {
     $faker->addProvider(new FakerPhoneNumber($faker));
 
     return [

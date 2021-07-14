@@ -1,7 +1,10 @@
 <?php
 
+namespace Tests\Http\Web;
+
 use App\Models\Post;
 use App\Models\User;
+use Tests\TestCase;
 
 class OriginalsTest extends TestCase
 {
@@ -12,7 +15,7 @@ class OriginalsTest extends TestCase
      */
     public function testGetOriginalImage()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $post = factory(Post::class)
             ->states('photo', 'accepted')

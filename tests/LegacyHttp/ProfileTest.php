@@ -1,6 +1,9 @@
 <?php
 
+namespace Tests\LegacyHttp;
+
 use App\Models\User;
+use Tests\BrowserKitTestCase;
 
 class ProfileTest extends BrowserKitTestCase
 {
@@ -70,7 +73,7 @@ class ProfileTest extends BrowserKitTestCase
             'role' => 'user',
         ]);
 
-        $response = $this->asUser($user, ['user'])->json('POST', 'v1/profile', [
+        $this->asUser($user, ['user'])->json('POST', 'v1/profile', [
             'mobile' => '(555) 123-4567',
             'language' => 'en',
             'drupal_id' => 666666,
@@ -80,7 +83,7 @@ class ProfileTest extends BrowserKitTestCase
         $this->assertResponseStatus(401);
         $this->assertEquals(
             'Requires the `write` scope.',
-            $response->decodeResponseJson()['hint'],
+            $this->response->json('hint'),
         );
     }
 }

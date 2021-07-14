@@ -1,8 +1,11 @@
 <?php
 
+namespace Tests\Http;
+
 use App\Models\Action;
 use App\Models\Post;
 use App\Models\User;
+use Tests\TestCase;
 
 class ReviewsTest extends TestCase
 {
@@ -14,7 +17,7 @@ class ReviewsTest extends TestCase
      */
     public function testPostingReview()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $schoolId = $this->faker->school_id;
 

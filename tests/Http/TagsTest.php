@@ -1,7 +1,10 @@
 <?php
 
+namespace Tests\Http;
+
 use App\Models\Post;
 use App\Models\User;
+use Tests\TestCase;
 
 class TagsTest extends TestCase
 {

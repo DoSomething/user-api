@@ -1,8 +1,11 @@
 <?php
 
+namespace Tests\Models;
+
 use App\Models\Action;
 use App\Models\Campaign;
 use App\Models\GroupType;
+use Tests\TestCase;
 
 class CampaignModelTest extends TestCase
 {

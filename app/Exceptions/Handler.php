@@ -16,6 +16,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -40,40 +41,40 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception $e
+     * @param  \Throwable $exception
      * @return void
      */
-    public function report(Exception $e)
+    public function report(Throwable $exception)
     {
         // If we throw a 422 Validation Exception, write something to the log for later review:
         if (
-            $e instanceof ValidationException ||
-            $e instanceof NorthstarValidationException
+            $exception instanceof ValidationException ||
+            $exception instanceof NorthstarValidationException
         ) {
             info('Validation failed.', [
                 'url' => request()->path(),
-                'errors' => $e->errors(),
+                'errors' => $exception->errors(),
             ]);
 
             return;
         }
 
-        parent::report($e);
+        parent::report($exception);
     }
 
     /**
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \Exception $e
+     * @param  \Throwable $exception
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function render($request, Exception $e)
+    public function render($request, Throwable $exception)
     {
         // If we receive a OAuth exception, get the included PSR-7 response,
         // convert it to a standard Symfony HttpFoundation response and return.
-        if ($e instanceof OAuthServerException) {
-            $psrResponse = $e->generateHttpResponse(
+        if ($exception instanceof OAuthServerException) {
+            $psrResponse = $exception->generateHttpResponse(
                 app(ResponseInterface::class),
             );
 
@@ -81,24 +82,24 @@ class Handler extends ExceptionHandler
         }
         // If Intervention can't parse a file (corrupted or wrong type), return 422.
         // @TODO: Handle this with a validation rule on our v3 routes.
-        if ($e instanceof \Intervention\Image\Exception\NotReadableException) {
+        if ($exception instanceof \Intervention\Image\Exception\NotReadableException) {
             abort(422, 'Invalid image provided.');
         }
 
         // Re-cast specific exceptions or uniquely render them:
-        if ($e instanceof HttpException && $e->getStatusCode() === 429) {
-            return $this->rateLimited($e);
-        } elseif ($e instanceof AuthenticationException) {
-            return $this->unauthenticated($request, $e);
+        if ($exception instanceof HttpException && $exception->getStatusCode() === 429) {
+            return $this->rateLimited($exception);
+        } elseif ($exception instanceof AuthenticationException) {
+            return $this->unauthenticated($request, $exception);
         } elseif (
-            $e instanceof ValidationException ||
-            $e instanceof NorthstarValidationException
+            $exception instanceof ValidationException ||
+            $exception instanceof NorthstarValidationException
         ) {
-            return $this->invalidated($request, $e);
-        } elseif ($e instanceof ModelNotFoundException) {
-            $e = new NotFoundHttpException('That resource could not be found.');
-        } elseif ($e instanceof AuthorizationException) {
-            $e = new AccessDeniedHttpException($e->getMessage(), $e);
+            return $this->invalidated($request, $exception);
+        } elseif ($exception instanceof ModelNotFoundException) {
+            $exception = new NotFoundHttpException('That resource could not be found.');
+        } elseif ($exception instanceof AuthorizationException) {
+            $exception = new AccessDeniedHttpException($exception->getMessage(), $exception);
         }
 
         // If request has 'Accepts: application/json' header or we're on a route that
@@ -108,18 +109,18 @@ class Handler extends ExceptionHandler
             $request->wantsJson() ||
             has_middleware('api')
         ) {
-            return $this->buildJsonResponse($e);
+            return $this->buildJsonResponse($exception);
         }
 
         // Redirect to root if trying to access disabled methods on a controller or access denied to user.
         if (
-            $e instanceof MethodNotAllowedHttpException ||
-            $e instanceof AccessDeniedHttpException
+            $exception instanceof MethodNotAllowedHttpException ||
+            $exception instanceof AccessDeniedHttpException
         ) {
             return redirect('/');
         }
 
-        return parent::render($request, $e);
+        return parent::render($request, $exception);
     }
 
     /**
@@ -156,27 +157,27 @@ class Handler extends ExceptionHandler
      * Convert an validation exception into flash redirect or JSON response.
      *
      * @param \Illuminate\Http\Request $request
-     * @param ValidationException|NorthstarValidationException $e
+     * @param ValidationException|NorthstarValidationException $exception
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function invalidated($request, $e)
+    protected function invalidated($request, $exception)
     {
         $wantsJson = $request->ajax() || $request->wantsJson();
 
         // TODO: We use a custom response format for validation errors that used to
         // be a part of Northstar, our identity API. We should standardize these.
-        if ($wantsJson && $e instanceof NorthstarValidationException) {
-            return $e->getResponse();
+        if ($wantsJson && $exception instanceof NorthstarValidationException) {
+            return $exception->getResponse();
         }
 
         if ($wantsJson) {
-            return $this->invalidJson($request, $e);
+            return $this->invalidJson($request, $exception);
         }
 
         return redirect()
             ->back()
             ->withInput($request->except('password', 'password_confirmation'))
-            ->withErrors($e->errors());
+            ->withErrors($exception->errors());
     }
 
     /**
@@ -186,7 +187,7 @@ class Handler extends ExceptionHandler
      * @param \Illuminate\Auth\AuthenticationException $e
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function unauthenticated($request, AuthenticationException $e)
+    protected function unauthenticated($request, AuthenticationException $exception)
     {
         if ($request->ajax() || $request->wantsJson()) {
             return $this->buildJsonResponse(
@@ -200,27 +201,27 @@ class Handler extends ExceptionHandler
     /**
      * Build a JSON error response for API clients.
      *
-     * @param Exception $e
+     * @param Throwable $exception
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function buildJsonResponse(Exception $e)
+    protected function buildJsonResponse(Throwable $exception)
     {
-        $code = $e instanceof HttpException ? $e->getStatusCode() : 500;
+        $code = $exception instanceof HttpException ? $exception->getStatusCode() : 500;
         $shouldHideErrorDetails = $code == 500 && !config('app.debug');
         $response = [
             'error' => [
                 'code' => $code,
                 'message' => $shouldHideErrorDetails
                     ? self::PRODUCTION_ERROR_MESSAGE
-                    : $e->getMessage(),
+                    : $exception->getMessage(),
             ],
         ];
 
         // Show more information if we're in debug mode
         if (config('app.debug')) {
             $response['debug'] = [
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine(),
             ];
         }
 

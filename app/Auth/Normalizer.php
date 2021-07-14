@@ -84,10 +84,10 @@ class Normalizer
     }
 
     /**
-     * Parse a string into a Carbon date.
+     * Parse an array of string into Carbon dates.
      *
      * @param string[] $strings
-     * @return Carbon[]
+     * @return \Carbon\Carbon[]
      */
     public function dates($strings)
     {

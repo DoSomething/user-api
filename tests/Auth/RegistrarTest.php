@@ -1,9 +1,12 @@
 <?php
 
+namespace Tests\Auth;
+
 use App\Auth\Registrar;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Str;
+use Tests\BrowserKitTestCase;
 
 class RegistrarTest extends BrowserKitTestCase
 {

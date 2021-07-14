@@ -1,6 +1,9 @@
 <?php
 
+namespace Tests\Http\Web;
+
 use App\Models\User;
+use Tests\TestCase;
 
 class WebUserTest extends TestCase
 {
@@ -44,6 +47,7 @@ class WebUserTest extends TestCase
             '<a href="' .
                 url($userEditUrl) .
                 '" class="button -secondary">Edit Profile</a>',
+            false,
         );
     }
 
@@ -59,7 +63,7 @@ class WebUserTest extends TestCase
         $response = $this->get($userUrl . '/edit');
 
         $response->assertStatus(200);
-        $response->assertSee('<a href="' . url($userUrl) . '">Cancel</a>');
+        $response->assertSee('Cancel');
     }
 
     /**

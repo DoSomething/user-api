@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\Action;
 use App\Models\Campaign;
 use App\Models\Post;
@@ -28,8 +30,8 @@ class ActivityTablesSeeder extends Seeder
                     'campaign_id' => $campaign->id,
                 ]);
 
-                // Create 10-20 signups with one accepted photo post & some pending photo and text posts.
-                factory(Signup::class, rand(10, 20))
+                // Create 5-10 signups with one accepted photo post & some pending photo and text posts.
+                factory(Signup::class, rand(5, 10))
                     ->create(['campaign_id' => $campaign->id])
                     ->each(function (Signup $signup) use (
                         $photoAction,
@@ -70,7 +72,7 @@ class ActivityTablesSeeder extends Seeder
                     });
 
                 // Create 5-10 signups with only accepted posts, from lil' angels!
-                factory(Signup::class, rand(10, 20))
+                factory(Signup::class, rand(5, 10))
                     ->create(['campaign_id' => $campaign->id])
                     ->each(function (Signup $signup) use (
                         $photoAction,
@@ -100,7 +102,7 @@ class ActivityTablesSeeder extends Seeder
                     });
 
                 // Create 5-10 signups with rejected posts, from troublemakers!
-                factory(Signup::class, rand(10, 20))
+                factory(Signup::class, rand(5, 10))
                     ->create(['campaign_id' => $campaign->id])
                     ->each(function (Signup $signup) use ($photoAction) {
                         $signup->posts()->save(
@@ -116,7 +118,7 @@ class ActivityTablesSeeder extends Seeder
                     });
 
                 // Create 100 signups with no posts yet.
-                factory(Signup::class, 100)->create([
+                factory(Signup::class, 50)->create([
                     'campaign_id' => $campaign->id,
                 ]);
             });

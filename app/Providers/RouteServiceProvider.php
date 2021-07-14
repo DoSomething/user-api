@@ -14,6 +14,8 @@ class RouteServiceProvider extends ServiceProvider
      * This namespace is applied to your controller routes.
      *
      * In addition, it is set as the URL generator's root namespace.
+     * @see https://laravel.com/docs/8.x/upgrade#automatic-controller-namespace-prefixing consider
+     * proceeding with above upgrade to make development easier in IDEs.
      *
      * @var string
      */

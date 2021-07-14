@@ -1,7 +1,10 @@
 <?php
 
+namespace Tests\Http\Web;
+
 use App\Models\Club;
 use App\Models\User;
+use Tests\TestCase;
 
 class WebClubTest extends TestCase
 {
@@ -13,7 +16,7 @@ class WebClubTest extends TestCase
      */
     public function testAdminCanCreateClub()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $leaderId = factory(User::class)->create()->id;
 
@@ -40,7 +43,7 @@ class WebClubTest extends TestCase
      */
     public function testStaffCanCreateClub()
     {
-        $staff = factory(User::class, 'staff')->create();
+        $staff = factory(User::class)->states('staff')->create();
 
         $leaderId = factory(User::class)->create()->id;
 
@@ -67,7 +70,7 @@ class WebClubTest extends TestCase
      */
     public function testCreatingAClubWithValidationErrors()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $response = $this->actingAs($admin, 'web')->post('/admin/clubs', [
             'city' => 789, // This should be a string.
@@ -95,7 +98,7 @@ class WebClubTest extends TestCase
      */
     public function testCreatingAClubWithDuplicateLeaderId()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $club = factory(Club::class)->create();
 
@@ -116,7 +119,7 @@ class WebClubTest extends TestCase
      */
     public function testUpdatingAClub()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $leaderId = factory(User::class)->create()->id;
 
@@ -160,7 +163,7 @@ class WebClubTest extends TestCase
      */
     public function testUpdatingAClubWithoutChangingTheLeaderId()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $club = factory(Club::class)->create();
 
@@ -190,7 +193,7 @@ class WebClubTest extends TestCase
      */
     public function testUpdatingAClubWithValidationErrors()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $club = factory(Club::class)->create();
 

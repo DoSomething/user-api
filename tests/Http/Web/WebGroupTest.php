@@ -1,15 +1,18 @@
 <?php
 
+namespace Tests\Http\Web;
+
 use App\Models\Group;
 use App\Models\GroupType;
 use App\Models\User;
+use Tests\TestCase;
 
 class WebGroupTest extends TestCase
 {
     /** @test */
     public function testAdminCanCreateGroup()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $groupType = factory(GroupType::class)->create();
 
@@ -31,7 +34,7 @@ class WebGroupTest extends TestCase
     /** @test */
     public function testAdminCannotCreateDuplicateGroup()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)->states('admin')->create();
 
         $group = factory(Group::class)->create();
 
@@ -49,7 +52,7 @@ class WebGroupTest extends TestCase
     /** @test */
     public function testStaffCanCreateGroup()
     {
-        $staff = factory(User::class, 'staff')->create();
+        $staff = factory(User::class)->states('staff')->create();
 
         $groupType = factory(GroupType::class)->create();
 

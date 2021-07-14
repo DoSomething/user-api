@@ -1,8 +1,11 @@
 <?php
 
+namespace Tests\Console;
+
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
+use Tests\BrowserKitTestCase;
 
 class UpdateUserFieldsCommandTest extends BrowserKitTestCase
 {

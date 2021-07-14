@@ -1,7 +1,10 @@
 <?php
 
+namespace Tests\Http;
+
 use App\Models\User;
 use App\Types\PasswordResetType;
+use Tests\BrowserKitTestCase;
 
 class ResetTest extends BrowserKitTestCase
 {
@@ -36,10 +39,10 @@ class ResetTest extends BrowserKitTestCase
             'id' => $user->id,
             'type' => 'forgot-password',
         ]);
+
         $this->assertResponseStatus(200);
         $this->seeJsonStructure(['success']);
         $this->customerIoMock->shouldHaveReceived('sendEmail')->once();
-
         $this->seeInMongoDatabase('password_resets', ['email' => $user->email]);
     }
 
@@ -50,21 +53,21 @@ class ResetTest extends BrowserKitTestCase
      */
     public function testCreatePasswordResetLinkRequiresWriteScope()
     {
-        $admin = factory(User::class, 'admin')->create();
+        $admin = factory(User::class)
+            ->states('admin')
+            ->create();
+
         $user = factory(User::class)->create();
 
-        $response = $this->asUser($admin, ['role:admin', 'user'])->post(
-            'v2/resets',
-            [
-                'id' => $user->id,
-                'type' => PasswordResetType::get('FORGOT_PASSWORD'),
-            ],
-        );
+        $this->asUser($admin, ['role:admin', 'user'])->post('v2/resets', [
+            'id' => $user->id,
+            'type' => PasswordResetType::get('FORGOT_PASSWORD'),
+        ]);
 
         $this->assertResponseStatus(401);
         $this->assertEquals(
             'Requires the `write` scope.',
-            $response->decodeResponseJson()['hint'],
+            $this->response->json('hint'),
         );
     }
 }

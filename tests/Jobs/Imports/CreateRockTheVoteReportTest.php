@@ -1,8 +1,11 @@
 <?php
 
+namespace Tests\Jobs\Imports;
+
 use App\Jobs\Imports\CreateRockTheVoteReport;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Bus;
+use Tests\TestCase;
 
 class CreateRockTheVoteReportTest extends TestCase
 {
@@ -16,6 +19,7 @@ class CreateRockTheVoteReportTest extends TestCase
         Bus::fake();
 
         $this->rockTheVoteMock = $this->mock(\App\Services\RockTheVote::class);
+
         $this->rockTheVoteMock->shouldReceive('createReport')->andReturn([
             'status' => 'queued',
             'record_count' => null,

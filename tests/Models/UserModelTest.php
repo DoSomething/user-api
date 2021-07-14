@@ -1,7 +1,10 @@
 <?php
 
+namespace Tests\Models;
+
 use App\Models\User;
 use Carbon\Carbon;
+use Tests\TestCase;
 
 class UserModelTest extends TestCase
 {

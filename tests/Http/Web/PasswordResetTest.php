@@ -1,12 +1,14 @@
 <?php
 
+namespace Tests\Http\Web;
+
 use App\Auth\Registrar;
 use App\Jobs\CreateCustomerIoEvent;
 use App\Jobs\SendForgotPasswordEmail;
 use App\Jobs\SendPasswordUpdatedEmail;
 use App\Models\User;
-use App\Services\CustomerIo;
 use Illuminate\Support\Facades\Bus;
+use Tests\TestCase;
 
 class PasswordResetTest extends TestCase
 {
@@ -42,7 +44,7 @@ class PasswordResetTest extends TestCase
 
         $stepOneResponse->assertSeeText('Forgot your password?');
         $stepOneResponse->assertSeeText(
-            e('We\'ve all been there. Reset by entering your email.'),
+            'We\'ve all been there. Reset by entering your email.',
         );
 
         // The user should be able to request a new password by entering their email.
@@ -123,7 +125,7 @@ class PasswordResetTest extends TestCase
                     'email' => 'nonexistant@example.com',
                 ])
                 ->assertSeeText(
-                    e('We can\'t find a user with that e-mail address.'),
+                    'We can\'t find a user with that e-mail address.',
                 );
         }
 

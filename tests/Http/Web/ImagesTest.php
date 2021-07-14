@@ -1,6 +1,9 @@
 <?php
 
+namespace Tests\Http\Web;
+
 use App\Models\Post;
+use Tests\TestCase;
 
 class ImagesTest extends TestCase
 {

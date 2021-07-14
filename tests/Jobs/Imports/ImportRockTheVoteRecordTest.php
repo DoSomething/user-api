@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Jobs\Imports;
+
 use App\Imports\RockTheVoteRecord;
 use App\Jobs\Imports\ImportRockTheVoteRecord;
 use App\Models\Action;
@@ -7,8 +9,8 @@ use App\Models\ImportFile;
 use App\Models\Post;
 use App\Models\RockTheVoteLog;
 use App\Models\User;
-use App\Types\SmsStatus;
 use Carbon\Carbon;
+use Tests\TestCase;
 
 class ImportRockTheVoteRecordTest extends TestCase
 {

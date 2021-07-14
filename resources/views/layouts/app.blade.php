@@ -18,7 +18,7 @@
     @endif
 
     @section('scripts')
-        <link rel="stylesheet" href="{{ elixir('app.css', 'dist') }}">
+        <link rel="stylesheet" href="{{ webpack_asset('app.css') }}">
         <script src="{{ asset('dist/modernizr.js') }}"></script>
     @show
 
@@ -58,7 +58,7 @@
     {{ scriptify(auth()->user() ? auth()->user()->id : null, 'NORTHSTAR_ID') }}
     {{ scriptify(get_client_environment_vars(), 'ENV') }}
     {{ scriptify($errors->messages(), 'ERRORS') }}
-    <script src="{{ elixir('app.js', 'dist') }}"></script>
+    <script src="{{ webpack_asset('app.js') }}"></script>
 </body>
 
 </html>

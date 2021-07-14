@@ -1,8 +1,11 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Auth\Scope;
 use App\Models\Client;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ClientTableSeeder extends Seeder
 {

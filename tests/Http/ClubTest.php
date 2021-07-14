@@ -1,6 +1,9 @@
 <?php
 
+namespace Tests\Http;
+
 use App\Models\Club;
+use Tests\TestCase;
 
 class ClubTest extends TestCase
 {

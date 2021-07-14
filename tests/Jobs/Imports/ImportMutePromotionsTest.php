@@ -1,9 +1,12 @@
 <?php
 
+namespace Tests\Jobs\Imports;
+
 use App\Jobs\Imports\ImportMutePromotions;
 use App\Models\ImportFile;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Tests\TestCase;
 
 class ImportMutePromotionsTest extends TestCase
 {

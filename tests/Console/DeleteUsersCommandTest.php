@@ -1,22 +1,25 @@
 <?php
 
+namespace Tests\Console;
+
 use App\Models\User;
-use App\Services\Gambit;
-use App\Services\Rogue;
 use Illuminate\Support\Facades\Artisan;
+use Tests\TestCase;
 
 class DeleteUsersCommandTest extends TestCase
 {
     /** @test */
     public function it_should_delete_users()
     {
-        $now = $this->mockTime();
+        $this->mockTime();
+
         $input = 'tests/Console/example-identify-output.csv';
 
         // Create the expected users we're going to destroy:
         $user1 = factory(User::class)
             ->create(['_id' => '5d3630a0fdce2742ff6c64d4'])
             ->first();
+
         $user2 = factory(User::class)
             ->create(['_id' => '5d3630a0fdce2742ff6c64d5'])
             ->first();
